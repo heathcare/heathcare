@@ -449,7 +449,7 @@
 		var gradeId = jQuery("#gradeId").val();
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
-		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalExaminationSicknessPositiveSign&checkId=${checkId}&ts=${ts}";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationSicknessPositiveSign&checkId=${checkId}&ts=${ts}&type=${type}";
 		if(gradeId != ""){
 			link = link + "&gradeId=" + gradeId;
 		}
