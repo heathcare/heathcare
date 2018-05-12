@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.glaf.heathcare.mapper.FoodFavoriteMapper">
+
+	<resultMap id="foodFavoriteResultMap"
+		type="com.glaf.heathcare.domain.FoodFavorite">
+		<id property="id" column="ID_" jdbcType="BIGINT" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="foodId" column="FOODID_" jdbcType="BIGINT" />
+		<result property="nodeId" column="NODEID_" jdbcType="BIGINT" />
+		<result property="subNodeId" column="SUBNODEID_"
+			jdbcType="BIGINT" />
+		<result property="sortNo" column="SORTNO_" jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<insert id="insertFoodFavorite"
+		parameterType="com.glaf.heathcare.domain.FoodFavorite">
+		insert into HEALTH_FOOD_FAVORITE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="foodId != null">
+				,FOODID_
+			</if>
+			<if test="nodeId != null">
+				,NODEID_
+			</if>
+			<if test="subNodeId != null">
+				,SUBNODEID_
+			</if>
+			<if test="sortNo != null">
+				,SORTNO_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=BIGINT}
+
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="foodId != null">
+				,#{foodId, jdbcType=BIGINT}
+			</if>
+			<if test="nodeId != null">
+				,#{nodeId, jdbcType=BIGINT}
+			</if>
+			<if test="subNodeId != null">
+				,#{subNodeId, jdbcType=BIGINT}
+			</if>
+			<if test="sortNo != null">
+				,#{sortNo, jdbcType=INTEGER}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertFoodFavorite"
+		parameterType="java.util.List">
+		insert into HEALTH_FOOD_FAVORITE (
+		ID_
+		,TENANTID_
+		,FOODID_
+		,NODEID_
+		,SUBNODEID_
+		,SORTNO_
+		) values
+		<foreach collection="list" item="foodFavorite" index="index"
+			separator=",">
+			(
+			#{foodFavorite.id, jdbcType=BIGINT}
+			,#{foodFavorite.tenantId, jdbcType=VARCHAR}
+			,#{foodFavorite.foodId,
+			jdbcType=BIGINT}
+			,#{foodFavorite.nodeId, jdbcType=BIGINT}
+			,#{foodFavorite.subNodeId, jdbcType=BIGINT}
+			,#{foodFavorite.sortNo,
+			jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertFoodFavorite_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="foodFavorite" index="index">
+			insert
+			into HEALTH_FOOD_FAVORITE (
+			ID_
+			,TENANTID_
+			,FOODID_
+			,NODEID_
+			,SUBNODEID_
+			,SORTNO_
+			) values (
+			#{foodFavorite.id, jdbcType=BIGINT}
+			,#{foodFavorite.tenantId, jdbcType=VARCHAR}
+			,#{foodFavorite.foodId,
+			jdbcType=BIGINT}
+			,#{foodFavorite.nodeId, jdbcType=BIGINT}
+			,#{foodFavorite.subNodeId, jdbcType=BIGINT}
+			,#{foodFavorite.sortNo,
+			jdbcType=INTEGER}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateFoodFavorite"
+		parameterType="com.glaf.heathcare.domain.FoodFavorite">
+		update HEALTH_FOOD_FAVORITE
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="tenantId != null">
+				TENANTID_ = #{tenantId, jdbcType=VARCHAR},
+			</if>
+			<if test="foodId != null">
+				FOODID_ = #{foodId, jdbcType=BIGINT},
+			</if>
+			<if test="nodeId != null">
+				NODEID_ = #{nodeId, jdbcType=BIGINT},
+			</if>
+			<if test="subNodeId != null">
+				SUBNODEID_ = #{subNodeId, jdbcType=BIGINT},
+			</if>
+			<if test="sortNo != null">
+				SORTNO_ = #{sortNo, jdbcType=INTEGER},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=BIGINT}
+
+	</update>
+
+
+	<delete id="deleteFoodFavoriteById" parameterType="long">
+		delete from
+		HEALTH_FOOD_FAVORITE
+		where ID_ = #{id}
+	</delete>
+
+
+	<delete id="deleteFoodFavorites"
+		parameterType="com.glaf.heathcare.query.FoodFavoriteQuery">
+		delete from HEALTH_FOOD_FAVORITE
+		where (
+		ID_ IN
+		<foreach item="x_id" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{x_id}
+		</foreach>
+		)
+	</delete>
+
+
+	<select id="getFoodFavoriteById" parameterType="long"
+		resultMap="foodFavoriteResultMap">
+		select * from HEALTH_FOOD_FAVORITE where ID_ = #{id}
+	</select>
+
+
+	<select id="getFoodFavorites"
+		parameterType="com.glaf.heathcare.query.FoodFavoriteQuery"
+		resultMap="foodFavoriteResultMap">
+		select distinct E.*
+		<include refid="selectFoodFavoritesSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.SORTNO_ asc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getFoodFavoriteCount"
+		parameterType="com.glaf.heathcare.query.FoodFavoriteQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectFoodFavoritesSql" />
+	</select>
+
+
+	<sql id="selectFoodFavoritesSql">
+
+		from HEALTH_FOOD_FAVORITE E
+
+		<where>
+			1 = 1
+			and E.TENANTID_ = #{tenantId}
+
+			<if test="nodeId != null">
+				and E.NODEID_ = #{nodeId}
+			</if>
+
+			<if test="nodeIds != null and nodeIds.size() &gt; 0">
+				and E.NODEID_ IN
+				<foreach item="x_nodeId" index="index" collection="nodeIds"
+					open="(" separator="," close=")">
+					#{x_nodeId}
+				</foreach>
+			</if>
+
+		</where>
+	</sql>
+
+</mapper>

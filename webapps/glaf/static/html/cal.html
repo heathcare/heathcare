@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="../css/core.css"/>
+<script type="text/javascript" src="../scripts/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/global.js"></script>
+<title>转换计算</title>
+<script type="text/javascript">
+	function cal(){
+       var total=jQuery("#q").val()*jQuery("#p").val();
+	   total = Math.round(total * 100.0)/100.0;
+       jQuery("#total").val(total);
+	   var qt = jQuery("#q").val()*jQuery("#qx").val()/1000.0;
+       qt = Math.round(qt * 1000.0)/1000.0;
+	   jQuery("#total2").val(qt);
+	   var price = jQuery("#total").val()/jQuery("#total2").val();
+       price = Math.round(price * 100.0)/100.0;
+	   jQuery("#q2").val(price);
+    }
+</script>
+</head>
+<body>
+<table>
+<tr>
+	<td>数量（袋）</td>
+	<td>重量（克）</td>
+	<td>单价（元）</td>
+	<td>总价（元）</td>
+</tr>
+<tr>
+	<td><input type="text" id="q" name="q" onkeyup="check_double();" style="text-align:right;width:120px;" class="x-text"></td>
+	<td><input type="text" id="qx" name="qx" onkeyup="check_double();" style="text-align:right;width:120px;" class="x-text"></td>
+	<td><input type="text" id="p" name="p" onkeyup="check_double();" style="text-align:right;width:120px;" class="x-text"></td>
+	<td><input type="text" id="total" name="total" style="text-align:right;color:#ff0033;width:120px;" class="x-readonly" readonly></td>
+</tr>
+<tr>
+    <td align="right">总重量（千克）</td>
+	<td><input type="text" id="total2" name="total2" style="text-align:right;color:#ff0033;width:120px;" class="x-readonly" readonly></td>
+	<td align="right">每千克单价</td>
+	<td><input type="text" id="q2" name="q2" style="text-align:right;color:#ff0033;width:120px;" class="x-readonly" readonly></td>
+</tr>
+<tr>
+	<td colspan="4"><input type="button" value=" 计算 " onclick="cal();" class="btnGray"></td>
+</tr>
+</table>
+</body>
+</html>

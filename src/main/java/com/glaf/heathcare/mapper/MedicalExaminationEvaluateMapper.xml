@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.glaf.heathcare.mapper.MedicalExaminationEvaluateMapper">
+
+	<resultMap id="medicalExaminationEvaluateResultMap"
+		type="com.glaf.heathcare.domain.MedicalExaminationEvaluate">
+		<id property="id" column="ID_" jdbcType="BIGINT" />
+		<result property="batchId" column="BATCHID_" jdbcType="BIGINT" />
+		<result property="checkId" column="CHECKID_" jdbcType="VARCHAR" />
+		<result property="jobNo" column="JOBNO_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="gradeId" column="GRADEID_" jdbcType="VARCHAR" />
+		<result property="personId" column="PERSONID_"
+			jdbcType="VARCHAR" />
+		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="sex" column="SEX_" jdbcType="VARCHAR" />
+		<result property="height" column="HEIGHT_" jdbcType="DOUBLE" />
+		<result property="heightLevel" column="HEIGHTLEVEL_"
+			jdbcType="INTEGER" />
+		<result property="heightEvaluate" column="HEIGHTEVALUATE_"
+			jdbcType="VARCHAR" />
+		<result property="stdWeight" column="STDWEIGHT_"
+			jdbcType="DOUBLE" />
+		<result property="weightOffsetPercent"
+			column="WEIGHTOFFSETPERCENT_" jdbcType="DOUBLE" />
+		<result property="weight" column="WEIGHT_" jdbcType="DOUBLE" />
+		<result property="weightLevel" column="WEIGHTLEVEL_"
+			jdbcType="INTEGER" />
+		<result property="weightEvaluate" column="WEIGHTEVALUATE_"
+			jdbcType="VARCHAR" />
+		<result property="weightHeightEvaluate"
+			column="WEIGHTHEIGHTEVALUATE_" jdbcType="VARCHAR" />
+		<result property="weightHeightLevel"
+			column="WEIGHTHEIGHTLEVEL_" jdbcType="INTEGER" />
+		<result property="weightHeightPercent"
+			column="WEIGHTHEIGHTPERCENT_" jdbcType="DOUBLE" />
+		<result property="bmi" column="BMI_" jdbcType="DOUBLE" />
+		<result property="bmiIndex" column="BMIINDEX_"
+			jdbcType="DOUBLE" />
+		<result property="bmiEvaluate" column="BMIEVALUATE_"
+			jdbcType="VARCHAR" />
+		<result property="healthEvaluate" column="HEALTHEVALUATE_"
+			jdbcType="VARCHAR" />
+		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR_" jdbcType="INTEGER" />
+		<result property="month" column="MONTH_" jdbcType="INTEGER" />
+		<result property="ageOfTheMoon" column="AGEOFTHEMOON_"
+			jdbcType="INTEGER" />
+		<result property="checkDate" column="CHECKDATE_"
+			jdbcType="TIMESTAMP" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<insert id="insertMedicalExaminationEvaluate"
+		parameterType="com.glaf.heathcare.domain.MedicalExaminationEvaluate">
+		insert into HEALTH_MEDICAL_EXAM_EVAL
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="batchId != null">
+				,BATCHID_
+			</if>
+			<if test="checkId != null">
+				,CHECKID_
+			</if>
+			<if test="jobNo != null">
+				,JOBNO_
+			</if>
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="gradeId != null">
+				,GRADEID_
+			</if>
+			<if test="personId != null">
+				,PERSONID_
+			</if>
+			<if test="name != null">
+				,NAME_
+			</if>
+			<if test="sex != null">
+				,SEX_
+			</if>
+			<if test="height != null">
+				,HEIGHT_
+			</if>
+			<if test="heightLevel != null">
+				,HEIGHTLEVEL_
+			</if>
+			<if test="heightEvaluate != null">
+				,HEIGHTEVALUATE_
+			</if>
+			<if test="stdWeight != null">
+				,STDWEIGHT_
+			</if>
+			<if test="weightOffsetPercent != null">
+				,WEIGHTOFFSETPERCENT_
+			</if>
+			<if test="weight != null">
+				,WEIGHT_
+			</if>
+			<if test="weightLevel != null">
+				,WEIGHTLEVEL_
+			</if>
+			<if test="weightEvaluate != null">
+				,WEIGHTEVALUATE_
+			</if>
+			<if test="weightHeightEvaluate != null">
+				,WEIGHTHEIGHTEVALUATE_
+			</if>
+			<if test="weightHeightLevel != null">
+				,WEIGHTHEIGHTLEVEL_
+			</if>
+			<if test="weightHeightPercent != null">
+				,WEIGHTHEIGHTPERCENT_
+			</if>
+			<if test="bmi != null">
+				,BMI_
+			</if>
+			<if test="bmiIndex != null">
+				,BMIINDEX_
+			</if>
+			<if test="bmiEvaluate != null">
+				,BMIEVALUATE_
+			</if>
+			<if test="healthEvaluate != null">
+				,HEALTHEVALUATE_
+			</if>
+			<if test="type != null">
+				,TYPE_
+			</if>
+			<if test="year != null">
+				,YEAR_
+			</if>
+			<if test="month != null">
+				,MONTH_
+			</if>
+			<if test="ageOfTheMoon != null">
+				,AGEOFTHEMOON_
+			</if>
+			<if test="checkDate != null">
+				,CHECKDATE_
+			</if>
+			<if test="createTime != null">
+				,CREATETIME_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=BIGINT}
+
+			<if test="batchId != null">
+				,#{batchId, jdbcType=BIGINT}
+			</if>
+			<if test="checkId != null">
+				,#{checkId, jdbcType=VARCHAR}
+			</if>
+			<if test="jobNo != null">
+				,#{jobNo, jdbcType=VARCHAR}
+			</if>
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="gradeId != null">
+				,#{gradeId, jdbcType=VARCHAR}
+			</if>
+			<if test="personId != null">
+				,#{personId, jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				,#{name, jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+				,#{sex, jdbcType=VARCHAR}
+			</if>
+			<if test="height != null">
+				,#{height, jdbcType=DOUBLE}
+			</if>
+			<if test="heightLevel != null">
+				,#{heightLevel, jdbcType=INTEGER}
+			</if>
+			<if test="heightEvaluate != null">
+				,#{heightEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="stdWeight != null">
+				,#{stdWeight, jdbcType=DOUBLE}
+			</if>
+			<if test="weightOffsetPercent != null">
+				,#{weightOffsetPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="weight != null">
+				,#{weight, jdbcType=DOUBLE}
+			</if>
+			<if test="weightLevel != null">
+				,#{weightLevel, jdbcType=INTEGER}
+			</if>
+			<if test="weightEvaluate != null">
+				,#{weightEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="weightHeightEvaluate != null">
+				,#{weightHeightEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="weightHeightLevel != null">
+				,#{weightHeightLevel, jdbcType=INTEGER}
+			</if>
+			<if test="weightHeightPercent != null">
+				,#{weightHeightPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="bmi != null">
+				,#{bmi, jdbcType=DOUBLE}
+			</if>
+			<if test="bmiIndex != null">
+				,#{bmiIndex, jdbcType=DOUBLE}
+			</if>
+			<if test="bmiEvaluate != null">
+				,#{bmiEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="healthEvaluate != null">
+				,#{healthEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+				,#{type, jdbcType=VARCHAR}
+			</if>
+			<if test="year != null">
+				,#{year, jdbcType=INTEGER}
+			</if>
+			<if test="month != null">
+				,#{month, jdbcType=INTEGER}
+			</if>
+			<if test="ageOfTheMoon != null">
+				,#{ageOfTheMoon, jdbcType=INTEGER}
+			</if>
+			<if test="checkDate != null">
+				,#{checkDate, jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+				,#{createTime, jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertMedicalExaminationEvaluate"
+		parameterType="java.util.List">
+		insert into HEALTH_MEDICAL_EXAM_EVAL (
+		ID_
+		,BATCHID_
+		,CHECKID_
+		,JOBNO_
+		,TENANTID_
+		,GRADEID_
+		,PERSONID_
+		,NAME_
+		,SEX_
+		,HEIGHT_
+		,HEIGHTLEVEL_
+		,HEIGHTEVALUATE_
+		,STDWEIGHT_
+		,WEIGHTOFFSETPERCENT_
+		,WEIGHT_
+		,WEIGHTLEVEL_
+		,WEIGHTEVALUATE_
+		,WEIGHTHEIGHTEVALUATE_
+		,WEIGHTHEIGHTLEVEL_
+		,WEIGHTHEIGHTPERCENT_
+		,BMI_
+		,BMIINDEX_
+		,BMIEVALUATE_
+		,HEALTHEVALUATE_
+		,TYPE_
+		,YEAR_
+		,MONTH_
+		,AGEOFTHEMOON_
+		,CHECKDATE_
+		,CREATETIME_
+		) values
+		<foreach collection="list" item="medicalExaminationEvaluate"
+			index="index" separator=",">
+			(
+			#{medicalExaminationEvaluate.id,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.batchId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.jobNo,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.checkId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.tenantId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.gradeId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.personId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.name,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.sex, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.height, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.heightLevel, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.heightEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.stdWeight, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.weightOffsetPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.weight, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.weightLevel, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.weightEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.weightHeightEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.weightHeightLevel, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.weightHeightPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.bmi, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.bmiIndex, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.bmiEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.healthEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.type, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.year, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.month, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.ageOfTheMoon, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.checkDate, jdbcType=TIMESTAMP}
+			,#{medicalExaminationEvaluate.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertMedicalExaminationEvaluate_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="medicalExaminationEvaluate"
+			index="index">
+			insert into HEALTH_MEDICAL_EXAM_EVAL (
+			ID_
+			,BATCHID_
+			,CHECKID_
+			,JOBNO_
+			,TENANTID_
+			,GRADEID_
+			,PERSONID_
+			,NAME_
+			,SEX_
+			,HEIGHT_
+			,HEIGHTLEVEL_
+			,HEIGHTEVALUATE_
+			,STDWEIGHT_
+			,WEIGHTOFFSETPERCENT_
+			,WEIGHT_
+			,WEIGHTLEVEL_
+			,WEIGHTEVALUATE_
+			,WEIGHTHEIGHTEVALUATE_
+			,WEIGHTHEIGHTLEVEL_
+			,WEIGHTHEIGHTPERCENT_
+			,BMI_
+			,BMIINDEX_
+			,BMIEVALUATE_
+			,HEALTHEVALUATE_
+			,TYPE_
+			,YEAR_
+			,MONTH_
+			,AGEOFTHEMOON_
+			,CHECKDATE_
+			,CREATETIME_
+			) values (
+			#{medicalExaminationEvaluate.id,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.batchId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.checkId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.jobNo,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.tenantId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.gradeId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.personId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.name,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.sex, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.height, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.heightLevel, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.heightEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.stdWeight, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.weightOffsetPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.weight, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.weightLevel, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.weightEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.weightHeightEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.weightHeightLevel, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.weightHeightPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.bmi, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.bmiIndex, jdbcType=DOUBLE}
+			,#{medicalExaminationEvaluate.bmiEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.healthEvaluate, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.type, jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.year, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.month, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.ageOfTheMoon, jdbcType=INTEGER}
+			,#{medicalExaminationEvaluate.checkDate, jdbcType=TIMESTAMP}
+			,#{medicalExaminationEvaluate.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateMedicalExaminationEvaluate"
+		parameterType="com.glaf.heathcare.domain.MedicalExaminationEvaluate">
+		update HEALTH_MEDICAL_EXAM_EVAL
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="heightLevel != null">
+				HEIGHTLEVEL_ = #{heightLevel, jdbcType=INTEGER},
+			</if>
+			<if test="heightEvaluate != null">
+				HEIGHTEVALUATE_ = #{heightEvaluate, jdbcType=VARCHAR},
+			</if>
+			<if test="stdWeight != null">
+				STDWEIGHT_ = #{stdWeight, jdbcType=DOUBLE},
+			</if>
+			<if test="weightOffsetPercent != null">
+				WEIGHTOFFSETPERCENT_ = #{weightOffsetPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="weightLevel != null">
+				WEIGHTLEVEL_ = #{weightLevel, jdbcType=INTEGER},
+			</if>
+			<if test="weightEvaluate != null">
+				WEIGHTEVALUATE_ = #{weightEvaluate, jdbcType=VARCHAR},
+			</if>
+			<if test="weightHeightEvaluate != null">
+				WEIGHTHEIGHTEVALUATE_ = #{weightHeightEvaluate,
+				jdbcType=VARCHAR},
+			</if>
+			<if test="weightHeightLevel != null">
+				WEIGHTHEIGHTLEVEL_ = #{weightHeightLevel,
+				jdbcType=INTEGER},
+			</if>
+			<if test="weightHeightPercent != null">
+				WEIGHTHEIGHTPERCENT_ = #{weightHeightPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="bmi != null">
+				BMI_ = #{bmi, jdbcType=DOUBLE},
+			</if>
+			<if test="bmiIndex != null">
+				BMIINDEX_ = #{bmiIndex, jdbcType=DOUBLE},
+			</if>
+			<if test="bmiEvaluate != null">
+				BMIEVALUATE_ = #{bmiEvaluate, jdbcType=VARCHAR},
+			</if>
+			<if test="healthEvaluate != null">
+				HEALTHEVALUATE_ = #{healthEvaluate, jdbcType=VARCHAR},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=BIGINT}
+
+	</update>
+
+
+	<delete id="deleteMedicalExaminationEvaluateByTenantId"
+		parameterType="string">
+		delete from HEALTH_MEDICAL_EXAM_EVAL
+		where TENANTID_ =
+		#{tenantId}
+	</delete>
+
+
+	<delete id="deleteMedicalExaminationEvaluates"
+		parameterType="com.glaf.heathcare.query.MedicalExaminationEvaluateQuery">
+
+		delete from HEALTH_MEDICAL_EXAM_EVAL
+		where TENANTID_ =#{tenantId}
+		<if test="year != null">
+			and YEAR_ = #{year}
+		</if>
+		<if test="month != null">
+			and MONTH_ = #{month}
+		</if>
+
+	</delete>
+
+
+	<select id="getMedicalExaminationEvaluateById"
+		parameterType="long" resultMap="medicalExaminationEvaluateResultMap">
+		select * from HEALTH_MEDICAL_EXAM_EVAL
+		where ID_ = #{id}
+	</select>
+
+
+	<select id="getMedicalExaminationEvaluates"
+		parameterType="com.glaf.heathcare.query.MedicalExaminationEvaluateQuery"
+		resultMap="medicalExaminationEvaluateResultMap">
+		select distinct E.*
+		<include refid="selectMedicalExaminationEvaluatesSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.ID_ desc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getMedicalExaminationEvaluateCount"
+		parameterType="com.glaf.heathcare.query.MedicalExaminationEvaluateQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectMedicalExaminationEvaluatesSql" />
+	</select>
+
+
+	<sql id="selectMedicalExaminationEvaluatesSql">
+
+		from HEALTH_MEDICAL_EXAM_EVAL E
+
+		<where>
+			1 = 1
+
+			<if test="batchId != null">
+				and E.BATCHID_ = #{batchId}
+			</if>
+
+			<if test="checkId != null and checkId != '' ">
+				and E.CHECKID_ = #{checkId}
+			</if>
+
+			<if test="jobNo != null and jobNo != '' ">
+				and E.JOBNO_ = #{jobNo}
+			</if>
+
+			<if test="tenantId != null and tenantId != '' ">
+				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="tenantIds != null and tenantIds.size() &gt; 0">
+				and E.TENANTID_ IN
+				<foreach item="x_tenantId" index="index"
+					collection="tenantIds" open="(" separator="," close=")">
+					#{x_tenantId}
+				</foreach>
+			</if>
+
+			<if test="gradeId != null and gradeId != '' ">
+				and E.GRADEID_ = #{gradeId}
+			</if>
+
+			<if test="gradeIds != null and gradeIds.size() &gt; 0">
+				and E.GRADEID_ IN
+				<foreach item="x_gradeId" index="index"
+					collection="gradeIds" open="(" separator="," close=")">
+					#{x_gradeId}
+				</foreach>
+			</if>
+
+			<if test="personId != null and personId != '' ">
+				and E.PERSONID_ = #{personId}
+			</if>
+
+			<if test="personIds != null and personIds.size() &gt; 0">
+				and E.PERSONID_ IN
+				<foreach item="x_personId" index="index"
+					collection="personIds" open="(" separator="," close=")">
+					#{x_personId}
+				</foreach>
+			</if>
+
+			<if test="nameLike != null and nameLike != '' ">
+				and E.NAME_ like #{nameLike}
+			</if>
+
+			<if test="sex != null and sex != '' ">
+				and E.SEX_ = #{sex}
+			</if>
+
+			<if test="heightGreaterThanOrEqual != null">
+				and E.HEIGHT_ &gt;= #{heightGreaterThanOrEqual}
+			</if>
+
+			<if test="heightLessThanOrEqual != null">
+				and E.HEIGHT_ &lt;= #{heightLessThanOrEqual}
+			</if>
+
+			<if test="weightGreaterThanStd != null">
+				and E.WEIGHT_ &gt; E.STDWEIGHT_
+			</if>
+
+			<if test="weightLevelGreaterThanOrEqual != null">
+				and E.WEIGHTLEVEL_ &gt;= #{weightLevelGreaterThanOrEqual}
+			</if>
+
+			<if test="weightGreaterThanOrEqual != null">
+				and E.WEIGHT_ &gt;= #{weightGreaterThanOrEqual}
+			</if>
+
+			<if test="weightLessThanOrEqual != null">
+				and E.WEIGHT_ &lt;= #{weightLessThanOrEqual}
+			</if>
+
+			<if test="weightHeightPercentGreaterThanOrEqual != null">
+				and E.WEIGHTHEIGHTPERCENT_ &gt;=
+				#{weightHeightPercentGreaterThanOrEqual}
+			</if>
+
+			<if test="weightHeightPercentLessThanOrEqual != null">
+				and E.WEIGHTHEIGHTPERCENT_ &lt;=
+				#{weightHeightPercentLessThanOrEqual}
+			</if>
+
+			<if test="weightOffsetPercentGreaterThanOrEqual != null">
+				and E.WEIGHTOFFSETPERCENT_ &gt;=
+				#{weightOffsetPercentGreaterThanOrEqual}
+			</if>
+
+			<if test="bmiGreaterThanOrEqual != null">
+				and E.BMI_ &gt;= #{bmiGreaterThanOrEqual}
+			</if>
+
+			<if test="bmiLessThanOrEqual != null">
+				and E.BMI_ &lt;= #{bmiLessThanOrEqual}
+			</if>
+
+			<if test="type != null and type != '' ">
+				and E.TYPE_ = #{type}
+			</if>
+
+			<if test="year != null">
+				and E.YEAR_ = #{year}
+			</if>
+
+			<if test="yearGreaterThanOrEqual != null">
+				and E.YEAR_ &gt;= #{yearGreaterThanOrEqual}
+			</if>
+
+			<if test="yearLessThanOrEqual != null">
+				and E.YEAR_ &lt;= #{yearLessThanOrEqual}
+			</if>
+
+			<if test="month != null">
+				and E.MONTH_ = #{month}
+			</if>
+
+			<if test="createTimeGreaterThanOrEqual != null">
+				and E.CREATETIME_ &gt;= #{createTimeGreaterThanOrEqual}
+			</if>
+
+			<if test="createTimeLessThanOrEqual != null">
+				and E.CREATETIME_ &lt;= #{createTimeLessThanOrEqual}
+			</if>
+		</where>
+	</sql>
+
+</mapper>

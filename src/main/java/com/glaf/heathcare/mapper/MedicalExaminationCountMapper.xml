@@ -1,0 +1,971 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.glaf.heathcare.mapper.MedicalExaminationCountMapper">
+
+	<resultMap id="medicalExaminationCountResultMap"
+		type="com.glaf.heathcare.domain.MedicalExaminationCount">
+		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="gradeId" column="GRADEID_" jdbcType="VARCHAR" />
+		<result property="gradeName" column="GRADENAME_"
+			jdbcType="VARCHAR" />
+		<result property="checkId" column="CHECKID_" jdbcType="VARCHAR" />
+		<result property="totalPerson" column="TOTALPERSON_"
+			jdbcType="INTEGER" />
+		<result property="totalMale" column="TOTALMALE_"
+			jdbcType="INTEGER" />
+		<result property="totalFemale" column="TOTALFEMALE_"
+			jdbcType="INTEGER" />
+		<result property="checkPerson" column="CHECKPERSON_"
+			jdbcType="INTEGER" />
+		<result property="checkPercent" column="CHECKPCT_"
+			jdbcType="DOUBLE" />
+		<result property="meanWeightNormal" column="MEANWEIGHTNORMAL_"
+			jdbcType="INTEGER" />
+		<result property="meanWeightNormalPercent"
+			column="MEANWEIGHTNORMAL_PCT_" jdbcType="DOUBLE" />
+		<result property="meanHeightNormal" column="MEANHEIGHTNORMAL_"
+			jdbcType="INTEGER" />
+		<result property="meanHeightNormalPercent"
+			column="MEANHEIGHTNORMAL_PCT_" jdbcType="DOUBLE" />
+		<result property="meanWeightLow" column="MEANWEIGHTLOW_"
+			jdbcType="INTEGER" />
+		<result property="meanWeightLowPercent"
+			column="MEANWEIGHTLOWPCT_" jdbcType="DOUBLE" />
+		<result property="meanHeightLow" column="MEANHEIGHTLOW_"
+			jdbcType="INTEGER" />
+		<result property="meanHeightLowPercent"
+			column="MEANHEIGHTLOWPCT_" jdbcType="DOUBLE" />
+		<result property="meanWeightSkinny" column="MEANWEIGHTSKINNY_"
+			jdbcType="INTEGER" />
+		<result property="meanWeightSkinnyPercent"
+			column="MEANWEIGHTSKINNYPCT_" jdbcType="DOUBLE" />
+		<result property="meanOverWeight" column="MEANOVERWEIGHT_"
+			jdbcType="INTEGER" />
+		<result property="meanOverWeightPercent"
+			column="MEANOVERWEIGHTPCT_" jdbcType="DOUBLE" />
+		<result property="meanWeightObesity"
+			column="MEANWEIGHTOBESITY_" jdbcType="INTEGER" />
+		<result property="meanWeightObesityPercent"
+			column="MEANWEIGHTOBESITYPCT_" jdbcType="DOUBLE" />
+		<result property="prctileWeightHeightNormal"
+			column="PRCTILE_WH_NORMAL_" jdbcType="INTEGER" />
+		<result property="prctileWeightHeightNormalPercent"
+			column="PRCTILE_WH_NORMAL_PCT_" jdbcType="DOUBLE" />
+		<result property="prctileWeightAgeNormal"
+			column="PRCTILE_WA_NORMAL_" jdbcType="INTEGER" />
+		<result property="prctileWeightAgeNormalPercent"
+			column="PRCTILE_WA_NORMAL_PCT_" jdbcType="DOUBLE" />
+		<result property="prctileHeightAgeNormal"
+			column="PRCTILE_HA_NORMAL_" jdbcType="INTEGER" />
+		<result property="prctileHeightAgeNormalPercent"
+			column="PRCTILE_HA_NORMAL_PCT_" jdbcType="DOUBLE" />
+		<result property="prctileHeightAgeLow" column="PRCTILE_HA_LOW_"
+			jdbcType="INTEGER" />
+		<result property="prctileHeightAgeLowPercent"
+			column="PRCTILE_HA_LOWPCT_" jdbcType="DOUBLE" />
+		<result property="prctileWeightHeightLow"
+			column="PRCTILE_WH_LOW_" jdbcType="INTEGER" />
+		<result property="prctileWeightHeightLowPercent"
+			column="PRCTILE_WH_LOWPCT_" jdbcType="DOUBLE" />
+		<result property="prctileWeightAgeLow" column="PRCTILE_WA_LOW_"
+			jdbcType="INTEGER" />
+		<result property="prctileWeightAgeLowPercent"
+			column="PRCTILE_WA_LOWPCT_" jdbcType="DOUBLE" />
+		<result property="prctileOverWeight"
+			column="PRCTILEOVERWEIGHT_" jdbcType="INTEGER" />
+		<result property="prctileOverWeightPercent"
+			column="PRCTILEOVERWEIGHTPCT_" jdbcType="DOUBLE" />
+		<result property="prctileWeightObesity"
+			column="PRCTILEWEIGHTOBESITY_" jdbcType="INTEGER" />
+		<result property="prctileWeightObesityPercent"
+			column="PRCTILEWEIGHTOBESITYPCT_" jdbcType="DOUBLE" />
+		<result property="gradeYear" column="GRADEYEAR_"
+			jdbcType="INTEGER" />
+		<result property="targetType" column="TARGETTYPE_"
+			jdbcType="VARCHAR" />
+		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR_" jdbcType="INTEGER" />
+		<result property="month" column="MONTH_" jdbcType="INTEGER" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<insert id="insertMedicalExaminationCount"
+		parameterType="com.glaf.heathcare.domain.MedicalExaminationCount">
+		insert into HEALTH_MEDICAL_EXAM_COUNT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="gradeId != null">
+				,GRADEID_
+			</if>
+			<if test="gradeName != null">
+				,GRADENAME_
+			</if>
+			<if test="checkId != null">
+				,CHECKID_
+			</if>
+			<if test="totalPerson != null">
+				,TOTALPERSON_
+			</if>
+			<if test="totalMale != null">
+				,TOTALMALE_
+			</if>
+			<if test="totalFemale != null">
+				,TOTALFEMALE_
+			</if>
+			<if test="checkPerson != null">
+				,CHECKPERSON_
+			</if>
+			<if test="checkPercent != null">
+				,CHECKPCT_
+			</if>
+			<if test="meanWeightNormal != null">
+				,MEANWEIGHTNORMAL_
+			</if>
+			<if test="meanWeightNormalPercent != null">
+				,MEANWEIGHTNORMAL_PCT_
+			</if>
+			<if test="meanHeightNormal != null">
+				,MEANHEIGHTNORMAL_
+			</if>
+			<if test="meanHeightNormalPercent != null">
+				,MEANHEIGHTNORMAL_PCT_
+			</if>
+			<if test="meanWeightLow != null">
+				,MEANWEIGHTLOW_
+			</if>
+			<if test="meanWeightLowPercent != null">
+				,MEANWEIGHTLOWPCT_
+			</if>
+			<if test="meanHeightLow != null">
+				,MEANHEIGHTLOW_
+			</if>
+			<if test="meanHeightLowPercent != null">
+				,MEANHEIGHTLOWPCT_
+			</if>
+			<if test="meanWeightSkinny != null">
+				,MEANWEIGHTSKINNY_
+			</if>
+			<if test="meanWeightSkinnyPercent != null">
+				,MEANWEIGHTSKINNYPCT_
+			</if>
+			<if test="meanOverWeight != null">
+				,MEANOVERWEIGHT_
+			</if>
+			<if test="meanOverWeightPercent != null">
+				,MEANOVERWEIGHTPCT_
+			</if>
+			<if test="meanWeightObesity != null">
+				,MEANWEIGHTOBESITY_
+			</if>
+			<if test="meanWeightObesityPercent != null">
+				,MEANWEIGHTOBESITYPCT_
+			</if>
+			<if test="prctileWeightHeightNormal != null">
+				,PRCTILE_WH_NORMAL_
+			</if>
+			<if test="prctileWeightHeightNormalPercent != null">
+				,PRCTILE_WH_NORMAL_PCT_
+			</if>
+			<if test="prctileWeightAgeNormal != null">
+				,PRCTILE_WA_NORMAL_
+			</if>
+			<if test="prctileWeightAgeNormalPercent != null">
+				,PRCTILE_WA_NORMAL_PCT_
+			</if>
+			<if test="prctileHeightAgeNormal != null">
+				,PRCTILE_HA_NORMAL_
+			</if>
+			<if test="prctileHeightAgeNormalPercent != null">
+				,PRCTILE_HA_NORMAL_PCT_
+			</if>
+			<if test="prctileHeightAgeLow != null">
+				,PRCTILE_HA_LOW_
+			</if>
+			<if test="prctileHeightAgeLowPercent != null">
+				,PRCTILE_HA_LOWPCT_
+			</if>
+			<if test="prctileWeightHeightLow != null">
+				,PRCTILE_WH_LOW_
+			</if>
+			<if test="prctileWeightHeightLowPercent != null">
+				,PRCTILE_WH_LOWPCT_
+			</if>
+			<if test="prctileWeightAgeLow != null">
+				,PRCTILE_WA_LOW_
+			</if>
+			<if test="prctileWeightAgeLowPercent != null">
+				,PRCTILE_WA_LOWPCT_
+			</if>
+			<if test="prctileOverWeight != null">
+				,PRCTILEOVERWEIGHT_
+			</if>
+			<if test="prctileOverWeightPercent != null">
+				,PRCTILEOVERWEIGHTPCT_
+			</if>
+			<if test="prctileWeightObesity != null">
+				,PRCTILEWEIGHTOBESITY_
+			</if>
+			<if test="prctileWeightObesityPercent != null">
+				,PRCTILEWEIGHTOBESITYPCT_
+			</if>
+			<if test="gradeYear != null">
+				,GRADEYEAR_
+			</if>
+			<if test="targetType != null">
+				,TARGETTYPE_
+			</if>
+			<if test="type != null">
+				,TYPE_
+			</if>
+			<if test="year != null">
+				,YEAR_
+			</if>
+			<if test="month != null">
+				,MONTH_
+			</if>
+			<if test="createTime != null">
+				,CREATETIME_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}
+
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="gradeId != null">
+				,#{gradeId, jdbcType=VARCHAR}
+			</if>
+			<if test="gradeName != null">
+				,#{gradeName, jdbcType=VARCHAR}
+			</if>
+			<if test="checkId != null">
+				,#{checkId, jdbcType=VARCHAR}
+			</if>
+			<if test="totalPerson != null">
+				,#{totalPerson, jdbcType=INTEGER}
+			</if>
+			<if test="totalMale != null">
+				,#{totalMale, jdbcType=INTEGER}
+			</if>
+			<if test="totalFemale != null">
+				,#{totalFemale, jdbcType=INTEGER}
+			</if>
+			<if test="checkPerson != null">
+				,#{checkPerson, jdbcType=INTEGER}
+			</if>
+			<if test="checkPercent != null">
+				,#{checkPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="meanWeightNormal != null">
+				,#{meanWeightNormal, jdbcType=INTEGER}
+			</if>
+			<if test="meanWeightNormalPercent != null">
+				,#{meanWeightNormalPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="meanHeightNormal != null">
+				,#{meanHeightNormal, jdbcType=INTEGER}
+			</if>
+			<if test="meanHeightNormalPercent != null">
+				,#{meanHeightNormalPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="meanWeightLow != null">
+				,#{meanWeightLow, jdbcType=INTEGER}
+			</if>
+			<if test="meanWeightLowPercent != null">
+				,#{meanWeightLowPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="meanHeightLow != null">
+				,#{meanHeightLow, jdbcType=INTEGER}
+			</if>
+			<if test="meanHeightLowPercent != null">
+				,#{meanHeightLowPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="meanWeightSkinny != null">
+				,#{meanWeightSkinny, jdbcType=INTEGER}
+			</if>
+			<if test="meanWeightSkinnyPercent != null">
+				,#{meanWeightSkinnyPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="meanOverWeight != null">
+				,#{meanOverWeight, jdbcType=INTEGER}
+			</if>
+			<if test="meanOverWeightPercent != null">
+				,#{meanOverWeightPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="meanWeightObesity != null">
+				,#{meanWeightObesity, jdbcType=INTEGER}
+			</if>
+			<if test="meanWeightObesityPercent != null">
+				,#{meanWeightObesityPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileWeightHeightNormal != null">
+				,#{prctileWeightHeightNormal, jdbcType=INTEGER}
+			</if>
+			<if test="prctileWeightHeightNormalPercent != null">
+				,#{prctileWeightHeightNormalPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileWeightAgeNormal != null">
+				,#{prctileWeightAgeNormal, jdbcType=INTEGER}
+			</if>
+			<if test="prctileWeightAgeNormalPercent != null">
+				,#{prctileWeightAgeNormalPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileHeightAgeNormal != null">
+				,#{prctileHeightAgeNormal, jdbcType=INTEGER}
+			</if>
+			<if test="prctileHeightAgeNormalPercent != null">
+				,#{prctileHeightAgeNormalPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileHeightAgeLow != null">
+				,#{prctileHeightAgeLow, jdbcType=INTEGER}
+			</if>
+			<if test="prctileHeightAgeLowPercent != null">
+				,#{prctileHeightAgeLowPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileWeightHeightLow != null">
+				,#{prctileWeightHeightLow, jdbcType=INTEGER}
+			</if>
+			<if test="prctileWeightHeightLowPercent != null">
+				,#{prctileWeightHeightLowPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileWeightAgeLow != null">
+				,#{prctileWeightAgeLow, jdbcType=INTEGER}
+			</if>
+			<if test="prctileWeightAgeLowPercent != null">
+				,#{prctileWeightAgeLowPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileOverWeight != null">
+				,#{prctileOverWeight, jdbcType=INTEGER}
+			</if>
+			<if test="prctileOverWeightPercent != null">
+				,#{prctileOverWeightPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="prctileWeightObesity != null">
+				,#{prctileWeightObesity, jdbcType=INTEGER}
+			</if>
+			<if test="prctileWeightObesityPercent != null">
+				,#{prctileWeightObesityPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="gradeYear != null">
+				,#{gradeYear, jdbcType=INTEGER}
+			</if>
+			<if test="targetType != null">
+				,#{targetType, jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+				,#{type, jdbcType=VARCHAR}
+			</if>
+			<if test="year != null">
+				,#{year, jdbcType=INTEGER}
+			</if>
+			<if test="month != null">
+				,#{month, jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+				,#{createTime, jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertMedicalExaminationCount"
+		parameterType="java.util.List">
+		insert into HEALTH_MEDICAL_EXAM_COUNT (
+		ID_
+		,TENANTID_
+		,GRADEID_
+		,GRADENAME_
+		,CHECKID_
+		,TOTALPERSON_
+		,TOTALMALE_
+		,TOTALFEMALE_
+		,CHECKPERSON_
+		,CHECKPCT_
+		,MEANWEIGHTNORMAL_
+		,MEANWEIGHTNORMAL_PCT_
+		,MEANHEIGHTNORMAL_
+		,MEANHEIGHTNORMAL_PCT_
+		,MEANWEIGHTLOW_
+		,MEANWEIGHTLOWPCT_
+		,MEANHEIGHTLOW_
+		,MEANHEIGHTLOWPCT_
+		,MEANWEIGHTSKINNY_
+		,MEANWEIGHTSKINNYPCT_
+		,MEANOVERWEIGHT_
+		,MEANOVERWEIGHTPCT_
+		,MEANWEIGHTOBESITY_
+		,MEANWEIGHTOBESITYPCT_
+		,PRCTILE_WH_NORMAL_
+		,PRCTILE_WH_NORMAL_PCT_
+		,PRCTILE_WA_NORMAL_
+		,PRCTILE_WA_NORMAL_PCT_
+		,PRCTILE_HA_NORMAL_
+		,PRCTILE_HA_NORMAL_PCT_
+		,PRCTILE_HA_LOW_
+		,PRCTILE_HA_LOWPCT_
+		,PRCTILE_WH_LOW_
+		,PRCTILE_WH_LOWPCT_
+		,PRCTILE_WA_LOW_
+		,PRCTILE_WA_LOWPCT_
+		,PRCTILEOVERWEIGHT_
+		,PRCTILEOVERWEIGHTPCT_
+		,PRCTILEWEIGHTOBESITY_
+		,PRCTILEWEIGHTOBESITYPCT_
+		,GRADEYEAR_
+		,TARGETTYPE_
+		,TYPE_
+		,YEAR_
+		,MONTH_
+		,CREATETIME_
+		) values
+		<foreach collection="list" item="medicalExaminationCount"
+			index="index" separator=",">
+			(
+			#{medicalExaminationCount.id,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.tenantId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.gradeId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.gradeName,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.checkId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.totalPerson,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.totalMale,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.totalFemale,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.checkPerson,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.checkPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanHeightNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanHeightNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanHeightLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanHeightLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightSkinny,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightSkinnyPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanOverWeight,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanOverWeightPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightObesity,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightObesityPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightHeightNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightHeightNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightAgeNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightAgeNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileHeightAgeNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileHeightAgeNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileHeightAgeLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileHeightAgeLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightHeightLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightHeightLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightAgeLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightAgeLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileOverWeight,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileOverWeightPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightObesity, jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightObesityPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.gradeYear,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.targetType,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.type, jdbcType=VARCHAR}
+			,#{medicalExaminationCount.year, jdbcType=INTEGER}
+			,#{medicalExaminationCount.month, jdbcType=INTEGER}
+			,#{medicalExaminationCount.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertMedicalExaminationCount_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="medicalExaminationCount"
+			index="index">
+			insert into HEALTH_MEDICAL_EXAM_COUNT (
+			ID_
+			,TENANTID_
+			,GRADEID_
+			,GRADENAME_
+			,CHECKID_
+			,TOTALPERSON_
+			,TOTALMALE_
+			,TOTALFEMALE_
+			,CHECKPERSON_
+			,CHECKPCT_
+			,MEANWEIGHTNORMAL_
+			,MEANWEIGHTNORMAL_PCT_
+			,MEANHEIGHTNORMAL_
+			,MEANHEIGHTNORMAL_PCT_
+			,MEANWEIGHTLOW_
+			,MEANWEIGHTLOWPCT_
+			,MEANHEIGHTLOW_
+			,MEANHEIGHTLOWPCT_
+			,MEANWEIGHTSKINNY_
+			,MEANWEIGHTSKINNYPCT_
+			,MEANOVERWEIGHT_
+			,MEANOVERWEIGHTPCT_
+			,MEANWEIGHTOBESITY_
+			,MEANWEIGHTOBESITYPCT_
+			,PRCTILE_WH_NORMAL_
+			,PRCTILE_WH_NORMAL_PCT_
+			,PRCTILE_WA_NORMAL_
+			,PRCTILE_WA_NORMAL_PCT_
+			,PRCTILE_HA_NORMAL_
+			,PRCTILE_HA_NORMAL_PCT_
+			,PRCTILE_HA_LOW_
+			,PRCTILE_HA_LOWPCT_
+			,PRCTILE_WH_LOW_
+			,PRCTILE_WH_LOWPCT_
+			,PRCTILE_WA_LOW_
+			,PRCTILE_WA_LOWPCT_
+			,PRCTILEOVERWEIGHT_
+			,PRCTILEOVERWEIGHTPCT_
+			,PRCTILEWEIGHTOBESITY_
+			,PRCTILEWEIGHTOBESITYPCT_
+			,GRADEYEAR_
+			,TARGETTYPE_
+			,TYPE_
+			,YEAR_
+			,MONTH_
+			,CREATETIME_
+			) values (
+			#{medicalExaminationCount.id,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.tenantId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.gradeId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.gradeName,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.checkId,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.totalPerson,
+			,#{medicalExaminationCount.totalMale, jdbcType=INTEGER}
+			,#{medicalExaminationCount.totalFemale, jdbcType=INTEGER}
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.checkPerson,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.checkPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanHeightNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanHeightNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanHeightLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanHeightLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightSkinny,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightSkinnyPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanOverWeight,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanOverWeightPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.meanWeightObesity,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.meanWeightObesityPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightHeightNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightHeightNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightAgeNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightAgeNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileHeightAgeNormal,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileHeightAgeNormalPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileHeightAgeLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileHeightAgeLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightHeightLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightHeightLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightAgeLow,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightAgeLowPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileOverWeight,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileOverWeightPercent, jdbcType=DOUBLE}
+			,#{medicalExaminationCount.prctileWeightObesity, jdbcType=INTEGER}
+			,#{medicalExaminationCount.prctileWeightObesityPercent,
+			jdbcType=DOUBLE}
+			,#{medicalExaminationCount.gradeYear,
+			jdbcType=INTEGER}
+			,#{medicalExaminationCount.targetType,
+			jdbcType=VARCHAR}
+			,#{medicalExaminationCount.type, jdbcType=VARCHAR}
+			,#{medicalExaminationCount.year, jdbcType=INTEGER}
+			,#{medicalExaminationCount.month, jdbcType=INTEGER}
+			,#{medicalExaminationCount.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateMedicalExaminationCount"
+		parameterType="com.glaf.heathcare.domain.MedicalExaminationCount">
+		update HEALTH_MEDICAL_EXAM_COUNT
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+
+			<if test="meanWeightNormal != null">
+				MEANWEIGHTNORMAL_ = #{meanWeightNormal,
+				jdbcType=INTEGER},
+			</if>
+			<if test="meanWeightNormalPercent != null">
+				MEANWEIGHTNORMAL_PCT_ = #{meanWeightNormalPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="meanHeightNormal != null">
+				MEANHEIGHTNORMAL_ = #{meanHeightNormal,
+				jdbcType=INTEGER},
+			</if>
+			<if test="meanHeightNormalPercent != null">
+				MEANHEIGHTNORMAL_PCT_ = #{meanHeightNormalPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="meanWeightLow != null">
+				MEANWEIGHTLOW_ = #{meanWeightLow, jdbcType=INTEGER},
+			</if>
+			<if test="meanWeightLowPercent != null">
+				MEANWEIGHTLOWPCT_ = #{meanWeightLowPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="meanHeightLow != null">
+				MEANHEIGHTLOW_ = #{meanHeightLow, jdbcType=INTEGER},
+			</if>
+			<if test="meanHeightLowPercent != null">
+				MEANHEIGHTLOWPCT_ = #{meanHeightLowPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="meanWeightSkinny != null">
+				MEANWEIGHTSKINNY_ = #{meanWeightSkinny,
+				jdbcType=INTEGER},
+			</if>
+			<if test="meanWeightSkinnyPercent != null">
+				MEANWEIGHTSKINNYPCT_ = #{meanWeightSkinnyPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="meanOverWeight != null">
+				MEANOVERWEIGHT_ = #{meanOverWeight, jdbcType=INTEGER},
+			</if>
+			<if test="meanOverWeightPercent != null">
+				MEANOVERWEIGHTPCT_ = #{meanOverWeightPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="meanWeightObesity != null">
+				MEANWEIGHTOBESITY_ = #{meanWeightObesity,
+				jdbcType=INTEGER},
+			</if>
+			<if test="meanWeightObesityPercent != null">
+				MEANWEIGHTOBESITYPCT_ = #{meanWeightObesityPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="prctileWeightHeightNormal != null">
+				PRCTILE_WH_NORMAL_ = #{prctileWeightHeightNormal,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileWeightHeightNormalPercent != null">
+				PRCTILE_WH_NORMAL_PCT_ =
+				#{prctileWeightHeightNormalPercent, jdbcType=DOUBLE},
+			</if>
+			<if test="prctileWeightAgeNormal != null">
+				PRCTILE_WA_NORMAL_ = #{prctileWeightAgeNormal,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileWeightAgeNormalPercent != null">
+				PRCTILE_WA_NORMAL_PCT_ = #{prctileWeightAgeNormalPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="prctileHeightAgeNormal != null">
+				PRCTILE_HA_NORMAL_ = #{prctileHeightAgeNormal,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileHeightAgeNormalPercent != null">
+				PRCTILE_HA_NORMAL_PCT_ = #{prctileHeightAgeNormalPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="prctileHeightAgeLow != null">
+				PRCTILE_HA_LOW_ = #{prctileHeightAgeLow,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileHeightAgeLowPercent != null">
+				PRCTILE_HA_LOWPCT_ = #{prctileHeightAgeLowPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="prctileWeightHeightLow != null">
+				PRCTILE_WH_LOW_ = #{prctileWeightHeightLow,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileWeightHeightLowPercent != null">
+				PRCTILE_WH_LOWPCT_ = #{prctileWeightHeightLowPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="prctileWeightAgeLow != null">
+				PRCTILE_WA_LOW_ = #{prctileWeightAgeLow,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileWeightAgeLowPercent != null">
+				PRCTILE_WA_LOWPCT_ = #{prctileWeightAgeLowPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="prctileOverWeight != null">
+				PRCTILEOVERWEIGHT_ = #{prctileOverWeight,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileOverWeightPercent != null">
+				PRCTILEOVERWEIGHTPCT_ = #{prctileOverWeightPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="prctileWeightObesity != null">
+				PRCTILEWEIGHTOBESITY_ = #{prctileWeightObesity,
+				jdbcType=INTEGER},
+			</if>
+			<if test="prctileWeightObesityPercent != null">
+				PRCTILEWEIGHTOBESITYPCT_ = #{prctileWeightObesityPercent,
+				jdbcType=DOUBLE},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=VARCHAR}
+
+	</update>
+
+
+	<delete id="deleteMedicalExaminationCountById"
+		parameterType="string">
+		delete from HEALTH_MEDICAL_EXAM_COUNT
+		where ID_ = #{id}
+	</delete>
+
+
+	<delete id="deleteMedicalExaminationCounts"
+		parameterType="com.glaf.heathcare.query.MedicalExaminationCountQuery">
+
+		delete from HEALTH_MEDICAL_EXAM_COUNT
+		where TENANTID_ = #{tenantId}
+		and
+		TARGETTYPE_ = #{targetType}
+
+		<if test="year != null">
+			and YEAR_ = #{year}
+		</if>
+
+		<if test="yearGreaterThanOrEqual != null">
+			and YEAR_ &gt;= #{yearGreaterThanOrEqual}
+		</if>
+
+		<if test="yearLessThanOrEqual != null">
+			and YEAR_ &lt;= #{yearLessThanOrEqual}
+		</if>
+
+		<if test="gradeYear != null">
+			and GRADEYEAR_ = #{gradeYear}
+		</if>
+
+	</delete>
+
+
+	<select id="getMedicalExaminationCountById"
+		parameterType="string" resultMap="medicalExaminationCountResultMap">
+		select * from
+		HEALTH_MEDICAL_EXAM_COUNT
+		where ID_ = #{id}
+	</select>
+
+
+	<select id="getMedicalExaminationCounts"
+		parameterType="com.glaf.heathcare.query.MedicalExaminationCountQuery"
+		resultMap="medicalExaminationCountResultMap">
+		select distinct E.*
+		<include refid="selectMedicalExaminationCountsSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.CREATETIME_ desc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getMedicalExaminationCountCount"
+		parameterType="com.glaf.heathcare.query.MedicalExaminationCountQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectMedicalExaminationCountsSql" />
+	</select>
+
+
+	<sql id="selectMedicalExaminationCountsSql">
+
+		from HEALTH_MEDICAL_EXAM_COUNT E
+
+		<where>
+			1 = 1
+
+			<if test="tenantId != null and tenantId != '' ">
+				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="tenantIds != null and tenantIds.size() &gt; 0">
+				and E.TENANTID_ IN
+				<foreach item="x_tenantId" index="index"
+					collection="tenantIds" open="(" separator="," close=")">
+					#{x_tenantId}
+				</foreach>
+			</if>
+
+			<if test="gradeId != null and gradeId != '' ">
+				and E.GRADEID_ = #{gradeId}
+			</if>
+
+			<if test="gradeIds != null and gradeIds.size() &gt; 0">
+				and E.GRADEID_ IN
+				<foreach item="x_gradeId" index="index"
+					collection="gradeIds" open="(" separator="," close=")">
+					#{x_gradeId}
+				</foreach>
+			</if>
+
+			<if test="gradeNotNull != null and gradeNotNull != '' ">
+				and E.GRADEID_ is not null
+			</if>
+
+			<if test="checkId != null and checkId != '' ">
+				and E.CHECKID_ = #{checkId}
+			</if>
+
+			<if test="checkIds != null and checkIds.size() &gt; 0">
+				and E.CHECKID_ IN
+				<foreach item="x_checkId" index="index"
+					collection="checkIds" open="(" separator="," close=")">
+					#{x_checkId}
+				</foreach>
+			</if>
+
+			<if test="type != null and type != '' ">
+				and E.TYPE_ = #{type}
+			</if>
+
+			<if test="year != null">
+				and E.YEAR_ = #{year}
+			</if>
+
+			<if test="yearGreaterThanOrEqual != null">
+				and E.YEAR_ &gt;= #{yearGreaterThanOrEqual}
+			</if>
+
+			<if test="yearLessThanOrEqual != null">
+				and E.YEAR_ &lt;= #{yearLessThanOrEqual}
+			</if>
+
+			<if test="years != null and years.size() &gt; 0">
+				and E.YEAR_ IN
+				<foreach item="x_year" index="index" collection="years"
+					open="(" separator="," close=")">
+					#{x_year}
+				</foreach>
+			</if>
+
+			<if test="month != null">
+				and E.MONTH_ = #{month}
+			</if>
+
+			<if test="monthGreaterThanOrEqual != null">
+				and E.MONTH_ &gt;= #{monthGreaterThanOrEqual}
+			</if>
+
+			<if test="monthLessThanOrEqual != null">
+				and E.MONTH_ &lt;= #{monthLessThanOrEqual}
+			</if>
+
+			<if test="months != null and months.size() &gt; 0">
+				and E.MONTH_ IN
+				<foreach item="x_month" index="index" collection="months"
+					open="(" separator="," close=")">
+					#{x_month}
+				</foreach>
+			</if>
+
+			<if test="checkPersonGreaterThanOrEqual != null">
+				and E.CHECKPERSON_ &gt;= #{checkPersonGreaterThanOrEqual}
+				and E.CHECKPERSON_ &lt;= E.TOTALPERSON_
+			</if>
+
+			<if test="gradeYear != null">
+				and E.GRADEYEAR_ = #{gradeYear}
+			</if>
+
+			<if test="targetType != null and targetType != '' ">
+				and E.TARGETTYPE_ = #{targetType}
+			</if>
+
+		</where>
+	</sql>
+
+</mapper>
