@@ -19,11 +19,14 @@
 package com.glaf.heathcare.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -38,6 +41,10 @@ import com.glaf.heathcare.util.MedicalExaminationGradeCountJsonFactory;
 public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	private static final long serialVersionUID = 1L;
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	@Id
 	@Column(name = "ID_", nullable = false)
@@ -230,6 +237,103 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 	protected int bloodLead;
 
 	/**
+	 * 内科疾病人数
+	 */
+	@Column(name = "INTERNALDISEASE_")
+	protected int internalDisease;
+
+	@javax.persistence.Transient
+	protected double internalDiseasePercent;
+
+	/**
+	 * 外科疾病人数
+	 */
+	@Column(name = "SURGICALDISEASE_")
+	protected int surgicalDisease;
+
+	@javax.persistence.Transient
+	protected double surgicalDiseasePercent;
+
+	/**
+	 * 龋齿
+	 */
+	@Column(name = "SAPRODONTIA_")
+	protected int saprodontia;
+
+	@javax.persistence.Transient
+	protected double saprodontiaPercent;
+
+	/**
+	 * 沙眼
+	 */
+	@Column(name = "TRACHOMA_")
+	protected int trachoma;
+
+	@javax.persistence.Transient
+	protected double trachomaPercent;
+
+	/**
+	 * 弱视
+	 */
+	@Column(name = "AMBLYOPIA_")
+	protected int amblyopia;
+
+	@javax.persistence.Transient
+	protected double amblyopiaPercent;
+
+	/**
+	 * Hb≤110克人数
+	 */
+	@Column(name = "HEMOGLOBIN110_")
+	protected int hemoglobin110;
+
+	@javax.persistence.Transient
+	protected double hemoglobin110Percent;
+
+	/**
+	 * Hb≤90克人数
+	 */
+	@Column(name = "HEMOGLOBIN90_")
+	protected int hemoglobin90;
+
+	@javax.persistence.Transient
+	protected double hemoglobin90Percent;
+
+	/**
+	 * 乙肝表面抗体阳性人数
+	 */
+	@Column(name = "HBSAB_")
+	protected int hbsab;
+
+	@javax.persistence.Transient
+	protected double hbsabPercent;
+
+	/**
+	 * 肝功超标人数
+	 */
+	@Column(name = "SGPT_")
+	protected int sgpt;
+
+	@javax.persistence.Transient
+	protected double sgptPercent;
+
+	/**
+	 * HVAIgM阳性人数
+	 */
+	@Column(name = "HVAIGM_")
+	protected int hvaigm;
+
+	@javax.persistence.Transient
+	protected double hvaigmPercent;
+
+	/**
+	 * 体检时间
+	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CHECKDATE_")
+	protected Date checkDate;
+
+	/**
 	 * 年
 	 */
 	@Column(name = "YEAR_")
@@ -252,6 +356,17 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public MedicalExaminationGradeCount() {
 
+	}
+
+	public int getAmblyopia() {
+		return amblyopia;
+	}
+
+	public double getAmblyopiaPercent() {
+		if (checkPerson > 0) {
+			amblyopiaPercent = Math.round(amblyopia * 100.D / checkPerson);
+		}
+		return amblyopiaPercent;
 	}
 
 	public int getAnemiaCheck() {
@@ -287,6 +402,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public GrowthRateCount getBothRate() {
 		return bothRate;
+	}
+
+	public Date getCheckDate() {
+		return checkDate;
 	}
 
 	public String getCheckId() {
@@ -334,12 +453,67 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		return haCount;
 	}
 
+	public int getHbsab() {
+		return hbsab;
+	}
+
+	public double getHbsabPercent() {
+		if (checkPerson > 0) {
+			hbsabPercent = Math.round(hbsab * 100.D / checkPerson);
+		}
+		return hbsabPercent;
+	}
+
 	public GrowthRateCount getHeightRate() {
 		return heightRate;
 	}
 
+	public int getHemoglobin110() {
+		return hemoglobin110;
+	}
+
+	public double getHemoglobin110Percent() {
+		if (checkPerson > 0) {
+			hemoglobin110Percent = Math.round(hemoglobin110 * 100.D / checkPerson);
+		}
+		return hemoglobin110Percent;
+	}
+
+	public int getHemoglobin90() {
+		return hemoglobin90;
+	}
+
+	public double getHemoglobin90Percent() {
+		if (checkPerson > 0) {
+			hemoglobin90Percent = Math.round(hemoglobin90 * 100.D / checkPerson);
+		}
+		return hemoglobin90Percent;
+	}
+
+	public int getHvaigm() {
+		return hvaigm;
+	}
+
+	public double getHvaigmPercent() {
+		if (checkPerson > 0) {
+			hvaigmPercent = Math.round(hvaigm * 100.D / checkPerson);
+		}
+		return hvaigmPercent;
+	}
+
 	public long getId() {
 		return id;
+	}
+
+	public int getInternalDisease() {
+		return internalDisease;
+	}
+
+	public double getInternalDiseasePercent() {
+		if (checkPerson > 0) {
+			internalDiseasePercent = Math.round(internalDisease * 100.D / checkPerson);
+		}
+		return internalDiseasePercent;
 	}
 
 	public int getMale() {
@@ -358,12 +532,56 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		return personCount;
 	}
 
+	public int getSaprodontia() {
+		return saprodontia;
+	}
+
+	public double getSaprodontiaPercent() {
+		if (checkPerson > 0) {
+			saprodontiaPercent = Math.round(saprodontia * 100.D / checkPerson);
+		}
+		return saprodontiaPercent;
+	}
+
+	public int getSgpt() {
+		return sgpt;
+	}
+
+	public double getSgptPercent() {
+		if (checkPerson > 0) {
+			sgptPercent = Math.round(sgpt * 100.D / checkPerson);
+		}
+		return sgptPercent;
+	}
+
 	public int getSortNo() {
 		return sortNo;
 	}
 
+	public int getSurgicalDisease() {
+		return surgicalDisease;
+	}
+
+	public double getSurgicalDiseasePercent() {
+		if (checkPerson > 0) {
+			surgicalDiseasePercent = Math.round(surgicalDisease * 100.D / checkPerson);
+		}
+		return surgicalDiseasePercent;
+	}
+
 	public String getTenantId() {
 		return tenantId;
+	}
+
+	public int getTrachoma() {
+		return trachoma;
+	}
+
+	public double getTrachomaPercent() {
+		if (checkPerson > 0) {
+			trachomaPercent = Math.round(trachoma * 100.D / checkPerson);
+		}
+		return trachomaPercent;
 	}
 
 	public String getType() {
@@ -418,6 +636,14 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		return MedicalExaminationGradeCountJsonFactory.jsonToObject(jsonObject);
 	}
 
+	public void setAmblyopia(int amblyopia) {
+		this.amblyopia = amblyopia;
+	}
+
+	public void setAmblyopiaPercent(double amblyopiaPercent) {
+		this.amblyopiaPercent = amblyopiaPercent;
+	}
+
 	public void setAnemiaCheck(int anemiaCheck) {
 		this.anemiaCheck = anemiaCheck;
 	}
@@ -448,6 +674,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public void setBothRate(GrowthRateCount bothRate) {
 		this.bothRate = bothRate;
+	}
+
+	public void setCheckDate(Date checkDate) {
+		this.checkDate = checkDate;
 	}
 
 	public void setCheckId(String checkId) {
@@ -486,12 +716,52 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		this.haCount = haCount;
 	}
 
+	public void setHbsab(int hbsab) {
+		this.hbsab = hbsab;
+	}
+
+	public void setHbsabPercent(double hbsabPercent) {
+		this.hbsabPercent = hbsabPercent;
+	}
+
 	public void setHeightRate(GrowthRateCount heightRate) {
 		this.heightRate = heightRate;
 	}
 
+	public void setHemoglobin110(int hemoglobin110) {
+		this.hemoglobin110 = hemoglobin110;
+	}
+
+	public void setHemoglobin110Percent(double hemoglobin110Percent) {
+		this.hemoglobin110Percent = hemoglobin110Percent;
+	}
+
+	public void setHemoglobin90(int hemoglobin90) {
+		this.hemoglobin90 = hemoglobin90;
+	}
+
+	public void setHemoglobin90Percent(double hemoglobin90Percent) {
+		this.hemoglobin90Percent = hemoglobin90Percent;
+	}
+
+	public void setHvaigm(int hvaigm) {
+		this.hvaigm = hvaigm;
+	}
+
+	public void setHvaigmPercent(double hvaigmPercent) {
+		this.hvaigmPercent = hvaigmPercent;
+	}
+
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public void setInternalDisease(int internalDisease) {
+		this.internalDisease = internalDisease;
+	}
+
+	public void setInternalDiseasePercent(double internalDiseasePercent) {
+		this.internalDiseasePercent = internalDiseasePercent;
 	}
 
 	public void setMale(int male) {
@@ -510,12 +780,44 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		this.personCount = personCount;
 	}
 
+	public void setSaprodontia(int saprodontia) {
+		this.saprodontia = saprodontia;
+	}
+
+	public void setSaprodontiaPercent(double saprodontiaPercent) {
+		this.saprodontiaPercent = saprodontiaPercent;
+	}
+
+	public void setSgpt(int sgpt) {
+		this.sgpt = sgpt;
+	}
+
+	public void setSgptPercent(double sgptPercent) {
+		this.sgptPercent = sgptPercent;
+	}
+
 	public void setSortNo(int sortNo) {
 		this.sortNo = sortNo;
 	}
 
+	public void setSurgicalDisease(int surgicalDisease) {
+		this.surgicalDisease = surgicalDisease;
+	}
+
+	public void setSurgicalDiseasePercent(double surgicalDiseasePercent) {
+		this.surgicalDiseasePercent = surgicalDiseasePercent;
+	}
+
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public void setTrachoma(int trachoma) {
+		this.trachoma = trachoma;
+	}
+
+	public void setTrachomaPercent(double trachomaPercent) {
+		this.trachomaPercent = trachomaPercent;
 	}
 
 	public void setType(String type) {

@@ -229,6 +229,40 @@ public class MedicalExaminationGradeCountBean {
 									break;
 								}
 
+								if (exam.getSaprodontia() > 0) {// 龋齿
+									cnt.setSaprodontia(cnt.getSaprodontia() + 1);
+								}
+
+								if (StringUtils.equals(exam.getEyeLeft(), "T")
+										|| StringUtils.equals(exam.getEyeRight(), "T")) {// 沙眼
+									cnt.setTrachoma(cnt.getTrachoma() + 1);
+								}
+
+								if (StringUtils.equals(exam.getEyeLeft(), "A")
+										|| StringUtils.equals(exam.getEyeRight(), "A")) {// 弱视
+									cnt.setAmblyopia(cnt.getAmblyopia() + 1);
+								}
+
+								if (exam.getHemoglobinValue() >= 90 && exam.getHemoglobinValue() < 110) {// 血红蛋白Hb
+									cnt.setHemoglobin110(cnt.getHemoglobin110() + 1);
+								}
+
+								if (exam.getHemoglobinValue() > 0 && exam.getHemoglobinValue() < 90) {
+									cnt.setHemoglobin90(cnt.getHemoglobin90() + 1);
+								}
+
+								if (exam.getHbsabValue() > 10) {// 乙肝表面抗体
+									cnt.setHbsab(cnt.getHbsab() + 1);
+								}
+
+								if (StringUtils.equals(exam.getSgpt(), "N")) {// 肝功能异常
+									cnt.setSgpt(cnt.getSgpt() + 1);
+								}
+
+								if (StringUtils.equals(exam.getHvaigm(), "X")) {// HVAIgM异常 X阳性
+									cnt.setHvaigm(cnt.getHvaigm() + 1);
+								}
+
 							}
 						}
 

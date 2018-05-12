@@ -3,7 +3,7 @@ package com.glaf.heathcare.util;
 import com.alibaba.fastjson.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import com.glaf.core.util.DateUtils;
 import com.glaf.heathcare.domain.*;
 
 /**
@@ -93,21 +93,51 @@ public class MedicalExaminationGradeCountJsonFactory {
 		if (jsonObject.containsKey("bloodLead")) {
 			model.setBloodLead(jsonObject.getInteger("bloodLead"));
 		}
+		if (jsonObject.containsKey("internalDisease")) {
+			model.setInternalDisease(jsonObject.getInteger("internalDisease"));
+		}
+		if (jsonObject.containsKey("surgicalDisease")) {
+			model.setSurgicalDisease(jsonObject.getInteger("surgicalDisease"));
+		}
+		if (jsonObject.containsKey("saprodontia")) {
+			model.setSaprodontia(jsonObject.getInteger("saprodontia"));
+		}
+		if (jsonObject.containsKey("trachoma")) {
+			model.setTrachoma(jsonObject.getInteger("trachoma"));
+		}
+		if (jsonObject.containsKey("amblyopia")) {
+			model.setAmblyopia(jsonObject.getInteger("amblyopia"));
+		}
+		if (jsonObject.containsKey("hemoglobin110")) {
+			model.setHemoglobin110(jsonObject.getInteger("hemoglobin110"));
+		}
+		if (jsonObject.containsKey("hemoglobin90")) {
+			model.setHemoglobin90(jsonObject.getInteger("hemoglobin90"));
+		}
+		if (jsonObject.containsKey("hbsab")) {
+			model.setHbsab(jsonObject.getInteger("hbsab"));
+		}
+		if (jsonObject.containsKey("sgpt")) {
+			model.setSgpt(jsonObject.getInteger("sgpt"));
+		}
+		if (jsonObject.containsKey("hvaigm")) {
+			model.setHvaigm(jsonObject.getInteger("hvaigm"));
+		}
+		if (jsonObject.containsKey("checkDate")) {
+			model.setCheckDate(jsonObject.getDate("checkDate"));
+		}
 		if (jsonObject.containsKey("year")) {
 			model.setYear(jsonObject.getInteger("year"));
 		}
 		if (jsonObject.containsKey("month")) {
 			model.setMonth(jsonObject.getInteger("month"));
 		}
-
 		if (jsonObject.containsKey("sortNo")) {
 			model.setSortNo(jsonObject.getInteger("sortNo"));
 		}
-
 		if (jsonObject.containsKey("type")) {
 			model.setType(jsonObject.getString("type"));
 		}
-
 		return model;
 	}
 
@@ -147,6 +177,21 @@ public class MedicalExaminationGradeCountJsonFactory {
 		jsonObject.put("anemiaMid", model.getAnemiaMid());
 		jsonObject.put("anemiaHigh", model.getAnemiaHigh());
 		jsonObject.put("bloodLead", model.getBloodLead());
+		jsonObject.put("internalDisease", model.getInternalDisease());
+		jsonObject.put("surgicalDisease", model.getSurgicalDisease());
+		jsonObject.put("saprodontia", model.getSaprodontia());
+		jsonObject.put("trachoma", model.getTrachoma());
+		jsonObject.put("amblyopia", model.getAmblyopia());
+		jsonObject.put("hemoglobin110", model.getHemoglobin110());
+		jsonObject.put("hemoglobin90", model.getHemoglobin90());
+		jsonObject.put("hbsab", model.getHbsab());
+		jsonObject.put("sgpt", model.getSgpt());
+		jsonObject.put("hvaigm", model.getHvaigm());
+		if (model.getCheckDate() != null) {
+			jsonObject.put("checkDate", DateUtils.getDate(model.getCheckDate()));
+			jsonObject.put("checkDate_date", DateUtils.getDate(model.getCheckDate()));
+			jsonObject.put("checkDate_datetime", DateUtils.getDateTime(model.getCheckDate()));
+		}
 		jsonObject.put("year", model.getYear());
 		jsonObject.put("month", model.getMonth());
 		jsonObject.put("sortNo", model.getSortNo());
@@ -192,6 +237,21 @@ public class MedicalExaminationGradeCountJsonFactory {
 		jsonObject.put("anemiaMid", model.getAnemiaMid());
 		jsonObject.put("anemiaHigh", model.getAnemiaHigh());
 		jsonObject.put("bloodLead", model.getBloodLead());
+		jsonObject.put("internalDisease", model.getInternalDisease());
+		jsonObject.put("surgicalDisease", model.getSurgicalDisease());
+		jsonObject.put("saprodontia", model.getSaprodontia());
+		jsonObject.put("trachoma", model.getTrachoma());
+		jsonObject.put("amblyopia", model.getAmblyopia());
+		jsonObject.put("hemoglobin110", model.getHemoglobin110());
+		jsonObject.put("hemoglobin90", model.getHemoglobin90());
+		jsonObject.put("hbsab", model.getHbsab());
+		jsonObject.put("sgpt", model.getSgpt());
+		jsonObject.put("hvaigm", model.getHvaigm());
+		if (model.getCheckDate() != null) {
+			jsonObject.put("checkDate", DateUtils.getDate(model.getCheckDate()));
+			jsonObject.put("checkDate_date", DateUtils.getDate(model.getCheckDate()));
+			jsonObject.put("checkDate_datetime", DateUtils.getDateTime(model.getCheckDate()));
+		}
 		jsonObject.put("year", model.getYear());
 		jsonObject.put("month", model.getMonth());
 		jsonObject.put("sortNo", model.getSortNo());

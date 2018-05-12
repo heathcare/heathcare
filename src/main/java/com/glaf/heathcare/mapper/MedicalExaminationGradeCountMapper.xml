@@ -54,6 +54,25 @@
 			jdbcType="INTEGER" />
 		<result property="bloodLead" column="BLOODLEAD_"
 			jdbcType="INTEGER" />
+		<result property="internalDisease" column="INTERNALDISEASE_"
+			jdbcType="INTEGER" />
+		<result property="surgicalDisease" column="SURGICALDISEASE_"
+			jdbcType="INTEGER" />
+		<result property="saprodontia" column="SAPRODONTIA_"
+			jdbcType="INTEGER" />
+		<result property="trachoma" column="TRACHOMA_"
+			jdbcType="INTEGER" />
+		<result property="amblyopia" column="AMBLYOPIA_"
+			jdbcType="INTEGER" />
+		<result property="hemoglobin110" column="HEMOGLOBIN110_"
+			jdbcType="INTEGER" />
+		<result property="hemoglobin90" column="HEMOGLOBIN90_"
+			jdbcType="INTEGER" />
+		<result property="hbsab" column="HBSAB_" jdbcType="INTEGER" />
+		<result property="sgpt" column="SGPT_" jdbcType="INTEGER" />
+		<result property="hvaigm" column="HVAIGM_" jdbcType="INTEGER" />
+		<result property="checkDate" column="CHECKDATE_"
+			jdbcType="TIMESTAMP" />
 		<result property="year" column="YEAR_" jdbcType="INTEGER" />
 		<result property="month" column="MONTH_" jdbcType="INTEGER" />
 		<result property="sortNo" column="SORTNO_" jdbcType="INTEGER" />
@@ -140,6 +159,39 @@
 			</if>
 			<if test="bloodLead != null">
 				,BLOODLEAD_
+			</if>
+			<if test="internalDisease != null">
+				,INTERNALDISEASE_
+			</if>
+			<if test="surgicalDisease != null">
+				,SURGICALDISEASE_
+			</if>
+			<if test="saprodontia != null">
+				,SAPRODONTIA_
+			</if>
+			<if test="trachoma != null">
+				,TRACHOMA_
+			</if>
+			<if test="amblyopia != null">
+				,AMBLYOPIA_
+			</if>
+			<if test="hemoglobin110 != null">
+				,HEMOGLOBIN110_
+			</if>
+			<if test="hemoglobin90 != null">
+				,HEMOGLOBIN90_
+			</if>
+			<if test="hbsab != null">
+				,HBSAB_
+			</if>
+			<if test="sgpt != null">
+				,SGPT_
+			</if>
+			<if test="hvaigm != null">
+				,HVAIGM_
+			</if>
+			<if test="checkDate != null">
+				,CHECKDATE_
 			</if>
 			<if test="year != null">
 				,YEAR_
@@ -233,6 +285,39 @@
 			<if test="bloodLead != null">
 				,#{bloodLead, jdbcType=INTEGER}
 			</if>
+			<if test="internalDisease != null">
+				,#{internalDisease, jdbcType=INTEGER}
+			</if>
+			<if test="surgicalDisease != null">
+				,#{surgicalDisease, jdbcType=INTEGER}
+			</if>
+			<if test="saprodontia != null">
+				,#{saprodontia, jdbcType=INTEGER}
+			</if>
+			<if test="trachoma != null">
+				,#{trachoma, jdbcType=INTEGER}
+			</if>
+			<if test="amblyopia != null">
+				,#{amblyopia, jdbcType=INTEGER}
+			</if>
+			<if test="hemoglobin110 != null">
+				,#{hemoglobin110, jdbcType=INTEGER}
+			</if>
+			<if test="hemoglobin90 != null">
+				,#{hemoglobin90, jdbcType=INTEGER}
+			</if>
+			<if test="hbsab != null">
+				,#{hbsab, jdbcType=INTEGER}
+			</if>
+			<if test="sgpt != null">
+				,#{sgpt, jdbcType=INTEGER}
+			</if>
+			<if test="hvaigm != null">
+				,#{hvaigm, jdbcType=INTEGER}
+			</if>
+			<if test="checkDate != null">
+				,#{checkDate, jdbcType=TIMESTAMP}
+			</if>
 			<if test="year != null">
 				,#{year, jdbcType=INTEGER}
 			</if>
@@ -278,6 +363,17 @@
 		,ANEMIAMID_
 		,ANEMIAHIGH_
 		,BLOODLEAD_
+		,INTERNALDISEASE_
+		,SURGICALDISEASE_
+		,SAPRODONTIA_
+		,TRACHOMA_
+		,AMBLYOPIA_
+		,HEMOGLOBIN110_
+		,HEMOGLOBIN90_
+		,HBSAB_
+		,SGPT_
+		,HVAIGM_
+		,CHECKDATE_
 		,YEAR_
 		,MONTH_
 		,SORTNO_
@@ -338,6 +434,28 @@
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.bloodLead,
 			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.internalDisease,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.surgicalDisease,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.saprodontia,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.trachoma,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.amblyopia,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hemoglobin110,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hemoglobin90,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hbsab,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.sgpt,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hvaigm,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.checkDate,
+			jdbcType=TIMESTAMP}
 			,#{medicalExaminationGradeCount.year,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.month,
@@ -383,6 +501,17 @@
 			,ANEMIAMID_
 			,ANEMIAHIGH_
 			,BLOODLEAD_
+			,INTERNALDISEASE_
+			,SURGICALDISEASE_
+			,SAPRODONTIA_
+			,TRACHOMA_
+			,AMBLYOPIA_
+			,HEMOGLOBIN110_
+			,HEMOGLOBIN90_
+			,HBSAB_
+			,SGPT_
+			,HVAIGM_
+			,CHECKDATE_
 			,YEAR_
 			,MONTH_
 			,SORTNO_
@@ -440,6 +569,28 @@
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.bloodLead,
 			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.internalDisease,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.surgicalDisease,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.saprodontia,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.trachoma,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.amblyopia,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hemoglobin110,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hemoglobin90,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hbsab,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.sgpt,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hvaigm,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.checkDate,
+			jdbcType=TIMESTAMP}
 			,#{medicalExaminationGradeCount.year,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.month,

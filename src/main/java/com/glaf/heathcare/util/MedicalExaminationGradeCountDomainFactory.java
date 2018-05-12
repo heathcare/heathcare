@@ -48,6 +48,17 @@ public class MedicalExaminationGradeCountDomainFactory {
 		columnMap.put("anemiaMid", "ANEMIAMID_");
 		columnMap.put("anemiaHigh", "ANEMIAHIGH_");
 		columnMap.put("bloodLead", "BLOODLEAD_");
+		columnMap.put("internalDisease", "INTERNALDISEASE_");
+		columnMap.put("surgicalDisease", "SURGICALDISEASE_");
+		columnMap.put("saprodontia", "SAPRODONTIA_");
+		columnMap.put("trachoma", "TRACHOMA_");
+		columnMap.put("amblyopia", "AMBLYOPIA_");
+		columnMap.put("hemoglobin110", "HEMOGLOBIN110_");
+		columnMap.put("hemoglobin90", "HEMOGLOBIN90_");
+		columnMap.put("hbsab", "HBSAB_");
+		columnMap.put("sgpt", "SGPT_");
+		columnMap.put("hvaigm", "HVAIGM_");
+		columnMap.put("checkDate", "CHECKDATE_");
 		columnMap.put("year", "YEAR_");
 		columnMap.put("month", "MONTH_");
 		columnMap.put("sortNo", "SORTNO_");
@@ -79,6 +90,17 @@ public class MedicalExaminationGradeCountDomainFactory {
 		javaTypeMap.put("anemiaMid", "Integer");
 		javaTypeMap.put("anemiaHigh", "Integer");
 		javaTypeMap.put("bloodLead", "Integer");
+		javaTypeMap.put("internalDisease", "Integer");
+		javaTypeMap.put("surgicalDisease", "Integer");
+		javaTypeMap.put("saprodontia", "Integer");
+		javaTypeMap.put("trachoma", "Integer");
+		javaTypeMap.put("amblyopia", "Integer");
+		javaTypeMap.put("hemoglobin110", "Integer");
+		javaTypeMap.put("hemoglobin90", "Integer");
+		javaTypeMap.put("hbsab", "Integer");
+		javaTypeMap.put("sgpt", "Integer");
+		javaTypeMap.put("hvaigm", "Integer");
+		javaTypeMap.put("checkDate", "Date");
 		javaTypeMap.put("year", "Integer");
 		javaTypeMap.put("month", "Integer");
 		javaTypeMap.put("sortNo", "Integer");
@@ -281,6 +303,72 @@ public class MedicalExaminationGradeCountDomainFactory {
 		bloodLead.setColumnName("BLOODLEAD_");
 		bloodLead.setJavaType("Integer");
 		tableDefinition.addColumn(bloodLead);
+
+		ColumnDefinition internalDisease = new ColumnDefinition();
+		internalDisease.setName("internalDisease");
+		internalDisease.setColumnName("INTERNALDISEASE_");
+		internalDisease.setJavaType("Integer");
+		tableDefinition.addColumn(internalDisease);
+
+		ColumnDefinition surgicalDisease = new ColumnDefinition();
+		surgicalDisease.setName("surgicalDisease");
+		surgicalDisease.setColumnName("SURGICALDISEASE_");
+		surgicalDisease.setJavaType("Integer");
+		tableDefinition.addColumn(surgicalDisease);
+
+		ColumnDefinition saprodontia = new ColumnDefinition();
+		saprodontia.setName("saprodontia");
+		saprodontia.setColumnName("SAPRODONTIA_");
+		saprodontia.setJavaType("Integer");
+		tableDefinition.addColumn(saprodontia);
+
+		ColumnDefinition trachoma = new ColumnDefinition();
+		trachoma.setName("trachoma");
+		trachoma.setColumnName("TRACHOMA_");
+		trachoma.setJavaType("Integer");
+		tableDefinition.addColumn(trachoma);
+
+		ColumnDefinition amblyopia = new ColumnDefinition();
+		amblyopia.setName("amblyopia");
+		amblyopia.setColumnName("AMBLYOPIA_");
+		amblyopia.setJavaType("Integer");
+		tableDefinition.addColumn(amblyopia);
+
+		ColumnDefinition hemoglobin110 = new ColumnDefinition();
+		hemoglobin110.setName("hemoglobin110");
+		hemoglobin110.setColumnName("HEMOGLOBIN110_");
+		hemoglobin110.setJavaType("Integer");
+		tableDefinition.addColumn(hemoglobin110);
+
+		ColumnDefinition hemoglobin90 = new ColumnDefinition();
+		hemoglobin90.setName("hemoglobin90");
+		hemoglobin90.setColumnName("HEMOGLOBIN90_");
+		hemoglobin90.setJavaType("Integer");
+		tableDefinition.addColumn(hemoglobin90);
+
+		ColumnDefinition hbsab = new ColumnDefinition();
+		hbsab.setName("hbsab");
+		hbsab.setColumnName("HBSAB_");
+		hbsab.setJavaType("Integer");
+		tableDefinition.addColumn(hbsab);
+
+		ColumnDefinition sgpt = new ColumnDefinition();
+		sgpt.setName("sgpt");
+		sgpt.setColumnName("SGPT_");
+		sgpt.setJavaType("Integer");
+		tableDefinition.addColumn(sgpt);
+
+		ColumnDefinition hvaigm = new ColumnDefinition();
+		hvaigm.setName("hvaigm");
+		hvaigm.setColumnName("HVAIGM_");
+		hvaigm.setJavaType("Integer");
+		tableDefinition.addColumn(hvaigm);
+
+		ColumnDefinition checkDate = new ColumnDefinition();
+		checkDate.setName("checkDate");
+		checkDate.setColumnName("CHECKDATE_");
+		checkDate.setJavaType("Date");
+		tableDefinition.addColumn(checkDate);
 
 		ColumnDefinition year = new ColumnDefinition();
 		year.setName("year");
