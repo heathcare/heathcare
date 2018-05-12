@@ -1698,7 +1698,7 @@ public class DBUtils {
 		if ("hbase".equalsIgnoreCase(dbType)) {
 			if (idColumn != null) {
 				buffer.append(newline);
-				buffer.append("  CONSTRAINT pk PRIMARY KEY (").append(idColumn.getColumnName().toUpperCase())
+				buffer.append("  CONSTRAINT PK_").append(idColumn.getColumnName().toUpperCase()).append(" PRIMARY KEY (").append(idColumn.getColumnName().toUpperCase())
 						.append(") ");
 			}
 		} else {

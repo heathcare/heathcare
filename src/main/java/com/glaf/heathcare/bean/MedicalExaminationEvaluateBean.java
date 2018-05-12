@@ -32,6 +32,7 @@ import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.Database;
 import com.glaf.core.domain.TableDefinition;
+import com.glaf.core.domain.util.DbidDomainFactory;
 import com.glaf.core.service.IDatabaseService;
 import com.glaf.core.util.DBUtils;
 import com.glaf.heathcare.domain.GradeInfo;
@@ -49,6 +50,7 @@ import com.glaf.heathcare.service.MedicalExaminationEvaluateService;
 import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.util.MedicalExaminationEvaluateDomainFactory;
+import com.glaf.heathcare.util.MedicalExaminationGradeCountDomainFactory;
 
 public class MedicalExaminationEvaluateBean {
 	protected static final Log logger = LogFactory.getLog(MedicalExaminationEvaluateBean.class);
@@ -74,9 +76,18 @@ public class MedicalExaminationEvaluateBean {
 			Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 			database = databaseService.getDatabaseByMapping("etl");
 			if (database != null) {
+				if (!DBUtils.tableExists(database.getName(), "SYS_DBID")) {
+					TableDefinition tableDefinition = DbidDomainFactory.getTableDefinition("SYS_DBID");
+					DBUtils.createTable(database.getName(), tableDefinition);
+				}
 				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_EVAL")) {
 					TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
 							.getTableDefinition("HEALTH_MEDICAL_EXAM_EVAL");
+					DBUtils.createTable(database.getName(), tableDefinition);
+				}
+				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_GRADE_CNT")) {
+					TableDefinition tableDefinition = MedicalExaminationGradeCountDomainFactory
+							.getTableDefinition("HEALTH_MEDICAL_EXAM_GRADE_CNT");
 					DBUtils.createTable(database.getName(), tableDefinition);
 				}
 			}
@@ -132,8 +143,8 @@ public class MedicalExaminationEvaluateBean {
 								}
 							}
 						}
-						
-						//logger.debug(gsMap);
+
+						// logger.debug(gsMap);
 
 						for (MedicalExamination exam : exams) {
 							if (exam.getCheckDate() != null && exam.getHeight() > 0 && exam.getWeight() > 0) {
@@ -152,9 +163,9 @@ public class MedicalExaminationEvaluateBean {
 								model.setGradeId(person.getGradeId());
 								model.setBirthday(person.getBirthday());
 								model.setSex(person.getSex());
-								//logger.debug("key:"+key);
+								// logger.debug("key:"+key);
 								if (gsMap.get(key) != null) {
-									//logger.debug("Median:"+gsMap.get(key).getMedian());
+									// logger.debug("Median:"+gsMap.get(key).getMedian());
 									model.setStdWeight(gsMap.get(key).getMedian());
 									model.setWeightOffsetPercent(
 											(model.getWeight() - model.getStdWeight()) * 100D / model.getStdWeight());

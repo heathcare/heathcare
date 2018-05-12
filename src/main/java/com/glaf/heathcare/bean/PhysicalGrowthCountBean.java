@@ -49,7 +49,7 @@ import com.glaf.heathcare.service.GrowthStandardService;
 import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.service.PhysicalGrowthCountService;
-import com.glaf.heathcare.util.MedicalExaminationEvaluateDomainFactory;
+import com.glaf.heathcare.util.PhysicalGrowthCountDomainFactory;
 
 public class PhysicalGrowthCountBean {
 	protected static final Log logger = LogFactory.getLog(PhysicalGrowthCountBean.class);
@@ -74,7 +74,7 @@ public class PhysicalGrowthCountBean {
 			database = databaseService.getDatabaseByMapping("etl");
 			if (database != null) {
 				if (!DBUtils.tableExists(database.getName(), "HEALTH_PHYSICAL_GROWTH_COUNT")) {
-					TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
+					TableDefinition tableDefinition = PhysicalGrowthCountDomainFactory
 							.getTableDefinition("HEALTH_PHYSICAL_GROWTH_COUNT");
 					DBUtils.createTable(database.getName(), tableDefinition);
 				}

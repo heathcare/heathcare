@@ -39,6 +39,7 @@ import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.Database;
 import com.glaf.core.domain.TableDefinition;
+import com.glaf.core.domain.util.DbidDomainFactory;
 import com.glaf.core.service.IDatabaseService;
 import com.glaf.core.util.DBUtils;
 
@@ -61,6 +62,7 @@ import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.util.MedicalExaminationCountDomainFactory;
 import com.glaf.heathcare.util.MedicalExaminationEvaluateDomainFactory;
+import com.glaf.heathcare.util.MedicalExaminationGradeCountDomainFactory;
 
 public class MedicalExaminationEvaluateCountBean {
 	protected static final Log logger = LogFactory.getLog(MedicalExaminationEvaluateCountBean.class);
@@ -93,6 +95,10 @@ public class MedicalExaminationEvaluateCountBean {
 			Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 			database = databaseService.getDatabaseByMapping("etl");
 			if (database != null) {
+				if (!DBUtils.tableExists(database.getName(), "SYS_DBID")) {
+					TableDefinition tableDefinition = DbidDomainFactory.getTableDefinition("SYS_DBID");
+					DBUtils.createTable(database.getName(), tableDefinition);
+				}
 				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_EVAL")) {
 					TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
 							.getTableDefinition("HEALTH_MEDICAL_EXAM_EVAL");
@@ -101,6 +107,11 @@ public class MedicalExaminationEvaluateCountBean {
 				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_COUNT")) {
 					TableDefinition tableDefinition = MedicalExaminationCountDomainFactory
 							.getTableDefinition("HEALTH_MEDICAL_EXAM_COUNT");
+					DBUtils.createTable(database.getName(), tableDefinition);
+				}
+				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_GRADE_CNT")) {
+					TableDefinition tableDefinition = MedicalExaminationGradeCountDomainFactory
+							.getTableDefinition("HEALTH_MEDICAL_EXAM_GRADE_CNT");
 					DBUtils.createTable(database.getName(), tableDefinition);
 				}
 			}

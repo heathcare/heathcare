@@ -364,12 +364,6 @@ public class MedicalExaminationGradeCountDomainFactory {
 		hvaigm.setJavaType("Integer");
 		tableDefinition.addColumn(hvaigm);
 
-		ColumnDefinition checkDate = new ColumnDefinition();
-		checkDate.setName("checkDate");
-		checkDate.setColumnName("CHECKDATE_");
-		checkDate.setJavaType("Date");
-		tableDefinition.addColumn(checkDate);
-
 		ColumnDefinition year = new ColumnDefinition();
 		year.setName("year");
 		year.setColumnName("YEAR_");
@@ -382,11 +376,11 @@ public class MedicalExaminationGradeCountDomainFactory {
 		month.setJavaType("Integer");
 		tableDefinition.addColumn(month);
 
-		ColumnDefinition sortNo = new ColumnDefinition();
-		sortNo.setName("sortNo");
-		sortNo.setColumnName("SORTNO_");
-		sortNo.setJavaType("Integer");
-		tableDefinition.addColumn(sortNo);
+		ColumnDefinition sortNox = new ColumnDefinition();
+		sortNox.setName("sortNo");
+		sortNox.setColumnName("SORTNO_");
+		sortNox.setJavaType("Integer");
+		tableDefinition.addColumn(sortNox);
 
 		ColumnDefinition type = new ColumnDefinition();
 		type.setName("type");
@@ -394,6 +388,12 @@ public class MedicalExaminationGradeCountDomainFactory {
 		type.setJavaType("String");
 		type.setLength(50);
 		tableDefinition.addColumn(type);
+
+		ColumnDefinition checkDate = new ColumnDefinition();
+		checkDate.setName("checkDate");
+		checkDate.setColumnName("CHECKDATE_");
+		checkDate.setJavaType("Date");
+		tableDefinition.addColumn(checkDate);
 
 		return tableDefinition;
 	}

@@ -124,22 +124,23 @@ public class TenantMedicalExaminationGradeCountPreprocessor implements ITenantRe
 					}
 				}
 
-				MedicalExaminationGradeCountBean bean = new MedicalExaminationGradeCountBean();
-				bean.execute(tenantId, type, year, month);
-
-				PhysicalGrowthCountBean bean2 = new PhysicalGrowthCountBean();
-				bean2.execute(tenantId, type, year, month);
-
-				MedicalExaminationGradeCountQuery query2 = new MedicalExaminationGradeCountQuery();
-				query2.tenantId(tenantId);
-				query2.type(type);
-				query2.year(year);
-				query2.month(month);
-
 				String systemName = Environment.getCurrentSystemName();
 				List<MedicalExaminationGradeCount> list = null;
 				Database database = null;
 				try {
+
+					MedicalExaminationGradeCountBean bean = new MedicalExaminationGradeCountBean();
+					bean.execute(tenantId, type, year, month);
+
+					PhysicalGrowthCountBean bean2 = new PhysicalGrowthCountBean();
+					bean2.execute(tenantId, type, year, month);
+
+					MedicalExaminationGradeCountQuery query2 = new MedicalExaminationGradeCountQuery();
+					query2.tenantId(tenantId);
+					query2.type(type);
+					query2.year(year);
+					query2.month(month);
+
 					Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 					database = databaseService.getDatabaseByMapping("etl");
 					if (database != null) {
