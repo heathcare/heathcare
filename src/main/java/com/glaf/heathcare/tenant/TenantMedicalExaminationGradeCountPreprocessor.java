@@ -24,8 +24,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
+import com.glaf.core.domain.Database;
 import com.glaf.core.identity.Tenant;
+import com.glaf.core.service.IDatabaseService;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.bean.MedicalExaminationGradeCountBean;
 import com.glaf.heathcare.bean.PhysicalGrowthCountBean;
@@ -49,6 +52,7 @@ public class TenantMedicalExaminationGradeCountPreprocessor implements ITenantRe
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {
+		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		GradePersonRelationService gradePersonRelationService = ContextFactory
 				.getBean("com.glaf.heathcare.service.gradePersonRelationService");
@@ -131,7 +135,23 @@ public class TenantMedicalExaminationGradeCountPreprocessor implements ITenantRe
 				query2.type(type);
 				query2.year(year);
 				query2.month(month);
-				List<MedicalExaminationGradeCount> list = medicalExaminationGradeCountService.list(query2);
+
+				String systemName = Environment.getCurrentSystemName();
+				List<MedicalExaminationGradeCount> list = null;
+				Database database = null;
+				try {
+					Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
+					database = databaseService.getDatabaseByMapping("etl");
+					if (database != null) {
+						Environment.setCurrentSystemName(database.getName());
+					}
+					list = medicalExaminationGradeCountService.list(query2);
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
+				} finally {
+					com.glaf.core.config.Environment.setCurrentSystemName(systemName);
+				}
+
 				if (list != null && !list.isEmpty()) {
 					MedicalExaminationGradeCount total = new MedicalExaminationGradeCount();
 

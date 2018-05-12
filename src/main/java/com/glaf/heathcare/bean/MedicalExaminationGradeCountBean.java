@@ -269,11 +269,6 @@ public class MedicalExaminationGradeCountBean {
 						Collection<MedicalExaminationGradeCount> rows = cntMap.values();
 
 						if (!rows.isEmpty()) {
-
-							if (database != null) {
-								Environment.setCurrentSystemName(database.getName());
-							}
-
 							for (MedicalExaminationGradeCount cnt : rows) {
 								if (cnt.getPersonCount() > 0) {
 									cnt.setCheckPercent(cnt.getCheckPerson() * 1.0D / cnt.getPersonCount());
@@ -283,7 +278,10 @@ public class MedicalExaminationGradeCountBean {
 									cnt.setAnemiaCheckNormalPercent(
 											cnt.getAnemiaCheckNormal() * 1.0D / cnt.getCheckPerson());
 								}
+							}
 
+							if (database != null) {
+								Environment.setCurrentSystemName(database.getName());
 							}
 
 							medicalExaminationGradeCountService.saveAll(tenantId, type, year, month, rows);
