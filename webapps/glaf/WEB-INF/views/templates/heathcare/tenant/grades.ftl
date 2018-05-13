@@ -9,17 +9,17 @@
 <body style="margin:0px;">
 <div class="easyui-tabs" data-options="tools:'#tab-tools'" style="overflow:hidden; width:100%; height:auto">
   <div title="入园体检" data-options="closable:false" style="overflow:auto;width:100%;height:680px;">
-    <iframe scrolling="yes" frameborder="0"  
+    <iframe id="frm1" name="frm1" scrolling="yes" frameborder="0"  
 	        src="${contextPath}/heathcare/medicalExamination/reviewlist?type=1&tenantId=${tenantId}" 
 	        style="width:100%;height:680px;"></iframe>
   </div>
   <div title="定期体检" data-options="closable:false" style="overflow:auto;width:100%;height:680px;">
-    <iframe scrolling="yes" frameborder="0"  
+    <iframe id="frm2" name="frm2" scrolling="yes" frameborder="0"  
 	        src="${contextPath}/heathcare/medicalExamination/reviewlist?type=5&tenantId=${tenantId}" 
 	        style="width:100%;height:680px;"></iframe>
   </div>
   <div title="专项体检" data-options="closable:false" style="overflow:auto;width:100%;height:680px;">
-    <iframe scrolling="yes" frameborder="0"  
+    <iframe id="frm3" name="frm3" scrolling="yes" frameborder="0"  
 	        src="${contextPath}/heathcare/medicalExamination/reviewlist?type=7&tenantId=${tenantId}" 
 	        style="width:100%;height:680px;"></iframe>
   </div>

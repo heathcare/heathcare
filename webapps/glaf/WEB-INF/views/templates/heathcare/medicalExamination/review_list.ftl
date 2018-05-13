@@ -442,14 +442,14 @@
 
 	function changeCheck(){
 		var checkId = jQuery("#checkId").val();
-		location.href="${contextPath}/heathcare/medicalExamination/reviewlist?tenantId=${tenantId}&checkId="+checkId;
+		location.href="${contextPath}/heathcare/medicalExamination/reviewlist?tenantId=${tenantId}&type=${type}&checkId="+checkId;
 	}
 
 	function exportXls(){
 		var gradeId = jQuery("#gradeId").val();
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationSicknessPositiveSign&checkId=${checkId}&tenantId=${tenantId}&ts=${ts}";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationSicknessPositiveSign&checkId=${checkId}&tenantId=${tenantId}&type=${type}&ts=${ts}";
 		if(gradeId != ""){
 			link = link + "&gradeId=" + gradeId;
 		}
@@ -466,13 +466,13 @@
     }
 
 	function exportXls2(){
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantGrowth&personId=${personId}&checkId=${checkId}&tenantId=${tenantId}&ts=${ts}";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantGrowth&personId=${personId}&checkId=${checkId}&tenantId=${tenantId}&type=${type}&ts=${ts}";
         window.open(link);
     }
 	
 	function exportXls3(){
 		var personId = document.getElementById("personId").value;
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantGrowth&personId="+personId+"&checkId=${checkId}&tenantId=${tenantId}&ts=${ts}";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantGrowth&personId="+personId+"&checkId=${checkId}&tenantId=${tenantId}&type=${type}&ts=${ts}";
         window.open(link);
     }	
 
@@ -481,7 +481,7 @@
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
 		var sex = jQuery("#sex").val();
-		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalExaminationCount&checkId=${checkId}&tenantId=${tenantId}&ts=${ts}";
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalExaminationCount&checkId=${checkId}&tenantId=${tenantId}&type=${type}&ts=${ts}";
 		if(gradeId != ""){
 			link = link + "&gradeId=" + gradeId;
 		}
@@ -493,6 +493,77 @@
 		}
 		if(sex != ""){
 			link = link  + "&sex=" + sex;
+		}
+        window.open(link);
+    }
+
+    function exportXls60(){
+		var gradeId = jQuery("#gradeId").val();
+		var year = jQuery("#year").val();
+        var month = jQuery("#month").val();
+		if(gradeId == ""){
+			alert("请选择班级！");
+			return;
+		}
+        if(year == ""){
+			alert("请选择年份！");
+			return;
+		}
+		if(month == ""){
+			alert("请选择月份！");
+			return;
+		}
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationGrade&tenantId=${tenantId}&ts=${ts}&type=${type}";
+		if(gradeId != ""){
+			link = link + "&gradeId=" + gradeId;
+		}
+		if(year != ""){
+			link = link + "&year=" + year;
+		}
+		if(month != ""){
+			link = link  + "&month=" + month;
+		}
+        window.open(link);
+    }
+
+	function exportXls65(){
+		var year = jQuery("#year").val();
+        var month = jQuery("#month").val();
+        if(year == ""){
+			alert("请选择年份！");
+			return;
+		}
+		if(month == ""){
+			alert("请选择月份！");
+			return;
+		}
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationGradeCount&tenantId=${tenantId}&ts=${ts}&type=${type}";
+		if(year != ""){
+			link = link + "&year=" + year;
+		}
+		if(month != ""){
+			link = link  + "&month=" + month;
+		}
+        window.open(link);
+    }
+
+	function exportXls70(){
+		var year = jQuery("#year").val();
+        var month = jQuery("#month").val();
+        if(year == ""){
+			alert("请选择年份！");
+			return;
+		}
+		if(month == ""){
+			alert("请选择月份！");
+			return;
+		}
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationPersonExport&tenantId=${tenantId}&ts=${ts}&type=${type}";
+		if(year != ""){
+			link = link + "&year=" + year;
+		}
+		if(month != ""){
+			link = link  + "&month=" + month;
 		}
         window.open(link);
     }
@@ -605,6 +676,17 @@
 					&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_chart'" 
 					   onclick="javascript:showChart();">图表</a>
+				</td>
+				<td>
+				    &nbsp;
+					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
+					   onclick="javascript:exportXls60();">班级</a>
+					&nbsp;
+					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
+					   onclick="javascript:exportXls65();">全园</a>
+					&nbsp;
+					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
+					   onclick="javascript:exportXls70();">超重与肥胖</a>  
 				</td>
 				<td>&nbsp;
 				  <#if personId?exists>
