@@ -54,12 +54,14 @@ import com.glaf.base.modules.sys.model.SysTenant;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
+
 import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
-import com.glaf.heathcare.bean.GoodsMonthCostBean;
+
+import com.glaf.heathcare.bean.GoodsActualQuantityBean;
 import com.glaf.heathcare.domain.MealFeeCount;
 import com.glaf.heathcare.domain.MonthlyFee;
 import com.glaf.heathcare.domain.MonthlyMealFee;
@@ -123,7 +125,13 @@ public class MealFeeCountController {
 		// countBean.execute(loginContext, "HEALTH_MEAL_FEE_COUNT", "ALL", year,
 		// SysConfig.getSemester(month), month, params);
 
-		GoodsMonthCostBean costBean = new GoodsMonthCostBean();
+		// GoodsMonthCostBean costBean = new GoodsMonthCostBean();
+		// costBean.execute(tenantId, year, month);
+
+		/**
+		 * 根据实际用量计算当月消耗
+		 */
+		GoodsActualQuantityBean costBean = new GoodsActualQuantityBean();
 		costBean.execute(tenantId, year, month);
 
 		MealFeeCountQuery query = new MealFeeCountQuery();
@@ -148,7 +156,7 @@ public class MealFeeCountController {
 				Object value = entry.getValue();
 				if (value != null) {
 					params.put(key, value);
-					logger.debug(key + ": " + value);
+					// logger.debug(key + ": " + value);
 				}
 			}
 		}
@@ -164,7 +172,7 @@ public class MealFeeCountController {
 					Object value = entry.getValue();
 					if (value != null) {
 						params.put(fee.getClassType() + "_" + key, value);
-						logger.debug(fee.getClassType() + "_" + key + ": " + value);
+						// logger.debug(fee.getClassType() + "_" + key + ": " + value);
 					}
 				}
 			}
