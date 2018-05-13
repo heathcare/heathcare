@@ -148,7 +148,7 @@ public class TenantMedicalExaminationGradeCountPreprocessor implements ITenantRe
 					}
 					list = medicalExaminationGradeCountService.list(query2);
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					// ex.printStackTrace();
 					throw new RuntimeException(ex);
 				} finally {
 					com.glaf.core.config.Environment.setCurrentSystemName(systemName);

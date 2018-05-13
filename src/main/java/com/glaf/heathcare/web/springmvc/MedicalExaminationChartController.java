@@ -175,18 +175,26 @@ public class MedicalExaminationChartController {
 							}
 						}
 
-						database = databaseService.getDatabaseByMapping("etl");
-						if (database != null) {
-							Environment.setCurrentSystemName(database.getName());
-						}
-
 						MedicalExaminationEvaluateQuery query2 = new MedicalExaminationEvaluateQuery();
 						query2.tenantId(tenantId);
 						query2.gradeIds(gradeIds);
 						query2.year(year);
 						query2.month(month);
-						exams = medicalExaminationEvaluateService.list(query2);
+						try {
+							Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
+							database = databaseService.getDatabaseByMapping("etl");
+							if (database != null) {
+								Environment.setCurrentSystemName(database.getName());
+							}
+							exams = medicalExaminationEvaluateService.list(query2);
+						} catch (Exception ex) {
+							// ex.printStackTrace();
+							throw new RuntimeException(ex);
+						} finally {
+							com.glaf.core.config.Environment.setCurrentSystemName(systemName);
+						}
 						if (exams != null && !exams.isEmpty()) {
+							// Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 							Map<String, Integer> personCountMap = gradePersonRelationService.getPersonCountMap(tenantId,
 									year, month);
 							rows = helper.populate(tenantId, year, month, type, grades, persons, exams, standards,
@@ -435,10 +443,12 @@ public class MedicalExaminationChartController {
 			Database database = null;
 			try {
 
+				Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 				database = databaseService.getDatabaseByMapping("etl");
 				if (database != null) {
-					Environment.setCurrentSystemName(systemName);
+					Environment.setCurrentSystemName(database.getName());
 				}
+
 				rows = medicalExaminationCountService.list(query);
 				if (rows != null && !rows.isEmpty()) {
 
