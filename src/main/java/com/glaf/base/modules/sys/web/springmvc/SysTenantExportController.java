@@ -106,6 +106,13 @@ public class SysTenantExportController {
 					buffer.append(newline);
 					buffer.append(newline);
 
+					buffer.append("--delete from HEALTH_FOOD_FAVORITE where TENANTID_ = '" + tenantId + "'; ");
+					buffer.append(newline);
+					buffer.append(helper.getInsertScript(conn, "HEALTH_FOOD_FAVORITE", dbType,
+							" select * from HEALTH_FOOD_FAVORITE where TENANTID_ = '" + tenantId + "' ", params));
+					buffer.append(newline);
+					buffer.append(newline);
+
 					buffer.append("--delete from HEALTH_GRADE_INFO where TENANTID_ = '" + tenantId + "'; ");
 					buffer.append(newline);
 					buffer.append(helper.getInsertScript(conn, "HEALTH_GRADE_INFO", dbType,
@@ -240,6 +247,13 @@ public class SysTenantExportController {
 					buffer.append(helper.getInsertScript(conn, "GOODS_OUT_STOCK" + suffix, dbType,
 							" select * from GOODS_OUT_STOCK" + suffix + " where TENANTID_ = '" + tenantId + "' ",
 							params));
+					buffer.append(newline);
+					buffer.append(newline);
+
+					buffer.append("--delete from GOODS_STOCK" + suffix + " where TENANTID_ = '" + tenantId + "'; ");
+					buffer.append(newline);
+					buffer.append(helper.getInsertScript(conn, "GOODS_STOCK" + suffix, dbType,
+							" select * from GOODS_STOCK" + suffix + " where TENANTID_ = '" + tenantId + "' ", params));
 					buffer.append(newline);
 					buffer.append(newline);
 

@@ -25,8 +25,11 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
+import com.glaf.core.domain.Database;
 import com.glaf.core.identity.Tenant;
+import com.glaf.core.service.IDatabaseService;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.bean.MedicalExaminationEvaluateBean;
@@ -44,6 +47,7 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements ITenant
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {
+		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		MedicalExaminationEvaluateService medicalExaminationEvaluateService = ContextFactory
@@ -90,9 +94,24 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements ITenant
 			q.sex(ParamUtils.getString(params, "sex"));
 		}
 
-		List<MedicalExaminationEvaluate> list = medicalExaminationEvaluateService.list(q);
-		if (list != null && !list.isEmpty()) {
+		String systemName = Environment.getCurrentSystemName();
+		List<MedicalExaminationEvaluate> list = null;
+		Database database = null;
+		try {
+			Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
+			database = databaseService.getDatabaseByMapping("etl");
+			if (database != null) {
+				Environment.setCurrentSystemName(database.getName());
+			}
+			list = medicalExaminationEvaluateService.list(q);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex);
+		} finally {
+			com.glaf.core.config.Environment.setCurrentSystemName(systemName);
+		}
 
+		if (list != null && !list.isEmpty()) {
 			Map<String, Person> personMap = new HashMap<String, Person>();
 			if (persons != null && !persons.isEmpty()) {
 				for (Person p : persons) {

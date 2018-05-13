@@ -148,6 +148,7 @@ public class TenantMedicalExaminationGradeCountPreprocessor implements ITenantRe
 					}
 					list = medicalExaminationGradeCountService.list(query2);
 				} catch (Exception ex) {
+					ex.printStackTrace();
 					throw new RuntimeException(ex);
 				} finally {
 					com.glaf.core.config.Environment.setCurrentSystemName(systemName);
@@ -200,6 +201,9 @@ public class TenantMedicalExaminationGradeCountPreprocessor implements ITenantRe
 					query3.year(year);
 					query3.month(month);
 
+					if (database != null) {
+						Environment.setCurrentSystemName(database.getName());
+					}
 					List<PhysicalGrowthCount> list3 = physicalGrowthCountService.list(query3);
 
 					if (list3 != null && !list3.isEmpty()) {
