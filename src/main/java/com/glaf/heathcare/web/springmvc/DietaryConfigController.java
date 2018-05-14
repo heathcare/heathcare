@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.glaf.core.config.DatabaseConnectionConfig;
 import com.glaf.core.domain.Database;
+import com.glaf.core.domain.TableDefinition;
+import com.glaf.core.domain.util.DbidDomainFactory;
+import com.glaf.core.util.DBUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.heathcare.util.DietaryCountDomainFactory;
@@ -59,6 +62,12 @@ public class DietaryConfigController {
 			DatabaseConnectionConfig cfg = new DatabaseConnectionConfig();
 			Database database = cfg.getDatabase(databaseId);
 			if (StringUtils.equals(database.getUseType(), "GENERAL")) {
+
+				if (!DBUtils.tableExists(database.getName(), "SYS_DBID")) {
+					TableDefinition tableDefinition = DbidDomainFactory.getTableDefinition("SYS_DBID");
+					DBUtils.createTable(database.getName(), tableDefinition);
+				}
+
 				try {
 					DietaryDomainFactory.createTables(databaseId);
 				} catch (Throwable ex) {
@@ -254,6 +263,12 @@ public class DietaryConfigController {
 			}
 
 			if (StringUtils.equals(database.getUseType(), "FILE")) {
+
+				if (!DBUtils.tableExists(database.getName(), "SYS_DBID")) {
+					TableDefinition tableDefinition = DbidDomainFactory.getTableDefinition("SYS_DBID");
+					DBUtils.createTable(database.getName(), tableDefinition);
+				}
+
 				try {
 					DataFileDomainFactory.createTables(databaseId);
 				} catch (Throwable ex) {
