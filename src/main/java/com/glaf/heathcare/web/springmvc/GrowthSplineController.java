@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -132,120 +133,104 @@ public class GrowthSplineController {
 					logger.debug("categories size: " + categoriesList.size());
 					myData = new HashMap<String, List<Double>>();
 					List<Double> valList = new ArrayList<Double>();
-					double val = 0.0D;
-					double prevVal = 0.0D;
-					int joinAgeOfMonth = 36;
-					int ageOfMonth = 0;
-					int maxCheckMonth = 0;
+
 					if (person != null) {
-						ageOfMonth = person.getAgeOfTheMoon();
-						double minHeight = person.getHeight();
-						double minWeight = person.getWeight();
-						double maxHeight = 0;
-
+						int key = 0;
+						List<Integer> keys = new ArrayList<Integer>();
+						Map<Integer, Double> valMap = new LinkedHashMap<Integer, Double>();
 						for (MedicalExamination me : list) {
-							if (minHeight == 0) {
-								minHeight = me.getHeight();
-							}
-							if (minWeight == 0) {
-								minWeight = me.getWeight();
-							}
-							if (me.getHeight() > maxHeight) {
-								maxHeight = me.getHeight();// 取最大身高
-							}
-							if (me.getHeight() < minHeight) {
-								minHeight = me.getHeight();// 取最小身高
-							}
-							if (me.getWeight() < minWeight) {
-								minWeight = me.getWeight();// 取最小体重
-							}
-							ageOfMonth = getAgeOfTheMoon(person.getBirthday(), me.getCheckDate());
-							if (maxCheckMonth < ageOfMonth) {
-								maxCheckMonth = ageOfMonth;
-							}
-						}
-
-						if (StringUtils.equals(type, "2")) {
-							prevVal = person.getHeight();
-						} else if (StringUtils.equals(type, "3")) {
-							prevVal = person.getWeight();
-						} else if (StringUtils.equals(type, "4")) {
-							prevVal = person.getWeight();
-						}
-						joinAgeOfMonth = person.getJoinAgeOfTheMoon();
-
-						for (Integer category : categoriesList) {
-							for (MedicalExamination me : list) {
-								val = 0.0D;
-								if (category == me.getAgeOfTheMoon()) {
-									if (StringUtils.equals(type, "2")) {
-										val = me.getHeight();// 身高
-									} else if (StringUtils.equals(type, "3")) {
-										val = me.getWeight();// 体重
-									}
-									break;
-								}
-								if (Math.ceil(me.getHeight()) == category) {
-									if (StringUtils.equals(type, "4")) {
-										val = me.getWeight();// 体重
-										logger.debug(me.getHeight() + "=" + val);
-										break;
-									}
-								}
-							}
+							me.setBirthday(person.getBirthday());
+							key = me.getAgeOfTheMoon();
 							if (StringUtils.equals(type, "2")) {
-								if (category < joinAgeOfMonth || category > maxCheckMonth) {
-									valList.add(null);
-								} else {
-									if (val > prevVal) {
-										prevVal = val;
-									}
-									if (prevVal > minHeight) {
-										valList.add(prevVal);
-									} else {
-										valList.add(minHeight);
-									}
-								}
+								keys.add(key);
+								valMap.put(key, me.getHeight());// 年龄别身高
 							} else if (StringUtils.equals(type, "3")) {
-								if (category < joinAgeOfMonth || category > maxCheckMonth) {
-									valList.add(null);
-								} else {
-									if (val < person.getWeight()) {
-										val = person.getWeight();
-									}
-									if (val > prevVal) {
-										prevVal = val;
-									}
-									if (prevVal > minWeight) {
-										valList.add(prevVal);
-									} else {
-										valList.add(minWeight);
-									}
-								}
+								keys.add(key);
+								valMap.put(key, me.getWeight());// 年龄别体重
 							} else if (StringUtils.equals(type, "4")) {
-								if (category < minHeight || category > maxHeight) {
-									valList.add(null);
-								} else {
-									if (val < person.getWeight()) {
-										val = person.getWeight();
-									}
-									if (val > prevVal) {
-										prevVal = val;
-									}
-									if (prevVal > minWeight) {
-										valList.add(prevVal);
-									} else {
-										valList.add(minWeight);
+								key = (int) Math.ceil(me.getHeight());
+								keys.add(key);
+								valMap.put(key, me.getWeight());// 身高别体重
+							}
+						}
+
+						if (StringUtils.equals(type, "2") || StringUtils.equals(type, "3")) {
+							int key1 = 0;
+							int key2 = 0;
+							double value1 = 0;
+							double value2 = 0;
+							double avg = 0;
+							double startX = 0;
+							int start = keys.get(0);
+							int end = keys.get(keys.size() - 1);
+							//logger.debug("start:" + start);
+							for (int i = 24; i < start; i++) {
+								valList.add(null);
+							}
+							for (int i = 0, len = keys.size() - 1; i < len; i++) {
+								key1 = keys.get(i);
+								key2 = keys.get(i + 1);
+								value1 = valMap.get(key1);
+								value2 = valMap.get(key2);
+								if (key2 - key1 > 0) {
+									avg = (value2 - value1) / (key2 - key1);
+									avg = Math.round(avg * 10D) / 10D;
+									startX = value1;
+									for (int k = key1; k < key2; k++) {
+										startX = startX + avg;
+										startX = Math.round(startX * 10D) / 10D;
+										//logger.debug("month:" + k);
+										valList.add(startX);
 									}
 								}
 							}
+							// valList.add(valMap.get(end));
+							for (int i = end; i < 72; i++) {
+								valList.add(null);
+							}
+						} else if (StringUtils.equals(type, "4")) {
+							int key1 = 0;
+							int key2 = 0;
+							double value1 = 0;
+							double value2 = 0;
+							double avg = 0;
+							double startX = 0;
+							int start = keys.get(0);
+							int end = keys.get(keys.size() - 1);
+							//logger.debug("start:" + start);
+							for (int i = 80; i < start; i++) {
+								valList.add(null);
+							}
+							for (int i = 0, len = keys.size() - 1; i < len; i++) {
+								key1 = keys.get(i);
+								key2 = keys.get(i + 1);
+								value1 = valMap.get(key1);
+								value2 = valMap.get(key2);
+								if (key2 - key1 > 0) {
+									avg = (value2 - value1) / (key2 - key1);
+									avg = Math.round(avg * 10D) / 10D;
+									startX = value1;
+									for (int k = key1; k < key2; k++) {
+										startX = startX + avg;
+										startX = Math.round(startX * 10D) / 10D;
+										//logger.debug("height:" + k);
+										valList.add(startX);
+									}
+								}
+							}
+							// valList.add(valMap.get(end));
+							for (int i = end; i <= 120; i++) {
+								valList.add(null);
+							}
 						}
-						logger.debug("valList:" + valList);
+						//logger.debug("valList:" + valList);
+						logger.debug("valList size:" + valList.size());
 						myData.put("Z", valList);
 					}
 				}
 			}
 
+			logger.debug("categoriesList size:" + categoriesList.size());
 			JSONArray result = bean.buildJsonArrayData(type, sex, standardType, categoriesList, myData);
 			logger.debug("json data:" + result.toJSONString());
 			request.setAttribute("seriesData", result.toJSONString());
