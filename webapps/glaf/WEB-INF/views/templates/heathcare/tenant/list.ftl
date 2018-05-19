@@ -30,7 +30,7 @@
 						{title:'性质', field:'property', width:120, formatter:formatterProperty},
 						{title:'负责人', field:'principal', width:90},
 						{title:'电话', field:'telephone', width:90},
-						{title:'功能键', field:'functionKey', width:150, formatter:formatterKeys}
+						{title:'功能键', field:'functionKey', width:180, formatter:formatterKeys}
 				]],
 				rownumbers: false,
 				pagination: true,
@@ -49,7 +49,7 @@
 	});
 
 	function formatterKeys(val, row){
-		var str = "<a href='javascript:info(\""+row.tenantId+"\");'>膳食信息</a>&nbsp;<a href='javascript:grades(\""+row.tenantId+"\");'>体检信息</a>&nbsp;";
+		var str = "<a href='javascript:info(\""+row.tenantId+"\");'>膳食信息</a>&nbsp;<a href='javascript:grades(\""+row.tenantId+"\");'>体检信息</a>&nbsp;&nbsp;<a href='javascript:examCnt(\""+row.tenantId+"\");'>体检统计</a>&nbsp;";
 	    return str;
 	}
 	
@@ -97,6 +97,11 @@
 
 	function grades(tenantId){
 	    var link="${contextPath}/heathcare/tenantReportMain/grades?tenantId="+tenantId;
+		window.open(link);
+	}
+
+	function examCnt(tenantId){
+	    var link="${contextPath}/heathcare/medicalExaminationStatistics?tenantId="+tenantId;
 		window.open(link);
 	}
 

@@ -98,6 +98,9 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 	@Column(name = "CHECKPERCENT_")
 	protected double checkPercent;
 
+	@javax.persistence.Transient
+	protected String checkPercentString;
+
 	/**
 	 * 体重/年龄
 	 */
@@ -422,6 +425,16 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		return checkPercent;
 	}
 
+	public String getCheckPercentString() {
+		if (personCount > 0) {
+			checkPercent = checkPerson * 100.00D / personCount;
+		}
+		if (checkPercent > 0) {
+			checkPercent = Math.round(checkPercent * 100D) / 100D;
+		}
+		return String.valueOf(checkPercent);
+	}
+
 	public int getCheckPerson() {
 		return checkPerson;
 	}
@@ -686,6 +699,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public void setCheckPercent(double checkPercent) {
 		this.checkPercent = checkPercent;
+	}
+
+	public void setCheckPercentString(String checkPercentString) {
+		this.checkPercentString = checkPercentString;
 	}
 
 	public void setCheckPerson(int checkPerson) {

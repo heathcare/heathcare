@@ -52,6 +52,9 @@ public class ExcelToHtml {
 				value = Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
 			}
 			cellValue = String.valueOf(value);
+			if (cellValue != null && cellValue.trim().endsWith(".0")) {
+				cellValue = cellValue.substring(0, cellValue.length() - 2);
+			}
 		} else {
 			cellValue = cell.getStringValue();
 		}
@@ -65,7 +68,11 @@ public class ExcelToHtml {
 			if (precision > 0) {
 				value = Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
 			}
-			return String.valueOf(value);
+			strValue = String.valueOf(value);
+			if (strValue != null && strValue.trim().endsWith(".0")) {
+				strValue = strValue.substring(0, strValue.length() - 2);
+			}
+			return strValue;
 		} else if (cell.getCellTypeEnum() == CellType.STRING) {
 			strValue = cell.getStringCellValue();
 		} else if (cell.getCellTypeEnum() == CellType.FORMULA) {

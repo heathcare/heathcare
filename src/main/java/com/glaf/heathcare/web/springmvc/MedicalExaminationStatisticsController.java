@@ -19,6 +19,8 @@
 package com.glaf.heathcare.web.springmvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +31,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.aliyuncs.utils.StringUtils;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.heathcare.bean.MedicalExaminationEvaluateCountBean;
+import com.glaf.heathcare.domain.GradeInfo;
+import com.glaf.heathcare.service.GradeInfoService;
 
 /**
  * 
@@ -47,6 +53,8 @@ public class MedicalExaminationStatisticsController {
 	protected static final Log logger = LogFactory.getLog(MedicalExaminationStatisticsController.class);
 
 	protected static final Semaphore semaphore1 = new Semaphore(5);
+
+	protected GradeInfoService gradeInfoService;
 
 	public MedicalExaminationStatisticsController() {
 
@@ -98,6 +106,86 @@ public class MedicalExaminationStatisticsController {
 			}
 		}
 		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@RequestMapping("/list1")
+	public ModelAndView list1(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+
+		List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
+		request.setAttribute("gradeInfos", list);
+
+		List<Integer> months = new ArrayList<Integer>();
+		for (int i = 1; i <= 12; i++) {
+			months.add(i);
+		}
+		request.setAttribute("months", months);
+		request.setAttribute("ts", System.currentTimeMillis());
+
+		return new ModelAndView("/heathcare/medicalExaminationStatistics/list1", modelMap);
+	}
+
+	@RequestMapping("/list5")
+	public ModelAndView list5(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+
+		List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
+		request.setAttribute("gradeInfos", list);
+
+		List<Integer> months = new ArrayList<Integer>();
+		for (int i = 1; i <= 12; i++) {
+			months.add(i);
+		}
+		request.setAttribute("months", months);
+		request.setAttribute("ts", System.currentTimeMillis());
+
+		return new ModelAndView("/heathcare/medicalExaminationStatistics/list5", modelMap);
+	}
+
+	@RequestMapping("/list7")
+	public ModelAndView list7(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+
+		List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
+		request.setAttribute("gradeInfos", list);
+
+		List<Integer> months = new ArrayList<Integer>();
+		for (int i = 1; i <= 12; i++) {
+			months.add(i);
+		}
+		request.setAttribute("months", months);
+		request.setAttribute("ts", System.currentTimeMillis());
+
+		return new ModelAndView("/heathcare/medicalExaminationStatistics/list7", modelMap);
+	}
+
+	@RequestMapping
+	public ModelAndView main(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		String tenantId = request.getParameter("tenantId");
+		if (StringUtils.isEmpty(tenantId)) {
+			tenantId = loginContext.getTenantId();
+		}
+		List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(tenantId);
+		request.setAttribute("gradeInfos", list);
+
+		List<Integer> months = new ArrayList<Integer>();
+		for (int i = 1; i <= 12; i++) {
+			months.add(i);
+		}
+		request.setAttribute("months", months);
+		request.setAttribute("ts", System.currentTimeMillis());
+
+		return new ModelAndView("/heathcare/medicalExaminationStatistics/main", modelMap);
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.gradeInfoService")
+	public void setGradeInfoService(GradeInfoService gradeInfoService) {
+		this.gradeInfoService = gradeInfoService;
 	}
 
 }
