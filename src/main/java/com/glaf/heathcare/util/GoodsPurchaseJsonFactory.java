@@ -94,6 +94,9 @@ public class GoodsPurchaseJsonFactory {
 		if (jsonObject.containsKey("supplier")) {
 			model.setSupplier(jsonObject.getString("supplier"));
 		}
+		if (jsonObject.containsKey("supplierId")) {
+			model.setSupplierId(jsonObject.getString("supplierId"));
+		}
 		if (jsonObject.containsKey("contact")) {
 			model.setContact(jsonObject.getString("contact"));
 		}
@@ -178,6 +181,9 @@ public class GoodsPurchaseJsonFactory {
 		}
 		if (model.getSupplier() != null) {
 			jsonObject.put("supplier", model.getSupplier());
+		}
+		if (model.getSupplierId() != null) {
+			jsonObject.put("supplierId", model.getSupplierId());
 		}
 		if (model.getContact() != null) {
 			jsonObject.put("contact", model.getContact());
@@ -269,6 +275,9 @@ public class GoodsPurchaseJsonFactory {
 		}
 		if (model.getSupplier() != null) {
 			jsonObject.put("supplier", model.getSupplier());
+		}
+		if (model.getSupplierId() != null) {
+			jsonObject.put("supplierId", model.getSupplierId());
 		}
 		if (model.getContact() != null) {
 			jsonObject.put("contact", model.getContact());

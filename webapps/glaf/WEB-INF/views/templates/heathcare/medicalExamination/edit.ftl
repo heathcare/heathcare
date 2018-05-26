@@ -71,6 +71,10 @@
 			 });
 	}
 
+	function exportXls(){
+		window.open("${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExamination5&examId=${medicalExamination.id}");
+	}
+
 </script>
 </head>
 <body>
@@ -83,6 +87,9 @@
 	 <#if person.birthday?exists && person.sex?exists>
 	     <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-save'" 
 		    onclick="javascript:saveData();" >保存</a> 
+		 &nbsp;
+		 <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
+		    onclick="javascript:exportXls();" >导出</a> 
 	 <#else>
 	     <span style="font:bold 13px 微软雅黑; color:#ff0033;">性别或出生日期未设置，请先设置才能保存体检信息！</span>
 	 </#if>

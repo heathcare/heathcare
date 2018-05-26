@@ -253,6 +253,20 @@
 		}
 	}
 
+	function chooseSupplier(){
+        var supplierId = document.getElementById("supplierId").value;
+        var link = '${contextPath}/supplier/selectlist?supplierId='+supplierId+'&elementId=supplierId&elementName=supplier';
+        //alert(link);
+		var x=80;
+        var y=80;
+        if(is_ie) {
+        	x=document.body.scrollLeft+event.clientX-event.offsetX-200;
+        	y=document.body.scrollTop+event.clientY-event.offsetY-200;
+        }
+        openWindow(link, self, x, y, 980, 580);
+		//window.open(link);
+	}
+
 </script>
 </head>
 <body>
@@ -386,8 +400,11 @@
 	<tr>
 		<td width="15%" align="left">供货单位</td>
 		<td align="left" colspan="3">
-			<input id="supplier" name="supplier" type="text" style="width:180px;text-align:left;"
-			       class=" x-text" value="${goodsPurchase.supplier}"/>
+		    <input type="hidden" id="supplierId" name="supplierId" value="${goodsPurchase.supplierId}">
+			<input type="text" id="supplier" name="supplier"  style="width:180px;text-align:left;"
+			       class=" x-text" value="${goodsPurchase.supplier}"/>&nbsp;
+			 <img src="${contextPath}/static/images/organization.gif" border="0" 
+			      style="cursor:pointer" onclick="javascript:chooseSupplier();">
 		    &nbsp;联系方式&nbsp; 
 			<input id="contact" name="contact" type="text" style="width:180px;text-align:left;"
 			       class=" x-text" value="${goodsPurchase.contact}"/>

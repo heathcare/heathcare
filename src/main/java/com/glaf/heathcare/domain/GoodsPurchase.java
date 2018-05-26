@@ -179,6 +179,9 @@ public class GoodsPurchase implements Serializable, JSONable {
 	@Column(name = "SUPPLIER_", length = 200)
 	protected String supplier;
 
+	@Column(name = "SUPPLIERID_", length = 50, nullable = false)
+	protected String supplierId;
+
 	/**
 	 * 联系方式
 	 */
@@ -448,6 +451,10 @@ public class GoodsPurchase implements Serializable, JSONable {
 		return supplier;
 	}
 
+	public String getSupplierId() {
+		return supplierId;
+	}
+
 	public String getTableSuffix() {
 		if (tableSuffix == null) {
 			tableSuffix = "";
@@ -628,6 +635,10 @@ public class GoodsPurchase implements Serializable, JSONable {
 
 	public void setSupplier(String supplier) {
 		this.supplier = supplier;
+	}
+
+	public void setSupplierId(String supplierId) {
+		this.supplierId = supplierId;
 	}
 
 	public void setTableSuffix(String tableSuffix) {

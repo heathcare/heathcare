@@ -222,6 +222,9 @@ public class Person implements Serializable, JSONable {
 	@Column(name = "BIRTHDAY_")
 	protected Date birthday;
 
+	@javax.persistence.Transient
+	protected String birthdayString;
+
 	/**
 	 * 出生年份
 	 */
@@ -441,7 +444,7 @@ public class Person implements Serializable, JSONable {
 
 	public String getBirthdayString() {
 		if (this.birthday != null) {
-			return DateUtils.getDateTime(this.birthday);
+			return DateUtils.getDate(this.birthday);
 		}
 		return "";
 	}
@@ -719,6 +722,10 @@ public class Person implements Serializable, JSONable {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public void setBirthdayString(String birthdayString) {
+		this.birthdayString = birthdayString;
 	}
 
 	public void setBirthPlace(String birthPlace) {

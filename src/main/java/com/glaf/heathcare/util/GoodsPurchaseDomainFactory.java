@@ -69,6 +69,7 @@ public class GoodsPurchaseDomainFactory {
 		columnMap.put("proposerName", "PROPOSERNAME_");
 		columnMap.put("batchNo", "BATCHNO_");
 		columnMap.put("supplier", "SUPPLIER_");
+		columnMap.put("supplierId", "SUPPLIERID_");
 		columnMap.put("contact", "CONTACT_");
 		columnMap.put("standard", "STANDARD_");
 		columnMap.put("address", "ADDRESS_");
@@ -101,6 +102,7 @@ public class GoodsPurchaseDomainFactory {
 		javaTypeMap.put("proposerName", "String");
 		javaTypeMap.put("batchNo", "String");
 		javaTypeMap.put("supplier", "String");
+		javaTypeMap.put("supplierId", "String");
 		javaTypeMap.put("contact", "String");
 		javaTypeMap.put("standard", "String");
 		javaTypeMap.put("address", "String");
@@ -347,6 +349,13 @@ public class GoodsPurchaseDomainFactory {
 		supplier.setJavaType("String");
 		supplier.setLength(250);
 		tableDefinition.addColumn(supplier);
+		
+		ColumnDefinition supplierId = new ColumnDefinition();
+		supplierId.setName("supplierId");
+		supplierId.setColumnName("SUPPLIERID_");
+		supplierId.setJavaType("String");
+		supplierId.setLength(50);
+		tableDefinition.addColumn(supplierId);
 
 		ColumnDefinition contact = new ColumnDefinition();
 		contact.setName("contact");

@@ -548,6 +548,9 @@ public class MedicalExamination implements Serializable, JSONable {
 	@Column(name = "CHECKDATE_")
 	protected Date checkDate;
 
+	@javax.persistence.Transient
+	protected String checkDateString;
+
 	/**
 	 * 体检医生
 	 */
@@ -825,7 +828,7 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public String getCheckDateString() {
 		if (this.checkDate != null) {
-			return DateUtils.getDateTime(this.checkDate);
+			return DateUtils.getDate(this.checkDate);
 		}
 		return "";
 	}
@@ -1319,6 +1322,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setCheckDate(Date checkDate) {
 		this.checkDate = checkDate;
+	}
+
+	public void setCheckDateString(String checkDateString) {
+		this.checkDateString = checkDateString;
 	}
 
 	public void setCheckDoctor(String checkDoctor) {

@@ -687,6 +687,7 @@ public class GoodsPurchaseController {
 				goodsPurchase.setProposerName(request.getParameter("proposerName"));
 				goodsPurchase.setBatchNo(request.getParameter("batchNo"));
 				goodsPurchase.setSupplier(request.getParameter("supplier"));
+				goodsPurchase.setSupplierId(request.getParameter("supplierId"));
 				goodsPurchase.setContact(request.getParameter("contact"));
 				goodsPurchase.setStandard(request.getParameter("standard"));
 				goodsPurchase.setAddress(request.getParameter("address"));

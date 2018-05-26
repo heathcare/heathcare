@@ -36,6 +36,8 @@
 		<result property="batchNo" column="BATCHNO_" jdbcType="VARCHAR" />
 		<result property="supplier" column="SUPPLIER_"
 			jdbcType="VARCHAR" />
+		<result property="supplierId" column="SUPPLIERID_"
+			jdbcType="VARCHAR" />
 		<result property="contact" column="CONTACT_" jdbcType="VARCHAR" />
 		<result property="standard" column="STANDARD_"
 			jdbcType="VARCHAR" />
@@ -119,6 +121,9 @@
 			</if>
 			<if test="supplier != null">
 				,SUPPLIER_
+			</if>
+			<if test="supplierId != null">
+				,SUPPLIERID_
 			</if>
 			<if test="contact != null">
 				,CONTACT_
@@ -209,6 +214,9 @@
 			<if test="supplier != null">
 				,#{supplier, jdbcType=VARCHAR}
 			</if>
+			<if test="supplierId != null">
+				,#{supplierId, jdbcType=VARCHAR}
+			</if>
 			<if test="contact != null">
 				,#{contact, jdbcType=VARCHAR}
 			</if>
@@ -263,6 +271,7 @@
 		,PROPOSERNAME_
 		,BATCHNO_
 		,SUPPLIER_
+		,SUPPLIERID_
 		,CONTACT_
 		,STANDARD_
 		,ADDRESS_
@@ -304,6 +313,7 @@
 			,#{goodsPurchase.proposerName, jdbcType=VARCHAR}
 			,#{goodsPurchase.batchNo, jdbcType=VARCHAR}
 			,#{goodsPurchase.supplier, jdbcType=VARCHAR}
+			,#{goodsPurchase.supplierId, jdbcType=VARCHAR}
 			,#{goodsPurchase.contact, jdbcType=VARCHAR}
 			,#{goodsPurchase.standard, jdbcType=VARCHAR}
 			,#{goodsPurchase.address, jdbcType=VARCHAR}
@@ -345,6 +355,7 @@
 			,PROPOSERNAME_
 			,BATCHNO_
 			,SUPPLIER_
+			,SUPPLIERID_
 			,CONTACT_
 			,STANDARD_
 			,ADDRESS_
@@ -387,6 +398,7 @@
 			,#{goodsPurchase.proposerName, jdbcType=VARCHAR}
 			,#{goodsPurchase.batchNo, jdbcType=VARCHAR}
 			,#{goodsPurchase.supplier, jdbcType=VARCHAR}
+			,#{goodsPurchase.supplierId, jdbcType=VARCHAR}
 			,#{goodsPurchase.contact, jdbcType=VARCHAR}
 			,#{goodsPurchase.standard, jdbcType=VARCHAR}
 			,#{goodsPurchase.address, jdbcType=VARCHAR}
