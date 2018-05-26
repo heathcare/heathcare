@@ -21,7 +21,8 @@
 				idField: 'id',
 				columns:[[
 				        {title:'序号',field:'startIndex', width:80, sortable:false},
-						{title:'名称',field:'name', width:180, formatter:formatterName},
+						{title:'名称',field:'name', width:180, formatter:formatterName, sortable:true},
+						{title:'别名',field:'alias', width:180, sortable:true},
 						{title:'食部',field:'radical', width:80, align:"right"},
 						{title:'热能(千卡)',field:'heatEnergy', width:90, align:"right",sortable:true},
 						{title:'蛋白质(克)',field:'protein', width:90, align:"right",sortable:true},
@@ -51,7 +52,7 @@
 	});
 
 	function formatterName(val, row){
-        var str = "<a href='javascript:viewRow(\""+row.id+"\");'>"+val+"</a>";
+        var str = "<a href='javascript:viewRow(\""+row.id+"\");' title='"+row.description+"'>"+val+"</a>";
 	    return str;
 	}
 

@@ -83,7 +83,23 @@ public class DietaryClearBean {
 			JdbcUtils.close(psmt2);
 
 			sqlBuffer.delete(0, sqlBuffer.length());
+			sqlBuffer.append(" delete from HEALTH_DIETARY_STATISTICS").append(" where TENANTID_ = ? ");
+			psmt2 = conn.prepareStatement(sqlBuffer.toString());
+			psmt2.setString(1, tenantId);
+			psmt2.executeUpdate();
+			JdbcUtils.close(psmt2);
+
+			sqlBuffer.delete(0, sqlBuffer.length());
 			sqlBuffer.append(" delete from GOODS_PLAN_QUANTITY").append(IdentityFactory.getTenantHash(tenantId))
+					.append(" where TENANTID_ = ? and FULLDAY_ = ? ");
+			psmt2 = conn.prepareStatement(sqlBuffer.toString());
+			psmt2.setString(1, tenantId);
+			psmt2.setInt(2, fullday);
+			psmt2.executeUpdate();
+			JdbcUtils.close(psmt2);
+
+			sqlBuffer.delete(0, sqlBuffer.length());
+			sqlBuffer.append(" delete from GOODS_PURCHASE_PLAN").append(IdentityFactory.getTenantHash(tenantId))
 					.append(" where TENANTID_ = ? and FULLDAY_ = ? ");
 			psmt2 = conn.prepareStatement(sqlBuffer.toString());
 			psmt2.setString(1, tenantId);

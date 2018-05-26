@@ -37,16 +37,17 @@
 				columns:[[
 						{title:'选择',field: 'chk', width:60, align: 'center', formatter: formatterKey},
 				        {title:'序号', field:'startIndex', width: 60, sortable:false},
-						{title:'名称',field:'name', width:180, align:"left"},
-						{title:'热能(千卡)',field:'heatEnergy', width:90, align:"right"},
-						{title:'蛋白质(克)',field:'protein', width:90, align:"right"},
-						{title:'脂肪(克)',field:'fat', width:90, align:"right"},
-						{title:'碳水化合物(克)',field:'carbohydrate', width:120, align:"right"},
-						{title:'钙(毫克)',field:'calcium', width:90, align:"right"},
-						{title:'铁(毫克)',field:'iron', width:90, align:"right"},
-						{title:'锌(毫克)',field:'zinc', width:90, align:"right"},
-						{title:'碘(毫克)',field:'iodine', width:90, align:"right"},
-						{title:'磷(毫克)',field:'phosphorus', width:90, align:"right"}
+						{title:'名称',field:'name', width:180, formatter:formatterName, align:"left", sortable:true},
+						{title:'别名',field:'alias', width:180, sortable:true},
+						{title:'热能(千卡)',field:'heatEnergy', width:90, align:"right", sortable:true},
+						{title:'蛋白质(克)',field:'protein', width:90, align:"right", sortable:true},
+						{title:'脂肪(克)',field:'fat', width:90, align:"right", sortable:true},
+						{title:'碳水化合物(克)',field:'carbohydrate', width:120, align:"right", sortable:true},
+						{title:'钙(毫克)',field:'calcium', width:90, align:"right", sortable:true},
+						{title:'铁(毫克)',field:'iron', width:90, align:"right", sortable:true},
+						{title:'锌(毫克)',field:'zinc', width:90, align:"right", sortable:true},
+						{title:'碘(毫克)',field:'iodine', width:90, align:"right", sortable:true},
+						{title:'磷(毫克)',field:'phosphorus', width:90, align:"right", sortable:true}
 				]],
 				rownumbers: false,
 				pagination: true,
@@ -64,6 +65,10 @@
 		    });
 	});
 
+    function formatterName(val, row){
+        var str = "<a href='javascript:viewRow(\""+row.id+"\");' title='"+row.description+"'>"+val+"</a>";
+	    return str;
+	}
 
 	function formatterKey(value, row, index) {
 		var s = '<input name="isCheck" type="radio" onclick="javascript:selectedRx(\''+row.id+'\',\''+row.nodeId+'\',\''+row.name+'\')"/> ';
