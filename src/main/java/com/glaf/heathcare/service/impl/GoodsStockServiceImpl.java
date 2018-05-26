@@ -34,11 +34,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.service.ITableDataService;
+import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.GoodsInStock;
 import com.glaf.heathcare.domain.GoodsStock;
 import com.glaf.heathcare.mapper.GoodsInStockMapper;
 import com.glaf.heathcare.mapper.GoodsStockMapper;
 import com.glaf.heathcare.query.GoodsStockQuery;
+import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.service.GoodsStockService;
 
 @Service("com.glaf.heathcare.service.goodsStockService")
@@ -55,6 +57,8 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 	protected GoodsInStockMapper goodsInStockMapper;
 
 	protected GoodsStockMapper goodsStockMapper;
+
+	protected FoodCompositionService foodCompositionService;
 
 	protected ITableDataService tableDataService;
 
@@ -124,6 +128,10 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 
 	@Transactional
 	public void inStock(GoodsStock goodsStock) {
+		FoodComposition fd = foodCompositionService.getFoodComposition(goodsStock.getGoodsId());
+		if (fd == null || StringUtils.equals(fd.getDailyFlag(), "Y")) {// 每日采购的不计算库存
+			return;
+		}
 		if (StringUtils.isEmpty(goodsStock.getId())) {
 			goodsStock.setId(goodsStock.getTenantId() + "_" + goodsStock.getGoodsId());
 		}
@@ -168,6 +176,10 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 	 */
 	@Transactional
 	public void outStock(GoodsStock goodsStock) {
+		FoodComposition fd = foodCompositionService.getFoodComposition(goodsStock.getGoodsId());
+		if (fd == null || StringUtils.equals(fd.getDailyFlag(), "Y")) {// 每日采购的不计算库存
+			return;
+		}
 		if (StringUtils.isEmpty(goodsStock.getId())) {
 			goodsStock.setId(goodsStock.getTenantId() + "_" + goodsStock.getGoodsId());
 		}
@@ -197,6 +209,11 @@ public class GoodsStockServiceImpl implements GoodsStockService {
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.foodCompositionService")
+	public void setFoodCompositionService(FoodCompositionService foodCompositionService) {
+		this.foodCompositionService = foodCompositionService;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.GoodsInStockMapper")

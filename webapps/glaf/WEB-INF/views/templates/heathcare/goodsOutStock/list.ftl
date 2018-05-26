@@ -594,12 +594,12 @@
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:42px" class="toolbar-backgroud"> 
+   <div data-options="region:'north', split:false, border:true" style="height:75px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
     <form id="iForm" name="iForm" method="post" action="">
       <table valign="middle">
        <tr>
-	    <td valign="middle">
+	    <td valign="middle" width="70%">
 			<img src="${contextPath}/static/images/window.png">
 			&nbsp;<span class="x_content_title">物品出库单列表</span>
 			<#if audit == true>
@@ -627,11 +627,11 @@
 			   onclick="javascript:stocklist();">查看库存</a>
 		</td>
 		<td valign="middle">
-		  &nbsp;日期&nbsp;开始&nbsp;
-		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:120px"
+		  &nbsp;开始&nbsp;
+		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:100px"
 		         <#if startTime?exists> value="${startTime}"</#if>>
 		  &nbsp;结束&nbsp;
-		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:120px"
+		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:100px"
 		         <#if endTime?exists> value="${endTime}"</#if>>
 		  &nbsp;
 		  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"

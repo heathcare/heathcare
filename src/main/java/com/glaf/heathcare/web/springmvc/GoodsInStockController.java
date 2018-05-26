@@ -321,8 +321,7 @@ public class GoodsInStockController {
 
 		return new ModelAndView("/heathcare/goodsInStock/batchEdit", modelMap);
 	}
-	
-	
+
 	@ResponseBody
 	@RequestMapping("/cancelAudit")
 	public byte[] cancelAudit(HttpServletRequest request) {
@@ -333,7 +332,8 @@ public class GoodsInStockController {
 			if (loginContext.isTenantAdmin()) {
 				if (id > 0) {
 					goodsInStock = goodsInStockService.getGoodsInStock(loginContext.getTenantId(), id);
-					if (goodsInStock != null && goodsInStock.getBusinessStatus() == 9 && DateUtils.getDaysBetween(goodsInStock.getCreateTime(), new Date()) <= 30) {
+					if (goodsInStock != null && goodsInStock.getBusinessStatus() == 9
+							&& DateUtils.getDaysBetween(goodsInStock.getCreateTime(), new Date()) <= 30) {
 						goodsInStockService.cancelAudit(goodsInStock);
 						return ResponseUtils.responseJsonResult(true);
 					}

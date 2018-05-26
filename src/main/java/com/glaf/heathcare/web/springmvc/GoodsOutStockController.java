@@ -117,6 +117,7 @@ public class GoodsOutStockController {
 			long id = RequestUtils.getLong(request, "id");
 			String ids = request.getParameter("ids");
 			GoodsOutStock goodsOutStock = null;
+			FoodComposition fd = null;
 			try {
 				if (StringUtils.isNotEmpty(ids)) {
 					List<Long> pIds = StringTools.splitToLong(ids);
@@ -126,39 +127,46 @@ public class GoodsOutStockController {
 							if (!StringUtils.equals(loginContext.getTenantId(), goodsOutStock.getTenantId())) {
 								return ResponseUtils.responseJsonResult(false, "出库数据只能所属机构修改。");
 							}
+							fd = foodCompositionService.getFoodComposition(goodsOutStock.getGoodsId());
+							if (fd != null && StringUtils.equals(fd.getDailyFlag(), "Y")) {// 每日采购的不用判断库存
+								goodsOutStock.setBusinessStatus(9);
+								goodsOutStock.setConfirmBy(actorId);
+								goodsOutStock.setConfirmTime(new Date());
+								this.goodsOutStockService.updateGoodsOutStockStatus(goodsOutStock);
+							} else {
+								GoodsInStockQuery query1 = new GoodsInStockQuery();
+								query1.tenantId(loginContext.getTenantId());
+								query1.setGoodsId(goodsOutStock.getGoodsId());
+								query1.businessStatus(9);// 已经确定入库的物品
+								List<GoodsInStock> goods1 = goodsInStockService.list(query1);
 
-							GoodsInStockQuery query1 = new GoodsInStockQuery();
-							query1.tenantId(loginContext.getTenantId());
-							query1.setGoodsId(goodsOutStock.getGoodsId());
-							query1.businessStatus(9);// 已经确定入库的物品
-							List<GoodsInStock> goods1 = goodsInStockService.list(query1);
+								GoodsOutStockQuery query2 = new GoodsOutStockQuery();
+								query2.tenantId(loginContext.getTenantId());
+								query2.setGoodsId(goodsOutStock.getGoodsId());
+								query2.businessStatus(9);// 已经确定出库的物品
+								List<GoodsOutStock> goods2 = goodsOutStockService.list(query2);
 
-							GoodsOutStockQuery query2 = new GoodsOutStockQuery();
-							query2.tenantId(loginContext.getTenantId());
-							query2.setGoodsId(goodsOutStock.getGoodsId());
-							query2.businessStatus(9);// 已经确定出库的物品
-							List<GoodsOutStock> goods2 = goodsOutStockService.list(query2);
-
-							if (goods1 != null && !goods1.isEmpty()) {
-								double existsQty = 0.0;
-								for (GoodsInStock model : goods1) {
-									existsQty = existsQty + model.getQuantity();
-								}
-								if (goods2 != null && !goods2.isEmpty()) {
-									for (GoodsOutStock model : goods2) {
-										existsQty = existsQty - model.getQuantity();
+								if (goods1 != null && !goods1.isEmpty()) {
+									double existsQty = 0.0;
+									for (GoodsInStock model : goods1) {
+										existsQty = existsQty + model.getQuantity();
 									}
-								}
-								existsQty = Math.round(existsQty * 100D) / 100D;
-								if (existsQty > 0 && existsQty >= goodsOutStock.getQuantity()) {
-									goodsOutStock.setBusinessStatus(9);
-									goodsOutStock.setConfirmBy(actorId);
-									goodsOutStock.setConfirmTime(new Date());
-									this.goodsOutStockService.updateGoodsOutStockStatus(goodsOutStock);
-								} else {
-									return ResponseUtils.responseJsonResult(false,
-											goodsOutStock.getGoodsName() + "出库申请数量" + goodsOutStock.getQuantity()
-													+ "已经超过库存数量" + existsQty + "，不能出库。");
+									if (goods2 != null && !goods2.isEmpty()) {
+										for (GoodsOutStock model : goods2) {
+											existsQty = existsQty - model.getQuantity();
+										}
+									}
+									existsQty = Math.round(existsQty * 100D) / 100D;
+									if (existsQty > 0 && existsQty >= goodsOutStock.getQuantity()) {
+										goodsOutStock.setBusinessStatus(9);
+										goodsOutStock.setConfirmBy(actorId);
+										goodsOutStock.setConfirmTime(new Date());
+										this.goodsOutStockService.updateGoodsOutStockStatus(goodsOutStock);
+									} else {
+										return ResponseUtils.responseJsonResult(false,
+												goodsOutStock.getGoodsName() + "出库申请数量" + goodsOutStock.getQuantity()
+														+ "已经超过库存数量" + existsQty + "，不能出库。");
+									}
 								}
 							}
 						}
@@ -1025,51 +1033,70 @@ public class GoodsOutStockController {
 				if (goodsId > 0) {
 					FoodComposition fd = foodCompositionService.getFoodComposition(goodsId);
 					if (fd != null) {
-						goodsOutStock.setGoodsId(goodsId);
-						goodsOutStock.setGoodsName(fd.getName());
-						goodsOutStock.setGoodsNodeId(fd.getNodeId());
+						if (StringUtils.equals(fd.getDailyFlag(), "Y")) {// 每日采购的不用判断库存
+							Tools.populate(goodsOutStock, params);
 
-						GoodsInStockQuery query1 = new GoodsInStockQuery();
-						query1.tenantId(loginContext.getTenantId());
-						query1.businessStatus(9);// 已经确定入库的物品
-						query1.setGoodsId(goodsOutStock.getGoodsId());
-						List<GoodsInStock> goods1 = goodsInStockService.list(query1);
+							goodsOutStock.setGoodsId(goodsId);
+							goodsOutStock.setGoodsName(fd.getName());
+							goodsOutStock.setGoodsNodeId(fd.getNodeId());
+							goodsOutStock.setSemester(SysConfig.getSemester());
+							goodsOutStock.setTenantId(loginContext.getTenantId());
+							goodsOutStock.setOutStockTime(outStockTime);
+							goodsOutStock.setQuantity(quantity);
+							goodsOutStock.setUnit(request.getParameter("unit"));
+							goodsOutStock.setReceiverId(request.getParameter("receiverId"));
+							goodsOutStock.setReceiverName(request.getParameter("receiverName"));
+							goodsOutStock.setRemark(request.getParameter("remark"));
+							goodsOutStock.setCreateBy(actorId);
+							this.goodsOutStockService.save(goodsOutStock);
+							return ResponseUtils.responseJsonResult(true);
+						} else {
+							goodsOutStock.setGoodsId(goodsId);
+							goodsOutStock.setGoodsName(fd.getName());
+							goodsOutStock.setGoodsNodeId(fd.getNodeId());
 
-						GoodsOutStockQuery query2 = new GoodsOutStockQuery();
-						query2.tenantId(loginContext.getTenantId());
-						query2.businessStatus(9);// 已经确定出库的物品
-						query2.setGoodsId(goodsOutStock.getGoodsId());
-						List<GoodsOutStock> goods2 = goodsOutStockService.list(query2);
+							GoodsInStockQuery query1 = new GoodsInStockQuery();
+							query1.tenantId(loginContext.getTenantId());
+							query1.businessStatus(9);// 已经确定入库的物品
+							query1.setGoodsId(goodsOutStock.getGoodsId());
+							List<GoodsInStock> goods1 = goodsInStockService.list(query1);
 
-						if (goods1 != null && !goods1.isEmpty()) {
-							double existsQty = 0.0;
-							for (GoodsInStock model : goods1) {
-								existsQty = existsQty + model.getQuantity();
-							}
-							if (goods2 != null && !goods2.isEmpty()) {
-								for (GoodsOutStock model : goods2) {
-									existsQty = existsQty - model.getQuantity();
+							GoodsOutStockQuery query2 = new GoodsOutStockQuery();
+							query2.tenantId(loginContext.getTenantId());
+							query2.businessStatus(9);// 已经确定出库的物品
+							query2.setGoodsId(goodsOutStock.getGoodsId());
+							List<GoodsOutStock> goods2 = goodsOutStockService.list(query2);
+
+							if (goods1 != null && !goods1.isEmpty()) {
+								double existsQty = 0.0;
+								for (GoodsInStock model : goods1) {
+									existsQty = existsQty + model.getQuantity();
 								}
-							}
-							existsQty = Math.round(existsQty * 100D) / 100D;
-							logger.debug("existsQty:" + existsQty);
-							if (existsQty > 0 && existsQty >= RequestUtils.getDouble(request, "quantity")) {
-								Tools.populate(goodsOutStock, params);
-								goodsOutStock.setSemester(SysConfig.getSemester());
-								goodsOutStock.setTenantId(loginContext.getTenantId());
-								goodsOutStock.setGoodsId(RequestUtils.getLong(request, "goodsId"));
-								goodsOutStock.setOutStockTime(outStockTime);
-								goodsOutStock.setQuantity(quantity);
-								goodsOutStock.setUnit(request.getParameter("unit"));
-								goodsOutStock.setReceiverId(request.getParameter("receiverId"));
-								goodsOutStock.setReceiverName(request.getParameter("receiverName"));
-								goodsOutStock.setRemark(request.getParameter("remark"));
-								goodsOutStock.setCreateBy(actorId);
-								this.goodsOutStockService.save(goodsOutStock);
-								return ResponseUtils.responseJsonResult(true);
-							} else {
-								logger.debug("库存不足，数量不能超过" + existsQty);
-								return ResponseUtils.responseJsonResult(false, "库存不足，数量不能超过" + existsQty);
+								if (goods2 != null && !goods2.isEmpty()) {
+									for (GoodsOutStock model : goods2) {
+										existsQty = existsQty - model.getQuantity();
+									}
+								}
+								existsQty = Math.round(existsQty * 100D) / 100D;
+								logger.debug("existsQty:" + existsQty);
+								if (existsQty > 0 && existsQty >= RequestUtils.getDouble(request, "quantity")) {
+									Tools.populate(goodsOutStock, params);
+									goodsOutStock.setSemester(SysConfig.getSemester());
+									goodsOutStock.setTenantId(loginContext.getTenantId());
+									goodsOutStock.setGoodsId(RequestUtils.getLong(request, "goodsId"));
+									goodsOutStock.setOutStockTime(outStockTime);
+									goodsOutStock.setQuantity(quantity);
+									goodsOutStock.setUnit(request.getParameter("unit"));
+									goodsOutStock.setReceiverId(request.getParameter("receiverId"));
+									goodsOutStock.setReceiverName(request.getParameter("receiverName"));
+									goodsOutStock.setRemark(request.getParameter("remark"));
+									goodsOutStock.setCreateBy(actorId);
+									this.goodsOutStockService.save(goodsOutStock);
+									return ResponseUtils.responseJsonResult(true);
+								} else {
+									logger.debug("库存不足，数量不能超过" + existsQty);
+									return ResponseUtils.responseJsonResult(false, "库存不足，数量不能超过" + existsQty);
+								}
 							}
 						}
 					}
