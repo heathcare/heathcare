@@ -121,6 +121,8 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements ITenant
 
 			List<MedicalExaminationEvaluate> rows1 = new ArrayList<MedicalExaminationEvaluate>();
 			List<MedicalExaminationEvaluate> rows2 = new ArrayList<MedicalExaminationEvaluate>();
+			List<MedicalExaminationEvaluate> rows3 = new ArrayList<MedicalExaminationEvaluate>();
+			List<MedicalExaminationEvaluate> rows4 = new ArrayList<MedicalExaminationEvaluate>();
 
 			if (grades != null && !grades.isEmpty()) {
 				Date checkDate = null;
@@ -153,13 +155,21 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements ITenant
 								param0 = param0 + 1;
 								break;
 							}
-							if (rows1.size() < 40) {
+							if (rows1.size() < 20) {
 								if (checkDate == null) {
 									checkDate = me.getCheckDate();
 								}
 								rows1.add(me);
 							} else {
-								rows2.add(me);
+								if (rows2.size() < 20) {
+									rows2.add(me);
+								} else {
+									if (rows3.size() < 20) {
+										rows3.add(me);
+									} else {
+										rows4.add(me);
+									}
+								}
 							}
 						}
 					}
@@ -167,6 +177,8 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements ITenant
 
 				params.put("rows1", rows1);
 				params.put("rows2", rows2);
+				params.put("rows3", rows3);
+				params.put("rows4", rows4);
 				params.put("param0", param0);
 				params.put("param1", param1);
 				params.put("param2", param2);

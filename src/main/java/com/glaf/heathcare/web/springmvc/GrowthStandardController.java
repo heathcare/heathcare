@@ -115,6 +115,10 @@ public class GrowthStandardController {
 
 		GrowthStandard growthStandard = growthStandardService.getGrowthStandard(RequestUtils.getLong(request, "id"));
 		if (growthStandard != null) {
+			if (growthStandard.getAgeOfTheMoon() > 0) {
+				growthStandard.setAge(growthStandard.getAgeOfTheMoon() / 12);
+				growthStandard.setMonth(growthStandard.getAgeOfTheMoon() % 12);
+			}
 			request.setAttribute("growthStandard", growthStandard);
 		}
 

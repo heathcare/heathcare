@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
@@ -44,6 +46,7 @@ import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.service.MedicalExaminationService;
 
 public class MedicalExaminationCountPreprocessor implements IReportPreprocessor {
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
@@ -152,7 +155,11 @@ public class MedicalExaminationCountPreprocessor implements IReportPreprocessor 
 							cnt.setMeanWeightNormal(cnt.getMeanWeightNormal() + 1);// 体重正常人数
 						}
 
-						if (ex.getWeightLevel() <= -2) {
+						if (ex.getWeightLevel() <= -3) {
+							cnt.setMeanWeightSkinny(cnt.getMeanWeightSkinny() + 1);// 消瘦人数
+						}
+
+						if (ex.getWeightLevel() <= -2 && ex.getWeightLevel() > -3) {
 							cnt.setMeanWeightLow(cnt.getMeanWeightLow() + 1);// 体重低于2SD人数
 						}
 
@@ -182,6 +189,8 @@ public class MedicalExaminationCountPreprocessor implements IReportPreprocessor 
 
 						if (ex.getWeightLevel() == 0) {
 							cnt.setPrctileWeightAgeNormal(cnt.getPrctileWeightAgeNormal() + 1); // W/A正常人数(年龄别体重)
+						} else {
+							logger.debug("ex.getWeightLevel():" + ex.getWeightLevel());
 						}
 
 						if (ex.getHeightLevel() <= -2) {
@@ -200,25 +209,33 @@ public class MedicalExaminationCountPreprocessor implements IReportPreprocessor 
 				if (cnt.getTotalPerson() > 0 && cnt.getCheckPerson() > 0) {
 					cnt.setCheckPercent(Math.round(cnt.getCheckPerson() * 100.0D / cnt.getTotalPerson()));
 					cnt.setMeanHeightLowPercent(Math.round(cnt.getMeanHeightLow() * 100.0D / cnt.getCheckPerson()));
-					cnt.setMeanHeightNormalPercent(Math.round(cnt.getMeanHeightNormal() * 100.0D / cnt.getCheckPerson()));
+					cnt.setMeanHeightNormalPercent(
+							Math.round(cnt.getMeanHeightNormal() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanOverWeightPercent(Math.round(cnt.getMeanOverWeight() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanWeightLowPercent(Math.round(cnt.getMeanWeightLow() * 100.0D / cnt.getCheckPerson()));
-					cnt.setMeanWeightNormalPercent(Math.round(cnt.getMeanWeightNormal() * 100.0D / cnt.getCheckPerson()));
-					cnt.setMeanWeightObesityPercent(Math.round(cnt.getMeanWeightObesity() * 100.0D / cnt.getCheckPerson()));
-					cnt.setMeanWeightSkinnyPercent(Math.round(cnt.getMeanWeightSkinny() * 100.0D / cnt.getCheckPerson()));
+					cnt.setMeanWeightNormalPercent(
+							Math.round(cnt.getMeanWeightNormal() * 100.0D / cnt.getCheckPerson()));
+					cnt.setMeanWeightObesityPercent(
+							Math.round(cnt.getMeanWeightObesity() * 100.0D / cnt.getCheckPerson()));
+					cnt.setMeanWeightSkinnyPercent(
+							Math.round(cnt.getMeanWeightSkinny() * 100.0D / cnt.getCheckPerson()));
 
-					cnt.setPrctileHeightAgeLowPercent(Math.round(cnt.getPrctileHeightAgeLow() * 100.0D / cnt.getCheckPerson()));
-					cnt.setPrctileHeightAgeNormalPercent(Math.round(
-							cnt.getPrctileHeightAgeNormal() * 100.0D / cnt.getCheckPerson()));
-					cnt.setPrctileOverWeightPercent(Math.round(cnt.getPrctileOverWeight() * 100.0D / cnt.getCheckPerson()));
-					cnt.setPrctileWeightAgeLowPercent(Math.round(cnt.getPrctileWeightAgeLow() * 100.0D / cnt.getCheckPerson()));
-					cnt.setPrctileWeightAgeNormalPercent(Math.round(
-							cnt.getPrctileWeightAgeNormal() * 100.0D / cnt.getCheckPerson()));
-					cnt.setPrctileWeightHeightLowPercent(Math.round(
-							cnt.getPrctileWeightHeightLow() * 100.0D / cnt.getCheckPerson()));
-					cnt.setPrctileWeightHeightNormalPercent(Math.round(
-							cnt.getPrctileWeightHeightNormal() * 100.0D / cnt.getCheckPerson()));
-					cnt.setPrctileWeightObesityPercent(Math.round(cnt.getPrctileWeightObesity() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileHeightAgeLowPercent(
+							Math.round(cnt.getPrctileHeightAgeLow() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileHeightAgeNormalPercent(
+							Math.round(cnt.getPrctileHeightAgeNormal() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileOverWeightPercent(
+							Math.round(cnt.getPrctileOverWeight() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileWeightAgeLowPercent(
+							Math.round(cnt.getPrctileWeightAgeLow() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileWeightAgeNormalPercent(
+							Math.round(cnt.getPrctileWeightAgeNormal() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileWeightHeightLowPercent(
+							Math.round(cnt.getPrctileWeightHeightLow() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileWeightHeightNormalPercent(
+							Math.round(cnt.getPrctileWeightHeightNormal() * 100.0D / cnt.getCheckPerson()));
+					cnt.setPrctileWeightObesityPercent(
+							Math.round(cnt.getPrctileWeightObesity() * 100.0D / cnt.getCheckPerson()));
 
 				}
 			}
