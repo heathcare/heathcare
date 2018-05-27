@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.core.context.ContextFactory;
@@ -45,13 +48,13 @@ import com.glaf.heathcare.service.FoodDRIService;
 import com.glaf.heathcare.service.GoodsActualQuantityService;
 
 public class WeeklyFoodNutritionCountPreprocessor implements IReportPreprocessor {
+	protected static final Log logger = LogFactory.getLog(WeeklyFoodNutritionCountPreprocessor.class);
 
 	@Override
 	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
 		Date startDate = ParamUtils.getDate(params, "startDate");
 		Date endDate = ParamUtils.getDate(params, "endDate");
 		if (startDate != null && endDate != null) {
-
 			FoodCompositionService foodCompositionService = ContextFactory
 					.getBean("com.glaf.heathcare.service.foodCompositionService");
 			GoodsActualQuantityService goodsActualQuantityService = ContextFactory
@@ -107,7 +110,7 @@ public class WeeklyFoodNutritionCountPreprocessor implements IReportPreprocessor
 
 			List<GoodsActualQuantity> rows = goodsActualQuantityService.list(q3);
 
-			if (totalPerson > 0 && rows != null && !rows.isEmpty()) {
+			if (rows != null && !rows.isEmpty()) {
 				Map<Long, FoodComposition> foodMap2 = new HashMap<Long, FoodComposition>();
 
 				FoodComposition fd = null;
@@ -443,319 +446,331 @@ public class WeeklyFoodNutritionCountPreprocessor implements IReportPreprocessor
 					}
 				}
 
-				total.setQuantity(total.getQuantity() * 1000D / totalPerson);
-				total.setHeatEnergy(total.getHeatEnergy() * 1000D / totalPerson);
-				total.setProtein(total.getProtein() * 1000D / totalPerson);
-				total.setFat(total.getFat() * 1000D / totalPerson);
-				total.setCarbohydrate(total.getCarbohydrate() * 1000D / totalPerson);
-				total.setVitaminA(total.getVitaminA() * 1000D / totalPerson);
-				total.setVitaminB1(total.getVitaminB1() * 1000D / totalPerson);
-				total.setVitaminB2(total.getVitaminB2() * 1000D / totalPerson);
-				total.setVitaminB6(total.getVitaminB6() * 1000D / totalPerson);
-				total.setVitaminB12(total.getVitaminB12() * 1000D / totalPerson);
-				total.setVitaminC(total.getVitaminC() * 1000D / totalPerson);
-				total.setVitaminE(total.getVitaminE() * 1000D / totalPerson);
-				total.setNicotinicCid(total.getNicotinicCid() * 1000D / totalPerson);
-				total.setRetinol(total.getRetinol() * 1000D / totalPerson);
-				total.setCalcium(total.getCalcium() * 1000D / totalPerson);
-				total.setIron(total.getIron() * 1000D / totalPerson);
-				total.setZinc(total.getZinc() * 1000D / totalPerson);
-				total.setIodine(total.getIodine() * 1000D / totalPerson);
-				total.setPhosphorus(total.getPhosphorus() * 1000D / totalPerson);
+				if (totalPerson > 0) {
+					total.setQuantity(total.getQuantity() * 1000D / totalPerson);
+					total.setHeatEnergy(total.getHeatEnergy() * 1000D / totalPerson);
+					total.setProtein(total.getProtein() * 1000D / totalPerson);
+					total.setFat(total.getFat() * 1000D / totalPerson);
+					total.setCarbohydrate(total.getCarbohydrate() * 1000D / totalPerson);
+					total.setVitaminA(total.getVitaminA() * 1000D / totalPerson);
+					total.setVitaminB1(total.getVitaminB1() * 1000D / totalPerson);
+					total.setVitaminB2(total.getVitaminB2() * 1000D / totalPerson);
+					total.setVitaminB6(total.getVitaminB6() * 1000D / totalPerson);
+					total.setVitaminB12(total.getVitaminB12() * 1000D / totalPerson);
+					total.setVitaminC(total.getVitaminC() * 1000D / totalPerson);
+					total.setVitaminE(total.getVitaminE() * 1000D / totalPerson);
+					total.setNicotinicCid(total.getNicotinicCid() * 1000D / totalPerson);
+					total.setRetinol(total.getRetinol() * 1000D / totalPerson);
+					total.setCalcium(total.getCalcium() * 1000D / totalPerson);
+					total.setIron(total.getIron() * 1000D / totalPerson);
+					total.setZinc(total.getZinc() * 1000D / totalPerson);
+					total.setIodine(total.getIodine() * 1000D / totalPerson);
+					total.setPhosphorus(total.getPhosphorus() * 1000D / totalPerson);
 
-				subtotal0.setQuantity(subtotal0.getQuantity() * 1000D / totalPerson);
-				subtotal0.setHeatEnergy(subtotal0.getHeatEnergy() * 1000D / totalPerson);
-				subtotal0.setProtein(subtotal0.getProtein() * 1000D / totalPerson);
-				subtotal0.setFat(subtotal0.getFat() * 1000D / totalPerson);
-				subtotal0.setCarbohydrate(subtotal0.getCarbohydrate() * 1000D / totalPerson);
-				subtotal0.setVitaminA(subtotal0.getVitaminA() * 1000D / totalPerson);
-				subtotal0.setVitaminB1(subtotal0.getVitaminB1() * 1000D / totalPerson);
-				subtotal0.setVitaminB2(subtotal0.getVitaminB2() * 1000D / totalPerson);
-				subtotal0.setVitaminB6(subtotal0.getVitaminB6() * 1000D / totalPerson);
-				subtotal0.setVitaminB12(subtotal0.getVitaminB12() * 1000D / totalPerson);
-				subtotal0.setVitaminC(subtotal0.getVitaminC() * 1000D / totalPerson);
-				subtotal0.setVitaminE(subtotal0.getVitaminE() * 1000D / totalPerson);
-				subtotal0.setNicotinicCid(subtotal0.getNicotinicCid() * 1000D / totalPerson);
-				subtotal0.setRetinol(subtotal0.getRetinol() * 1000D / totalPerson);
-				subtotal0.setCalcium(subtotal0.getCalcium() * 1000D / totalPerson);
-				subtotal0.setIron(subtotal0.getIron() * 1000D / totalPerson);
-				subtotal0.setZinc(subtotal0.getZinc() * 1000D / totalPerson);
-				subtotal0.setIodine(subtotal0.getIodine() * 1000D / totalPerson);
-				subtotal0.setPhosphorus(subtotal0.getPhosphorus() * 1000D / totalPerson);
+					subtotal0.setQuantity(subtotal0.getQuantity() * 1000D / totalPerson);
+					subtotal0.setHeatEnergy(subtotal0.getHeatEnergy() * 1000D / totalPerson);
+					subtotal0.setProtein(subtotal0.getProtein() * 1000D / totalPerson);
+					subtotal0.setFat(subtotal0.getFat() * 1000D / totalPerson);
+					subtotal0.setCarbohydrate(subtotal0.getCarbohydrate() * 1000D / totalPerson);
+					subtotal0.setVitaminA(subtotal0.getVitaminA() * 1000D / totalPerson);
+					subtotal0.setVitaminB1(subtotal0.getVitaminB1() * 1000D / totalPerson);
+					subtotal0.setVitaminB2(subtotal0.getVitaminB2() * 1000D / totalPerson);
+					subtotal0.setVitaminB6(subtotal0.getVitaminB6() * 1000D / totalPerson);
+					subtotal0.setVitaminB12(subtotal0.getVitaminB12() * 1000D / totalPerson);
+					subtotal0.setVitaminC(subtotal0.getVitaminC() * 1000D / totalPerson);
+					subtotal0.setVitaminE(subtotal0.getVitaminE() * 1000D / totalPerson);
+					subtotal0.setNicotinicCid(subtotal0.getNicotinicCid() * 1000D / totalPerson);
+					subtotal0.setRetinol(subtotal0.getRetinol() * 1000D / totalPerson);
+					subtotal0.setCalcium(subtotal0.getCalcium() * 1000D / totalPerson);
+					subtotal0.setIron(subtotal0.getIron() * 1000D / totalPerson);
+					subtotal0.setZinc(subtotal0.getZinc() * 1000D / totalPerson);
+					subtotal0.setIodine(subtotal0.getIodine() * 1000D / totalPerson);
+					subtotal0.setPhosphorus(subtotal0.getPhosphorus() * 1000D / totalPerson);
 
-				subtotal1.setQuantity(subtotal1.getQuantity() * 1000D / totalPerson);
-				subtotal1.setHeatEnergy(subtotal1.getHeatEnergy() * 1000D / totalPerson);
-				subtotal1.setProtein(subtotal1.getProtein() * 1000D / totalPerson);
-				subtotal1.setFat(subtotal1.getFat() * 1000D / totalPerson);
-				subtotal1.setCarbohydrate(subtotal1.getCarbohydrate() * 1000D / totalPerson);
-				subtotal1.setVitaminA(subtotal1.getVitaminA() * 1000D / totalPerson);
-				subtotal1.setVitaminB1(subtotal1.getVitaminB1() * 1000D / totalPerson);
-				subtotal1.setVitaminB2(subtotal1.getVitaminB2() * 1000D / totalPerson);
-				subtotal1.setVitaminB6(subtotal1.getVitaminB6() * 1000D / totalPerson);
-				subtotal1.setVitaminB12(subtotal1.getVitaminB12() * 1000D / totalPerson);
-				subtotal1.setVitaminC(subtotal1.getVitaminC() * 1000D / totalPerson);
-				subtotal1.setVitaminE(subtotal1.getVitaminE() * 1000D / totalPerson);
-				subtotal1.setNicotinicCid(subtotal1.getNicotinicCid() * 1000D / totalPerson);
-				subtotal1.setRetinol(subtotal1.getRetinol() * 1000D / totalPerson);
-				subtotal1.setCalcium(subtotal1.getCalcium() * 1000D / totalPerson);
-				subtotal1.setIron(subtotal1.getIron() * 1000D / totalPerson);
-				subtotal1.setZinc(subtotal1.getZinc() * 1000D / totalPerson);
-				subtotal1.setIodine(subtotal1.getIodine() * 1000D / totalPerson);
-				subtotal1.setPhosphorus(subtotal1.getPhosphorus() * 1000D / totalPerson);
+					subtotal1.setQuantity(subtotal1.getQuantity() * 1000D / totalPerson);
+					subtotal1.setHeatEnergy(subtotal1.getHeatEnergy() * 1000D / totalPerson);
+					subtotal1.setProtein(subtotal1.getProtein() * 1000D / totalPerson);
+					subtotal1.setFat(subtotal1.getFat() * 1000D / totalPerson);
+					subtotal1.setCarbohydrate(subtotal1.getCarbohydrate() * 1000D / totalPerson);
+					subtotal1.setVitaminA(subtotal1.getVitaminA() * 1000D / totalPerson);
+					subtotal1.setVitaminB1(subtotal1.getVitaminB1() * 1000D / totalPerson);
+					subtotal1.setVitaminB2(subtotal1.getVitaminB2() * 1000D / totalPerson);
+					subtotal1.setVitaminB6(subtotal1.getVitaminB6() * 1000D / totalPerson);
+					subtotal1.setVitaminB12(subtotal1.getVitaminB12() * 1000D / totalPerson);
+					subtotal1.setVitaminC(subtotal1.getVitaminC() * 1000D / totalPerson);
+					subtotal1.setVitaminE(subtotal1.getVitaminE() * 1000D / totalPerson);
+					subtotal1.setNicotinicCid(subtotal1.getNicotinicCid() * 1000D / totalPerson);
+					subtotal1.setRetinol(subtotal1.getRetinol() * 1000D / totalPerson);
+					subtotal1.setCalcium(subtotal1.getCalcium() * 1000D / totalPerson);
+					subtotal1.setIron(subtotal1.getIron() * 1000D / totalPerson);
+					subtotal1.setZinc(subtotal1.getZinc() * 1000D / totalPerson);
+					subtotal1.setIodine(subtotal1.getIodine() * 1000D / totalPerson);
+					subtotal1.setPhosphorus(subtotal1.getPhosphorus() * 1000D / totalPerson);
 
-				subtotal2.setQuantity(subtotal2.getQuantity() * 1000D / totalPerson);
-				subtotal2.setHeatEnergy(subtotal2.getHeatEnergy() * 1000D / totalPerson);
-				subtotal2.setProtein(subtotal2.getProtein() * 1000D / totalPerson);
-				subtotal2.setFat(subtotal2.getFat() * 1000D / totalPerson);
-				subtotal2.setCarbohydrate(subtotal2.getCarbohydrate() * 1000D / totalPerson);
-				subtotal2.setVitaminA(subtotal2.getVitaminA() * 1000D / totalPerson);
-				subtotal2.setVitaminB1(subtotal2.getVitaminB1() * 1000D / totalPerson);
-				subtotal2.setVitaminB2(subtotal2.getVitaminB2() * 1000D / totalPerson);
-				subtotal2.setVitaminB6(subtotal2.getVitaminB6() * 1000D / totalPerson);
-				subtotal2.setVitaminB12(subtotal2.getVitaminB12() * 1000D / totalPerson);
-				subtotal2.setVitaminC(subtotal2.getVitaminC() * 1000D / totalPerson);
-				subtotal2.setVitaminE(subtotal2.getVitaminE() * 1000D / totalPerson);
-				subtotal2.setNicotinicCid(subtotal2.getNicotinicCid() * 1000D / totalPerson);
-				subtotal2.setRetinol(subtotal2.getRetinol() * 1000D / totalPerson);
-				subtotal2.setCalcium(subtotal2.getCalcium() * 1000D / totalPerson);
-				subtotal2.setIron(subtotal2.getIron() * 1000D / totalPerson);
-				subtotal2.setZinc(subtotal2.getZinc() * 1000D / totalPerson);
-				subtotal2.setIodine(subtotal2.getIodine() * 1000D / totalPerson);
-				subtotal2.setPhosphorus(subtotal2.getPhosphorus() * 1000D / totalPerson);
+					subtotal2.setQuantity(subtotal2.getQuantity() * 1000D / totalPerson);
+					subtotal2.setHeatEnergy(subtotal2.getHeatEnergy() * 1000D / totalPerson);
+					subtotal2.setProtein(subtotal2.getProtein() * 1000D / totalPerson);
+					subtotal2.setFat(subtotal2.getFat() * 1000D / totalPerson);
+					subtotal2.setCarbohydrate(subtotal2.getCarbohydrate() * 1000D / totalPerson);
+					subtotal2.setVitaminA(subtotal2.getVitaminA() * 1000D / totalPerson);
+					subtotal2.setVitaminB1(subtotal2.getVitaminB1() * 1000D / totalPerson);
+					subtotal2.setVitaminB2(subtotal2.getVitaminB2() * 1000D / totalPerson);
+					subtotal2.setVitaminB6(subtotal2.getVitaminB6() * 1000D / totalPerson);
+					subtotal2.setVitaminB12(subtotal2.getVitaminB12() * 1000D / totalPerson);
+					subtotal2.setVitaminC(subtotal2.getVitaminC() * 1000D / totalPerson);
+					subtotal2.setVitaminE(subtotal2.getVitaminE() * 1000D / totalPerson);
+					subtotal2.setNicotinicCid(subtotal2.getNicotinicCid() * 1000D / totalPerson);
+					subtotal2.setRetinol(subtotal2.getRetinol() * 1000D / totalPerson);
+					subtotal2.setCalcium(subtotal2.getCalcium() * 1000D / totalPerson);
+					subtotal2.setIron(subtotal2.getIron() * 1000D / totalPerson);
+					subtotal2.setZinc(subtotal2.getZinc() * 1000D / totalPerson);
+					subtotal2.setIodine(subtotal2.getIodine() * 1000D / totalPerson);
+					subtotal2.setPhosphorus(subtotal2.getPhosphorus() * 1000D / totalPerson);
 
-				subtotal3.setQuantity(subtotal3.getQuantity() * 1000D / totalPerson);
-				subtotal3.setHeatEnergy(subtotal3.getHeatEnergy() * 1000D / totalPerson);
-				subtotal3.setProtein(subtotal3.getProtein() * 1000D / totalPerson);
-				subtotal3.setFat(subtotal3.getFat() * 1000D / totalPerson);
-				subtotal3.setCarbohydrate(subtotal3.getCarbohydrate() * 1000D / totalPerson);
-				subtotal3.setVitaminA(subtotal3.getVitaminA() * 1000D / totalPerson);
-				subtotal3.setVitaminB1(subtotal3.getVitaminB1() * 1000D / totalPerson);
-				subtotal3.setVitaminB2(subtotal3.getVitaminB2() * 1000D / totalPerson);
-				subtotal3.setVitaminB6(subtotal3.getVitaminB6() * 1000D / totalPerson);
-				subtotal3.setVitaminB12(subtotal3.getVitaminB12() * 1000D / totalPerson);
-				subtotal3.setVitaminC(subtotal3.getVitaminC() * 1000D / totalPerson);
-				subtotal3.setVitaminE(subtotal3.getVitaminE() * 1000D / totalPerson);
-				subtotal3.setNicotinicCid(subtotal3.getNicotinicCid() * 1000D / totalPerson);
-				subtotal3.setRetinol(subtotal3.getRetinol() * 1000D / totalPerson);
-				subtotal3.setCalcium(subtotal3.getCalcium() * 1000D / totalPerson);
-				subtotal3.setIron(subtotal3.getIron() * 1000D / totalPerson);
-				subtotal3.setZinc(subtotal3.getZinc() * 1000D / totalPerson);
-				subtotal3.setIodine(subtotal3.getIodine() * 1000D / totalPerson);
-				subtotal3.setPhosphorus(subtotal3.getPhosphorus() * 1000D / totalPerson);
+					subtotal3.setQuantity(subtotal3.getQuantity() * 1000D / totalPerson);
+					subtotal3.setHeatEnergy(subtotal3.getHeatEnergy() * 1000D / totalPerson);
+					subtotal3.setProtein(subtotal3.getProtein() * 1000D / totalPerson);
+					subtotal3.setFat(subtotal3.getFat() * 1000D / totalPerson);
+					subtotal3.setCarbohydrate(subtotal3.getCarbohydrate() * 1000D / totalPerson);
+					subtotal3.setVitaminA(subtotal3.getVitaminA() * 1000D / totalPerson);
+					subtotal3.setVitaminB1(subtotal3.getVitaminB1() * 1000D / totalPerson);
+					subtotal3.setVitaminB2(subtotal3.getVitaminB2() * 1000D / totalPerson);
+					subtotal3.setVitaminB6(subtotal3.getVitaminB6() * 1000D / totalPerson);
+					subtotal3.setVitaminB12(subtotal3.getVitaminB12() * 1000D / totalPerson);
+					subtotal3.setVitaminC(subtotal3.getVitaminC() * 1000D / totalPerson);
+					subtotal3.setVitaminE(subtotal3.getVitaminE() * 1000D / totalPerson);
+					subtotal3.setNicotinicCid(subtotal3.getNicotinicCid() * 1000D / totalPerson);
+					subtotal3.setRetinol(subtotal3.getRetinol() * 1000D / totalPerson);
+					subtotal3.setCalcium(subtotal3.getCalcium() * 1000D / totalPerson);
+					subtotal3.setIron(subtotal3.getIron() * 1000D / totalPerson);
+					subtotal3.setZinc(subtotal3.getZinc() * 1000D / totalPerson);
+					subtotal3.setIodine(subtotal3.getIodine() * 1000D / totalPerson);
+					subtotal3.setPhosphorus(subtotal3.getPhosphorus() * 1000D / totalPerson);
 
-				int days = 1;// 已经折算人数了，故系数为1
+					int days = 1;// 已经折算人数了，故系数为1
 
-				FoodComposition avg0 = new FoodComposition();
-				avg0.setQuantity(subtotal0.getQuantity() / days);
-				avg0.setHeatEnergy(subtotal0.getHeatEnergy() / days);
-				avg0.setProtein(subtotal0.getProtein() / days);
-				avg0.setFat(subtotal0.getFat() / days);
-				avg0.setCarbohydrate(subtotal0.getCarbohydrate() / days);
-				avg0.setVitaminA(subtotal0.getVitaminA() / days);
-				avg0.setVitaminB1(subtotal0.getVitaminB1() / days);
-				avg0.setVitaminB2(subtotal0.getVitaminB2() / days);
-				avg0.setVitaminB6(subtotal0.getVitaminB6() / days);
-				avg0.setVitaminB12(subtotal0.getVitaminB12() / days);
-				avg0.setVitaminC(subtotal0.getVitaminC() / days);
-				avg0.setVitaminE(subtotal0.getVitaminE() / days);
-				avg0.setNicotinicCid(subtotal0.getNicotinicCid() / days);
-				avg0.setRetinol(subtotal0.getRetinol() / days);
-				avg0.setCalcium(subtotal0.getCalcium() / days);
-				avg0.setIron(subtotal0.getIron() / days);
-				avg0.setZinc(subtotal0.getZinc() / days);
-				avg0.setIodine(subtotal0.getIodine() / days);
-				avg0.setPhosphorus(subtotal0.getPhosphorus() / days);
+					FoodComposition avg0 = new FoodComposition();
+					avg0.setQuantity(subtotal0.getQuantity() / days);
+					avg0.setHeatEnergy(subtotal0.getHeatEnergy() / days);
+					avg0.setProtein(subtotal0.getProtein() / days);
+					avg0.setFat(subtotal0.getFat() / days);
+					avg0.setCarbohydrate(subtotal0.getCarbohydrate() / days);
+					avg0.setVitaminA(subtotal0.getVitaminA() / days);
+					avg0.setVitaminB1(subtotal0.getVitaminB1() / days);
+					avg0.setVitaminB2(subtotal0.getVitaminB2() / days);
+					avg0.setVitaminB6(subtotal0.getVitaminB6() / days);
+					avg0.setVitaminB12(subtotal0.getVitaminB12() / days);
+					avg0.setVitaminC(subtotal0.getVitaminC() / days);
+					avg0.setVitaminE(subtotal0.getVitaminE() / days);
+					avg0.setNicotinicCid(subtotal0.getNicotinicCid() / days);
+					avg0.setRetinol(subtotal0.getRetinol() / days);
+					avg0.setCalcium(subtotal0.getCalcium() / days);
+					avg0.setIron(subtotal0.getIron() / days);
+					avg0.setZinc(subtotal0.getZinc() / days);
+					avg0.setIodine(subtotal0.getIodine() / days);
+					avg0.setPhosphorus(subtotal0.getPhosphorus() / days);
 
-				FoodComposition avg1 = new FoodComposition();
-				avg1.setQuantity(subtotal1.getQuantity() / days);
-				avg1.setHeatEnergy(subtotal1.getHeatEnergy() / days);
-				avg1.setProtein(subtotal1.getProtein() / days);
-				avg1.setFat(subtotal1.getFat() / days);
-				avg1.setCarbohydrate(subtotal1.getCarbohydrate() / days);
-				avg1.setVitaminA(subtotal1.getVitaminA() / days);
-				avg1.setVitaminB1(subtotal1.getVitaminB1() / days);
-				avg1.setVitaminB2(subtotal1.getVitaminB2() / days);
-				avg1.setVitaminB6(subtotal1.getVitaminB6() / days);
-				avg1.setVitaminB12(subtotal1.getVitaminB12() / days);
-				avg1.setVitaminC(subtotal1.getVitaminC() / days);
-				avg1.setVitaminE(subtotal1.getVitaminE() / days);
-				avg1.setNicotinicCid(subtotal1.getNicotinicCid() / days);
-				avg1.setRetinol(subtotal1.getRetinol() / days);
-				avg1.setCalcium(subtotal1.getCalcium() / days);
-				avg1.setIron(subtotal1.getIron() / days);
-				avg1.setZinc(subtotal1.getZinc() / days);
-				avg1.setIodine(subtotal1.getIodine() / days);
-				avg1.setPhosphorus(subtotal1.getPhosphorus() / days);
+					FoodComposition avg1 = new FoodComposition();
+					avg1.setQuantity(subtotal1.getQuantity() / days);
+					avg1.setHeatEnergy(subtotal1.getHeatEnergy() / days);
+					avg1.setProtein(subtotal1.getProtein() / days);
+					avg1.setFat(subtotal1.getFat() / days);
+					avg1.setCarbohydrate(subtotal1.getCarbohydrate() / days);
+					avg1.setVitaminA(subtotal1.getVitaminA() / days);
+					avg1.setVitaminB1(subtotal1.getVitaminB1() / days);
+					avg1.setVitaminB2(subtotal1.getVitaminB2() / days);
+					avg1.setVitaminB6(subtotal1.getVitaminB6() / days);
+					avg1.setVitaminB12(subtotal1.getVitaminB12() / days);
+					avg1.setVitaminC(subtotal1.getVitaminC() / days);
+					avg1.setVitaminE(subtotal1.getVitaminE() / days);
+					avg1.setNicotinicCid(subtotal1.getNicotinicCid() / days);
+					avg1.setRetinol(subtotal1.getRetinol() / days);
+					avg1.setCalcium(subtotal1.getCalcium() / days);
+					avg1.setIron(subtotal1.getIron() / days);
+					avg1.setZinc(subtotal1.getZinc() / days);
+					avg1.setIodine(subtotal1.getIodine() / days);
+					avg1.setPhosphorus(subtotal1.getPhosphorus() / days);
 
-				FoodComposition avg2 = new FoodComposition();
-				avg2.setQuantity(subtotal2.getQuantity() / days);
-				avg2.setHeatEnergy(subtotal2.getHeatEnergy() / days);
-				avg2.setProtein(subtotal2.getProtein() / days);
-				avg2.setFat(subtotal2.getFat() / days);
-				avg2.setCarbohydrate(subtotal2.getCarbohydrate() / days);
-				avg2.setVitaminA(subtotal2.getVitaminA() / days);
-				avg2.setVitaminB1(subtotal2.getVitaminB1() / days);
-				avg2.setVitaminB2(subtotal2.getVitaminB2() / days);
-				avg2.setVitaminB6(subtotal2.getVitaminB6() / days);
-				avg2.setVitaminB12(subtotal2.getVitaminB12() / days);
-				avg2.setVitaminC(subtotal2.getVitaminC() / days);
-				avg2.setVitaminE(subtotal2.getVitaminE() / days);
-				avg2.setNicotinicCid(subtotal2.getNicotinicCid() / days);
-				avg2.setRetinol(subtotal2.getRetinol() / days);
-				avg2.setCalcium(subtotal2.getCalcium() / days);
-				avg2.setIron(subtotal2.getIron() / days);
-				avg2.setZinc(subtotal2.getZinc() / days);
-				avg2.setIodine(subtotal2.getIodine() / days);
-				avg2.setPhosphorus(subtotal2.getPhosphorus() / days);
+					FoodComposition avg2 = new FoodComposition();
+					avg2.setQuantity(subtotal2.getQuantity() / days);
+					avg2.setHeatEnergy(subtotal2.getHeatEnergy() / days);
+					avg2.setProtein(subtotal2.getProtein() / days);
+					avg2.setFat(subtotal2.getFat() / days);
+					avg2.setCarbohydrate(subtotal2.getCarbohydrate() / days);
+					avg2.setVitaminA(subtotal2.getVitaminA() / days);
+					avg2.setVitaminB1(subtotal2.getVitaminB1() / days);
+					avg2.setVitaminB2(subtotal2.getVitaminB2() / days);
+					avg2.setVitaminB6(subtotal2.getVitaminB6() / days);
+					avg2.setVitaminB12(subtotal2.getVitaminB12() / days);
+					avg2.setVitaminC(subtotal2.getVitaminC() / days);
+					avg2.setVitaminE(subtotal2.getVitaminE() / days);
+					avg2.setNicotinicCid(subtotal2.getNicotinicCid() / days);
+					avg2.setRetinol(subtotal2.getRetinol() / days);
+					avg2.setCalcium(subtotal2.getCalcium() / days);
+					avg2.setIron(subtotal2.getIron() / days);
+					avg2.setZinc(subtotal2.getZinc() / days);
+					avg2.setIodine(subtotal2.getIodine() / days);
+					avg2.setPhosphorus(subtotal2.getPhosphorus() / days);
 
-				FoodComposition avg3 = new FoodComposition();
-				avg3.setQuantity(subtotal3.getQuantity() / days);
-				avg3.setHeatEnergy(subtotal3.getHeatEnergy() / days);
-				avg3.setProtein(subtotal3.getProtein() / days);
-				avg3.setFat(subtotal3.getFat() / days);
-				avg3.setCarbohydrate(subtotal3.getCarbohydrate() / days);
-				avg3.setVitaminA(subtotal3.getVitaminA() / days);
-				avg3.setVitaminB1(subtotal3.getVitaminB1() / days);
-				avg3.setVitaminB2(subtotal3.getVitaminB2() / days);
-				avg3.setVitaminB6(subtotal3.getVitaminB6() / days);
-				avg3.setVitaminB12(subtotal3.getVitaminB12() / days);
-				avg3.setVitaminC(subtotal3.getVitaminC() / days);
-				avg3.setVitaminE(subtotal3.getVitaminE() / days);
-				avg3.setNicotinicCid(subtotal3.getNicotinicCid() / days);
-				avg3.setRetinol(subtotal3.getRetinol() / days);
-				avg3.setCalcium(subtotal3.getCalcium() / days);
-				avg3.setIron(subtotal3.getIron() / days);
-				avg3.setZinc(subtotal3.getZinc() / days);
-				avg3.setIodine(subtotal3.getIodine() / days);
-				avg3.setPhosphorus(subtotal3.getPhosphorus() / days);
+					FoodComposition avg3 = new FoodComposition();
+					avg3.setQuantity(subtotal3.getQuantity() / days);
+					avg3.setHeatEnergy(subtotal3.getHeatEnergy() / days);
+					avg3.setProtein(subtotal3.getProtein() / days);
+					avg3.setFat(subtotal3.getFat() / days);
+					avg3.setCarbohydrate(subtotal3.getCarbohydrate() / days);
+					avg3.setVitaminA(subtotal3.getVitaminA() / days);
+					avg3.setVitaminB1(subtotal3.getVitaminB1() / days);
+					avg3.setVitaminB2(subtotal3.getVitaminB2() / days);
+					avg3.setVitaminB6(subtotal3.getVitaminB6() / days);
+					avg3.setVitaminB12(subtotal3.getVitaminB12() / days);
+					avg3.setVitaminC(subtotal3.getVitaminC() / days);
+					avg3.setVitaminE(subtotal3.getVitaminE() / days);
+					avg3.setNicotinicCid(subtotal3.getNicotinicCid() / days);
+					avg3.setRetinol(subtotal3.getRetinol() / days);
+					avg3.setCalcium(subtotal3.getCalcium() / days);
+					avg3.setIron(subtotal3.getIron() / days);
+					avg3.setZinc(subtotal3.getZinc() / days);
+					avg3.setIodine(subtotal3.getIodine() / days);
+					avg3.setPhosphorus(subtotal3.getPhosphorus() / days);
 
-				FoodComposition avg = new FoodComposition();
-				avg.setQuantity(total.getQuantity() / days);
-				avg.setHeatEnergy(total.getHeatEnergy() / days);
-				avg.setProtein(total.getProtein() / days);
-				avg.setFat(total.getFat() / days);
-				avg.setCarbohydrate(total.getCarbohydrate() / days);
-				avg.setVitaminA(total.getVitaminA() / days);
-				avg.setVitaminB1(total.getVitaminB1() / days);
-				avg.setVitaminB2(total.getVitaminB2() / days);
-				avg.setVitaminB6(total.getVitaminB6() / days);
-				avg.setVitaminB12(total.getVitaminB12() / days);
-				avg.setVitaminC(total.getVitaminC() / days);
-				avg.setVitaminE(total.getVitaminE() / days);
-				avg.setNicotinicCid(total.getNicotinicCid() / days);
-				avg.setRetinol(total.getRetinol() / days);
-				avg.setCalcium(total.getCalcium() / days);
-				avg.setIron(total.getIron() / days);
-				avg.setZinc(total.getZinc() / days);
-				avg.setIodine(total.getIodine() / days);
-				avg.setPhosphorus(total.getPhosphorus() / days);
+					FoodComposition avg = new FoodComposition();
+					avg.setQuantity(total.getQuantity() / days);
+					avg.setHeatEnergy(total.getHeatEnergy() / days);
+					avg.setProtein(total.getProtein() / days);
+					avg.setFat(total.getFat() / days);
+					avg.setCarbohydrate(total.getCarbohydrate() / days);
+					avg.setVitaminA(total.getVitaminA() / days);
+					avg.setVitaminB1(total.getVitaminB1() / days);
+					avg.setVitaminB2(total.getVitaminB2() / days);
+					avg.setVitaminB6(total.getVitaminB6() / days);
+					avg.setVitaminB12(total.getVitaminB12() / days);
+					avg.setVitaminC(total.getVitaminC() / days);
+					avg.setVitaminE(total.getVitaminE() / days);
+					avg.setNicotinicCid(total.getNicotinicCid() / days);
+					avg.setRetinol(total.getRetinol() / days);
+					avg.setCalcium(total.getCalcium() / days);
+					avg.setIron(total.getIron() / days);
+					avg.setZinc(total.getZinc() / days);
+					avg.setIodine(total.getIodine() / days);
+					avg.setPhosphorus(total.getPhosphorus() / days);
 
-				if (foodDRI != null) {
-					if (foodDRIPercent != null) {
-						foodDRI.setHeatEnergy(foodDRIPercent.getHeatEnergy() * foodDRI.getHeatEnergy());
-						foodDRI.setProtein(foodDRIPercent.getProtein() * foodDRI.getProtein());
-						foodDRI.setFat(foodDRIPercent.getFat() * foodDRI.getFat());
-						foodDRI.setCarbohydrate(foodDRIPercent.getCarbohydrate() * foodDRI.getCarbohydrate());
-						foodDRI.setVitaminA(foodDRIPercent.getVitaminA() * foodDRI.getVitaminA());
-						foodDRI.setVitaminB1(foodDRIPercent.getVitaminB1() * foodDRI.getVitaminB1());
-						foodDRI.setVitaminB2(foodDRIPercent.getVitaminB2() * foodDRI.getVitaminB2());
-						foodDRI.setVitaminB6(foodDRIPercent.getVitaminB6() * foodDRI.getVitaminB6());
-						foodDRI.setVitaminB12(foodDRIPercent.getVitaminB12() * foodDRI.getVitaminB12());
-						foodDRI.setVitaminC(foodDRIPercent.getVitaminC() * foodDRI.getVitaminC());
-						foodDRI.setVitaminE(foodDRIPercent.getVitaminE() * foodDRI.getVitaminE());
-						foodDRI.setNicotinicCid(foodDRIPercent.getNicotinicCid() * foodDRI.getNicotinicCid());
-						foodDRI.setRetinol(foodDRIPercent.getRetinol() * foodDRI.getRetinol());
-						foodDRI.setCalcium(foodDRIPercent.getCalcium() * foodDRI.getCalcium());
-						foodDRI.setIron(foodDRIPercent.getIron() * foodDRI.getIron());
-						foodDRI.setZinc(foodDRIPercent.getZinc() * foodDRI.getZinc());
-						foodDRI.setIodine(foodDRIPercent.getIodine() * foodDRI.getIodine());
-						foodDRI.setPhosphorus(foodDRIPercent.getPhosphorus() * foodDRI.getPhosphorus());
+					if (foodDRI != null) {
+						if (foodDRIPercent != null) {
+							foodDRI.setHeatEnergy(foodDRIPercent.getHeatEnergy() * foodDRI.getHeatEnergy());
+							foodDRI.setProtein(foodDRIPercent.getProtein() * foodDRI.getProtein());
+							foodDRI.setFat(foodDRIPercent.getFat() * foodDRI.getFat());
+							foodDRI.setCarbohydrate(foodDRIPercent.getCarbohydrate() * foodDRI.getCarbohydrate());
+							foodDRI.setVitaminA(foodDRIPercent.getVitaminA() * foodDRI.getVitaminA());
+							foodDRI.setVitaminB1(foodDRIPercent.getVitaminB1() * foodDRI.getVitaminB1());
+							foodDRI.setVitaminB2(foodDRIPercent.getVitaminB2() * foodDRI.getVitaminB2());
+							foodDRI.setVitaminB6(foodDRIPercent.getVitaminB6() * foodDRI.getVitaminB6());
+							foodDRI.setVitaminB12(foodDRIPercent.getVitaminB12() * foodDRI.getVitaminB12());
+							foodDRI.setVitaminC(foodDRIPercent.getVitaminC() * foodDRI.getVitaminC());
+							foodDRI.setVitaminE(foodDRIPercent.getVitaminE() * foodDRI.getVitaminE());
+							foodDRI.setNicotinicCid(foodDRIPercent.getNicotinicCid() * foodDRI.getNicotinicCid());
+							foodDRI.setRetinol(foodDRIPercent.getRetinol() * foodDRI.getRetinol());
+							foodDRI.setCalcium(foodDRIPercent.getCalcium() * foodDRI.getCalcium());
+							foodDRI.setIron(foodDRIPercent.getIron() * foodDRI.getIron());
+							foodDRI.setZinc(foodDRIPercent.getZinc() * foodDRI.getZinc());
+							foodDRI.setIodine(foodDRIPercent.getIodine() * foodDRI.getIodine());
+							foodDRI.setPhosphorus(foodDRIPercent.getPhosphorus() * foodDRI.getPhosphorus());
+						}
+
+						FoodComposition percent = new FoodComposition();
+						if (foodDRI.getHeatEnergy() > 0) {
+							percent.setHeatEnergy(
+									Math.round((avg.getHeatEnergy() / foodDRI.getHeatEnergy()) * 10000D) / 100D);
+						}
+						if (foodDRI.getProtein() > 0) {
+							percent.setProtein(Math.round((avg.getProtein() / foodDRI.getProtein()) * 10000D) / 100D);
+						}
+						if (foodDRI.getFat() > 0) {
+							percent.setFat(Math.round((avg.getFat() / foodDRI.getFat()) * 10000D) / 100D);
+						}
+						if (foodDRI.getCarbohydrate() > 0) {
+							percent.setCarbohydrate(
+									Math.round((avg.getCarbohydrate() / foodDRI.getCarbohydrate()) * 10000D) / 100D);
+						}
+						if (foodDRI.getVitaminA() > 0) {
+							percent.setVitaminA(
+									Math.round((avg.getVitaminA() / foodDRI.getVitaminA()) * 10000D) / 100D);
+						}
+						if (foodDRI.getVitaminB1() > 0) {
+							percent.setVitaminB1(
+									Math.round((avg.getVitaminB1() / foodDRI.getVitaminB1()) * 10000D) / 100D);
+						}
+						if (foodDRI.getVitaminB2() > 0) {
+							percent.setVitaminB2(
+									Math.round((avg.getVitaminB2() / foodDRI.getVitaminB2()) * 10000D) / 100D);
+						}
+						if (foodDRI.getVitaminB6() > 0) {
+							percent.setVitaminB6(
+									Math.round((avg.getVitaminB6() / foodDRI.getVitaminB6()) * 10000D) / 100D);
+						}
+						if (foodDRI.getVitaminB12() > 0) {
+							percent.setVitaminB12(
+									Math.round((avg.getVitaminB12() / foodDRI.getVitaminB12()) * 10000D) / 100D);
+						}
+						if (foodDRI.getVitaminC() > 0) {
+							percent.setVitaminC(
+									Math.round((avg.getVitaminC() / foodDRI.getVitaminC()) * 10000D) / 100D);
+						}
+						if (foodDRI.getVitaminE() > 0) {
+							percent.setVitaminE(
+									Math.round((avg.getVitaminE() / foodDRI.getVitaminE()) * 10000D) / 100D);
+						}
+						if (foodDRI.getNicotinicCid() > 0) {
+							percent.setNicotinicCid(
+									Math.round((avg.getNicotinicCid() / foodDRI.getNicotinicCid()) * 10000D) / 100D);
+						}
+						if (foodDRI.getRetinol() > 0) {
+							percent.setRetinol(Math.round((avg.getRetinol() / foodDRI.getRetinol()) * 10000D) / 100D);
+						}
+						if (foodDRI.getCalcium() > 0) {
+							percent.setCalcium(Math.round((avg.getCalcium() / foodDRI.getCalcium()) * 10000D) / 100D);
+						}
+						if (foodDRI.getIron() > 0) {
+							percent.setIron(Math.round((avg.getIron() / foodDRI.getIron()) * 10000D) / 100D);
+						}
+						if (foodDRI.getZinc() > 0) {
+							percent.setZinc(Math.round((avg.getZinc() / foodDRI.getZinc()) * 10000D) / 100D);
+						}
+						if (foodDRI.getIodine() > 0) {
+							percent.setIodine(Math.round((avg.getIodine() / foodDRI.getIodine()) * 10000D) / 100D);
+						}
+						if (foodDRI.getPhosphorus() > 0) {
+							percent.setPhosphorus(
+									Math.round((avg.getPhosphorus() / foodDRI.getPhosphorus()) * 10000D) / 100D);
+						}
+
+						params.put("std", foodDRI);
+						params.put("percent", percent);
 					}
 
-					FoodComposition percent = new FoodComposition();
-					if (foodDRI.getHeatEnergy() > 0) {
-						percent.setHeatEnergy(
-								Math.round((avg.getHeatEnergy() / foodDRI.getHeatEnergy()) * 10000D) / 100D);
-					}
-					if (foodDRI.getProtein() > 0) {
-						percent.setProtein(Math.round((avg.getProtein() / foodDRI.getProtein()) * 10000D) / 100D);
-					}
-					if (foodDRI.getFat() > 0) {
-						percent.setFat(Math.round((avg.getFat() / foodDRI.getFat()) * 10000D) / 100D);
-					}
-					if (foodDRI.getCarbohydrate() > 0) {
-						percent.setCarbohydrate(
-								Math.round((avg.getCarbohydrate() / foodDRI.getCarbohydrate()) * 10000D) / 100D);
-					}
-					if (foodDRI.getVitaminA() > 0) {
-						percent.setVitaminA(Math.round((avg.getVitaminA() / foodDRI.getVitaminA()) * 10000D) / 100D);
-					}
-					if (foodDRI.getVitaminB1() > 0) {
-						percent.setVitaminB1(Math.round((avg.getVitaminB1() / foodDRI.getVitaminB1()) * 10000D) / 100D);
-					}
-					if (foodDRI.getVitaminB2() > 0) {
-						percent.setVitaminB2(Math.round((avg.getVitaminB2() / foodDRI.getVitaminB2()) * 10000D) / 100D);
-					}
-					if (foodDRI.getVitaminB6() > 0) {
-						percent.setVitaminB6(Math.round((avg.getVitaminB6() / foodDRI.getVitaminB6()) * 10000D) / 100D);
-					}
-					if (foodDRI.getVitaminB12() > 0) {
-						percent.setVitaminB12(
-								Math.round((avg.getVitaminB12() / foodDRI.getVitaminB12()) * 10000D) / 100D);
-					}
-					if (foodDRI.getVitaminC() > 0) {
-						percent.setVitaminC(Math.round((avg.getVitaminC() / foodDRI.getVitaminC()) * 10000D) / 100D);
-					}
-					if (foodDRI.getVitaminE() > 0) {
-						percent.setVitaminE(Math.round((avg.getVitaminE() / foodDRI.getVitaminE()) * 10000D) / 100D);
-					}
-					if (foodDRI.getNicotinicCid() > 0) {
-						percent.setNicotinicCid(
-								Math.round((avg.getNicotinicCid() / foodDRI.getNicotinicCid()) * 10000D) / 100D);
-					}
-					if (foodDRI.getRetinol() > 0) {
-						percent.setRetinol(Math.round((avg.getRetinol() / foodDRI.getRetinol()) * 10000D) / 100D);
-					}
-					if (foodDRI.getCalcium() > 0) {
-						percent.setCalcium(Math.round((avg.getCalcium() / foodDRI.getCalcium()) * 10000D) / 100D);
-					}
-					if (foodDRI.getIron() > 0) {
-						percent.setIron(Math.round((avg.getIron() / foodDRI.getIron()) * 10000D) / 100D);
-					}
-					if (foodDRI.getZinc() > 0) {
-						percent.setZinc(Math.round((avg.getZinc() / foodDRI.getZinc()) * 10000D) / 100D);
-					}
-					if (foodDRI.getIodine() > 0) {
-						percent.setIodine(Math.round((avg.getIodine() / foodDRI.getIodine()) * 10000D) / 100D);
-					}
-					if (foodDRI.getPhosphorus() > 0) {
-						percent.setPhosphorus(
-								Math.round((avg.getPhosphorus() / foodDRI.getPhosphorus()) * 10000D) / 100D);
-					}
+					params.put("t0", subtotal0);
+					params.put("t1", subtotal1);
+					params.put("t2", subtotal2);
+					params.put("t3", subtotal3);
 
-					params.put("std", foodDRI);
-					params.put("percent", percent);
+					params.put("avg0", avg0);
+					params.put("avg1", avg1);
+					params.put("avg2", avg2);
+					params.put("avg3", avg3);
+
+					params.put("t", total);
+					params.put("avg", avg);
 				}
-
-				params.put("t0", subtotal0);
-				params.put("t1", subtotal1);
-				params.put("t2", subtotal2);
-				params.put("t3", subtotal3);
-
-				params.put("avg0", avg0);
-				params.put("avg1", avg1);
-				params.put("avg2", avg2);
-				params.put("avg3", avg3);
-
-				params.put("t", total);
-				params.put("avg", avg);
-
 			}
 
 			params.put("rows0", rows0);
 			params.put("rows1", rows1);
 			params.put("rows2", rows2);
 			params.put("rows3", rows3);
+
+			logger.debug("rows0 size:" + rows0.size());
+			logger.debug("rows1 size:" + rows1.size());
+			logger.debug("rows2 size:" + rows2.size());
+			logger.debug("rows3 size:" + rows3.size());
 		}
 
 	}

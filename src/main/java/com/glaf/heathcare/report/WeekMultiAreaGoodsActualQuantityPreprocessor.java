@@ -109,8 +109,8 @@ public class WeekMultiAreaGoodsActualQuantityPreprocessor implements IReportPrep
 					int max = Math.max(rows1.size(), rows2.size());
 					max = Math.max(max, rows3.size());
 					
-					if (max < 20) {
-						max = Math.max(max, 20);
+					if (max < 15) {
+						max = Math.max(max, 15);
 					}
 
 					for (int i = 0, len = rows1.size(); i < max - len; i++) {

@@ -20,6 +20,9 @@ package com.glaf.heathcare.report;
 
 import java.util.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
@@ -35,6 +38,8 @@ import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.service.GoodsActualQuantityService;
 
 public class DietaryNutritionCountPreprocessor implements IReportPreprocessor {
+
+	protected static final Log logger = LogFactory.getLog(DietaryNutritionCountPreprocessor.class);
 
 	@Override
 	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
@@ -77,7 +82,7 @@ public class DietaryNutritionCountPreprocessor implements IReportPreprocessor {
 			query.businessStatus(9);
 			query.usageTimeGreaterThanOrEqual(startDate);
 			query.usageTimeLessThanOrEqual(endDate);
-			query.setOrderBy("  E.GOODSNODEID_ asc, E.GOODSID_ asc ");
+			query.setOrderBy(" E.GOODSNODEID_ asc, E.GOODSID_ asc ");
 
 			List<GoodsActualQuantity> rows = goodsActualQuantityService.list(query);
 			if (rows != null && !rows.isEmpty()) {
@@ -371,11 +376,19 @@ public class DietaryNutritionCountPreprocessor implements IReportPreprocessor {
 					params.put("endDate", DateUtils.getDateTime("yyyy年MM月dd日", endDate));
 					params.put("t", total);
 					params.put("avg", avg);
-					params.put("rows0", rows0);
-					params.put("rows1", rows1);
-					params.put("rows2", rows2);
-					params.put("rows3", rows3);
+
 				}
+
+				params.put("rows0", rows0);
+				params.put("rows1", rows1);
+				params.put("rows2", rows2);
+				params.put("rows3", rows3);
+
+				logger.debug("rows0 size:" + rows0.size());
+				logger.debug("rows1 size:" + rows1.size());
+				logger.debug("rows2 size:" + rows2.size());
+				logger.debug("rows3 size:" + rows3.size());
+
 			}
 		}
 	}
