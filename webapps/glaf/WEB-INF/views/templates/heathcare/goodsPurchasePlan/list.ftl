@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>物品采购计划单</title>
 <#include "/inc/init_easyui_import.ftl"/>
+<script type="text/javascript" src="${contextPath}/static/scripts/global.js"></script>
 <script type="text/javascript">
 
     function getLink(){
@@ -492,6 +493,34 @@
 		}
 		document.iForm.submit();
 	}
+
+	function parchasePlan(){
+        var link = '${contextPath}/heathcare/dietary/searchlist';
+        var x=30;
+        var y=30;
+        if(is_ie) {
+        	x=document.body.scrollLeft+event.clientX-event.offsetX-200;
+        	y=document.body.scrollTop+event.clientY-event.offsetY-200;
+        }
+        openWindow(link, self, x, y, 1280, 580);
+	}
+
+	function deletePlan(){
+		var link="${contextPath}/heathcare/dietary/showRemove";
+		jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "删除计划数据",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['680px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		   });
+	}
 	
 </script>
 </head>
@@ -499,7 +528,7 @@
 
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:42px" class="toolbar-backgroud"> 
+   <div data-options="region:'north', split:false, border:true" style="height:48px" class="toolbar-backgroud"> 
     <div style="margin:4px;">
 	<form id="iForm" name="iForm" method="post">
 	 <table valign="middle">
@@ -520,17 +549,21 @@
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
 		   onclick="javascript:editSelected();">修改</a>  
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
-		   onclick="javascript:deleteSelections();">删除</a> 
+		   onclick="javascript:deleteSelections();">删除</a>
+		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_table_row_add'"
+		   onclick="javascript:parchasePlan();">生成采购计划</a>
+		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-delete'"
+		   onclick="javascript:deletePlan();">删除计划</a> 
 		</#if>
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_cubes'"
 	       onclick="javascript:stocklist();">查看库存</a>
 	</td>
 	<td valign="middle">
 		  &nbsp;日期&nbsp;开始&nbsp;
-		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:120px"
+		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:100px"
 		         <#if startTime?exists> value="${startTime}"</#if>>
 		  &nbsp;结束&nbsp;
-		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:120px"
+		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:100px"
 		         <#if endTime?exists> value="${endTime}"</#if>>
 		  &nbsp;
 		  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"

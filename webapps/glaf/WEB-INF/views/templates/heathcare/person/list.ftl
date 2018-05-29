@@ -536,7 +536,7 @@
     <div data-options="region:'center'">  
         <div class="easyui-layout" data-options="fit:true, border:true">  
           <div data-options="region:'center', split:true, border:true, fit:true">
-		   <div data-options="region:'north', split:true, border:true" style="height:42px" class="toolbar-backgroud"> 
+		   <div data-options="region:'north', split:true, border:true" style="height:48px" class="toolbar-backgroud"> 
 		    <div>
 			<form id="iForm" name="iForm" method="post" action="">
 			<table>
