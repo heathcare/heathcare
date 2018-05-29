@@ -148,6 +148,12 @@ public class TreeNode implements Serializable, TreeModel, JSONable {
 	protected String value;
 
 	/**
+	 * 系统标识
+	 */
+	@Column(name = "SYSFLAG")
+	protected int sysFlag;
+
+	/**
 	 * 创建人
 	 */
 	@Column(name = "CREATEBY", length = 50)
@@ -353,6 +359,10 @@ public class TreeNode implements Serializable, TreeModel, JSONable {
 		return sort;
 	}
 
+	public int getSysFlag() {
+		return sysFlag;
+	}
+
 	public String getTenantId() {
 		return tenantId;
 	}
@@ -510,6 +520,10 @@ public class TreeNode implements Serializable, TreeModel, JSONable {
 
 	public void setSortNo(int sortNo) {
 		this.sort = sortNo;
+	}
+
+	public void setSysFlag(int sysFlag) {
+		this.sysFlag = sysFlag;
 	}
 
 	public void setTenantId(String tenantId) {

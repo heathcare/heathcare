@@ -202,12 +202,12 @@
 	function editSelected(){
 	    var rows = jQuery('#mydatagrid').datagrid('getSelections');
 	    if(rows == null || rows.length !=1){
-		  alert("请选择其中一条记录。");
-		  return;
+		    alert("请选择其中一条记录。");
+		    return;
 	    }
 	    var selected = jQuery('#mydatagrid').datagrid('getSelected');
 	    if (selected ){
-		  var link = '${contextPath}/heathcare/foodComposition/view?id='+selected.id;
+		  var link = '${contextPath}/heathcare/foodComposition/edit?id='+selected.id;
 		  jQuery.layer({
 			type: 2,
 			maxmin: true,
@@ -220,7 +220,7 @@
 			fadeIn: 100,
 			area: ['680px', (jQuery(window).height() - 50) +'px'],
             iframe: {src: link}
-		});
+		   });
 	    }
 	}
 

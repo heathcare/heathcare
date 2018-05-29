@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>体格检查</title>
 <#include "/inc/init_easyui_import.ftl"/>
+<script type="text/javascript" src="${contextPath}/static/scripts/global.js"></script>
 <script type="text/javascript">
 
 	function saveData(){
@@ -69,6 +70,17 @@
 					   }
 				   }
 			 });
+	}
+
+	function chooseOrganization(){
+		var link = '${contextPath}/mydictory/choose?elementId=checkOrganization';
+        var x=80;
+        var y=80;
+        if(is_ie) {
+        	x=document.body.scrollLeft+event.clientX-event.offsetX-200;
+        	y=document.body.scrollTop+event.clientY-event.offsetY-200;
+        }
+        openWindow(link, self, x, y, 880, 500);
 	}
 
 	function exportXls(){
@@ -691,7 +703,9 @@
 		<td width="38%" align="left">
             <input id="checkOrganization" name="checkOrganization" type="text" 
 			       class="easyui-validatebox  x-text" style="width:180px"
-				   value="${medicalExamination.checkOrganization}"/>
+				   value="${medicalExamination.checkOrganization}"/>&nbsp;
+			<img src="${contextPath}/static/images/organization.gif" style="cursor:pointer;" 
+			     onclick="javascript:chooseOrganization();">
 		</td>
 	</tr>
 	<tr>

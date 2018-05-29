@@ -31,6 +31,7 @@
 			jdbcType="VARCHAR" />
 		<result property="url" column="URL" jdbcType="VARCHAR" />
 		<result property="value" column="VALUE_" jdbcType="VARCHAR" />
+		<result property="sysFlag" column="SYSFLAG" jdbcType="INTEGER" />
 		<result property="createBy" column="CREATEBY"
 			jdbcType="VARCHAR" />
 		<result property="createDate" column="CREATEDATE"
@@ -107,6 +108,9 @@
 			</if>
 			<if test="locked != null">
 				,LOCKED
+			</if>
+			<if test="sysFlag != null">
+				,SYSFLAG
 			</if>
 			<if test="createDate != null">
 				,CREATEDATE
@@ -188,6 +192,9 @@
 			<if test="locked != null">
 				,#{locked, jdbcType=INTEGER}
 			</if>
+			<if test="sysFlag != null">
+				,#{sysFlag, jdbcType=INTEGER}
+			</if>
 			<if test="createDate != null">
 				,#{createDate, jdbcType=TIMESTAMP}
 			</if>
@@ -232,6 +239,7 @@
 		,ALLOWEDFILEEXTS
 		,PROVIDERCLASS
 		,VALUE_
+		,SYSFLAG
 		,UPDATEBY
 		,UPDATEDATE
 		,URL
@@ -273,9 +281,11 @@
 			,#{treeNode.providerClass, jdbcType=VARCHAR}
 			,#{treeNode.value,
 			jdbcType=VARCHAR}
+			,#{treeNode.sysFlag, jdbcType=INTEGER}
 			,#{treeNode.updateBy,
 			jdbcType=VARCHAR}
-			,#{treeNode.updateDate, jdbcType=TIMESTAMP}
+			,#{treeNode.updateDate,
+			jdbcType=TIMESTAMP}
 			,#{treeNode.url,
 			jdbcType=VARCHAR}
 			)
@@ -309,11 +319,13 @@
 			,ALLOWEDFILEEXTS
 			,PROVIDERCLASS
 			,VALUE_
+			,SYSFLAG
 			,UPDATEBY
 			,UPDATEDATE
 			,URL
 			) values (
-			#{treeNode.id, jdbcType=BIGINT}
+			#{treeNode.id,
+			jdbcType=BIGINT}
 			,#{treeNode.tenantId, jdbcType=VARCHAR}
 			,#{treeNode.code,
 			jdbcType=VARCHAR}
@@ -339,15 +351,18 @@
 			,#{treeNode.parentId, jdbcType=BIGINT}
 			,#{treeNode.sort,
 			jdbcType=INTEGER}
-			,#{treeNode.treeId, jdbcType=VARCHAR}
+			,#{treeNode.treeId,
+			jdbcType=VARCHAR}
 			,#{treeNode.allowedFizeSize, jdbcType=INTEGER}
 			,#{treeNode.allowedFileExts, jdbcType=VARCHAR}
 			,#{treeNode.providerClass, jdbcType=VARCHAR}
 			,#{treeNode.value,
 			jdbcType=VARCHAR}
+			,#{treeNode.sysFlag, jdbcType=INTEGER}
 			,#{treeNode.updateBy,
 			jdbcType=VARCHAR}
-			,#{treeNode.updateDate, jdbcType=TIMESTAMP}
+			,#{treeNode.updateDate,
+			jdbcType=TIMESTAMP}
 			,#{treeNode.url,
 			jdbcType=VARCHAR}
 			)
@@ -412,6 +427,9 @@
 			<if test="locked != null">
 				LOCKED = #{locked, jdbcType=INTEGER},
 			</if>
+			<if test="sysFlag != null">
+				SYSFLAG = #{sysFlag, jdbcType=INTEGER},
+			</if>
 			<if test="updateBy != null">
 				UPDATEBY = #{updateBy, jdbcType=VARCHAR},
 			</if>
@@ -449,7 +467,8 @@
 
 		select distinct E.* from T_TREENODE E
 		inner join T_DICTORY D
-		on E.ID = D.TYPEID
+		on E.ID =
+		D.TYPEID
 		where 1=1
 
 		<include refid="getTreeNodesSql" />

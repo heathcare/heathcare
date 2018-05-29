@@ -157,11 +157,13 @@ public class TreeNodeController {
 
 	@RequestMapping("/exportTrees")
 	public void exportTrees(HttpServletRequest request, HttpServletResponse response) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		String objectIds = request.getParameter("nodeIds");
 		List<Long> nodeIds = StringTools.splitToLong(objectIds);
 		if (nodeIds != null && !nodeIds.isEmpty()) {
 			StringBuilder buffer = new StringBuilder();
 			TreeNodeQuery query = new TreeNodeQuery();
+			query.tenantId(loginContext.getTenantId());
 			query.locked(0);
 			query.setDeleteFlag(0);
 			query.nodeIds(nodeIds);
@@ -306,10 +308,12 @@ public class TreeNodeController {
 	@RequestMapping("/json")
 	@ResponseBody
 	public byte[] json(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
 		logger.debug("params:" + params);
 		TreeNodeQuery query = new TreeNodeQuery();
 		Tools.populate(query, params);
+		query.tenantId(loginContext.getTenantId());
 		query.setDeleteFlag(0);
 
 		int start = 0;
@@ -375,7 +379,40 @@ public class TreeNodeController {
 
 	@RequestMapping
 	public ModelAndView list(HttpServletRequest request, ModelMap modelMap) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		RequestUtils.setRequestParameterToAttribute(request);
+
+		TreeNode node = treeNodeService.getTreeNodeByCode(loginContext.getTenantId(), "DICTORY");
+		if (node == null) {
+			node = new TreeNode();
+			node.setName("数据字典");
+			node.setCode("DICTORY");
+			node.setTenantId(loginContext.getTenantId());
+			node.setCreateBy(loginContext.getActorId());
+			node.setDesc("数据字典");
+			node.setDiscriminator("D");
+			node.setLevel(1);
+			node.setParentId(-1);
+			node.setSort(1);
+			node.setSysFlag(9999);
+			treeNodeService.create(node);
+		}
+
+		TreeNode child = treeNodeService.getTreeNodeByCode(loginContext.getTenantId(), "vocabulary");
+		if (child == null) {
+			child = new TreeNode();
+			child.setName("常用语");
+			child.setCode("vocabulary");
+			child.setTenantId(loginContext.getTenantId());
+			child.setCreateBy(loginContext.getActorId());
+			child.setDesc("常用语");
+			child.setDiscriminator("D");
+			child.setLevel(1);
+			child.setParentId(node.getId());
+			child.setSort(1);
+			child.setSysFlag(9999);
+			treeNodeService.create(child);
+		}
 
 		String x_view = ViewProperties.getString("treenode.list");
 		if (StringUtils.isNotEmpty(x_view)) {

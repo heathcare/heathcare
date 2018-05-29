@@ -110,6 +110,23 @@ public class DictoryController {
 		return ResponseUtils.responseResult(false);
 	}
 
+	@RequestMapping("/choose")
+	public ModelAndView choose(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+
+		String x_view = ViewProperties.getString("mydictory.choose");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+
+		String view = request.getParameter("view");
+		if (StringUtils.isNotEmpty(view)) {
+			return new ModelAndView(view, modelMap);
+		}
+
+		return new ModelAndView("/modules/dictory/choose", modelMap);
+	}
+
 	@RequestMapping("/exportJson")
 	@ResponseBody
 	public void exportJson(HttpServletRequest request, HttpServletResponse response) {
@@ -281,11 +298,13 @@ public class DictoryController {
 	@RequestMapping("/json")
 	@ResponseBody
 	public byte[] json(HttpServletRequest request) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
 		logger.debug(params);
 		DictoryQuery query = new DictoryQuery();
 		query.setNodeId(-1L);
 		Tools.populate(query, params);
+		query.tenantId(loginContext.getTenantId());
 
 		int start = 0;
 		int limit = 10;
@@ -363,25 +382,6 @@ public class DictoryController {
 		}
 
 		return new ModelAndView("/modules/dictory/list", modelMap);
-	}
-
-	/**
-	 * 显示框架页面
-	 * 
-	 * @param request
-	 * @param modelMap
-	 * @return
-	 */
-	@RequestMapping("/loadDictory")
-	public ModelAndView loadDictory(HttpServletRequest request, ModelMap modelMap) {
-		RequestUtils.setRequestParameterToAttribute(request);
-
-		String x_view = ViewProperties.getString("mydictory.loadDictory");
-		if (StringUtils.isNotEmpty(x_view)) {
-			return new ModelAndView(x_view, modelMap);
-		}
-
-		return new ModelAndView("/modules/dictory/dictory_load", modelMap);
 	}
 
 	/**

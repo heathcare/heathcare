@@ -90,6 +90,9 @@ public class TreeNodeJsonFactory {
 		if (jsonObject.containsKey("locked")) {
 			model.setLocked(jsonObject.getInteger("locked"));
 		}
+		if (jsonObject.containsKey("sysFlag")) {
+			model.setSysFlag(jsonObject.getInteger("sysFlag"));
+		}
 
 		return model;
 	}
@@ -151,6 +154,7 @@ public class TreeNodeJsonFactory {
 			jsonObject.put("value", model.getValue());
 		}
 		jsonObject.put("locked", model.getLocked());
+		jsonObject.put("sysFlag", model.getSysFlag());
 
 		if (model.getCreateDate() != null) {
 			jsonObject.put("createDate", DateUtils.getDate(model.getCreateDate()));
@@ -202,6 +206,7 @@ public class TreeNodeJsonFactory {
 		}
 
 		jsonObject.put("locked", model.getLocked());
+		jsonObject.put("sysFlag", model.getSysFlag());
 
 		jsonObject.put("allowedFizeSize", model.getAllowedFizeSize());
 		if (model.getAllowedFileExts() != null) {

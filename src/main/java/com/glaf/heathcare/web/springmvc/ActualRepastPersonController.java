@@ -19,6 +19,7 @@
 package com.glaf.heathcare.web.springmvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -74,6 +75,68 @@ public class ActualRepastPersonController {
 
 	public ActualRepastPersonController() {
 
+	}
+
+	@RequestMapping("/batchEdit")
+	public ModelAndView batchEdit(HttpServletRequest request, ModelMap modelMap) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		RequestUtils.setRequestParameterToAttribute(request);
+
+		Date repastDate = RequestUtils.getDate(request, "repastDate");
+		logger.debug("repastDate:" + repastDate);
+		if (repastDate != null) {
+			List<Dictory> dictoryList = dictoryService.getDictoryList(5001L);// 5001是班级分类编号
+			request.setAttribute("dictoryList", dictoryList);
+
+			int fullDay = DateUtils.getYearMonthDay(repastDate);
+			List<ActualRepastPerson> list = actualRepastPersonService.getActualRepastPersons(loginContext.getTenantId(),
+					fullDay);
+			Map<Integer, ActualRepastPerson> dataMap = new HashMap<Integer, ActualRepastPerson>();
+			if (list != null && !list.isEmpty()) {
+				for (ActualRepastPerson p : list) {
+					dataMap.put(p.getAge(), p);
+				}
+			}
+
+			Map<Integer, PersonInfo> planMap = new HashMap<Integer, PersonInfo>();
+			List<PersonInfo> personInfos = personInfoService.getPersonInfos(loginContext.getTenantId());
+			if (personInfos != null && !personInfos.isEmpty()) {
+				for (PersonInfo p : personInfos) {
+					planMap.put(p.getAge(), p);
+				}
+			}
+
+			List<ActualRepastPerson> rows = new ArrayList<ActualRepastPerson>();
+			for (int age = 3; age <= 6; age++) {
+				ActualRepastPerson model = dataMap.get(age);
+				if (model == null) {
+					model = new ActualRepastPerson();
+					model.setAge(age);
+				}
+				PersonInfo p = planMap.get(age);
+				if (p != null) {
+					model.setMalePlan(p.getMale());
+					model.setFemalePlan(p.getFemale());
+					model.setClassType(p.getClassType());
+				}
+				rows.add(model);
+			}
+
+			request.setAttribute("rows", rows);
+			request.setAttribute("repastDate", repastDate);
+		}
+
+		request.removeAttribute("privilege_write");
+		if (loginContext.getRoles().contains("TenantAdmin")) {
+			request.setAttribute("privilege_write", true);
+		}
+
+		String x_view = ViewProperties.getString("actualRepastPerson.batchEdit");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/actualRepastPerson/batchEdit", modelMap);
 	}
 
 	@ResponseBody
@@ -449,6 +512,68 @@ public class ActualRepastPersonController {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/saveBatch")
+	public byte[] saveBatch(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		String actorId = loginContext.getActorId();
+		if (loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician")
+				|| loginContext.getRoles().contains("AttendanceManagement")) {
+			Date repastDate = RequestUtils.getDate(request, "repastDate");
+			logger.debug("repastDate:" + repastDate);
+			if (repastDate != null) {
+				if ((DateUtils.getDaysBetween(repastDate, new Date())) > 30) {
+					return ResponseUtils.responseJsonResult(false, "只能修改一月内数据。");
+				}
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(repastDate);
+				int year = calendar.get(Calendar.YEAR);
+				int month = calendar.get(Calendar.MONTH) + 1;
+				int day = calendar.get(Calendar.DAY_OF_MONTH);
+				int fullDay = DateUtils.getYearMonthDay(repastDate);
+				try {
+					List<PersonInfo> personInfos = personInfoService.getPersonInfos(loginContext.getTenantId());
+					if (personInfos != null && !personInfos.isEmpty()) {
+						logger.debug("personInfos size:" + personInfos.size());
+						List<ActualRepastPerson> rows = new ArrayList<ActualRepastPerson>();
+						for (PersonInfo p : personInfos) {
+							int male = RequestUtils.getInt(request, "male_" + p.getAge());
+							int female = RequestUtils.getInt(request, "female_" + p.getAge());
+							if (male > p.getMale()) {
+								return ResponseUtils.responseJsonResult(false,
+										p.getAge() + "岁男生人数不能超过" + p.getMale() + "。");
+							}
+							if (female > p.getFemale()) {
+								return ResponseUtils.responseJsonResult(false,
+										p.getAge() + "岁女生人数不能超过" + p.getFemale() + "。");
+							}
+							if ((male + female) > 0) {
+								ActualRepastPerson arp = new ActualRepastPerson();
+								arp.setAge(p.getAge());
+								arp.setClassType(p.getClassType());
+								arp.setCreateBy(actorId);
+								arp.setYear(year);
+								arp.setMale(month);
+								arp.setDay(day);
+								arp.setFullDay(fullDay);
+								arp.setMale(male);
+								arp.setFemale(female);
+								arp.setTenantId(loginContext.getTenantId());
+								rows.add(arp);
+							}
+						}
+						actualRepastPersonService.saveAll(loginContext.getTenantId(), fullDay, rows);
+						return ResponseUtils.responseJsonResult(true);
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					logger.error(ex);
+				}
 			}
 		}
 		return ResponseUtils.responseJsonResult(false);

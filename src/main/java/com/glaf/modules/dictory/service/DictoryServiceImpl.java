@@ -93,8 +93,8 @@ public class DictoryServiceImpl implements DictoryService {
 	}
 
 	@Transactional
-	public void deleteById(Long id) {
-		if (id != null) {
+	public void deleteById(long id) {
+		if (id != 0) {
 			dictoryMapper.deleteDictoryById(id);
 			if (SystemConfig.getBoolean("use_query_cache")) {
 				CacheFactory.clear("mydictory");
@@ -165,7 +165,7 @@ public class DictoryServiceImpl implements DictoryService {
 		if (id == null) {
 			return null;
 		}
-		String cacheKey = "sys_dict_" + id;
+		String cacheKey = "my_dict_" + id;
 		if (SystemConfig.getBoolean("use_query_cache")) {
 			String text = CacheFactory.getString("mydictory", cacheKey);
 			if (StringUtils.isNotEmpty(text)) {
@@ -299,7 +299,7 @@ public class DictoryServiceImpl implements DictoryService {
 			dictory.setUpdateDate(new Date());
 			dictoryMapper.updateDictory(dictory);
 			if (SystemConfig.getBoolean("use_query_cache")) {
-				String cacheKey = "sys_dict_" + dictory.getId();
+				String cacheKey = "my_dict_" + dictory.getId();
 				CacheFactory.remove("mydictory", cacheKey);
 			}
 		}

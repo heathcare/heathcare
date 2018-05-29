@@ -127,8 +127,8 @@ public class TreeNodeServiceImpl implements TreeNodeService {
 	}
 
 	@Transactional
-	public void deleteById(String tenantId, Long id) {
-		if (id != null) {
+	public void deleteById(String tenantId, long id) {
+		if (id != 0) {
 			List<TreeNode> treeList = this.getTreeNodeList(tenantId, id);
 			if (treeList != null && !treeList.isEmpty()) {
 				throw new RuntimeException("tree node exist children ");
@@ -147,7 +147,13 @@ public class TreeNodeServiceImpl implements TreeNodeService {
 	}
 
 	public TreeNode findById(String tenantId, long id) {
-		return this.getTreeNode(tenantId, id);
+		TreeNode treeNode = this.getTreeNode(tenantId, id);
+		if (treeNode != null) {
+			if (StringUtils.equals(treeNode.getTenantId(), tenantId)) {
+				return treeNode;
+			}
+		}
+		return null;
 	}
 
 	public TreeNode findByName(String tenantId, String name) {
@@ -225,8 +231,8 @@ public class TreeNodeServiceImpl implements TreeNodeService {
 		this.loadTreeNodes(treeList, tenantId, parentId, deep);
 	}
 
-	public TreeNode getTreeNode(String tenantId, Long id) {
-		if (id == null) {
+	public TreeNode getTreeNode(String tenantId, long id) {
+		if (id == 0) {
 			return null;
 		}
 		TreeNode treeNode = null;

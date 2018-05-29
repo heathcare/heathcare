@@ -92,6 +92,10 @@ public class ActualRepastPersonServiceImpl implements ActualRepastPersonService 
 		}
 	}
 
+	public int count(ActualRepastPersonQuery query) {
+		return actualRepastPersonMapper.getActualRepastPersonCount(query);
+	}
+
 	@Transactional
 	public void deleteById(String id) {
 		if (id != null) {
@@ -108,13 +112,12 @@ public class ActualRepastPersonServiceImpl implements ActualRepastPersonService 
 		}
 	}
 
-	public int count(ActualRepastPersonQuery query) {
-		return actualRepastPersonMapper.getActualRepastPersonCount(query);
-	}
-
-	public List<ActualRepastPerson> list(ActualRepastPersonQuery query) {
-		List<ActualRepastPerson> list = actualRepastPersonMapper.getActualRepastPersons(query);
-		return list;
+	public ActualRepastPerson getActualRepastPerson(String id) {
+		if (id == null) {
+			return null;
+		}
+		ActualRepastPerson actualRepastPerson = actualRepastPersonMapper.getActualRepastPersonById(id);
+		return actualRepastPerson;
 	}
 
 	/**
@@ -124,6 +127,13 @@ public class ActualRepastPersonServiceImpl implements ActualRepastPersonService 
 	 */
 	public int getActualRepastPersonCountByQueryCriteria(ActualRepastPersonQuery query) {
 		return actualRepastPersonMapper.getActualRepastPersonCount(query);
+	}
+
+	public List<ActualRepastPerson> getActualRepastPersons(String tenantId, int fullDay) {
+		ActualRepastPersonQuery query = new ActualRepastPersonQuery();
+		query.tenantId(tenantId);
+		query.fullDay(fullDay);
+		return this.list(query);
 	}
 
 	/**
@@ -138,12 +148,9 @@ public class ActualRepastPersonServiceImpl implements ActualRepastPersonService 
 		return rows;
 	}
 
-	public ActualRepastPerson getActualRepastPerson(String id) {
-		if (id == null) {
-			return null;
-		}
-		ActualRepastPerson actualRepastPerson = actualRepastPersonMapper.getActualRepastPersonById(id);
-		return actualRepastPerson;
+	public List<ActualRepastPerson> list(ActualRepastPersonQuery query) {
+		List<ActualRepastPerson> list = actualRepastPersonMapper.getActualRepastPersons(query);
+		return list;
 	}
 
 	@Transactional
@@ -157,6 +164,28 @@ public class ActualRepastPersonServiceImpl implements ActualRepastPersonService 
 		}
 	}
 
+	@Transactional
+	public void saveAll(String tenantId, int fullDay, List<ActualRepastPerson> rows) {
+		ActualRepastPersonQuery query = new ActualRepastPersonQuery();
+		query.tenantId(tenantId);
+		query.fullDay(fullDay);
+		actualRepastPersonMapper.deleteActualRepastPersons(query);
+		if (rows != null && !rows.isEmpty()) {
+			for (ActualRepastPerson p : rows) {
+				p.setId(idGenerator.getNextId("HEALTH_REPAST_PERSON"));
+				p.setCreateTime(new Date());
+				p.setFullDay(fullDay);
+				p.setTenantId(tenantId);
+				actualRepastPersonMapper.insertActualRepastPerson(p);
+			}
+		}
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.ActualRepastPersonMapper")
+	public void setActualRepastPersonMapper(ActualRepastPersonMapper actualRepastPersonMapper) {
+		this.actualRepastPersonMapper = actualRepastPersonMapper;
+	}
+
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;
@@ -165,11 +194,6 @@ public class ActualRepastPersonServiceImpl implements ActualRepastPersonService 
 	@javax.annotation.Resource
 	public void setIdGenerator(IdGenerator idGenerator) {
 		this.idGenerator = idGenerator;
-	}
-
-	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.ActualRepastPersonMapper")
-	public void setActualRepastPersonMapper(ActualRepastPersonMapper actualRepastPersonMapper) {
-		this.actualRepastPersonMapper = actualRepastPersonMapper;
 	}
 
 	@javax.annotation.Resource

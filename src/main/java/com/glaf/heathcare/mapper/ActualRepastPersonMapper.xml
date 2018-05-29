@@ -2,31 +2,40 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.glaf.heathcare.mapper.ActualRepastPersonMapper">
+<mapper
+	namespace="com.glaf.heathcare.mapper.ActualRepastPersonMapper">
 
-	<resultMap id="actualRepastPersonResultMap" type="com.glaf.heathcare.domain.ActualRepastPerson">
+	<resultMap id="actualRepastPersonResultMap"
+		type="com.glaf.heathcare.domain.ActualRepastPerson">
 		<id property="id" column="ID_" jdbcType="VARCHAR" />
 		<result property="organizationId" column="ORGANIZATIONID_"
 			jdbcType="BIGINT" />
-		<result property="tenantId" column="TENANTID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
 		<result property="male" column="MALE_" jdbcType="INTEGER" />
 		<result property="female" column="FEMALE_" jdbcType="INTEGER" />
 		<result property="age" column="AGE_" jdbcType="INTEGER" />
-		<result property="classType" column="CLASSTYPE_" jdbcType="VARCHAR" />
+		<result property="classType" column="CLASSTYPE_"
+			jdbcType="VARCHAR" />
 		<result property="sortNo" column="SORTNO_" jdbcType="INTEGER" />
 		<result property="year" column="YEAR_" jdbcType="INTEGER" />
 		<result property="month" column="MONTH_" jdbcType="INTEGER" />
 		<result property="day" column="DAY_" jdbcType="INTEGER" />
 		<result property="week" column="WEEK_" jdbcType="INTEGER" />
 		<result property="fullDay" column="FULLDAY_" jdbcType="INTEGER" />
-		<result property="createBy" column="CREATEBY_" jdbcType="VARCHAR" />
-		<result property="createTime" column="CREATETIME_" jdbcType="TIMESTAMP" />
-		<result property="updateBy" column="UPDATEBY_" jdbcType="VARCHAR" />
-		<result property="updateTime" column="UPDATETIME_" jdbcType="TIMESTAMP" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="updateBy" column="UPDATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="updateTime" column="UPDATETIME_"
+			jdbcType="TIMESTAMP" />
 	</resultMap>
 
 
-	<insert id="insertActualRepastPerson" parameterType="com.glaf.heathcare.domain.ActualRepastPerson">
+	<insert id="insertActualRepastPerson"
+		parameterType="com.glaf.heathcare.domain.ActualRepastPerson">
 		insert into HEALTH_REPAST_PERSON
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
@@ -135,7 +144,8 @@
 	</insert>
 
 
-	<insert id="bulkInsertActualRepastPerson" parameterType="java.util.List">
+	<insert id="bulkInsertActualRepastPerson"
+		parameterType="java.util.List">
 		insert into HEALTH_REPAST_PERSON (
 		ID_
 		,ORGANIZATIONID_
@@ -155,8 +165,8 @@
 		,UPDATEBY_
 		,UPDATETIME_
 		) values
-		<foreach collection="list" item="actualRepastPerson" index="index"
-			separator=",">
+		<foreach collection="list" item="actualRepastPerson"
+			index="index" separator=",">
 			(
 			#{actualRepastPerson.id, jdbcType=VARCHAR}
 			,#{actualRepastPerson.organizationId, jdbcType=BIGINT}
@@ -180,9 +190,11 @@
 	</insert>
 
 
-	<insert id="bulkInsertActualRepastPerson_oracle" parameterType="java.util.List">
+	<insert id="bulkInsertActualRepastPerson_oracle"
+		parameterType="java.util.List">
 		INSERT ALL
-		<foreach collection="list" item="actualRepastPerson" index="index">
+		<foreach collection="list" item="actualRepastPerson"
+			index="index">
 			insert into HEALTH_REPAST_PERSON (
 			ID_
 			,ORGANIZATIONID_
@@ -225,7 +237,8 @@
 	</insert>
 
 
-	<update id="updateActualRepastPerson" parameterType="com.glaf.heathcare.domain.ActualRepastPerson">
+	<update id="updateActualRepastPerson"
+		parameterType="com.glaf.heathcare.domain.ActualRepastPerson">
 		update HEALTH_REPAST_PERSON
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
@@ -264,15 +277,12 @@
 	</delete>
 
 
-	<delete id="deleteActualRepastPersons" parameterType="com.glaf.heathcare.query.ActualRepastPersonQuery">
+	<delete id="deleteActualRepastPersons"
+		parameterType="com.glaf.heathcare.query.ActualRepastPersonQuery">
 		delete from HEALTH_REPAST_PERSON
-		where (
-		ID_ IN
-		<foreach item="x_id" index="index" collection="ids" open="("
-			separator="," close=")">
-			#{x_id}
-		</foreach>
-		)
+		where TENANTID_ =
+		#{tenantId}
+		and FULLDAY_ = #{fullDay}
 	</delete>
 
 
@@ -282,7 +292,8 @@
 	</select>
 
 
-	<select id="getActualRepastPersons" parameterType="com.glaf.heathcare.query.ActualRepastPersonQuery"
+	<select id="getActualRepastPersons"
+		parameterType="com.glaf.heathcare.query.ActualRepastPersonQuery"
 		resultMap="actualRepastPersonResultMap">
 		select distinct E.*
 		<include refid="selectActualRepastPersonsSql" />
@@ -297,7 +308,8 @@
 	</select>
 
 
-	<select id="getActualRepastPersonCount" parameterType="com.glaf.heathcare.query.ActualRepastPersonQuery"
+	<select id="getActualRepastPersonCount"
+		parameterType="com.glaf.heathcare.query.ActualRepastPersonQuery"
 		resultType="int">
 		select count(*)
 		<include refid="selectActualRepastPersonsSql" />
@@ -315,10 +327,11 @@
 				and E.ORGANIZATIONID_ = #{organizationId}
 			</if>
 
-			<if test="organizationIds != null and organizationIds.size() &gt; 0">
+			<if
+				test="organizationIds != null and organizationIds.size() &gt; 0">
 				and E.ORGANIZATIONID_ IN
-				<foreach item="x_organizationId" index="index" collection="organizationIds"
-					open="(" separator="," close=")">
+				<foreach item="x_organizationId" index="index"
+					collection="organizationIds" open="(" separator="," close=")">
 					#{x_organizationId}
 				</foreach>
 			</if>
@@ -329,8 +342,8 @@
 
 			<if test="tenantIds != null and tenantIds.size() &gt; 0">
 				and E.TENANTID_ IN
-				<foreach item="x_tenantId" index="index" collection="tenantIds"
-					open="(" separator="," close=")">
+				<foreach item="x_tenantId" index="index"
+					collection="tenantIds" open="(" separator="," close=")">
 					#{x_tenantId}
 				</foreach>
 			</if>
@@ -365,8 +378,8 @@
 
 			<if test="days != null and days.size() &gt; 0">
 				and E.DAY_ IN
-				<foreach item="x_day" index="index" collection="days" open="("
-					separator="," close=")">
+				<foreach item="x_day" index="index" collection="days"
+					open="(" separator="," close=")">
 					#{x_day}
 				</foreach>
 			</if>
@@ -405,8 +418,8 @@
 
 			<if test="fullDays != null and fullDays.size() &gt; 0">
 				and E.FULLDAY_ IN
-				<foreach item="x_fullDay" index="index" collection="fullDays"
-					open="(" separator="," close=")">
+				<foreach item="x_fullDay" index="index"
+					collection="fullDays" open="(" separator="," close=")">
 					#{x_fullDay}
 				</foreach>
 			</if>

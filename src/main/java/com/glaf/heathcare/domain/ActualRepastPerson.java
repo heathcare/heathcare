@@ -62,11 +62,17 @@ public class ActualRepastPerson implements Serializable, JSONable {
 	@Column(name = "MALE_")
 	protected int male;
 
+	@javax.persistence.Transient
+	protected int malePlan;
+
 	/**
 	 * 女性
 	 */
 	@Column(name = "FEMALE_")
 	protected int female;
+
+	@javax.persistence.Transient
+	protected int femalePlan;
 
 	/**
 	 * 年龄
@@ -194,6 +200,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 		return this.female;
 	}
 
+	public int getFemalePlan() {
+		return femalePlan;
+	}
+
 	public int getFullDay() {
 		return this.fullDay;
 	}
@@ -204,6 +214,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 
 	public int getMale() {
 		return this.male;
+	}
+
+	public int getMalePlan() {
+		return malePlan;
 	}
 
 	public int getMonth() {
@@ -281,6 +295,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 		this.female = female;
 	}
 
+	public void setFemalePlan(int femalePlan) {
+		this.femalePlan = femalePlan;
+	}
+
 	public void setFullDay(int fullDay) {
 		this.fullDay = fullDay;
 	}
@@ -291,6 +309,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 
 	public void setMale(int male) {
 		this.male = male;
+	}
+
+	public void setMalePlan(int malePlan) {
+		this.malePlan = malePlan;
 	}
 
 	public void setMonth(int month) {

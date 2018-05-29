@@ -69,31 +69,4 @@ public class UpdateTreeBean {
 		this.treeNodeService = treeNodeService;
 	}
 
-	public void updateTreeIds(String tenantId) {
-		TreeNode root = treeNodeService.findById(tenantId, 1);
-		if (root != null) {
-			if (!StringUtils.equals(root.getTreeId(), "1|")) {
-				root.setTreeId("1|");
-				treeNodeService.update(root);
-			}
-			List<TreeNode> trees = treeNodeService.getAllTreeNodeList(tenantId);
-			if (trees != null && !trees.isEmpty()) {
-				Map<Long, TreeNode> dataMap = new HashMap<Long, TreeNode>();
-				for (TreeNode tree : trees) {
-					dataMap.put(tree.getId(), tree);
-				}
-				Map<Long, String> treeIdMap = new HashMap<Long, String>();
-				for (TreeNode tree : trees) {
-					if (StringUtils.isEmpty(tree.getTreeId())) {
-						String treeId = this.getTreeId(dataMap, tree);
-						if (treeId != null && treeId.endsWith("|")) {
-							treeIdMap.put(tree.getId(), treeId);
-						}
-					}
-				}
-				treeNodeService.updateTreeIds(treeIdMap);
-			}
-		}
-	}
-
 }

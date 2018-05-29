@@ -60,6 +60,8 @@ public interface ActualRepastPersonService {
 	 */
 	int getActualRepastPersonCountByQueryCriteria(ActualRepastPersonQuery query);
 
+	List<ActualRepastPerson> getActualRepastPersons(String tenantId, int fullDay);
+
 	/**
 	 * 根据查询参数获取一页的数据
 	 * 
@@ -82,5 +84,8 @@ public interface ActualRepastPersonService {
 	 */
 	@Transactional
 	void save(ActualRepastPerson actualRepastPerson);
+	
+	@Transactional
+	void saveAll(String tenantId, int fullDay, List<ActualRepastPerson> rows);
 
 }

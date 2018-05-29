@@ -25,15 +25,13 @@
 					{title:'年龄', field:'age', width:120},
 					{title:'男生人数', field:'male', width:120},
 					{title:'女生人数', field:'female', width:120},
-					{title:'日期', field:'fullDay', width:120},
-					{title:'功能键', field:'functionKey',width:120, formatter:formatterKeys}
+					{title:'日期', field:'fullDay', width:120}
 				]],
 				rownumbers: false,
 				pagination: true,
 				pageSize: 20,
 				pageList: [20,25,30,40,50,100,200,500,1000],
-				pagePosition: 'both',
-				onDblClickRow: onMyRowClick 
+				pagePosition: 'both'
 			});
 
 			var p = jQuery('#mydatagrid').datagrid('getPager');
@@ -43,89 +41,6 @@
 				}
 		    });
 	});
-
-	function formatterKeys(val, row){
-		var str = "";
-		<#if tenants?exists>
-		<#else>
-		  str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>";
-		</#if>
-	    return str;
-	}
-	
-	function addNew(){
-	    var link="${contextPath}/heathcare/actualRepastPerson/edit";
-		jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "新增记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-	}
-
-	function onMyRowClick(rowIndex, row){
-	    var link = '${contextPath}/heathcare/actualRepastPerson/edit?id='+row.id;
-	    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "编辑记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-	}
-
-   function editRow(id){
-	    var link = '${contextPath}/heathcare/actualRepastPerson/edit?id='+id;
-	    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "编辑记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-	}
-
-	function deleteRow(id){
-		if(confirm("数据删除后不能恢复，确定删除吗？")){
-			jQuery.ajax({
-				   type: "POST",
-				   url: '${contextPath}/heathcare/actualRepastPerson/delete?id='+id,
-				   dataType:  'json',
-				   error: function(data){
-					   alert('服务器处理错误！');
-				   },
-				   success: function(data){
-					   if(data != null && data.message != null){
-						   alert(data.message);
-					   } else {
-						   alert('操作成功完成！');
-					   }
-					   if(data.statusCode == 200){
-					       jQuery('#mydatagrid').datagrid('reload');
-					   }
-				   }
-			 });
-		  }
-	}
 
 
 	function searchWin(){
@@ -140,16 +55,9 @@
 		});
 	}
 
-	function editSelected(){
-	    var rows = jQuery('#mydatagrid').datagrid('getSelections');
-	    if(rows == null || rows.length !=1){
-		  alert("请选择其中一条记录。");
-		  return;
-	    }
-	    var selected = jQuery('#mydatagrid').datagrid('getSelected');
-	    if (selected ){
-		  var link = '${contextPath}/heathcare/actualRepastPerson/edit?id='+selected.id;
-		  jQuery.layer({
+	function batchEdit(){
+		var link = '${contextPath}/heathcare/actualRepastPerson/batchEdit';
+		jQuery.layer({
 			type: 2,
 			maxmin: true,
 			shadeClose: true,
@@ -162,66 +70,8 @@
 			area: ['680px', (jQuery(window).height() - 50) +'px'],
             iframe: {src: link}
 		  });
-	    }
 	}
 
-	function viewSelected(){
-		var rows = jQuery('#mydatagrid').datagrid('getSelections');
-		if(rows == null || rows.length !=1){
-			alert("请选择其中一条记录。");
-			return;
-		}
-		var selected = jQuery('#mydatagrid').datagrid('getSelected');
-		if (selected ){
-		    var link='${contextPath}/heathcare/actualRepastPerson/edit?readonly=true&id='+selected.id;
-		    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "编辑记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		   });
-		}
-	}
-
-	function deleteSelections(){
-		var ids = [];
-		var rows = jQuery('#mydatagrid').datagrid('getSelections');
-		for(var i=0;i<rows.length;i++){
-			ids.push(rows[i].id);
-		}
-		if(ids.length > 0 ){
-		  if(confirm("数据删除后不能恢复，确定删除吗？")){
-		    var str = ids.join(',');
-			jQuery.ajax({
-				   type: "POST",
-				   url: '${contextPath}/heathcare/actualRepastPerson/delete?ids='+str,
-				   dataType:  'json',
-				   error: function(data){
-					   alert('服务器处理错误！');
-				   },
-				   success: function(data){
-					   if(data != null && data.message != null){
-						   alert(data.message);
-					   } else {
-						   alert('操作成功完成！');
-					   }
-					   if(data.statusCode == 200){
-					       jQuery('#mydatagrid').datagrid('reload');
-					   }
-				   }
-			 });
-		  }
-		} else {
-			alert("请选择至少一条记录。");
-		}
-	}
 
 	function reloadGrid(){
 	    jQuery('#mydatagrid').datagrid('reload');
@@ -313,12 +163,8 @@
 					  document.getElementById("tenantId").value="${tenantId}";
 				   </script>
 				  <#else>
-					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
-					   onclick="javascript:addNew();">新增</a>  
-					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
-					   onclick="javascript:editSelected();">修改</a>  
-					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
-					   onclick="javascript:deleteSelections();">删除</a>
+					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'" 
+					   onclick="javascript:batchEdit();">录入</a>  
 				  </#if>
 				</td>
 				<td>&nbsp;</td>
