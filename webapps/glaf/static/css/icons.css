@@ -18,6 +18,11 @@
 	background: url('../images/m.gif') no-repeat;
 }
 
+.icon-zip {
+	background: url('../images/zip.gif') no-repeat;
+}
+
+
 .icon-user-message {
 	background: url('../images/user_message.png') no-repeat;
 }

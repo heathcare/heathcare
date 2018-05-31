@@ -618,6 +618,35 @@
         window.open(link);
     }
 
+	function exportZip(){
+		var gradeId = jQuery("#gradeId").val();
+		var year = jQuery("#year").val();
+        var month = jQuery("#month").val();
+		if(gradeId == ""){
+			alert("请选择班级！");
+			return;
+		}
+        if(year == ""){
+			alert("请选择年份！");
+			return;
+		}
+		if(month == ""){
+			alert("请选择月份！");
+			return;
+		}
+		var link="${contextPath}/heathcare/medicalExaminationExport/exportZip?reportId=MedicalExamination${type}&ts=${ts}&type=${type}";
+		if(gradeId != ""){
+			link = link + "&gradeId=" + gradeId;
+		}
+		if(year != ""){
+			link = link + "&year=" + year;
+		}
+		if(month != ""){
+			link = link  + "&month=" + month;
+		}
+        window.open(link);
+    }
+
 </script>
 </head>
 <body>  
@@ -646,7 +675,7 @@
 			<input type="hidden" id="type" name="type" value="${type}">
 			<table>
 			  <tr>
-				<td width="28%" valign="top">
+				<td width="50%" valign="top">
 					<img src="${contextPath}/static/images/window.png">
 					&nbsp;<span class="x_content_title">入园健康检查</span>
 					<#if hasWritePermission>
@@ -657,9 +686,8 @@
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 					   onclick="javascript:deleteSelections();">删除</a> 
 					</#if>
-				</td>
-				<td width="10%" valign="top">
-					&nbsp;
+				    <br>
+					&nbsp;&nbsp;班级&nbsp;
 					<select id="gradeId" name="gradeId" onchange="switchXY();">
 						<option value="">--请选择--</option>
 						<#list gradeInfos as grade>
@@ -671,8 +699,7 @@
 					<script type="text/javascript">
 						document.getElementById("gradeId").value="${gradeId}";
 					</script>
-				</td>
-				<td width="12%" valign="top">年份&nbsp;&nbsp;
+				    &nbsp;年份&nbsp;&nbsp;
 					<select id="year" name="year" onchange="switchXY();">
 						<option value="">--请选择--</option>
 						<option value="2015">2015</option>
@@ -683,8 +710,7 @@
 					<script type="text/javascript">
 						document.getElementById("year").value="${year}";
 					</script>
-				</td>
-				<td width="12%" valign="top">月份&nbsp;&nbsp;
+				    &nbsp;月份&nbsp;&nbsp;
 					<select id="month" name="month" onchange="switchXY();">
 						<option value="">--请选择--</option>
 						<#list months as month>
@@ -694,8 +720,7 @@
 					<script type="text/javascript">
 						document.getElementById("month").value="${month}";
 					</script>
-				</td>
-				<td width="12%" valign="top">性别&nbsp;&nbsp;
+				    &nbsp;性别&nbsp;&nbsp;
 					<select id="sex" name="sex" onchange="switchXY();">
 						<option value="">--请选择--</option>
 						<option value="0">女生</option>
@@ -705,8 +730,8 @@
 						document.getElementById("sex").value="${sex}";
 					</script>
 				</td>
-				<td width="26%" valign="top">
-				    &nbsp;
+				<td width="40%" valign="top">
+				    &nbsp; &nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls();">统计结果</a>
 					&nbsp;
@@ -716,7 +741,7 @@
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_chart'" 
 					   onclick="javascript:showChart();">图表</a>
 					<br>
-				    &nbsp;
+				    &nbsp;&nbsp;&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls60();">班级</a>
 					&nbsp;
@@ -726,12 +751,16 @@
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls70();">超重与肥胖</a>
 				    <#if personId?exists>
-					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
+					&nbsp;<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls2();">打印</a>
 				    <#else>
-				    <a id="div_person_print" style="display:none" href="#" class="easyui-linkbutton" 
+				    &nbsp;<a id="div_person_print" style="display:none" href="#" class="easyui-linkbutton" 
 					   data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls3();">打印</a>
+					&nbsp;
+					<a id="div_person_print2" href="#" class="easyui-linkbutton" 
+					   data-options="plain:true, iconCls:'icon-zip'" 
+					   onclick="javascript:exportZip();">导出</a>
 				   </#if>
 				</td>
 			 </tr>
