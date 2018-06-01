@@ -120,7 +120,7 @@ public class DruidConnectionProvider implements ConnectionProvider {
 			String dbPassword = properties.getProperty("jdbc.password");
 
 			if (maxPoolSize == null) {
-				maxPoolSize = 50;
+				maxPoolSize = 500;
 			}
 
 			if (timeBetweenEvictionRuns == null) {

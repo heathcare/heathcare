@@ -652,7 +652,7 @@
 					   onclick="javascript:deleteSelections();">删除</a> 
 					</#if>
 					<br>
-					&nbsp;&nbsp;班级&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;班级&nbsp;
 					<select id="gradeId" name="gradeId" onchange="switchXY();">
 						<option value="">--请选择--</option>
 						<#list gradeInfos as grade>
@@ -723,8 +723,7 @@
 					   data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls3();">打印</a>
 					&nbsp;
-					<a id="div_person_print2" href="#" class="easyui-linkbutton" 
-					   data-options="plain:true, iconCls:'icon-zip'" 
+					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_zip'" 
 					   onclick="javascript:exportZip();">导出</a>
 				    </#if>
 				</td>

@@ -62,7 +62,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/fastjson.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/freemarker.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/fst.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/groovy-all.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/guava.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/HikariCP.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/htmlparser.jar"/>

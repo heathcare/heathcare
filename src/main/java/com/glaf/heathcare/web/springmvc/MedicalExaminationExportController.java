@@ -198,7 +198,7 @@ public class MedicalExaminationExportController {
 							"export" + DateUtils.getNowYearMonthDayHHmmss() + ".zip");
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				//ex.printStackTrace();
 				logger.error(ex);
 			} finally {
 				semaphore2.release();

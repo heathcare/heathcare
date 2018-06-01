@@ -74,10 +74,9 @@
 </script>
 </head>
 <body>
-<div style="margin:0px;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north',split:true,border:true" style="height:40px;margin-top:0px;"> 
-    <div class="toolbar-backgroud"> 
+  <div data-options="region:'north',split:false,border:true" style="height:42px" class="toolbar-backgroud"> 
+    <div style="margin:4px;"> 
 	<span class="x_content_title">&nbsp;&nbsp;每日实际就餐人数</span>
 	<#if privilege_write == true>
 	<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-save'" 

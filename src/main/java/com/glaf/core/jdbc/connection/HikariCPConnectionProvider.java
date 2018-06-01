@@ -112,7 +112,7 @@ public class HikariCPConnectionProvider implements ConnectionProvider {
 			Integer connectionTimeout = PropertiesHelper.getInteger("hikari.connectionTimeout", properties);
 
 			if (maximumPoolSize == null) {
-				maximumPoolSize = 50;
+				maximumPoolSize = 500;
 			}
 
 			String dbUser = properties.getProperty(DBConfiguration.JDBC_USER);

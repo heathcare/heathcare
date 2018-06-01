@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="${contextPath}/static/plugins/easyui/themes/blue/easyui.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}/static/plugins/ztree/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}/static/css/core.css"/>
-<link rel="stylesheet" type="text/css" href="${contextPath}/static/css/icons.css"/>
+<link rel="stylesheet" type="text/css" href="${contextPath}/static/css/icons.css?v2"/>
 <script type="text/javascript" src="${contextPath}/static/scripts/jquery.min.js"></script>
 <script type="text/javascript" src="${contextPath}/static/scripts/jquery.form.js"></script>
 <script type="text/javascript" src="${contextPath}/static/scripts/jquery.base64.js"></script>
