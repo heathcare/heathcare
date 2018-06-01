@@ -655,7 +655,7 @@
 			alert("开始时间不能大于结束时间。");
 			return;
 		}
-		var link="${contextPath}/heathcare/reportMain/exportXls?ts=${ts}&reportId=GoodsInOutStockActualQuantity";
+		var link="${contextPath}/heathcare/reportMain/exportXls?ts=${ts}&reportId=GoodsCountQuantity";
 		if(startTime != ""){
 			link = link + "&startTime=" + startTime;
 		}
