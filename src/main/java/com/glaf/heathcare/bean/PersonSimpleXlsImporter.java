@@ -45,11 +45,11 @@ import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.service.PersonService;
 
-public class PersonAndLinkmanXlsImporter {
-	protected final static Log logger = LogFactory.getLog(PersonAndLinkmanXlsImporter.class);
+public class PersonSimpleXlsImporter {
+	protected final static Log logger = LogFactory.getLog(PersonSimpleXlsImporter.class);
 
 	public void doImport(String tenantId, String gradeId, Date joinDate, java.io.InputStream inputStream) {
-		logger.debug("----------------PersonAndLinkmanXlsImporter------------------");
+		logger.debug("----------------PersonSimpleXlsImporter------------------");
 		HSSFWorkbook wb = null;
 		try {
 			wb = new HSSFWorkbook(inputStream);
@@ -67,7 +67,7 @@ public class PersonAndLinkmanXlsImporter {
 		List<Person> users = new ArrayList<Person>();
 		int rows = sheet.getLastRowNum();
 		logger.debug("row num:" + rows);
-		for (int rowIndex = 4; rowIndex <= rows; rowIndex++) {
+		for (int rowIndex = 2; rowIndex <= rows; rowIndex++) {
 			HSSFRow row = sheet.getRow(rowIndex);
 			if (row == null) {
 				continue;
@@ -88,10 +88,15 @@ public class PersonAndLinkmanXlsImporter {
 					}
 					cellValue = cellValue.trim();
 					switch (colIndex) {
-					case 0:// 姓名
+					case 0:
+						break;
+					case 1:// 学籍号
+						user.setStudentCode(cellValue);
+						break;
+					case 2:// 姓名
 						user.setName(cellValue);
 						break;
-					case 1:// 性别
+					case 3:// 性别
 						if (StringUtils.contains(cellValue, "男")) {
 							user.setSex("1");
 						}
@@ -99,7 +104,7 @@ public class PersonAndLinkmanXlsImporter {
 							user.setSex("0");
 						}
 						break;
-					case 2:// 出生日期
+					case 4:// 出生日期
 						cellValue = StringTools.replace(cellValue, ".", "-");
 						cellValue = StringTools.replace(cellValue, "/", "-");
 						try {
@@ -108,7 +113,13 @@ public class PersonAndLinkmanXlsImporter {
 
 						}
 						break;
-					case 3:// 入园日期
+					case 5:// 身份证号码
+						user.setIdCardNo(cellValue);
+						break;
+					case 6:// 民族
+						user.setNation(cellValue);
+						break;
+					case 7:// 入园日期
 						cellValue = StringTools.replace(cellValue, ".", "-");
 						cellValue = StringTools.replace(cellValue, "/", "-");
 						try {
@@ -116,36 +127,30 @@ public class PersonAndLinkmanXlsImporter {
 						} catch (Throwable ex) {
 						}
 						break;
-					case 4:// 民族
-						user.setNation(cellValue);
-						break;
-					case 5:// 籍贯
+					case 8:// 籍贯
 						user.setBirthPlace(cellValue);
 						break;
-					case 6:// 家庭住址
+					case 9:// 家庭住址
 						user.setHomeAddress(cellValue);
 						break;
-					case 7:// 身份证号码
-						user.setIdCardNo(cellValue);
-						break;
-					case 8:// 父亲姓名
+					case 10:// 父亲姓名
 						user.setFather(cellValue);
 						break;
-					case 9:// 父亲电话
+					case 11:// 父亲电话
 							// cellValue = cell.getStringCellValue();
 						user.setFatherTelephone(cellValue);
 						break;
-					case 10:// 父亲工作单位
+					case 12:// 父亲工作单位
 						user.setFatherCompany(cellValue);
 						break;
-					case 11:// 母亲姓名
+					case 13:// 母亲姓名
 						user.setMother(cellValue);
 						break;
-					case 12:// 母亲电话
+					case 14:// 母亲电话
 						// cellValue = cell.getStringCellValue();
 						user.setMotherTelephone(cellValue);
 						break;
-					case 13:// 母亲工作单位
+					case 15:// 母亲工作单位
 						user.setMotherCompany(cellValue);
 						break;
 					default:

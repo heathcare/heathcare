@@ -47,6 +47,7 @@ public class PersonDomainFactory {
 		columnMap.put("gradeId", "GRADEID_");
 		columnMap.put("name", "NAME_");
 		columnMap.put("idCardNo", "IDCARDNO_");
+		columnMap.put("studentCode", "STUDENTCODE_");
 		columnMap.put("bloodType", "BLOODTYPE_");
 		columnMap.put("nationality", "NATIONALITY_");
 		columnMap.put("nation", "NATION_");
@@ -102,6 +103,7 @@ public class PersonDomainFactory {
 		javaTypeMap.put("gradeId", "String");
 		javaTypeMap.put("name", "String");
 		javaTypeMap.put("idCardNo", "String");
+		javaTypeMap.put("studentCode", "String");
 		javaTypeMap.put("bloodType", "String");
 		javaTypeMap.put("nationality", "String");
 		javaTypeMap.put("nation", "String");
@@ -205,6 +207,13 @@ public class PersonDomainFactory {
 		idCardNo.setJavaType("String");
 		idCardNo.setLength(20);
 		tableDefinition.addColumn(idCardNo);
+		
+		ColumnDefinition studentCode = new ColumnDefinition();
+        studentCode.setName("studentCode");
+        studentCode.setColumnName("STUDENTCODE_");
+        studentCode.setJavaType("String");
+        studentCode.setLength(30);
+        tableDefinition.addColumn(studentCode);
 
 		ColumnDefinition bloodType = new ColumnDefinition();
 		bloodType.setName("bloodType");

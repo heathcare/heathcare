@@ -72,6 +72,12 @@ public class Person implements Serializable, JSONable {
 	protected String idCardNo;
 
 	/**
+	 * 学籍号
+	 */
+	@Column(name = "STUDENTCODE_", length = 30)
+	protected String studentCode;
+
+	/**
 	 * 血型
 	 */
 	@Column(name = "BLOODTYPE_", length = 20)
@@ -649,6 +655,10 @@ public class Person implements Serializable, JSONable {
 		return status;
 	}
 
+	public String getStudentCode() {
+		return studentCode;
+	}
+
 	public String getTelephone() {
 		return this.telephone;
 	}
@@ -906,6 +916,10 @@ public class Person implements Serializable, JSONable {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public void setStudentCode(String studentCode) {
+		this.studentCode = studentCode;
 	}
 
 	public void setTelephone(String telephone) {

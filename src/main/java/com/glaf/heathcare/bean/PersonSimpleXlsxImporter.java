@@ -31,11 +31,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.security.Authentication;
@@ -45,14 +46,14 @@ import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.service.PersonService;
 
-public class PersonAndLinkmanXlsImporter {
-	protected final static Log logger = LogFactory.getLog(PersonAndLinkmanXlsImporter.class);
+public class PersonSimpleXlsxImporter {
+	protected final static Log logger = LogFactory.getLog(PersonSimpleXlsxImporter.class);
 
 	public void doImport(String tenantId, String gradeId, Date joinDate, java.io.InputStream inputStream) {
-		logger.debug("----------------PersonAndLinkmanXlsImporter------------------");
-		HSSFWorkbook wb = null;
+		logger.debug("----------------PersonSimpleXlsxImporter------------------");
+		XSSFWorkbook wb = null;
 		try {
-			wb = new HSSFWorkbook(inputStream);
+			wb = new XSSFWorkbook(inputStream);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -63,12 +64,12 @@ public class PersonAndLinkmanXlsImporter {
 				}
 			}
 		}
-		HSSFSheet sheet = wb.getSheetAt(0);
+		XSSFSheet sheet = wb.getSheetAt(0);
 		List<Person> users = new ArrayList<Person>();
 		int rows = sheet.getLastRowNum();
-		logger.debug("row num:" + rows);
-		for (int rowIndex = 4; rowIndex <= rows; rowIndex++) {
-			HSSFRow row = sheet.getRow(rowIndex);
+		logger.debug("rows size:" + rows);
+		for (int rowIndex = 2; rowIndex <= rows; rowIndex++) {
+			XSSFRow row = sheet.getRow(rowIndex);
 			if (row == null) {
 				continue;
 			}
@@ -80,7 +81,7 @@ public class PersonAndLinkmanXlsImporter {
 			String cellValue = null;
 			int cells = row.getLastCellNum();
 			for (int colIndex = 0; colIndex < cells; colIndex++) {
-				HSSFCell cell = row.getCell(colIndex);
+				XSSFCell cell = row.getCell(colIndex);
 				if (cell != null) {
 					cellValue = this.getValue(cell, 0);
 					if (cellValue == null) {
@@ -88,10 +89,15 @@ public class PersonAndLinkmanXlsImporter {
 					}
 					cellValue = cellValue.trim();
 					switch (colIndex) {
-					case 0:// 姓名
+					case 0:
+						break;
+					case 1:// 学籍号
+						user.setStudentCode(cellValue);
+						break;
+					case 2:// 姓名
 						user.setName(cellValue);
 						break;
-					case 1:// 性别
+					case 3:// 性别
 						if (StringUtils.contains(cellValue, "男")) {
 							user.setSex("1");
 						}
@@ -99,7 +105,7 @@ public class PersonAndLinkmanXlsImporter {
 							user.setSex("0");
 						}
 						break;
-					case 2:// 出生日期
+					case 4:// 出生日期
 						cellValue = StringTools.replace(cellValue, ".", "-");
 						cellValue = StringTools.replace(cellValue, "/", "-");
 						try {
@@ -108,7 +114,13 @@ public class PersonAndLinkmanXlsImporter {
 
 						}
 						break;
-					case 3:// 入园日期
+					case 5:// 身份证号码
+						user.setIdCardNo(cellValue);
+						break;
+					case 6:// 民族
+						user.setNation(cellValue);
+						break;
+					case 7:// 入园日期
 						cellValue = StringTools.replace(cellValue, ".", "-");
 						cellValue = StringTools.replace(cellValue, "/", "-");
 						try {
@@ -116,36 +128,30 @@ public class PersonAndLinkmanXlsImporter {
 						} catch (Throwable ex) {
 						}
 						break;
-					case 4:// 民族
-						user.setNation(cellValue);
-						break;
-					case 5:// 籍贯
+					case 8:// 籍贯
 						user.setBirthPlace(cellValue);
 						break;
-					case 6:// 家庭住址
+					case 9:// 家庭住址
 						user.setHomeAddress(cellValue);
 						break;
-					case 7:// 身份证号码
-						user.setIdCardNo(cellValue);
-						break;
-					case 8:// 父亲姓名
+					case 10:// 父亲姓名
 						user.setFather(cellValue);
 						break;
-					case 9:// 父亲电话
+					case 11:// 父亲电话
 							// cellValue = cell.getStringCellValue();
 						user.setFatherTelephone(cellValue);
 						break;
-					case 10:// 父亲工作单位
+					case 12:// 父亲工作单位
 						user.setFatherCompany(cellValue);
 						break;
-					case 11:// 母亲姓名
+					case 13:// 母亲姓名
 						user.setMother(cellValue);
 						break;
-					case 12:// 母亲电话
+					case 14:// 母亲电话
 						// cellValue = cell.getStringCellValue();
 						user.setMotherTelephone(cellValue);
 						break;
-					case 13:// 母亲工作单位
+					case 15:// 母亲工作单位
 						user.setMotherCompany(cellValue);
 						break;
 					default:
@@ -203,7 +209,17 @@ public class PersonAndLinkmanXlsImporter {
 		}
 	}
 
-	public String getValue(HSSFCell cell, int precision) {
+	public String getCellValue(CellValue cell, int precision) {
+		String cellValue = null;
+		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+
+		} else {
+			cellValue = cell.getStringValue();
+		}
+		return cellValue;
+	}
+
+	public String getValue(XSSFCell cell, int precision) {
 		String strValue = null;
 		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
 			short format = cell.getCellStyle().getDataFormat();

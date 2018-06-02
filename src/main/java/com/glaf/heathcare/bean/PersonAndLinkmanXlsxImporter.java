@@ -49,7 +49,7 @@ import com.glaf.heathcare.service.PersonService;
 public class PersonAndLinkmanXlsxImporter {
 	protected final static Log logger = LogFactory.getLog(PersonAndLinkmanXlsxImporter.class);
 
-	public void doImport(String tenantId, String gradeId, java.io.InputStream inputStream) {
+	public void doImport(String tenantId, String gradeId, Date joinDate, java.io.InputStream inputStream) {
 		logger.debug("----------------PersonAndLinkmanXlsxImporter------------------");
 		XSSFWorkbook wb = null;
 		try {
@@ -191,11 +191,14 @@ public class PersonAndLinkmanXlsxImporter {
 					} else {
 						user.setGradeId(gradeId);
 						user.setTenantId(tenantId);
+						if (user.getJoinDate() == null) {
+							user.setJoinDate(joinDate);
+						}
 						personService.save(user);
 					}
 				} catch (Exception ex) {
-					ex.printStackTrace();
-					logger.error(ex);
+					//ex.printStackTrace();
+					//logger.error(ex);
 				}
 			}
 		}
@@ -224,7 +227,7 @@ public class PersonAndLinkmanXlsxImporter {
 			} else { // 不是日期格式
 				double value = cell.getNumericCellValue();
 				DecimalFormat nf = new DecimalFormat("###");
-				//logger.debug("value->" + nf.format(value));
+				// logger.debug("value->" + nf.format(value));
 				return String.valueOf(nf.format(value));
 			}
 			double value = cell.getNumericCellValue();

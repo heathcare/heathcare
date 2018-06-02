@@ -13,6 +13,8 @@
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
 		<result property="idCardNo" column="IDCARDNO_"
 			jdbcType="VARCHAR" />
+		<result property="studentCode" column="STUDENTCODE_"
+			jdbcType="VARCHAR" />
 		<result property="bloodType" column="BLOODTYPE_"
 			jdbcType="VARCHAR" />
 		<result property="nationality" column="NATIONALITY_"
@@ -115,6 +117,9 @@
 			</if>
 			<if test="idCardNo != null">
 				,IDCARDNO_
+			</if>
+			<if test="studentCode != null">
+				,STUDENTCODE_
 			</if>
 			<if test="bloodType != null">
 				,BLOODTYPE_
@@ -280,6 +285,9 @@
 			<if test="idCardNo != null">
 				,#{idCardNo, jdbcType=VARCHAR}
 			</if>
+			<if test="studentCode != null">
+				,#{studentCode, jdbcType=VARCHAR}
+			</if>
 			<if test="bloodType != null">
 				,#{bloodType, jdbcType=VARCHAR}
 			</if>
@@ -438,6 +446,7 @@
 		,GRADEID_
 		,NAME_
 		,IDCARDNO_
+		,STUDENTCODE_
 		,BLOODTYPE_
 		,NATIONALITY_
 		,NATION_
@@ -498,19 +507,24 @@
 			,#{person.name,
 			jdbcType=VARCHAR}
 			,#{person.idCardNo, jdbcType=VARCHAR}
-			,#{person.bloodType, jdbcType=VARCHAR}
+			,#{person.studentCode, jdbcType=VARCHAR}
+			,#{person.bloodType,
+			jdbcType=VARCHAR}
 			,#{person.nationality,
 			jdbcType=VARCHAR}
 			,#{person.nation, jdbcType=VARCHAR}
-			,#{person.birthPlace, jdbcType=VARCHAR}
+			,#{person.birthPlace,
+			jdbcType=VARCHAR}
 			,#{person.natureAccount,
 			jdbcType=VARCHAR}
 			,#{person.natureType, jdbcType=VARCHAR}
-			,#{person.oneChild, jdbcType=VARCHAR}
+			,#{person.oneChild,
+			jdbcType=VARCHAR}
 			,#{person.disability,
 			jdbcType=VARCHAR}
 			,#{person.guardian, jdbcType=VARCHAR}
-			,#{person.guardianCardType, jdbcType=VARCHAR}
+			,#{person.guardianCardType,
+			jdbcType=VARCHAR}
 			,#{person.guardianNo,
 			jdbcType=VARCHAR}
 			,#{person.patriarch, jdbcType=VARCHAR}
@@ -587,6 +601,7 @@
 			,GRADEID_
 			,NAME_
 			,IDCARDNO_
+			,STUDENTCODE_
 			,BLOODTYPE_
 			,NATIONALITY_
 			,NATION_
@@ -647,36 +662,44 @@
 			,#{person.name,
 			jdbcType=VARCHAR}
 			,#{person.idCardNo, jdbcType=VARCHAR}
+			,#{person.studentCode, jdbcType=VARCHAR}
 			,#{person.bloodType,
 			jdbcType=VARCHAR}
 			,#{person.nationality,
 			jdbcType=VARCHAR}
 			,#{person.nation, jdbcType=VARCHAR}
-			,#{person.birthPlace, jdbcType=VARCHAR}
+			,#{person.birthPlace,
+			jdbcType=VARCHAR}
 			,#{person.natureAccount,
 			jdbcType=VARCHAR}
 			,#{person.natureType, jdbcType=VARCHAR}
-			,#{person.oneChild, jdbcType=VARCHAR}
+			,#{person.oneChild,
+			jdbcType=VARCHAR}
 			,#{person.disability,
 			jdbcType=VARCHAR}
 			,#{person.guardian, jdbcType=VARCHAR}
-			,#{person.guardianCardType, jdbcType=VARCHAR}
+			,#{person.guardianCardType,
+			jdbcType=VARCHAR}
 			,#{person.guardianNo,
 			jdbcType=VARCHAR}
 			,#{person.patriarch,
 			jdbcType=VARCHAR}
-			,#{person.telephone, jdbcType=VARCHAR}
+			,#{person.telephone,
+			jdbcType=VARCHAR}
 			,#{person.province,
 			jdbcType=VARCHAR}
 			,#{person.provinceId,
 			jdbcType=BIGINT}
-			,#{person.city, jdbcType=VARCHAR}
+			,#{person.city,
+			jdbcType=VARCHAR}
 			,#{person.cityId,
 			jdbcType=BIGINT}
-			,#{person.area, jdbcType=VARCHAR}
+			,#{person.area,
+			jdbcType=VARCHAR}
 			,#{person.areaId,
 			jdbcType=BIGINT}
-			,#{person.town, jdbcType=VARCHAR}
+			,#{person.town,
+			jdbcType=VARCHAR}
 			,#{person.townId,
 			jdbcType=BIGINT}
 			,#{person.homeAddress, jdbcType=VARCHAR}
@@ -746,6 +769,9 @@
 			</if>
 			<if test="idCardNo != null and idCardNo != '' ">
 				IDCARDNO_ = #{idCardNo, jdbcType=VARCHAR},
+			</if>
+			<if test="studentCode != null">
+				STUDENTCODE_ = #{studentCode, jdbcType=VARCHAR},
 			</if>
 			<if test="bloodType != null">
 				BLOODTYPE_ = #{bloodType, jdbcType=VARCHAR},

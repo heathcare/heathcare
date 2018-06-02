@@ -59,6 +59,9 @@ public class PersonJsonFactory {
 		if (jsonObject.containsKey("idCardNo")) {
 			model.setIdCardNo(jsonObject.getString("idCardNo"));
 		}
+		if (jsonObject.containsKey("studentCode")) {
+			model.setStudentCode(jsonObject.getString("studentCode"));
+		}
 		if (jsonObject.containsKey("bloodType")) {
 			model.setBloodType(jsonObject.getString("bloodType"));
 		}
@@ -240,6 +243,9 @@ public class PersonJsonFactory {
 		if (model.getIdCardNo() != null) {
 			jsonObject.put("idCardNo", model.getIdCardNo());
 		}
+		if (model.getStudentCode() != null) {
+			jsonObject.put("studentCode", model.getStudentCode());
+		}
 		if (model.getBloodType() != null) {
 			jsonObject.put("bloodType", model.getBloodType());
 		}
@@ -399,6 +405,9 @@ public class PersonJsonFactory {
 		}
 		if (model.getIdCardNo() != null) {
 			jsonObject.put("idCardNo", model.getIdCardNo());
+		}
+		if (model.getStudentCode() != null) {
+			jsonObject.put("studentCode", model.getStudentCode());
 		}
 		if (model.getBloodType() != null) {
 			jsonObject.put("bloodType", model.getBloodType());

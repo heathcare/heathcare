@@ -52,6 +52,8 @@ import com.glaf.core.util.Tools;
 
 import com.glaf.heathcare.bean.PersonAndLinkmanXlsImporter;
 import com.glaf.heathcare.bean.PersonAndLinkmanXlsxImporter;
+import com.glaf.heathcare.bean.PersonSimpleXlsImporter;
+import com.glaf.heathcare.bean.PersonSimpleXlsxImporter;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.PersonLinkman;
@@ -136,30 +138,79 @@ public class PersonController {
 		if (mFile != null && !mFile.isEmpty()) {
 			String gradeId = request.getParameter("gradeId");
 			String tenantId = request.getParameter("tenantId");
+			Date joinDate = RequestUtils.getDate(request, "joinDate");
+
 			PersonAndLinkmanXlsImporter importer1 = new PersonAndLinkmanXlsImporter();
 			PersonAndLinkmanXlsxImporter importer2 = new PersonAndLinkmanXlsxImporter();
 
 			if (loginContext.isSystemAdministrator()) {
 				if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-					importer2.doImport(tenantId, gradeId, mFile.getInputStream());
+					importer2.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
 				} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-					importer1.doImport(tenantId, gradeId, mFile.getInputStream());
+					importer1.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
 				}
 			} else {
 				if (loginContext.isTenantAdmin()) {
 					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						importer2.doImport(loginContext.getTenantId(), gradeId, mFile.getInputStream());
+						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
 					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-						importer1.doImport(loginContext.getTenantId(), gradeId, mFile.getInputStream());
+						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
 					}
 				} else {
 					if (!loginContext.getGradeIds().contains(gradeId)) {
 						throw new RuntimeException("您没有该数据操作权限。");
 					}
 					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						importer2.doImport(loginContext.getTenantId(), gradeId, mFile.getInputStream());
+						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
 					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-						importer1.doImport(loginContext.getTenantId(), gradeId, mFile.getInputStream());
+						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+					}
+				}
+			}
+		}
+		return this.list(request, modelMap);
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImport2", method = RequestMethod.POST)
+	public ModelAndView doImport2(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			String gradeId = request.getParameter("gradeId");
+			String tenantId = request.getParameter("tenantId");
+			Date joinDate = RequestUtils.getDate(request, "joinDate");
+			PersonSimpleXlsImporter importer1 = new PersonSimpleXlsImporter();
+			PersonSimpleXlsxImporter importer2 = new PersonSimpleXlsxImporter();
+
+			if (loginContext.isSystemAdministrator()) {
+				if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+					importer2.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
+				} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+					importer1.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
+				}
+			} else {
+				if (loginContext.isTenantAdmin()) {
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+					}
+				} else {
+					if (!loginContext.getGradeIds().contains(gradeId)) {
+						throw new RuntimeException("您没有该数据操作权限。");
+					}
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
 					}
 				}
 			}
@@ -447,6 +498,7 @@ public class PersonController {
 			person.setName(request.getParameter("name"));
 			person.setBirthday(birthday);
 			person.setJoinDate(joinDate);
+			person.setStudentCode(request.getParameter("studentCode"));
 			person.setPatriarch(request.getParameter("patriarch"));
 			person.setTelephone(request.getParameter("telephone"));
 			person.setProvinceId(RequestUtils.getLong(request, "provinceId"));
