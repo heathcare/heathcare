@@ -18,26 +18,29 @@
 
 package com.glaf.heathcare.tenant;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.glaf.base.modules.sys.model.Dictory;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
-
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.ActualRepastPerson;
 import com.glaf.heathcare.domain.GoodsActualQuantity;
 import com.glaf.heathcare.query.ActualRepastPersonQuery;
 import com.glaf.heathcare.query.GoodsActualQuantityQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.ActualRepastPersonService;
 import com.glaf.heathcare.service.GoodsActualQuantityService;
 
-public class TenantDailyGoodsActualQuantitySecondPreprocessor implements ITenantReportPreprocessor {
+public class TenantDailyGoodsActualQuantitySecondPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

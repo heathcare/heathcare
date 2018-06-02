@@ -18,7 +18,11 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -49,7 +53,7 @@ public class DietaryAnalyzePreprocessor implements IReportPreprocessor {
 	protected static final Log logger = LogFactory.getLog(DietaryAnalyzePreprocessor.class);
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		Date startDate = ParamUtils.getDate(params, "startDate");
 		Date endDate = ParamUtils.getDate(params, "endDate");
 		if (startDate != null && endDate != null) {

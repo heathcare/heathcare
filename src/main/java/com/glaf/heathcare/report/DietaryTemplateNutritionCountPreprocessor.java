@@ -38,7 +38,7 @@ import com.glaf.heathcare.service.FoodCompositionService;
 public class DietaryTemplateNutritionCountPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		int suitNo = ParamUtils.getInt(params, "suitNo");
 		int dayOfWeek = ParamUtils.getInt(params, "dayOfWeek");
 		if (dayOfWeek != 0 && suitNo != 0) {

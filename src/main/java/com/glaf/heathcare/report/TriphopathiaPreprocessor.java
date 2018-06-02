@@ -24,7 +24,6 @@ import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.Triphopathia;
@@ -38,7 +37,7 @@ import com.glaf.heathcare.service.TriphopathiaService;
 public class TriphopathiaPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		TriphopathiaService triphopathiaService = ContextFactory

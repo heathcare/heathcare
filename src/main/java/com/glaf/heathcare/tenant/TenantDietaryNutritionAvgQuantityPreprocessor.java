@@ -23,13 +23,14 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
- 
+
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.heathcare.domain.PersonInfo;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.PersonInfoService;
 
-public class TenantDietaryNutritionAvgQuantityPreprocessor implements ITenantReportPreprocessor {
+public class TenantDietaryNutritionAvgQuantityPreprocessor implements IReportPreprocessor {
 
 	protected static final Log logger = LogFactory.getLog(TenantDietaryNutritionAvgQuantityPreprocessor.class);
 

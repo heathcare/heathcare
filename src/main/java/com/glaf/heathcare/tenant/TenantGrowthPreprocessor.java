@@ -26,16 +26,16 @@ import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
 
-public class TenantGrowthPreprocessor implements ITenantReportPreprocessor {
+public class TenantGrowthPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

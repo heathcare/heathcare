@@ -33,7 +33,7 @@ import com.glaf.heathcare.service.PersonTransferSchoolService;
 public class PersonTransferSchoolPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		PersonTransferSchoolService personTransferSchoolService = ContextFactory
 				.getBean("com.glaf.heathcare.service.personTransferSchoolService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");

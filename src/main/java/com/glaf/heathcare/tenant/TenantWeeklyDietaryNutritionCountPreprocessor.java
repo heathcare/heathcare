@@ -25,26 +25,25 @@ import java.util.Map;
 
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.TenantConfigService;
-
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.ParamUtils;
-
-import com.glaf.heathcare.domain.DietaryItem;
 import com.glaf.heathcare.domain.Dietary;
+import com.glaf.heathcare.domain.DietaryItem;
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.FoodDRI;
 import com.glaf.heathcare.domain.FoodDRIPercent;
 import com.glaf.heathcare.query.DietaryItemQuery;
 import com.glaf.heathcare.query.DietaryQuery;
 import com.glaf.heathcare.query.FoodCompositionQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.DietaryItemService;
 import com.glaf.heathcare.service.DietaryService;
 import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.service.FoodDRIPercentService;
 import com.glaf.heathcare.service.FoodDRIService;
 
-public class TenantWeeklyDietaryNutritionCountPreprocessor implements ITenantReportPreprocessor {
+public class TenantWeeklyDietaryNutritionCountPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

@@ -128,6 +128,14 @@
 		</td>
 	</tr>
 	<tr>
+		<td width="20%" align="left">学籍号</td>
+		<td align="left">
+            <input id="studentCode" name="studentCode" type="text" precision="0" 
+			       class="easyui-validatebox  x-text" style="width:180px;" 
+				   value="${person.studentCode}"/>
+		</td>
+	</tr>
+	<tr>
 		<td width="20%" align="left">省份</td>
 		<td align="left">
 			<select id="provinceId" name="provinceId" onchange="javascript:selectDistrict('provinceId', 'cityId');">

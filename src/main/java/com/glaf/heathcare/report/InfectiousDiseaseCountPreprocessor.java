@@ -23,6 +23,7 @@ import java.util.Map;
 
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
+import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.domain.InfectiousDiseaseCount;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.PersonSickness;
@@ -34,7 +35,9 @@ import com.glaf.heathcare.service.PersonSicknessService;
 public class InfectiousDiseaseCountPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
+		int year = ParamUtils.getInt(params, "year");
+		int month = ParamUtils.getInt(params, "month");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		PersonSicknessService personSicknessService = ContextFactory
 				.getBean("com.glaf.heathcare.service.personSicknessService");

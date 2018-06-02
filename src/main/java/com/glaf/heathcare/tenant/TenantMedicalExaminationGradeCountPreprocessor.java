@@ -42,13 +42,14 @@ import com.glaf.heathcare.query.GradePersonRelationQuery;
 import com.glaf.heathcare.query.MedicalExaminationGradeCountQuery;
 import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.query.PhysicalGrowthCountQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.heathcare.service.GradePersonRelationService;
 import com.glaf.heathcare.service.MedicalExaminationGradeCountService;
 import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.service.PhysicalGrowthCountService;
 
-public class TenantMedicalExaminationGradeCountPreprocessor implements ITenantReportPreprocessor {
+public class TenantMedicalExaminationGradeCountPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

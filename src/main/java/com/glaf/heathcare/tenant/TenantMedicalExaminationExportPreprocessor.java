@@ -27,10 +27,11 @@ import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.Person;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
 
-public class TenantMedicalExaminationExportPreprocessor implements ITenantReportPreprocessor {
+public class TenantMedicalExaminationExportPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

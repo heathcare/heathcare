@@ -28,8 +28,8 @@ import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.ParamUtils;
-import com.glaf.heathcare.domain.DietaryItem;
 import com.glaf.heathcare.domain.Dietary;
+import com.glaf.heathcare.domain.DietaryItem;
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.FoodDRI;
 import com.glaf.heathcare.domain.FoodDRIPercent;
@@ -45,7 +45,8 @@ import com.glaf.heathcare.service.FoodDRIService;
 public class WeeklyDietaryNutritionCountPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
+		int year = ParamUtils.getInt(params, "year");
 		int week = ParamUtils.getInt(params, "week");
 		if (year > 0 && week > 0) {
 			DietaryService dietaryService = ContextFactory.getBean("com.glaf.heathcare.service.dietaryService");

@@ -18,7 +18,11 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +31,6 @@ import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.GoodsActualQuantity;
 import com.glaf.heathcare.domain.GoodsCount;
@@ -47,7 +50,9 @@ public class GoodsCountPreprocessor implements IReportPreprocessor {
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
+		int year = ParamUtils.getInt(params, "year");
+		int month = ParamUtils.getInt(params, "month");
 		params.put("year", year);
 		params.put("month", month);
 		String tenantId = tenant.getTenantId();

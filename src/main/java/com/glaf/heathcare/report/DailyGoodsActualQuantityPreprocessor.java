@@ -18,10 +18,14 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import com.glaf.core.identity.Tenant;
 import com.glaf.core.context.ContextFactory;
+import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.domain.GoodsActualQuantity;
@@ -31,7 +35,7 @@ import com.glaf.heathcare.service.GoodsActualQuantityService;
 public class DailyGoodsActualQuantityPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		Date date = ParamUtils.getDate(params, "date");
 		if (date != null) {
 			Calendar calendar = Calendar.getInstance();
@@ -71,10 +75,10 @@ public class DailyGoodsActualQuantityPreprocessor implements IReportPreprocessor
 						break;
 					}
 				}
-				
+
 				int max = Math.max(rows1.size(), rows2.size());
 				max = Math.max(max, rows3.size());
-				
+
 				for (int i = 0, len = rows1.size(); i < max - len; i++) {
 					GoodsActualQuantity m = new GoodsActualQuantity();
 					rows1.add(m);

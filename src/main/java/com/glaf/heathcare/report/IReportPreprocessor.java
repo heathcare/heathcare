@@ -28,13 +28,9 @@ public interface IReportPreprocessor {
 	 * 
 	 * @param tenant
 	 *            租户信息
-	 * @param year
-	 *            年
-	 * @param month
-	 *            月
 	 * @param params
 	 *            参数
 	 */
-	void prepare(Tenant tenant, int year, int month, Map<String, Object> params);
+	void prepare(Tenant tenant, Map<String, Object> params);
 
 }

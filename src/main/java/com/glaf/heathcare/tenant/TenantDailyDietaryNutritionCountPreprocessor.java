@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
- 
+
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.ParamUtils;
@@ -32,11 +32,12 @@ import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.query.DietaryItemQuery;
 import com.glaf.heathcare.query.DietaryQuery;
 import com.glaf.heathcare.query.FoodCompositionQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.DietaryItemService;
 import com.glaf.heathcare.service.DietaryService;
 import com.glaf.heathcare.service.FoodCompositionService;
 
-public class TenantDailyDietaryNutritionCountPreprocessor implements ITenantReportPreprocessor {
+public class TenantDailyDietaryNutritionCountPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

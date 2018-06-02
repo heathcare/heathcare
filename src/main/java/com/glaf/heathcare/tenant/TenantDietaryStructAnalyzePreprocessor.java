@@ -24,11 +24,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.compress.utils.IOUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -43,12 +46,10 @@ import org.jxls.transform.poi.PoiTransformer;
 
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.TenantConfigService;
-
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.ActualRepastPerson;
 import com.glaf.heathcare.domain.DietaryAnalyzeModel;
 import com.glaf.heathcare.domain.FoodComposition;
@@ -58,6 +59,7 @@ import com.glaf.heathcare.domain.GoodsActualQuantity;
 import com.glaf.heathcare.query.ActualRepastPersonQuery;
 import com.glaf.heathcare.query.FoodCompositionQuery;
 import com.glaf.heathcare.query.GoodsActualQuantityQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.ActualRepastPersonService;
 import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.service.FoodDRIPercentService;
@@ -66,7 +68,7 @@ import com.glaf.heathcare.service.GoodsActualQuantityService;
 import com.glaf.report.bean.ReportContainer;
 import com.glaf.report.data.ReportDefinition;
 
-public class TenantDietaryStructAnalyzePreprocessor implements ITenantReportPreprocessor {
+public class TenantDietaryStructAnalyzePreprocessor implements IReportPreprocessor {
 
 	protected static final Log logger = LogFactory.getLog(TenantDietaryStructAnalyzePreprocessor.class);
 

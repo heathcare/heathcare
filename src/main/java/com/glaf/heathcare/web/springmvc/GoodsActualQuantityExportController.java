@@ -23,11 +23,12 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.Semaphore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,52 +47,53 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.glaf.base.modules.sys.model.SysTenant;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.SysTenantService;
+import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
+import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
+import com.glaf.core.util.StringTools;
 import com.glaf.core.util.ZipUtils;
-import com.glaf.heathcare.domain.MedicalExamination;
-import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.report.IReportPreprocessor;
-import com.glaf.heathcare.service.GradeInfoService;
-import com.glaf.heathcare.service.GrowthStandardService;
-import com.glaf.heathcare.service.MedicalExaminationDefService;
-import com.glaf.heathcare.service.MedicalExaminationService;
-import com.glaf.heathcare.service.PersonService;
+import com.glaf.heathcare.service.ActualRepastPersonService;
+import com.glaf.heathcare.service.DietaryService;
+import com.glaf.heathcare.service.FoodCompositionService;
+import com.glaf.heathcare.service.GoodsActualQuantityService;
+import com.glaf.heathcare.service.GoodsOutStockService;
+import com.glaf.heathcare.service.GoodsPlanQuantityService;
 import com.glaf.report.bean.ReportContainer;
 import com.glaf.report.data.ReportDefinition;
 
-/**
- * 
- * SpringMVC控制器
- *
- */
+@Controller("/heathcare/goodsActualQuantityExport")
+@RequestMapping("/heathcare/goodsActualQuantityExport")
+public class GoodsActualQuantityExportController {
 
-@Controller("/heathcare/medicalExaminationExport")
-@RequestMapping("/heathcare/medicalExaminationExport")
-public class MedicalExaminationExportController {
-	protected static final Log logger = LogFactory.getLog(MedicalExaminationExportController.class);
+	protected static final Log logger = LogFactory.getLog(GoodsActualQuantityExportController.class);
 
 	protected static final Semaphore semaphore2 = new Semaphore(20);
 
-	protected MedicalExaminationService medicalExaminationService;
+	protected DietaryService dietaryService;
 
-	protected MedicalExaminationDefService medicalExaminationDefService;
+	protected ActualRepastPersonService actualRepastPersonService;
 
-	protected GradeInfoService gradeInfoService;
+	protected FoodCompositionService foodCompositionService;
 
-	protected GrowthStandardService growthStandardService;
+	protected GoodsActualQuantityService goodsActualQuantityService;
 
-	protected PersonService personService;
+	protected GoodsOutStockService goodsOutStockService;
+
+	protected GoodsPlanQuantityService goodsPlanQuantityService;
+
+	protected SysTreeService sysTreeService;
 
 	protected SysTenantService sysTenantService;
 
 	protected TenantConfigService tenantConfigService;
 
-	public MedicalExaminationExportController() {
+	public GoodsActualQuantityExportController() {
 
 	}
 
@@ -106,23 +108,40 @@ public class MedicalExaminationExportController {
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
 		int year = RequestUtils.getInt(request, "year");
 		int month = RequestUtils.getInt(request, "month");
+		Date startDate = ParamUtils.getDate(params, "startDate");
+		Date endDate = ParamUtils.getDate(params, "endDate");
+
+		if (startDate == null) {
+			startDate = ParamUtils.getDate(params, "startTime");
+		}
+
+		if (endDate == null) {
+			endDate = ParamUtils.getDate(params, "endTime");
+		}
+
 		String tenantId = loginContext.getTenantId();
 
 		params.put("year", year);
 		params.put("month", month);
+		params.put("startDate", startDate);
+		params.put("startTime", startDate);
+		params.put("endDate", endDate);
+		params.put("endTime", endDate);
+
 		params.put("tenantId", tenantId);
 		params.put("tableSuffix", IdentityFactory.getTenantHash(tenantId));
 
-		String reportId = request.getParameter("reportId");
-		ReportDefinition rdf = ReportContainer.getContainer().getReportDefinition(reportId);
+		String reportIds = request.getParameter("reportIds");
+		if (StringUtils.isNotEmpty(reportIds)) {
+			List<String> rptIds = StringTools.split(reportIds);
 
-		if (rdf != null) {
 			byte[] data = null;
 			byte[] bytes = null;
 			InputStream is = null;
 			ByteArrayInputStream bais = null;
 			ByteArrayOutputStream baos = null;
 			BufferedOutputStream bos = null;
+			ReportDefinition rdf = null;
 			IReportPreprocessor reportPreprocessor = null;
 			Map<String, byte[]> bytesMap = new HashMap<String, byte[]>();
 			try {
@@ -140,23 +159,9 @@ public class MedicalExaminationExportController {
 					params.put("tenant", tenant);
 				}
 
-				String gradeId = request.getParameter("gradeId");
-
-				MedicalExaminationQuery query = new MedicalExaminationQuery();
-				query.type(request.getParameter("type"));
-				query.tenantId(tenantId);
-				query.gradeId(gradeId);
-				query.year(year);
-				query.month(month);
-				query.locked(0);
-				query.deleteFlag(0);
-
-				List<MedicalExamination> exams = medicalExaminationService.list(query);
-				if (exams != null && !exams.isEmpty()) {
-
-					for (MedicalExamination exam : exams) {
-						params.put("examId", exam.getId());
-						params.put("personId", exam.getPersonId());
+				for (String reportId : rptIds) {
+					rdf = ReportContainer.getContainer().getReportDefinition(reportId);
+					if (rdf != null) {
 
 						if (StringUtils.isNotEmpty(rdf.getPrepareClass())) {
 							reportPreprocessor = (IReportPreprocessor) com.glaf.core.util.ReflectUtils
@@ -186,17 +191,20 @@ public class MedicalExaminationExportController {
 						bos.flush();
 						baos.flush();
 						bytes = baos.toByteArray();
-						bytesMap.put(exam.getName() + ".xls", bytes);
+
+						bytesMap.put(rdf.getTitle() + ".xls", bytes);
 
 						IOUtils.closeQuietly(is);
 						IOUtils.closeQuietly(bais);
 						IOUtils.closeQuietly(baos);
 						IOUtils.closeQuietly(bos);
 					}
-					data = ZipUtils.genZipBytes(bytesMap);
-					ResponseUtils.download(request, response, data,
-							"export" + DateUtils.getNowYearMonthDayHHmmss() + ".zip");
 				}
+
+				data = ZipUtils.genZipBytes(bytesMap);
+				ResponseUtils.download(request, response, data,
+						"export" + DateUtils.getNowYearMonthDayHHmmss() + ".zip");
+
 			} catch (Exception ex) {
 				// ex.printStackTrace();
 				logger.error(ex);
@@ -214,34 +222,44 @@ public class MedicalExaminationExportController {
 		return null;
 	}
 
-	@javax.annotation.Resource(name = "com.glaf.heathcare.service.gradeInfoService")
-	public void setGradeInfoService(GradeInfoService gradeInfoService) {
-		this.gradeInfoService = gradeInfoService;
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.actualRepastPersonService")
+	public void setActualRepastPersonService(ActualRepastPersonService actualRepastPersonService) {
+		this.actualRepastPersonService = actualRepastPersonService;
 	}
 
-	@javax.annotation.Resource(name = "com.glaf.heathcare.service.growthStandardService")
-	public void setGrowthStandardService(GrowthStandardService growthStandardService) {
-		this.growthStandardService = growthStandardService;
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.dietaryService")
+	public void setDietaryService(DietaryService dietaryService) {
+		this.dietaryService = dietaryService;
 	}
 
-	@javax.annotation.Resource(name = "com.glaf.heathcare.service.medicalExaminationDefService")
-	public void setMedicalExaminationDefService(MedicalExaminationDefService medicalExaminationDefService) {
-		this.medicalExaminationDefService = medicalExaminationDefService;
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.foodCompositionService")
+	public void setFoodCompositionService(FoodCompositionService foodCompositionService) {
+		this.foodCompositionService = foodCompositionService;
 	}
 
-	@javax.annotation.Resource(name = "com.glaf.heathcare.service.medicalExaminationService")
-	public void setMedicalExaminationService(MedicalExaminationService medicalExaminationService) {
-		this.medicalExaminationService = medicalExaminationService;
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.goodsActualQuantityService")
+	public void setGoodsActualQuantityService(GoodsActualQuantityService goodsActualQuantityService) {
+		this.goodsActualQuantityService = goodsActualQuantityService;
 	}
 
-	@javax.annotation.Resource(name = "com.glaf.heathcare.service.personService")
-	public void setPersonService(PersonService personService) {
-		this.personService = personService;
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.goodsOutStockService")
+	public void setGoodsOutStockService(GoodsOutStockService goodsOutStockService) {
+		this.goodsOutStockService = goodsOutStockService;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.goodsPlanQuantityService")
+	public void setGoodsPlanQuantityService(GoodsPlanQuantityService goodsPlanQuantityService) {
+		this.goodsPlanQuantityService = goodsPlanQuantityService;
 	}
 
 	@javax.annotation.Resource
 	public void setSysTenantService(SysTenantService sysTenantService) {
 		this.sysTenantService = sysTenantService;
+	}
+
+	@javax.annotation.Resource
+	public void setSysTreeService(SysTreeService sysTreeService) {
+		this.sysTreeService = sysTreeService;
 	}
 
 	@javax.annotation.Resource

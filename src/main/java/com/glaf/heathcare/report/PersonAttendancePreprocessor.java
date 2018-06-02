@@ -20,8 +20,8 @@ package com.glaf.heathcare.report;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,17 +29,19 @@ import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.Tools;
-import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.PersonAbsence;
 import com.glaf.heathcare.domain.PersonAttendance;
 import com.glaf.heathcare.query.PersonAbsenceQuery;
 import com.glaf.heathcare.service.PersonAbsenceService;
+import com.glaf.heathcare.service.PersonService;
 
 public class PersonAttendancePreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
+		int year = ParamUtils.getInt(params, "year");
+		int month = ParamUtils.getInt(params, "month");
 		String tenantId = tenant.getTenantId();
 		String gradeId = ParamUtils.getString(params, "gradeId");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");

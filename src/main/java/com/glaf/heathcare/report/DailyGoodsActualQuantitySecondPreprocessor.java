@@ -18,17 +18,21 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.glaf.base.modules.sys.model.Dictory;
-import com.glaf.core.identity.Tenant;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.core.context.ContextFactory;
+import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.domain.ActualRepastPerson;
@@ -42,7 +46,7 @@ public class DailyGoodsActualQuantitySecondPreprocessor implements IReportPrepro
 	protected static final Log logger = LogFactory.getLog(DailyGoodsActualQuantitySecondPreprocessor.class);
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		Date date = ParamUtils.getDate(params, "date");
 		if (date != null) {
 			Calendar calendar = Calendar.getInstance();

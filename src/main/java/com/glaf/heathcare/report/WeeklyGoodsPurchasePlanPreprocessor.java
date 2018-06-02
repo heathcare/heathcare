@@ -18,15 +18,19 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.glaf.core.context.ContextFactory;
-import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.identity.Tenant;
+import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.service.ITablePageService;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.GoodsInStock;
 import com.glaf.heathcare.query.FoodCompositionQuery;
@@ -35,7 +39,7 @@ import com.glaf.heathcare.service.FoodCompositionService;
 public class WeeklyGoodsPurchasePlanPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		String tenantId = tenant.getTenantId();
 		Date startDate = ParamUtils.getDate(params, "startDate");
 		Date endDate = ParamUtils.getDate(params, "endDate");

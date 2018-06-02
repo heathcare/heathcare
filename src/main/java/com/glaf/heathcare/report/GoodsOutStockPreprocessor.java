@@ -18,15 +18,17 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.glaf.core.context.ContextFactory;
+import com.glaf.core.identity.Tenant;
 import com.glaf.core.identity.User;
 import com.glaf.core.security.IdentityFactory;
-import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.GoodsOutStock;
 import com.glaf.heathcare.query.FoodCompositionQuery;
@@ -37,7 +39,9 @@ import com.glaf.heathcare.service.GoodsOutStockService;
 public class GoodsOutStockPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
+		int year = ParamUtils.getInt(params, "year");
+		int month = ParamUtils.getInt(params, "month");
 		params.put("year", year);
 		params.put("month", month);
 		String tenantId = tenant.getTenantId();
@@ -88,7 +92,7 @@ public class GoodsOutStockPreprocessor implements IReportPreprocessor {
 			}
 			params.put("rows", rows);
 		}
-		
+
 		params.put("startDate", DateUtils.getDateTime("yyyy年MM月dd日", startTime));
 		params.put("endDate", DateUtils.getDateTime("yyyy年MM月dd日", endTime));
 

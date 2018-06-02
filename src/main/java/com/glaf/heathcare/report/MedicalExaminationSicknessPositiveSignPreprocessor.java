@@ -28,20 +28,22 @@ import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.domain.GradeInfo;
-import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationSicknessPositiveSign;
+import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.GradeInfoQuery;
-import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
+import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.service.GradeInfoService;
-import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.service.MedicalExaminationService;
+import com.glaf.heathcare.service.PersonService;
 
 public class MedicalExaminationSicknessPositiveSignPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
+		int year = ParamUtils.getInt(params, "year");
+		int month = ParamUtils.getInt(params, "month");
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		MedicalExaminationService medicalExaminationService = ContextFactory

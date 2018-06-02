@@ -18,15 +18,18 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.glaf.core.context.ContextFactory;
-import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.identity.Tenant;
+import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.service.ITablePageService;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
-
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.GoodsActualQuantity;
 import com.glaf.heathcare.query.FoodCompositionQuery;
@@ -35,7 +38,7 @@ import com.glaf.heathcare.service.FoodCompositionService;
 public class WeekGoodsActualQuantityPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		Date startDate = ParamUtils.getDate(params, "startDate");
 		Date endDate = ParamUtils.getDate(params, "endDate");
 		if (startDate != null && endDate != null) {
@@ -48,8 +51,9 @@ public class WeekGoodsActualQuantityPreprocessor implements IReportPreprocessor 
 			sqlBuffer.append(" select E.GOODSID_ as goodsid, sum(QUANTITY_) as  quantity  from GOODS_ACTUAL_QUANTITY")
 					.append(String.valueOf(IdentityFactory.getTenantHash(tenantId))).append(" E ")
 					.append(" where ( E.TENANTID_ = '").append(tenantId).append("' ) ")
-					.append(" and ( E.USAGETIME_ >= #{startdate:date} ) ").append(" and ( E.USAGETIME_ <= #{enddate:date} ) ")
-					.append(" and ( E.BUSINESSSTATUS_ = 9 ) ").append(" group by E.GOODSID_");
+					.append(" and ( E.USAGETIME_ >= #{startdate:date} ) ")
+					.append(" and ( E.USAGETIME_ <= #{enddate:date} ) ").append(" and ( E.BUSINESSSTATUS_ = 9 ) ")
+					.append(" group by E.GOODSID_");
 			ITablePageService tablePageService = ContextFactory.getBean("tablePageService");
 			FoodCompositionService foodCompositionService = ContextFactory
 					.getBean("com.glaf.heathcare.service.foodCompositionService");

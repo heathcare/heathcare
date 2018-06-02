@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
- 
+
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.ParamUtils;
@@ -37,12 +37,13 @@ import com.glaf.heathcare.helper.MedicalExaminationHelper;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.query.PersonQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.heathcare.service.GrowthStandardService;
 import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
 
-public class TenantMedicalExaminationCountPreprocessor implements ITenantReportPreprocessor {
+public class TenantMedicalExaminationCountPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

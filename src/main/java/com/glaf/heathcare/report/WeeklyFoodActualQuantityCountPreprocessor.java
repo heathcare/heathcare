@@ -18,7 +18,14 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +47,7 @@ public class WeeklyFoodActualQuantityCountPreprocessor implements IReportPreproc
 	protected static final Log logger = LogFactory.getLog(WeeklyFoodActualQuantityCountPreprocessor.class);
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		Date startDate = ParamUtils.getDate(params, "startDate");
 		Date endDate = ParamUtils.getDate(params, "endDate");
 		if (startDate != null && endDate != null) {

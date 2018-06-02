@@ -45,7 +45,7 @@ import com.glaf.heathcare.service.FoodDRIService;
 public class WeeklyDietaryTemplateNutritionCountPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		int suitNo = ParamUtils.getInt(params, "suitNo");
 		if (suitNo != 0) {
 			DietaryTemplateService dietaryTemplateService = ContextFactory

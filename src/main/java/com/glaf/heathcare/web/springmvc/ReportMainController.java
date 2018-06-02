@@ -180,7 +180,7 @@ public class ReportMainController {
 					} else {
 						tenant.setSystemAdministrator(false);
 					}
-					reportPreprocessor.prepare(tenant, year, month, params);
+					reportPreprocessor.prepare(tenant, params);
 				}
 
 				bais = new ByteArrayInputStream(data);

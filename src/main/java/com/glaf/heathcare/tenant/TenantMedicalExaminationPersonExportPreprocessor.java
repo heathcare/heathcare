@@ -39,11 +39,12 @@ import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.MedicalExaminationEvaluateQuery;
 import com.glaf.heathcare.query.PersonQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.heathcare.service.MedicalExaminationEvaluateService;
 import com.glaf.heathcare.service.PersonService;
 
-public class TenantMedicalExaminationPersonExportPreprocessor implements ITenantReportPreprocessor {
+public class TenantMedicalExaminationPersonExportPreprocessor implements IReportPreprocessor {
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {

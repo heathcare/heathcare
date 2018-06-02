@@ -25,9 +25,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.glaf.core.context.ContextFactory;
+import com.glaf.core.identity.Tenant;
 import com.glaf.core.identity.User;
 import com.glaf.core.security.IdentityFactory;
-import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.domain.GradeInfo;
@@ -43,7 +43,9 @@ import com.glaf.heathcare.service.PersonSicknessService;
 public class PersonAbsenceSicknessCountPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
+		int year = ParamUtils.getInt(params, "year");
+		int month = ParamUtils.getInt(params, "month");
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		PersonSicknessService personSicknessService = ContextFactory

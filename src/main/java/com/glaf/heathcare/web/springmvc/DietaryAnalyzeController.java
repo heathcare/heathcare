@@ -47,6 +47,7 @@ import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.DietaryCountService;
 import com.glaf.heathcare.service.DietaryItemService;
 import com.glaf.heathcare.service.DietaryService;
@@ -56,7 +57,6 @@ import com.glaf.heathcare.service.GoodsInStockService;
 import com.glaf.heathcare.service.GoodsOutStockService;
 import com.glaf.heathcare.service.GoodsPurchasePlanService;
 import com.glaf.heathcare.service.PersonInfoService;
-import com.glaf.heathcare.tenant.ITenantReportPreprocessor;
 import com.glaf.heathcare.tenant.TenantDietaryAnalyzePreprocessor;
 
 @Controller("/heathcare/dietaryAnalyze")
@@ -179,7 +179,7 @@ public class DietaryAnalyzeController {
 		Date startDate = ParamUtils.getDate(params, "startDate");
 		Date endDate = ParamUtils.getDate(params, "endDate");
 		if (startDate != null && endDate != null) {
-			ITenantReportPreprocessor processor = new TenantDietaryAnalyzePreprocessor();
+			IReportPreprocessor processor = new TenantDietaryAnalyzePreprocessor();
 			processor.prepare(tenant, params);
 
 			request.setAttribute("startDate_", DateUtils.getDate(startDate));

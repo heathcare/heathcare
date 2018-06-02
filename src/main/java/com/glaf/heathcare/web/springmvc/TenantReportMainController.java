@@ -63,8 +63,7 @@ import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ExcelToHtml;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
-
-import com.glaf.heathcare.tenant.ITenantReportPreprocessor;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.report.bean.ReportContainer;
 import com.glaf.report.data.ReportDefinition;
 
@@ -109,7 +108,7 @@ public class TenantReportMainController {
 			ByteArrayInputStream bais = null;
 			ByteArrayOutputStream baos = null;
 			BufferedOutputStream bos = null;
-			ITenantReportPreprocessor reportPreprocessor = null;
+			IReportPreprocessor reportPreprocessor = null;
 			String outputFormat = request.getParameter("outputFormat");
 			int precision = RequestUtils.getInt(request, "precision", 2);
 			try {
@@ -127,7 +126,7 @@ public class TenantReportMainController {
 				}
 
 				if (StringUtils.isNotEmpty(rdf.getPrepareClass())) {
-					reportPreprocessor = (ITenantReportPreprocessor) com.glaf.core.util.ReflectUtils
+					reportPreprocessor = (IReportPreprocessor) com.glaf.core.util.ReflectUtils
 							.instantiate(rdf.getPrepareClass());
 					reportPreprocessor.prepare(tenant, params);
 				}
@@ -176,7 +175,7 @@ public class TenantReportMainController {
 							"export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls");
 				}
 			} catch (Exception ex) {
-				//ex.printStackTrace();
+				// ex.printStackTrace();
 				logger.error(ex);
 			} finally {
 				data = null;

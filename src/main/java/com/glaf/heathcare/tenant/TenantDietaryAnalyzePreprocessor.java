@@ -18,7 +18,11 @@
 
 package com.glaf.heathcare.tenant;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -38,13 +42,14 @@ import com.glaf.heathcare.domain.GoodsActualQuantity;
 import com.glaf.heathcare.query.ActualRepastPersonQuery;
 import com.glaf.heathcare.query.FoodCompositionQuery;
 import com.glaf.heathcare.query.GoodsActualQuantityQuery;
+import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.ActualRepastPersonService;
 import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.service.FoodDRIPercentService;
 import com.glaf.heathcare.service.FoodDRIService;
 import com.glaf.heathcare.service.GoodsActualQuantityService;
 
-public class TenantDietaryAnalyzePreprocessor implements ITenantReportPreprocessor {
+public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 
 	protected static final Log logger = LogFactory.getLog(TenantDietaryAnalyzePreprocessor.class);
 

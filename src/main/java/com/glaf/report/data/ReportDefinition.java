@@ -47,6 +47,11 @@ public class ReportDefinition implements java.io.Serializable {
 	protected String templateType;
 
 	/**
+	 * 标题
+	 */
+	protected String title;
+
+	/**
 	 * 预处理类
 	 */
 	protected String prepareClass;
@@ -122,6 +127,10 @@ public class ReportDefinition implements java.io.Serializable {
 		return templateType;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
 	public void setData(byte[] data) {
 		this.data = data;
 	}
@@ -156,6 +165,10 @@ public class ReportDefinition implements java.io.Serializable {
 
 	public void setTemplateType(String templateType) {
 		this.templateType = templateType;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

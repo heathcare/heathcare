@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.glaf.core.identity.Tenant;
 import com.glaf.core.context.ContextFactory;
+import com.glaf.core.identity.Tenant;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.domain.Dietary;
 import com.glaf.heathcare.domain.DietaryItem;
@@ -39,7 +39,7 @@ import com.glaf.heathcare.service.FoodCompositionService;
 public class DailyDietaryNutritionCountPreprocessor implements IReportPreprocessor {
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		int fullDay = ParamUtils.getInt(params, "fullDay");
 		if (fullDay != 0) {
 			DietaryService dietaryService = ContextFactory.getBean("com.glaf.heathcare.service.dietaryService");

@@ -18,8 +18,17 @@
 
 package com.glaf.heathcare.report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +54,7 @@ public class WeeklyMultiSheetFoodActualQuantityPreprocessor implements IReportPr
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
-	public void prepare(Tenant tenant, int year, int month, Map<String, Object> params) {
+	public void prepare(Tenant tenant, Map<String, Object> params) {
 		Date startDate = ParamUtils.getDate(params, "startDate");
 		Date endDate = ParamUtils.getDate(params, "endDate");
 		if (startDate != null && endDate != null) {
@@ -110,7 +119,7 @@ public class WeeklyMultiSheetFoodActualQuantityPreprocessor implements IReportPr
 			query.usageTimeGreaterThanOrEqual(startDate);
 			query.usageTimeLessThanOrEqual(endDate);
 			query.setOrderBy(" E.NODESORT_ asc ");
-			//query.setOrderBy("  E.GOODSNODEID_ asc, E.GOODSID_ asc ");
+			// query.setOrderBy(" E.GOODSNODEID_ asc, E.GOODSID_ asc ");
 
 			List<GoodsActualQuantity> rows = goodsActualQuantityService.list(query);
 
