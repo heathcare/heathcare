@@ -273,6 +273,24 @@
 	}
 
 
+	function doExport999(){
+        var startTime = jQuery("#startTime").val();
+        var endTime = jQuery("#endTime").val();
+		if(startTime > endTime){
+			alert("开始时间不能大于结束时间。");
+			return;
+		}
+		var link="${contextPath}/heathcare/reportMain/exportZip?ts=${ts}&reportIds=TenantDietaryStructAnalyze,DietaryMultiAreaNutritionCount,WeekMultiAreaGoodsActualQuantity";
+		if(startTime != ""){
+			link = link + "&startDate=" + startTime;
+		}
+		if(endTime != ""){
+			link = link  + "&endDate="+endTime;
+		}
+        window.open(link);
+	}
+
+
 </script>
 </head>
 <body>
@@ -312,35 +330,36 @@
 	</tr>
 	<tr>
 	 <td align="left" height="35"> 
-		  <input type="button" value="食物用量汇总表" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport3();">
-		  &nbsp;
-		  <input type="button" value="膳食营养分析统计表" class="btnGray" style="width:160px"
-		         onclick="javascript:doDietaryAnalyzeExport12();">
+		<input type="button" value="食物用量汇总表" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport3();">
+		&nbsp;
+		<input type="button" value="膳食营养分析统计表" class="btnGray" style="width:160px"
+		       onclick="javascript:doDietaryAnalyzeExport12();">
 	 </td>
 	</tr>
 	<tr>
 	 <td align="left" height="35"> 
-		  <input type="button" value="食物用量表2" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport5x();">
-          &nbsp;
-		  <input type="button" value="食物用量表2(单页)" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport5();">
+		<input type="button" value="食物用量表2" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport5x();">
+        &nbsp;
+		<input type="button" value="食物用量表2(单页)" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport5();">
 	 </td>
 	</tr>
 	<tr>
 	 <td align="left" height="35"> 
-		  <input type="button" value="营养成分统计表" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport8();">
-          &nbsp;
-		  <input type="button" value="营养成分统计表(打印)" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport9();">
+		<input type="button" value="营养成分统计表" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport8();">
+        &nbsp;
+		<input type="button" value="营养成分统计表(打印)" class="btnGray" style="width:160px" onclick="javascript:doWeeklyExport9();">
 	 </td>
 	</tr>
 	<tr>
 	 <td align="left" height="35"> 
-		  <input type="button" value="膳食调查分析表" class="btnGray" style="width:160px" onclick="javascript:doExport99();">
-          &nbsp;
+		<input type="button" value="膳食调查分析表" class="btnGray" style="width:160px" onclick="javascript:doExport99();">
+        &nbsp;
+		<input type="button" value="打包导出" class="btnGray" style="width:160px" onclick="javascript:doExport999();">
 	 </td>
 	</tr>
 	<tr>
 	 <td align="left"> 
-		  
+		 
 	 </td>
 	</tr>
    </tbody>

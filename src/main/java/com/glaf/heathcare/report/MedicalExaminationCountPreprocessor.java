@@ -192,7 +192,7 @@ public class MedicalExaminationCountPreprocessor implements IReportPreprocessor 
 						if (ex.getWeightLevel() == 0) {
 							cnt.setPrctileWeightAgeNormal(cnt.getPrctileWeightAgeNormal() + 1); // W/A正常人数(年龄别体重)
 						} else {
-							logger.debug("ex.getWeightLevel():" + ex.getWeightLevel());
+							//logger.debug("ex.getWeightLevel():" + ex.getWeightLevel());
 						}
 
 						if (ex.getHeightLevel() <= -2) {

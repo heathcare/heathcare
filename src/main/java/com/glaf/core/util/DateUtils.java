@@ -479,6 +479,7 @@ public class DateUtils {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("2018年05月09日".length());
 		System.out.println(DateUtils.getDate(new Date()));
 		System.out.println(DateUtils.getDateTime(new Date()));
 		System.out.println(DateUtils.getYearMonthDay(new Date()));
@@ -594,6 +595,14 @@ public class DateUtils {
 				} catch (Exception ex) {
 					parsePatterns[0] = "MM/dd/yyyy";
 					return org.apache.commons.lang3.time.DateUtils.parseDate(dateString, parsePatterns);
+				}
+			} else if (dateString.length() == 11) {
+				parsePatterns[0] = "yyyy年MM月dd日";
+				try {
+					return org.apache.commons.lang3.time.DateUtils.parseDate(dateString, parsePatterns);
+				} catch (Exception ex) {
+					java.text.SimpleDateFormat format = new java.text.SimpleDateFormat(parsePatterns[0]);
+					return format.parse(dateString);
 				}
 			} else if (dateString.length() == 13) {
 				parsePatterns[0] = HOUR_FORMAT;

@@ -29,10 +29,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.concurrent.Semaphore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,10 +60,12 @@ import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ExcelToHtml;
+import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.StringTools;
 import com.glaf.core.util.Tools;
+import com.glaf.core.util.ZipUtils;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.report.IReportPreprocessor;
@@ -74,6 +78,8 @@ import com.glaf.report.data.ReportDefinition;
 public class ReportMainController {
 
 	protected static final Log logger = LogFactory.getLog(ReportMainController.class);
+
+	protected static final Semaphore semaphore2 = new Semaphore(20);
 
 	protected GradeInfoService gradeInfoService;
 
@@ -243,6 +249,137 @@ public class ReportMainController {
 				}
 			}
 		}
+	}
+
+	@ResponseBody
+	@RequestMapping("/exportZip")
+	public byte[] exportZip(HttpServletRequest request, HttpServletResponse response) {
+		logger.debug("启用并发访问控制,可用许可数:" + semaphore2.availablePermits());
+		if (semaphore2.availablePermits() == 0) {
+			return ResponseUtils.responseJsonResult(false, "导出任务繁忙，请稍候再试。");
+		}
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		int year = RequestUtils.getInt(request, "year");
+		int month = RequestUtils.getInt(request, "month");
+		Date startDate = ParamUtils.getDate(params, "startDate");
+		Date endDate = ParamUtils.getDate(params, "endDate");
+
+		if (startDate == null) {
+			startDate = ParamUtils.getDate(params, "startTime");
+		}
+
+		if (endDate == null) {
+			endDate = ParamUtils.getDate(params, "endTime");
+		}
+
+		String tenantId = loginContext.getTenantId();
+
+		params.put("year", year);
+		params.put("month", month);
+		params.put("startdate", DateUtils.getDate(startDate));
+		params.put("startDate", DateUtils.getDate(startDate));
+		params.put("starttime", DateUtils.getDateTime(startDate));
+		params.put("startTime", DateUtils.getDateTime(startDate));
+		params.put("enddate", DateUtils.getDate(endDate));
+		params.put("endDate", DateUtils.getDate(endDate));
+		params.put("endtime", DateUtils.getDateTime(endDate));
+		params.put("endTime", DateUtils.getDateTime(endDate));
+
+		params.put("tenantId", tenantId);
+		params.put("tableSuffix", IdentityFactory.getTenantHash(tenantId));
+
+		logger.debug(params);
+
+		String reportIds = request.getParameter("reportIds");
+		if (StringUtils.isNotEmpty(reportIds)) {
+			List<String> rptIds = StringTools.split(reportIds);
+
+			byte[] data = null;
+			byte[] bytes = null;
+			InputStream is = null;
+			ByteArrayInputStream bais = null;
+			ByteArrayOutputStream baos = null;
+			BufferedOutputStream bos = null;
+			ReportDefinition rdf = null;
+			IReportPreprocessor reportPreprocessor = null;
+			Map<String, byte[]> bytesMap = new HashMap<String, byte[]>();
+			try {
+				semaphore2.acquire();
+
+				TenantConfig tenantConfig = tenantConfigService.getTenantConfigByTenantId(tenantId);
+				if (tenantConfig != null) {
+					params.put("tenantConfig", tenantConfig);
+					params.put("sysName", tenantConfig.getSysName());
+				}
+
+				SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+				if (tenant != null) {
+					params.put("orgName", tenant.getName());
+					params.put("tenant", tenant);
+				}
+
+				for (String reportId : rptIds) {
+					rdf = ReportContainer.getContainer().getReportDefinition(reportId);
+					if (rdf != null) {
+
+						if (StringUtils.isNotEmpty(rdf.getPrepareClass())) {
+							reportPreprocessor = (IReportPreprocessor) com.glaf.core.util.ReflectUtils
+									.instantiate(rdf.getPrepareClass());
+							reportPreprocessor.prepare(tenant, params);
+						}
+
+						data = rdf.getData();
+						bais = new ByteArrayInputStream(data);
+						is = new BufferedInputStream(bais);
+						baos = new ByteArrayOutputStream();
+						bos = new BufferedOutputStream(baos);
+
+						Context context2 = PoiTransformer.createInitialContext();
+
+						Set<Entry<String, Object>> entrySet = params.entrySet();
+						for (Entry<String, Object> entry : entrySet) {
+							String key = entry.getKey();
+							Object value = entry.getValue();
+							context2.putVar(key, value);
+						}
+
+						org.jxls.util.JxlsHelper.getInstance().processTemplate(is, bos, context2);
+						IOUtils.closeQuietly(is);
+						IOUtils.closeQuietly(bais);
+
+						bos.flush();
+						baos.flush();
+						bytes = baos.toByteArray();
+
+						bytesMap.put(rdf.getTitle() + ".xls", bytes);
+
+						IOUtils.closeQuietly(is);
+						IOUtils.closeQuietly(bais);
+						IOUtils.closeQuietly(baos);
+						IOUtils.closeQuietly(bos);
+					}
+				}
+
+				data = ZipUtils.genZipBytes(bytesMap);
+				ResponseUtils.download(request, response, data,
+						"export" + DateUtils.getNowYearMonthDayHHmmss() + ".zip");
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			} finally {
+				semaphore2.release();
+				data = null;
+				bytes = null;
+				bytesMap = null;
+				IOUtils.closeQuietly(is);
+				IOUtils.closeQuietly(bais);
+				IOUtils.closeQuietly(baos);
+				IOUtils.closeQuietly(bos);
+			}
+		}
+		return null;
 	}
 
 	@RequestMapping
