@@ -85,6 +85,8 @@ public interface TreePermissionService {
 	 */
 	List<TreePermission> getTreePermissionsByQueryCriteria(int start, int pageSize, TreePermissionQuery query);
 
+	List<Long> getUserTypeNodeIds(String userId, String type);
+
 	/**
 	 * 根据查询参数获取记录列表
 	 * 

@@ -298,7 +298,6 @@ public class SysTenantServiceImpl implements SysTenantService {
 		if (sysUserService.findByAccount(userId) == null) {
 			SysUser bean = new SysUser();
 			bean.setActorId(userId);
-			bean.setPasswordHash(userId);
 			bean.setName("管理员");
 			bean.setAccountType(10000);
 			bean.setUserType(8);

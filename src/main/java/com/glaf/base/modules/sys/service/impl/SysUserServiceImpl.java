@@ -165,6 +165,9 @@ public class SysUserServiceImpl implements SysUserService {
 	public boolean create(SysUser bean) {
 		bean.setCreateTime(new Date());
 		bean.setToken(UUID32.getUUID());
+		if (StringUtils.isEmpty(bean.getPasswordHash())) {
+			bean.setPasswordHash("888888");
+		}
 		String pwd_hash = DigestUtils.sha512Hex(bean.getUserId() + ":" + bean.getPasswordHash());
 		bean.setPasswordHash(pwd_hash);
 		this.save(bean);
