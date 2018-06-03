@@ -52,7 +52,7 @@ public class WeekMultiAreaGoodsActualQuantityPreprocessor implements IReportPrep
 					.append(String.valueOf(IdentityFactory.getTenantHash(tenantId))).append(" E ")
 					.append(" where ( E.TENANTID_ = '").append(tenantId).append("' ) ")
 					.append(" and ( E.FULLDAY_ = #{fullday:int} ) ").append(" and ( E.BUSINESSSTATUS_ = 9 ) ")
-					.append(" group by E.GOODSID_").append(" order by E.NODESORT_ asc ");
+					.append(" group by E.GOODSID_, E.NODESORT_ ").append(" order by E.NODESORT_ asc ");
 			ITablePageService tablePageService = ContextFactory.getBean("tablePageService");
 			FoodCompositionService foodCompositionService = ContextFactory
 					.getBean("com.glaf.heathcare.service.foodCompositionService");
