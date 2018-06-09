@@ -144,7 +144,7 @@
 				idField: 'id',
 				columns:[[
 				        {title:'序号', field:'startIndex', width:50, sortable:false},
-						{title:'班级', field:'gradeName', width:100, align:"left", sortable:true},
+						{title:'班级', field:'gradeName', width:150, align:"left", sortable:true},
 						{title:'姓名', field:'name', width:80, align:"center", sortable:true, formatter:formatterName},
 						{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center", sortable:true},
 						{title:'身高(厘米)', field:'height', width:90, align:"right", sortable:true},
@@ -153,10 +153,10 @@
 						{title:'体重评价', field:'weightEvaluateHtml', width:110, align:"center", sortable:true},
 						{title:'血红蛋白Hb', field:'hemoglobinHtml', width:120, align:"center", sortable:true},
 						{title:'肝功能评价', field:'altHtml', width:120, align:"center", sortable:true},
-						{title:'出生日期', field:'birthday', width:90, align:"center", sortable:true},
-					    {title:'体检日期', field:'checkDate', width:90, align:"center", sortable:true},
+						{title:'出生日期', field:'birthday', width:98, align:"center", sortable:true},
+					    {title:'体检日期', field:'checkDate', width:98, align:"center", sortable:true},
 						{title:'月龄', field:'checkAgeOfMonth', width:60, align:"center", sortable:true},
-						{title:'功能键', field:'functionKey',width:110, formatter:formatterKeys}
+						{title:'功能键', field:'functionKey',width:100, formatter:formatterKeys}
 				]],
 				rownumbers: false,
 				pagination: true,
@@ -647,6 +647,21 @@
         window.open(link);
     }
 
+	function showImp(){
+        var link='${contextPath}/heathcare/medicalExamination/showImport?type=${type}';
+		    layer.open({
+			  type: 2,
+			  maxmin: true,
+			  shadeClose: true,
+			  title: "导入数据",
+			  area: ['880px', (jQuery(window).height() - 50) +'px'],
+			  shade: 0.8,
+			  fixed: false, //不固定
+			  shadeClose: true,
+			  content: [link, 'no']
+			});
+	}
+
 </script>
 </head>
 <body>  
@@ -685,6 +700,8 @@
 					   onclick="javascript:editSelected();">修改</a>  
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 					   onclick="javascript:deleteSelections();">删除</a> 
+					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_upload'"
+					   onclick="javascript:showImp();">导入</a>
 					</#if>
 				    <br>
 					&nbsp;&nbsp;&nbsp;&nbsp;班级&nbsp;

@@ -35,7 +35,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
@@ -51,11 +54,13 @@ import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.Tools;
-
+import com.glaf.heathcare.bean.MedicalExaminationXlsImporter;
+import com.glaf.heathcare.bean.MedicalExaminationXlsxImporter;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationDef;
+import com.glaf.heathcare.domain.MedicalExaminationXlsArea;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.helper.MedicalExaminationHelper;
 import com.glaf.heathcare.query.MedicalExaminationDefQuery;
@@ -150,6 +155,64 @@ public class MedicalExaminationController {
 			}
 		}
 		return ResponseUtils.responseResult(false);
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImport", method = RequestMethod.POST)
+	public ModelAndView doImport(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		String type = request.getParameter("type");
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			String tenantId = loginContext.getTenantId();
+			String gradeId = request.getParameter("gradeId");
+			Date checkDate = RequestUtils.getDate(request, "checkDate");
+			/**
+			 * 判断体检日期是否是当天以前的日期
+			 */
+			if (StringUtils.isNotEmpty(type) && checkDate != null && DateUtils.beforeTime(checkDate, new Date())) {
+				MedicalExaminationXlsImporter bean = new MedicalExaminationXlsImporter();
+				MedicalExaminationXlsxImporter beanx = new MedicalExaminationXlsxImporter();
+				List<MedicalExaminationXlsArea> areas = new ArrayList<MedicalExaminationXlsArea>();
+				MedicalExaminationXlsArea area = new MedicalExaminationXlsArea();
+				area.setStartRow(2);
+				area.setEndRow(2000);
+				area.setNameColIndex(1);
+				area.setHeightColIndex(2);
+				area.setWeightColIndex(3);
+				area.setHemoglobinColIndex(4);
+				area.setCheckDateColIndex(5);
+				areas.add(area);
+				String checkId = null;
+				try {
+					semaphore2.acquire();
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						checkId = beanx.importData(tenantId, gradeId, type, checkDate, areas, mFile.getInputStream());
+					} else {
+						checkId = bean.importData(tenantId, gradeId, type, checkDate, areas, mFile.getInputStream());
+					}
+					request.setAttribute("type", type);
+					request.setAttribute("checkId", checkId);
+					request.setAttribute("gradeId", gradeId);
+					request.setAttribute("checkDate", DateUtils.getDate(checkDate));
+				} catch (Exception ex) {
+					logger.error(ex);
+				} finally {
+					semaphore2.release();
+				}
+			}
+		}
+		if (StringUtils.equals(type, "1")) {
+			return this.enterList(request, modelMap);
+		}
+		return this.list(request, modelMap);
 	}
 
 	@RequestMapping("/edit")
@@ -573,6 +636,15 @@ public class MedicalExaminationController {
 
 		if (StringUtils.isNotEmpty(gradeId)) {
 			query.gradeId(gradeId);
+		} else {
+			List<GradeInfo> grades = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
+			if (grades != null && !grades.isEmpty()) {
+				List<String> gradeIds = new ArrayList<String>();
+				for (GradeInfo grade : grades) {
+					gradeIds.add(grade.getId());
+				}
+				query.gradeIds(gradeIds);
+			}
 		}
 
 		int start = 0;
@@ -1087,6 +1159,15 @@ public class MedicalExaminationController {
 			query.tenantId(tenantId);
 			if (StringUtils.isNotEmpty(gradeId)) {
 				query.gradeId(gradeId);
+			} else {
+				List<GradeInfo> grades = gradeInfoService.getGradeInfosByTenantId(tenantId);
+				if (grades != null && !grades.isEmpty()) {
+					List<String> gradeIds = new ArrayList<String>();
+					for (GradeInfo grade : grades) {
+						gradeIds.add(grade.getId());
+					}
+					query.gradeIds(gradeIds);
+				}
 			}
 		} else {
 			return result.toJSONString().getBytes();
@@ -1316,7 +1397,7 @@ public class MedicalExaminationController {
 				medicalExamination.setTenantId(person.getTenantId());
 				medicalExamination.setGradeId(person.getGradeId());
 				medicalExamination.setPersonId(person.getId());
-				medicalExamination.setName(person.getName());
+				medicalExamination.setName(person.getName().trim());
 				medicalExamination.setSex(person.getSex());
 				medicalExamination.setBirthday(person.getBirthday());
 				medicalExamination.setCreateTime(new Date());
@@ -1523,6 +1604,32 @@ public class MedicalExaminationController {
 	@javax.annotation.Resource
 	public void setSysTenantService(SysTenantService sysTenantService) {
 		this.sysTenantService = sysTenantService;
+	}
+
+	@RequestMapping("/showImport")
+	public ModelAndView showImport(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			String tenantId = request.getParameter("tenantId");
+			List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(tenantId);
+			request.setAttribute("gradeInfos", list);
+		} else {
+			List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
+			request.setAttribute("gradeInfos", list);
+		}
+
+		String view = request.getParameter("view");
+		if (StringUtils.isNotEmpty(view)) {
+			return new ModelAndView(view, modelMap);
+		}
+
+		String x_view = ViewProperties.getString("medicalExamination.showImport");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+		return new ModelAndView("/heathcare/medicalExamination/showImport", modelMap);
 	}
 
 	@RequestMapping("/showReport")

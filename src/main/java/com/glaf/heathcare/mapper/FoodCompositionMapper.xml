@@ -807,11 +807,11 @@
 		<where>
 			1 = 1
 
-			<if test="ids != null and ids.size() &gt; 0">
+			<if test="foodIds != null and foodIds.size() &gt; 0">
 				and E.ID_ IN
-				<foreach item="x_id" index="index" collection="ids" open="("
-					separator="," close=")">
-					#{x_id}
+				<foreach item="x_foodId" index="index" collection="foodIds"
+					open="(" separator="," close=")">
+					#{x_foodId}
 				</foreach>
 			</if>
 
@@ -844,7 +844,8 @@
 			</if>
 
 			<if test="nameLike != null and nameLike != '' ">
-				and ( E.NAME_ like #{nameLike} or E.ALIAS_ like #{nameLike} )
+				and ( E.NAME_ like #{nameLike} or E.ALIAS_ like
+				#{nameLike} )
 			</if>
 
 			<if test="code != null and code != '' ">

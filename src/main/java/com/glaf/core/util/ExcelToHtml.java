@@ -37,53 +37,10 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.w3c.dom.Document;
 
 public class ExcelToHtml {
-
-	public static String getCellValue(CellValue cell, int precision) {
-		String cellValue = null;
-		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
-			double value = cell.getNumberValue();
-			if (precision > 0) {
-				value = Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
-			}
-			cellValue = String.valueOf(value);
-			if (cellValue != null && cellValue.trim().endsWith(".0")) {
-				cellValue = cellValue.substring(0, cellValue.length() - 2);
-			}
-		} else {
-			cellValue = cell.getStringValue();
-		}
-		return cellValue;
-	}
-
-	public static String getValue(FormulaEvaluator evaluator, HSSFCell cell, int precision) {
-		String strValue = null;
-		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
-			double value = cell.getNumericCellValue();
-			if (precision > 0) {
-				value = Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
-			}
-			strValue = String.valueOf(value);
-			if (strValue != null && strValue.trim().endsWith(".0")) {
-				strValue = strValue.substring(0, strValue.length() - 2);
-			}
-			return strValue;
-		} else if (cell.getCellTypeEnum() == CellType.STRING) {
-			strValue = cell.getStringCellValue();
-		} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
-			CellValue cellValue = evaluator.evaluate(cell);
-			strValue = getCellValue(cellValue, precision);
-		}
-		if (strValue != null) {
-			return strValue;
-		}
-		return "";
-	}
 
 	public static void main(String args[]) throws Exception {
 		String path = "./output/";
@@ -114,7 +71,7 @@ public class ExcelToHtml {
 				for (int colIndex = 0; colIndex < cols; colIndex++) {
 					HSSFCell cell = row.getCell(colIndex);
 					if (cell != null) {
-						String text = getValue(evaluator, cell, precision);
+						String text = ExcelUtils.getValue(evaluator, cell, precision);
 						cell.setCellValue(text);
 					}
 				}

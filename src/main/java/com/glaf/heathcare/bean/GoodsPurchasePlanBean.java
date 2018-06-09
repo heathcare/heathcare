@@ -154,7 +154,7 @@ public class GoodsPurchasePlanBean {
 
 					if (!foodIds.isEmpty()) {
 						FoodCompositionQuery query3 = new FoodCompositionQuery();
-						query3.setIds(foodIds);
+						query3.setFoodIds(foodIds);
 						List<FoodComposition> foods = getFoodCompositionService().list(query3);// 获取食物成分
 						List<FoodComposition> weekFoods = new ArrayList<FoodComposition>();
 						Map<Long, Long> nodeIdMap = new HashMap<Long, Long>();

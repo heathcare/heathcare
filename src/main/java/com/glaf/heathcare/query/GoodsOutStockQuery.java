@@ -34,6 +34,7 @@ public class GoodsOutStockQuery extends DataQuery {
 	protected Date outStockTimeLessThanOrEqual;
 	protected Integer semester;
 	protected Integer year;
+	protected Integer yearGreaterThanOrEqual;
 	protected Integer month;
 	protected Integer day;
 	protected Integer week;
@@ -326,6 +327,10 @@ public class GoodsOutStockQuery extends DataQuery {
 		return year;
 	}
 
+	public Integer getYearGreaterThanOrEqual() {
+		return yearGreaterThanOrEqual;
+	}
+
 	public GoodsOutStockQuery goodsId(Long goodsId) {
 		if (goodsId == null) {
 			throw new RuntimeException("goodsId is null");
@@ -591,6 +596,10 @@ public class GoodsOutStockQuery extends DataQuery {
 		this.year = year;
 	}
 
+	public void setYearGreaterThanOrEqual(Integer yearGreaterThanOrEqual) {
+		this.yearGreaterThanOrEqual = yearGreaterThanOrEqual;
+	}
+
 	public GoodsOutStockQuery tenantId(String tenantId) {
 		if (tenantId == null) {
 			throw new RuntimeException("tenantId is null");
@@ -628,6 +637,14 @@ public class GoodsOutStockQuery extends DataQuery {
 			throw new RuntimeException("year is null");
 		}
 		this.year = year;
+		return this;
+	}
+
+	public GoodsOutStockQuery yearGreaterThanOrEqual(Integer yearGreaterThanOrEqual) {
+		if (yearGreaterThanOrEqual == null) {
+			throw new RuntimeException("yearGreaterThanOrEqual is null");
+		}
+		this.yearGreaterThanOrEqual = yearGreaterThanOrEqual;
 		return this;
 	}
 

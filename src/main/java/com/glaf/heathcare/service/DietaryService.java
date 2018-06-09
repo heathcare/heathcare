@@ -34,6 +34,9 @@ public interface DietaryService {
 
 	@Transactional
 	void batchPurchase(String tenantId, Collection<Long> ids, String purchaseFlag, List<GoodsPurchasePlan> list);
+	
+	@Transactional
+	void batchPurchase(String tenantId, int fullDay, Collection<Long> ids, String purchaseFlag, List<GoodsPurchasePlan> list);
 
 	@Transactional
 	void bulkInsert(String tenantId, Date date, List<Dietary> list);

@@ -506,7 +506,7 @@
 	}
 
 	function deletePlan(){
-		var link="${contextPath}/heathcare/dietary/showRemove";
+		var link="${contextPath}/heathcare/goodsPurchasePlan/showRemove";
 		jQuery.layer({
 			type: 2,
 			maxmin: true,

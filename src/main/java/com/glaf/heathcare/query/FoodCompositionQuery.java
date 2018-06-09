@@ -23,7 +23,7 @@ import com.glaf.core.query.DataQuery;
 
 public class FoodCompositionQuery extends DataQuery {
 	private static final long serialVersionUID = 1L;
-	protected List<Long> ids;
+	protected List<Long> foodIds;
 	protected Long nodeId;
 	protected List<Long> nodeIds;
 	protected String name;
@@ -288,16 +288,16 @@ public class FoodCompositionQuery extends DataQuery {
 		return fatLessThanOrEqual;
 	}
 
+	public List<Long> getFoodIds() {
+		return foodIds;
+	}
+
 	public Double getHeatEnergyGreaterThanOrEqual() {
 		return heatEnergyGreaterThanOrEqual;
 	}
 
 	public Double getHeatEnergyLessThanOrEqual() {
 		return heatEnergyLessThanOrEqual;
-	}
-
-	public List<Long> getIds() {
-		return ids;
 	}
 
 	public Double getIronGreaterThanOrEqual() {
@@ -831,16 +831,16 @@ public class FoodCompositionQuery extends DataQuery {
 		this.fatLessThanOrEqual = fatLessThanOrEqual;
 	}
 
+	public void setFoodIds(List<Long> foodIds) {
+		this.foodIds = foodIds;
+	}
+
 	public void setHeatEnergyGreaterThanOrEqual(Double heatEnergyGreaterThanOrEqual) {
 		this.heatEnergyGreaterThanOrEqual = heatEnergyGreaterThanOrEqual;
 	}
 
 	public void setHeatEnergyLessThanOrEqual(Double heatEnergyLessThanOrEqual) {
 		this.heatEnergyLessThanOrEqual = heatEnergyLessThanOrEqual;
-	}
-
-	public void setIds(List<Long> ids) {
-		this.ids = ids;
 	}
 
 	public void setIronGreaterThanOrEqual(Double ironGreaterThanOrEqual) {

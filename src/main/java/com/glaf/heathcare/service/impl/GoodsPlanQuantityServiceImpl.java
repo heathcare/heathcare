@@ -245,7 +245,7 @@ public class GoodsPlanQuantityServiceImpl implements GoodsPlanQuantityService {
 							// radicalMap.clear();
 
 							FoodCompositionQuery query3 = new FoodCompositionQuery();
-							query3.setIds(foodIds);
+							query3.setFoodIds(foodIds);
 							List<FoodComposition> foods = foodCompositionService.list(query3);// 获取食物成分
 							Map<Long, Long> nodeIdMap = new HashMap<Long, Long>();
 
@@ -381,7 +381,7 @@ public class GoodsPlanQuantityServiceImpl implements GoodsPlanQuantityService {
 	 */
 	@Transactional
 	public void createGoodsUsagePlan(LoginContext loginContext, int year, int semester, int week, int fullDay,
-			double totalPersonQuantity) {
+			double totalPersonQuantity, String radicalFlag) {
 		logger.debug("----------------------createGoodsUsagePlan-------------");
 		DietaryQuery query = new DietaryQuery();
 		query.tenantId(loginContext.getTenantId());
@@ -400,13 +400,13 @@ public class GoodsPlanQuantityServiceImpl implements GoodsPlanQuantityService {
 			}
 
 			Calendar calendar = Calendar.getInstance();
-			// Double radical = 0D;
+			Double radical = 0D;
 			Double percent = null;
 			double quantity = 0;
 			double realQuantity = 0;
 
 			List<Long> foodIds = new ArrayList<Long>();
-			// Map<Long, Double> radicalMap = new HashMap<Long, Double>();
+			Map<Long, Double> radicalMap = new HashMap<Long, Double>();
 			Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 			Map<Long, GoodsPlanQuantity> planMap = new HashMap<Long, GoodsPlanQuantity>();
 
@@ -446,21 +446,17 @@ public class GoodsPlanQuantityServiceImpl implements GoodsPlanQuantityService {
 					if (!foodIds.isEmpty()) {
 						foodMap.clear();
 						planMap.clear();
-						// radicalMap.clear();
+						radicalMap.clear();
 
 						FoodCompositionQuery query3 = new FoodCompositionQuery();
-						query3.setIds(foodIds);
+						query3.setFoodIds(foodIds);
 						List<FoodComposition> foods = foodCompositionService.list(query3);// 获取食物成分
 						Map<Long, Long> nodeIdMap = new HashMap<Long, Long>();
 
 						for (FoodComposition food : foods) {
 							foodMap.put(food.getId(), food);
 							nodeIdMap.put(food.getId(), food.getNodeId());
-							// radical = food.getRadical();
-							// if (radical == null) {
-							// radical = 100D;
-							// }
-							// radicalMap.put(food.getId(), radical);
+							radicalMap.put(food.getId(), food.getRadical());
 						}
 
 						for (DietaryItem item : items) {
@@ -488,54 +484,58 @@ public class GoodsPlanQuantityServiceImpl implements GoodsPlanQuantityService {
 								plan.setWeek(week);
 								plan.setDay(plan.getFullDay() % 100);
 
-								// radical =
-								// radicalMap.get(item.getFoodId());
-								// if (radical == null) {
-								// radical = 100D;
-								// }
-
-								quantity = item.getQuantity();// 每一种食品的量
-
-								// if (radical < 100) {
+								quantity = item.getQuantity();// 每一种食物的量
+								realQuantity = quantity;
 								/**
-								 * 计算每一份的实际量
+								 * 需要换算成食部
 								 */
-								// realQuantity = quantity * (1.0 +
-								// ((100 - radical) / radical));
-								// } else {
-								// realQuantity = quantity;
-								// }
-
-								/**
-								 * 根据系统配置参数按类别计算
-								 */
-								percent = percentMap.get(nodeIdMap.get(item.getFoodId()));
-								if (percent != null && percent > 1 && percent < 2) {
-									realQuantity = quantity * percent;
-								} else {
-									realQuantity = quantity;
+								if (StringUtils.equals(radicalFlag, "2")) {
+									radical = radicalMap.get(item.getFoodId());
+									if (radical == null) {
+										radical = 100D;
+									}
+									if (radical < 100) {
+										/**
+										 * 计算每一份的实际量，转换成等量可食部的成品量
+										 */
+										realQuantity = quantity * (1.0 + ((100 - radical) / radical));
+									}
+									/**
+									 * 根据系统配置参数按类别计算
+									 */
+									percent = percentMap.get(nodeIdMap.get(item.getFoodId()));
+									if (percent != null && percent > 1 && percent < 2) {
+										realQuantity = realQuantity * percent;
+									}
 								}
 
 								plan.setQuantity(realQuantity);
 								planMap.put(food.getId(), plan);
 							} else {
-								// radical =
-								// radicalMap.get(item.getFoodId());
-								// if (radical == null) {
-								// radical = 100D;
-								// }
-
-								quantity = item.getQuantity();// 每一种食品的量
-
-								// if (radical < 100) {
-								/**
-								 * 计算每一份的实际量
-								 */
-								// realQuantity = quantity * (1.0 +
-								// ((100 - radical) / radical));
-								// } else {
+								quantity = item.getQuantity();// 每一种食物的量
 								realQuantity = quantity;
-								// }
+								/**
+								 * 需要换算成食部
+								 */
+								if (StringUtils.equals(radicalFlag, "2")) {
+									radical = radicalMap.get(item.getFoodId());
+									if (radical == null) {
+										radical = 100D;
+									}
+									if (radical < 100) {
+										/**
+										 * 计算每一份的实际量，转换成等量可食部的成品量
+										 */
+										realQuantity = quantity * (1.0 + ((100 - radical) / radical));
+									}
+									/**
+									 * 根据系统配置参数按类别计算
+									 */
+									percent = percentMap.get(nodeIdMap.get(item.getFoodId()));
+									if (percent != null && percent > 1 && percent < 2) {
+										realQuantity = realQuantity * percent;
+									}
+								}
 
 								plan.setQuantity(plan.getQuantity() + realQuantity);
 								planMap.put(food.getId(), plan);

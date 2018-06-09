@@ -367,6 +367,16 @@ public class DictoryController {
 		return result.toString().getBytes("UTF-8");
 	}
 
+	@RequestMapping("/jsonArray")
+	@ResponseBody
+	public byte[] jsonArray(HttpServletRequest request) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		String nodeCode = request.getParameter("nodeCode");
+		List<Dictory> dicts = dictoryService.getDictoryList(loginContext.getTenantId(), nodeCode);
+		JSONArray array = DictoryJsonFactory.listToArray(dicts);
+		return array.toString().getBytes("UTF-8");
+	}
+
 	@RequestMapping
 	public ModelAndView list(HttpServletRequest request, ModelMap modelMap) {
 		RequestUtils.setRequestParameterToAttribute(request);

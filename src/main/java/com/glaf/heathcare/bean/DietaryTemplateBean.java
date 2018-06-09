@@ -62,7 +62,7 @@ public class DietaryTemplateBean {
 		}
 
 		FoodCompositionQuery query2 = new FoodCompositionQuery();
-		query2.setIds(foodIds);
+		query2.setFoodIds(foodIds);
 		List<FoodComposition> foods = getFoodCompositionService().list(query2);// 获取食物成分
 		Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 		for (FoodComposition food : foods) {
@@ -158,7 +158,7 @@ public class DietaryTemplateBean {
 		}
 
 		FoodCompositionQuery query2 = new FoodCompositionQuery();
-		query2.setIds(foodIds);
+		query2.setFoodIds(foodIds);
 		List<FoodComposition> foods = getFoodCompositionService().list(query2);// 获取食物成分
 		Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 		for (FoodComposition food : foods) {
@@ -231,7 +231,7 @@ public class DietaryTemplateBean {
 		}
 
 		FoodCompositionQuery query2 = new FoodCompositionQuery();
-		query2.setIds(foodIds);
+		query2.setFoodIds(foodIds);
 		List<FoodComposition> foods = getFoodCompositionService().list(query2);// 获取食物成分
 		Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 		for (FoodComposition food : foods) {

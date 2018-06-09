@@ -60,6 +60,7 @@ import com.glaf.heathcare.SysConfig;
 import com.glaf.heathcare.bean.DietaryBean;
 import com.glaf.heathcare.bean.DietaryClearBean;
 import com.glaf.heathcare.bean.GoodsPurchasePlanBean;
+import com.glaf.heathcare.bean.GoodsPurchasePlanByRadicalBean;
 import com.glaf.heathcare.bean.DailyGoodsPurchasePlanBean;
 import com.glaf.heathcare.domain.Dietary;
 import com.glaf.heathcare.domain.DietaryTemplate;
@@ -255,7 +256,6 @@ public class DietaryController {
 			}
 		}
 		return ResponseUtils.responseResult(false);
-
 	}
 
 	@ResponseBody
@@ -630,6 +630,51 @@ public class DietaryController {
 			}
 		}
 		return ResponseUtils.responseResult(false);
+	}
+
+	/**
+	 * 每日采购计划
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/genDailyParchasePlan")
+	public byte[] genDailyParchasePlan(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		/**
+		 * 角色HealthPhysician、Buyer和TenantAdmin可以增加食谱采购
+		 */
+		if (loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("Buyer")
+				|| loginContext.getRoles().contains("TenantAdmin")) {
+
+			int fullDay = RequestUtils.getInt(request, "fullDay");
+			String radicalFlag = request.getParameter("radicalFlag");
+
+			List<PersonInfo> persons = personInfoService.getPersonInfos(loginContext.getTenantId());
+			if (persons == null || persons.isEmpty()) {
+				return ResponseUtils.responseJsonResult(false, "计划就餐人数未设置，请先设置才可生成采购计划！");
+			}
+
+			String iKey = "purchasePlan_" + loginContext.getTenantId();
+			if (ContextUtil.get(iKey) == null) {
+				try {
+					logger.debug("正在生成一日采购计划......");
+					ContextUtil.put(iKey, loginContext.getActorId());
+					GoodsPurchasePlanByRadicalBean purchaseBean = new GoodsPurchasePlanByRadicalBean();
+					purchaseBean.addParchasePlan(loginContext, fullDay, radicalFlag);
+					return ResponseUtils.responseResult(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					logger.error(ex);
+				} finally {
+					ContextUtil.remove(iKey);
+				}
+			} else {
+				return ResponseUtils.responseJsonResult(false, "任务处理中，请稍等！");
+			}
+		}
+		return ResponseUtils.responseJsonResult(false, "您没有采购权限！");
 	}
 
 	@RequestMapping("/json")
@@ -1206,6 +1251,23 @@ public class DietaryController {
 	@javax.annotation.Resource
 	public void setTenantConfigService(TenantConfigService tenantConfigService) {
 		this.tenantConfigService = tenantConfigService;
+	}
+
+	@RequestMapping("/showPlanParam")
+	public ModelAndView showPlanParam(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+
+		String view = request.getParameter("view");
+		if (StringUtils.isNotEmpty(view)) {
+			return new ModelAndView(view, modelMap);
+		}
+
+		String x_view = ViewProperties.getString("dietary.showPlanParam");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/dietary/showPlanParam", modelMap);
 	}
 
 	@RequestMapping("/showRemove")

@@ -55,6 +55,7 @@ import com.glaf.core.util.StringTools;
 import com.glaf.core.util.Tools;
 
 import com.glaf.heathcare.SysConfig;
+import com.glaf.heathcare.bean.GoodsPurchasePlanClearBean;
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.GoodsPurchasePlan;
 import com.glaf.heathcare.domain.GoodsStock;
@@ -507,6 +508,100 @@ public class GoodsPurchasePlanController {
 	@javax.annotation.Resource
 	public void setSysTreeService(SysTreeService sysTreeService) {
 		this.sysTreeService = sysTreeService;
+	}
+
+	@RequestMapping("/showRemove")
+	public ModelAndView showRemove(HttpServletRequest request, ModelMap modelMap) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+
+		List<Integer> years = new ArrayList<Integer>();
+		List<Integer> months = new ArrayList<Integer>();
+		List<Integer> days = new ArrayList<Integer>();
+		List<Integer> weeks = new ArrayList<Integer>();
+
+		years.add(year);
+		months.add(month);
+		if (month == 12) {
+			years.add(year + 1);
+			months.add(1);
+		} else {
+			months.add(month + 1);
+		}
+
+		for (int i = 1; i <= 31; i++) {
+			days.add(i);
+		}
+
+		for (int i = 1; i <= 20; i++) {
+			weeks.add(i);
+		}
+
+		request.setAttribute("years", years);
+		request.setAttribute("months", months);
+		request.setAttribute("days", days);
+		request.setAttribute("weeks", weeks);
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
+
+		String view = request.getParameter("view");
+		if (StringUtils.isNotEmpty(view)) {
+			return new ModelAndView(view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/goodsPurchasePlan/showRemove", modelMap);
+	}
+
+	@ResponseBody
+	@RequestMapping("/removeDayPlan")
+	public byte[] removeDayPlan(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		/**
+		 * 角色HealthPhysician、Buyer和TenantAdmin可以删除计划数据
+		 */
+		if (loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("TenantAdmin")) {
+			Date date = RequestUtils.getDate(request, "dateString");
+			int dateAfter = DateUtils.getNowYearMonthDay();
+			try {
+				logger.debug("准备删除计划数据......");
+				if (date != null) {
+					GoodsPurchasePlanClearBean bean = new GoodsPurchasePlanClearBean();
+					bean.removePlanData(loginContext.getTenantId(), DateUtils.getYearMonthDay(date), dateAfter);
+					return ResponseUtils.responseResult(true);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/removeWeekPlan")
+	public byte[] removeWeekPlan(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		/**
+		 * 角色HealthPhysician、Buyer和TenantAdmin可以删除计划数据
+		 */
+		if (loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("TenantAdmin")) {
+			int year = RequestUtils.getInt(request, "year");
+			int week = RequestUtils.getInt(request, "week");
+			int dateAfter = DateUtils.getNowYearMonthDay();
+			try {
+				logger.debug("准备删除计划数据......");
+				GoodsPurchasePlanClearBean bean = new GoodsPurchasePlanClearBean();
+				int semester = SysConfig.getSemester();
+				bean.removePlanData(loginContext.getTenantId(), year, semester, week, dateAfter);
+				return ResponseUtils.responseResult(true);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseResult(false);
 	}
 
 	@RequestMapping("/view")

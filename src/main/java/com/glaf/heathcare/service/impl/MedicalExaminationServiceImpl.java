@@ -75,8 +75,20 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 
 	@Transactional
 	public void bulkInsert(List<MedicalExamination> list) {
+		GrowthStandardQuery query = new GrowthStandardQuery();
+		List<GrowthStandard> rows = growthStandardService.list(query);
+		Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
+		if (rows != null && !rows.isEmpty()) {
+			for (GrowthStandard gs : rows) {
+				gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+			}
+		}
+
 		Calendar calendar = Calendar.getInstance();
+		MedicalExaminationHelper helper = new MedicalExaminationHelper();
 		for (MedicalExamination medicalExamination : list) {
+			MedicalExaminationCache.removePrefix(medicalExamination.getTenantId());
+			helper.evaluate(gsMap, medicalExamination);
 			if (medicalExamination.getId() == 0) {
 				medicalExamination.setId(idGenerator.nextId("HEALTH_MEDICAL_EXAMINATION"));
 				medicalExamination.setCreateTime(new Date());
@@ -88,7 +100,7 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 				int month = calendar.get(Calendar.MONTH) + 1;
 				medicalExamination.setYear(year);
 				medicalExamination.setMonth(month);
-				this.save(medicalExamination);
+				medicalExaminationMapper.insertMedicalExamination(medicalExamination);
 			}
 		}
 	}

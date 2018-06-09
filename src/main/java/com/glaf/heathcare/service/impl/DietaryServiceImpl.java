@@ -99,7 +99,8 @@ public class DietaryServiceImpl implements DietaryService {
 	}
 
 	@Transactional
-	public void batchPurchase(String tenantId, Collection<Long> ids, String purchaseFlag, List<GoodsPurchasePlan> list) {
+	public void batchPurchase(String tenantId, Collection<Long> ids, String purchaseFlag,
+			List<GoodsPurchasePlan> list) {
 		/**
 		 * 批量插入采购单
 		 */
@@ -120,6 +121,40 @@ public class DietaryServiceImpl implements DietaryService {
 			idColumn.setValue(id);
 			table.setIdColumn(idColumn);
 			tableDataService.updateTableData(table);
+		}
+
+	}
+
+	@Transactional
+	public void batchPurchase(String tenantId, int fullDay, Collection<Long> ids, String purchaseFlag,
+			List<GoodsPurchasePlan> list) {
+		TableModel table1 = new TableModel();
+		table1.setTableName("GOODS_PURCHASE_PLAN" + IdentityFactory.getTenantHash(tenantId));
+		table1.addStringColumn("TENANTID_", tenantId);
+		table1.addIntegerColumn("FULLDAY_", fullDay);
+		table1.addIntegerColumn("BUSINESSSTATUS_", 0);
+		tableDataService.deleteTableData(table1);
+
+		/**
+		 * 批量插入采购单
+		 */
+		goodsPurchasePlanService.bulkInsert(tenantId, list);
+
+		/**
+		 * 修改食谱单状态为已经加入采购
+		 */
+		TableModel table2 = new TableModel();
+		table2.setTableName("HEALTH_DIETARY" + IdentityFactory.getTenantHash(tenantId));
+		table2.addIntegerColumn("BUSINESSSTATUS_", 9);
+		table2.addStringColumn("PURCHASEFLAG_", purchaseFlag);
+
+		ColumnModel idColumn = new ColumnModel();
+		for (Long id : ids) {
+			idColumn.setColumnName("ID_");
+			idColumn.setJavaType("Long");
+			idColumn.setValue(id);
+			table2.setIdColumn(idColumn);
+			tableDataService.updateTableData(table2);
 		}
 
 	}
@@ -202,7 +237,7 @@ public class DietaryServiceImpl implements DietaryService {
 		}
 
 		FoodCompositionQuery query2 = new FoodCompositionQuery();
-		query2.setIds(foodIds);
+		query2.setFoodIds(foodIds);
 		List<FoodComposition> foods = foodCompositionService.list(query2);// 获取食物成分
 		Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 		for (FoodComposition food : foods) {
@@ -639,7 +674,7 @@ public class DietaryServiceImpl implements DietaryService {
 			dietaryMapper.updateDietary(dietary);
 		}
 	}
-	
+
 	@Transactional
 	public void updateDietaryName(Dietary dietary) {
 		if (StringUtils.isNotEmpty(dietary.getTenantId())) {

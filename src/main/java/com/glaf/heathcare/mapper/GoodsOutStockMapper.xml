@@ -428,6 +428,10 @@
 			<if test="year != null">
 				and E.YEAR_ = #{year}
 			</if>
+			
+			<if test="yearGreaterThanOrEqual != null">
+				and E.YEAR_ &gt;= #{yearGreaterThanOrEqual}
+			</if>
 
 			<if test="month != null">
 				and E.MONTH_ = #{month}

@@ -53,10 +53,11 @@ public interface GoodsPlanQuantityService {
 	 * @param week
 	 * @param fullDay
 	 * @param totalPersonQuantity
+	 * @param radicalFlag
 	 */
 	@Transactional
 	void createGoodsUsagePlan(LoginContext loginContext, int year, int semester, int week, int fullDay,
-			double totalPersonQuantity);
+			double totalPersonQuantity, String radicalFlag);
 
 	/**
 	 * 根据主键删除记录

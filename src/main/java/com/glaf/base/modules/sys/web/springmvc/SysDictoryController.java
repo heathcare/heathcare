@@ -34,7 +34,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
- 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -105,6 +104,27 @@ public class SysDictoryController {
 			long[] id = ParamUtil.getLongParameterValues(request, "id");
 			dictoryService.deleteAll(id);
 			return ResponseUtils.responseResult(true);
+		} catch (Exception ex) {
+			logger.error(ex);
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
+	/**
+	 * 删除
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/delete")
+	@ResponseBody
+	public byte[] delete(HttpServletRequest request) {
+		try {
+			long id = RequestUtils.getLong(request, "id");
+			if (id > 0) {
+				dictoryService.delete(id);
+				return ResponseUtils.responseResult(true);
+			}
 		} catch (Exception ex) {
 			logger.error(ex);
 		}
@@ -345,6 +365,15 @@ public class SysDictoryController {
 			result.put("rows", rowsJSON);
 		}
 		return result.toString().getBytes("UTF-8");
+	}
+
+	@RequestMapping("/jsonArray")
+	@ResponseBody
+	public byte[] jsonArray(HttpServletRequest request) throws IOException {
+		String nodeCode = request.getParameter("nodeCode");
+		List<Dictory> dicts = dictoryService.getDictoryList(nodeCode);
+		JSONArray array = DictoryJsonFactory.listToArray(dicts);
+		return array.toString().getBytes("UTF-8");
 	}
 
 	@RequestMapping

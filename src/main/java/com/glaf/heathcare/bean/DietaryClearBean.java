@@ -192,6 +192,22 @@ public class DietaryClearBean {
 			psmt2.executeUpdate();
 			JdbcUtils.close(psmt2);
 
+			sqlBuffer.append(" delete from GOODS_PURCHASE_PLAN").append(IdentityFactory.getTenantHash(tenantId))
+					.append(" where TENANTID_ = ? and WEEK_ = ? and SEMESTER_ = ? and YEAR_ = ? ");
+			if (tenant.getLimit() != Constants.UNLIMIT) {
+				sqlBuffer.append(" and FULLDAY_ > ? ");
+			}
+			psmt2 = conn.prepareStatement(sqlBuffer.toString());
+			psmt2.setString(1, tenantId);
+			psmt2.setInt(2, week);
+			psmt2.setInt(3, semester);
+			psmt2.setInt(4, year);
+			if (tenant.getLimit() != Constants.UNLIMIT) {
+				psmt2.setInt(5, dateAfter);
+			}
+			psmt2.executeUpdate();
+			JdbcUtils.close(psmt2);
+
 			sqlBuffer.delete(0, sqlBuffer.length());
 			sqlBuffer.append(" delete from GOODS_PLAN_QUANTITY").append(IdentityFactory.getTenantHash(tenantId))
 					.append(" where TENANTID_ = ? and WEEK_ = ? and SEMESTER_ = ? and YEAR_ = ? ");

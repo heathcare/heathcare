@@ -132,7 +132,7 @@ public class DailyGoodsPurchasePlanBean {
 
 					if (!foodIds.isEmpty()) {
 						FoodCompositionQuery query3 = new FoodCompositionQuery();
-						query3.setIds(foodIds);
+						query3.setFoodIds(foodIds);
 						List<FoodComposition> foods = getFoodCompositionService().list(query3);// 获取食物成分
 						List<FoodComposition> weekFoods = new ArrayList<FoodComposition>();
 						Map<Long, Long> nodeIdMap = new HashMap<Long, Long>();
@@ -419,7 +419,7 @@ public class DailyGoodsPurchasePlanBean {
 		double totalPersonQuantity = helper.getPersonFoodAgeQuantity(loginContext.getTenantId(), 1.03);
 		logger.debug("totalPersonQuantity=" + totalPersonQuantity);
 		getGoodsPlanQuantityService().createGoodsUsagePlan(loginContext, year, semester, week, fullDay,
-				totalPersonQuantity);
+				totalPersonQuantity, "1");
 	}
 
 	public DictoryService getDictoryService() {

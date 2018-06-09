@@ -119,7 +119,7 @@
             jQuery.ajax({
 				   type: "POST",
 				   url: '${contextPath}/heathcare/dietary/addDietary?templateId='+id,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -176,7 +176,7 @@
 				   type: "POST",
 				   url: '${contextPath}/heathcare/dietary/addParchasePlan?objectIds='+rowIds.join(","),
 				   data: params,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -199,6 +199,24 @@
 	}
 
 	function addParchasePlan(){
+		var fullDay = document.getElementById("fullDay").value;
+        var link = '${contextPath}/heathcare/dietary/showPlanParam?fullDay='+fullDay;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "生成采购计划",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['608px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});     
+	}
+
+	function addParchasePlanX(){
          if(confirm("确定将选中日期的食谱中需要的物品加入采购单中吗？")){
 			 if(confirm("物品加入采购单中后将结单且不能再修改及删除，确实要加入采购计划并结单吗？")){
                var params = jQuery("#iForm").formSerialize();
@@ -206,7 +224,7 @@
 				   type: "POST",
 				   url: '${contextPath}/heathcare/dietary/addParchasePlan',
 				   data: params,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -233,7 +251,7 @@
 				   type: "POST",
 				   url: '${contextPath}/heathcare/dietary/addDailyParchasePlan',
 				   data: params,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -322,7 +340,7 @@
 	                onclick="javascript:searchData();">查找</button>
 			<#if fullDay gt 0>
 			<button type="button" id="butonCheck" class="btn btnGrayMini" style="width: 135px" 
-                    onclick="javascript:addDailyParchasePlan();" >加入采购计划</button>
+                    onclick="javascript:addParchasePlan();" >加入采购计划</button>
 		    </#if>
 		</td>
      </tr>

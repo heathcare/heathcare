@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.glaf.modules.employee.mapper.EmployeeMapper">
+
+	<resultMap id="employeeResultMap"
+		type="com.glaf.modules.employee.domain.Employee">
+		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="sex" column="SEX_" jdbcType="VARCHAR" />
+		<result property="birthday" column="BIRTHDAY_"
+			jdbcType="TIMESTAMP" />
+		<result property="idCardNo" column="IDCARDNO_"
+			jdbcType="VARCHAR" />
+		<result property="employeeID" column="EMPLOYEEID_"
+			jdbcType="VARCHAR" />
+		<result property="mobile" column="MOBILE_" jdbcType="VARCHAR" />
+		<result property="telephone" column="TELEPHONE_"
+			jdbcType="VARCHAR" />
+		<result property="nationality" column="NATIONALITY_"
+			jdbcType="VARCHAR" />
+		<result property="nation" column="NATION_" jdbcType="VARCHAR" />
+		<result property="birthPlace" column="BIRTHPLACE_"
+			jdbcType="VARCHAR" />
+		<result property="homeAddress" column="HOMEADDRESS_"
+			jdbcType="VARCHAR" />
+		<result property="marryStatus" column="MARRYSTATUS_"
+			jdbcType="VARCHAR" />
+		<result property="natureAccount" column="NATUREACCOUNT_"
+			jdbcType="VARCHAR" />
+		<result property="natureType" column="NATURETYPE_"
+			jdbcType="VARCHAR" />
+		<result property="education" column="EDUCATION_"
+			jdbcType="VARCHAR" />
+		<result property="seniority" column="SENIORITY_"
+			jdbcType="VARCHAR" />
+		<result property="position" column="POSITION_"
+			jdbcType="VARCHAR" />
+		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
+		<result property="category" column="CATEGORY_"
+			jdbcType="VARCHAR" />
+		<result property="joinDate" column="JOINDATE_"
+			jdbcType="TIMESTAMP" />
+		<result property="remark" column="REMARK_" jdbcType="VARCHAR" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="updateBy" column="UPDATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="updateTime" column="UPDATETIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="deleteFlag" column="DELETEFLAG_"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<insert id="insertEmployee"
+		parameterType="com.glaf.modules.employee.domain.Employee">
+		insert into T_EMPLOYEE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="name != null">
+				,NAME_
+			</if>
+			<if test="sex != null">
+				,SEX_
+			</if>
+			<if test="birthday != null">
+				,BIRTHDAY_
+			</if>
+			<if test="idCardNo != null">
+				,IDCARDNO_
+			</if>
+			<if test="employeeID != null">
+				,EMPLOYEEID_
+			</if>
+			<if test="mobile != null">
+				,MOBILE_
+			</if>
+			<if test="telephone != null">
+				,TELEPHONE_
+			</if>
+			<if test="nationality != null">
+				,NATIONALITY_
+			</if>
+			<if test="nation != null">
+				,NATION_
+			</if>
+			<if test="birthPlace != null">
+				,BIRTHPLACE_
+			</if>
+			<if test="homeAddress != null">
+				,HOMEADDRESS_
+			</if>
+			<if test="marryStatus != null">
+				,MARRYSTATUS_
+			</if>
+			<if test="natureAccount != null">
+				,NATUREACCOUNT_
+			</if>
+			<if test="natureType != null">
+				,NATURETYPE_
+			</if>
+			<if test="education != null">
+				,EDUCATION_
+			</if>
+			<if test="seniority != null">
+				,SENIORITY_
+			</if>
+			<if test="position != null">
+				,POSITION_
+			</if>
+			<if test="type != null">
+				,TYPE_
+			</if>
+			<if test="category != null">
+				,CATEGORY_
+			</if>
+			<if test="joinDate != null">
+				,JOINDATE_
+			</if>
+			<if test="remark != null">
+				,REMARK_
+			</if>
+			<if test="createBy != null">
+				,CREATEBY_
+			</if>
+			<if test="createTime != null">
+				,CREATETIME_
+			</if>
+			<if test="updateBy != null">
+				,UPDATEBY_
+			</if>
+			<if test="updateTime != null">
+				,UPDATETIME_
+			</if>
+			<if test="deleteFlag != null">
+				,DELETEFLAG_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}
+
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				,#{name, jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+				,#{sex, jdbcType=VARCHAR}
+			</if>
+			<if test="birthday != null">
+				,#{birthday, jdbcType=TIMESTAMP}
+			</if>
+			<if test="idCardNo != null">
+				,#{idCardNo, jdbcType=VARCHAR}
+			</if>
+			<if test="employeeID != null">
+				,#{employeeID, jdbcType=VARCHAR}
+			</if>
+			<if test="mobile != null">
+				,#{mobile, jdbcType=VARCHAR}
+			</if>
+			<if test="telephone != null">
+				,#{telephone, jdbcType=VARCHAR}
+			</if>
+			<if test="nationality != null">
+				,#{nationality, jdbcType=VARCHAR}
+			</if>
+			<if test="nation != null">
+				,#{nation, jdbcType=VARCHAR}
+			</if>
+			<if test="birthPlace != null">
+				,#{birthPlace, jdbcType=VARCHAR}
+			</if>
+			<if test="homeAddress != null">
+				,#{homeAddress, jdbcType=VARCHAR}
+			</if>
+			<if test="marryStatus != null">
+				,#{marryStatus, jdbcType=VARCHAR}
+			</if>
+			<if test="natureAccount != null">
+				,#{natureAccount, jdbcType=VARCHAR}
+			</if>
+			<if test="natureType != null">
+				,#{natureType, jdbcType=VARCHAR}
+			</if>
+			<if test="education != null">
+				,#{education, jdbcType=VARCHAR}
+			</if>
+			<if test="seniority != null">
+				,#{seniority, jdbcType=VARCHAR}
+			</if>
+			<if test="position != null">
+				,#{position, jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+				,#{type, jdbcType=VARCHAR}
+			</if>
+			<if test="category != null">
+				,#{category, jdbcType=VARCHAR}
+			</if>
+			<if test="joinDate != null">
+				,#{joinDate, jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+				,#{remark, jdbcType=VARCHAR}
+			</if>
+			<if test="createBy != null">
+				,#{createBy, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				,#{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				,#{updateBy, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				,#{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="deleteFlag != null">
+				,#{deleteFlag, jdbcType=INTEGER}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertEmployee" parameterType="java.util.List">
+		insert into T_EMPLOYEE (
+		ID_
+		,TENANTID_
+		,NAME_
+		,SEX_
+		,BIRTHDAY_
+		,IDCARDNO_
+		,EMPLOYEEID_
+		,MOBILE_
+		,TELEPHONE_
+		,NATIONALITY_
+		,NATION_
+		,BIRTHPLACE_
+		,HOMEADDRESS_
+		,MARRYSTATUS_
+		,NATUREACCOUNT_
+		,NATURETYPE_
+		,EDUCATION_
+		,SENIORITY_
+		,POSITION_
+		,TYPE_
+		,CATEGORY_
+		,JOINDATE_
+		,REMARK_
+		,CREATEBY_
+		,CREATETIME_
+		,UPDATEBY_
+		,UPDATETIME_
+		,DELETEFLAG_
+		) values
+		<foreach collection="list" item="employee" index="index"
+			separator=",">
+			(
+			#{employee.id, jdbcType=VARCHAR}
+			,#{employee.tenantId,
+			jdbcType=VARCHAR}
+			,#{employee.name, jdbcType=VARCHAR}
+			,#{employee.sex,
+			jdbcType=VARCHAR}
+			,#{employee.birthday, jdbcType=TIMESTAMP}
+			,#{employee.idCardNo, jdbcType=VARCHAR}
+			,#{employee.employeeID,
+			jdbcType=VARCHAR}
+			,#{employee.mobile, jdbcType=VARCHAR}
+			,#{employee.telephone, jdbcType=VARCHAR}
+			,#{employee.nationality,
+			jdbcType=VARCHAR}
+			,#{employee.nation, jdbcType=VARCHAR}
+			,#{employee.birthPlace, jdbcType=VARCHAR}
+			,#{employee.homeAddress,
+			jdbcType=VARCHAR}
+			,#{employee.marryStatus, jdbcType=VARCHAR}
+			,#{employee.natureAccount, jdbcType=VARCHAR}
+			,#{employee.natureType,
+			jdbcType=VARCHAR}
+			,#{employee.education, jdbcType=VARCHAR}
+			,#{employee.seniority, jdbcType=VARCHAR}
+			,#{employee.position,
+			jdbcType=VARCHAR}
+			,#{employee.type, jdbcType=VARCHAR}
+			,#{employee.category, jdbcType=VARCHAR}
+			,#{employee.joinDate,
+			jdbcType=TIMESTAMP}
+			,#{employee.remark, jdbcType=VARCHAR}
+			,#{employee.createBy, jdbcType=VARCHAR}
+			,#{employee.createTime,
+			jdbcType=TIMESTAMP}
+			,#{employee.updateBy, jdbcType=VARCHAR}
+			,#{employee.updateTime, jdbcType=TIMESTAMP}
+			,#{employee.deleteFlag,
+			jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertEmployee_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="employee" index="index">
+			insert into
+			T_EMPLOYEE (
+			ID_
+			,TENANTID_
+			,NAME_
+			,SEX_
+			,BIRTHDAY_
+			,IDCARDNO_
+			,EMPLOYEEID_
+			,MOBILE_
+			,TELEPHONE_
+			,NATIONALITY_
+			,NATION_
+			,BIRTHPLACE_
+			,HOMEADDRESS_
+			,MARRYSTATUS_
+			,NATUREACCOUNT_
+			,NATURETYPE_
+			,EDUCATION_
+			,SENIORITY_
+			,POSITION_
+			,TYPE_
+			,CATEGORY_
+			,JOINDATE_
+			,REMARK_
+			,CREATEBY_
+			,CREATETIME_
+			,UPDATEBY_
+			,UPDATETIME_
+			,DELETEFLAG_
+			) values (
+			#{employee.id,
+			jdbcType=VARCHAR}
+			,#{employee.tenantId, jdbcType=VARCHAR}
+			,#{employee.name, jdbcType=VARCHAR}
+			,#{employee.sex, jdbcType=VARCHAR}
+			,#{employee.birthday, jdbcType=TIMESTAMP}
+			,#{employee.idCardNo,
+			jdbcType=VARCHAR}
+			,#{employee.employeeID, jdbcType=VARCHAR}
+			,#{employee.mobile, jdbcType=VARCHAR}
+			,#{employee.telephone,
+			jdbcType=VARCHAR}
+			,#{employee.nationality, jdbcType=VARCHAR}
+			,#{employee.nation, jdbcType=VARCHAR}
+			,#{employee.birthPlace,
+			jdbcType=VARCHAR}
+			,#{employee.homeAddress, jdbcType=VARCHAR}
+			,#{employee.marryStatus, jdbcType=VARCHAR}
+			,#{employee.natureAccount,
+			jdbcType=VARCHAR}
+			,#{employee.natureType, jdbcType=VARCHAR}
+			,#{employee.education, jdbcType=VARCHAR}
+			,#{employee.seniority,
+			jdbcType=VARCHAR}
+			,#{employee.position, jdbcType=VARCHAR}
+			,#{employee.type, jdbcType=VARCHAR}
+			,#{employee.category,
+			jdbcType=VARCHAR}
+			,#{employee.joinDate, jdbcType=TIMESTAMP}
+			,#{employee.remark, jdbcType=VARCHAR}
+			,#{employee.createBy,
+			jdbcType=VARCHAR}
+			,#{employee.createTime, jdbcType=TIMESTAMP}
+			,#{employee.updateBy, jdbcType=VARCHAR}
+			,#{employee.updateTime,
+			jdbcType=TIMESTAMP}
+			,#{employee.deleteFlag, jdbcType=INTEGER}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateEmployee"
+		parameterType="com.glaf.modules.employee.domain.Employee">
+		update T_EMPLOYEE
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="name != null">
+				NAME_ = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				SEX_ = #{sex, jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				BIRTHDAY_ = #{birthday, jdbcType=TIMESTAMP},
+			</if>
+			<if test="idCardNo != null">
+				IDCARDNO_ = #{idCardNo, jdbcType=VARCHAR},
+			</if>
+			<if test="employeeID != null">
+				EMPLOYEEID_ = #{employeeID, jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				MOBILE_ = #{mobile, jdbcType=VARCHAR},
+			</if>
+			<if test="telephone != null">
+				TELEPHONE_ = #{telephone, jdbcType=VARCHAR},
+			</if>
+			<if test="nationality != null">
+				NATIONALITY_ = #{nationality, jdbcType=VARCHAR},
+			</if>
+			<if test="nation != null">
+				NATION_ = #{nation, jdbcType=VARCHAR},
+			</if>
+			<if test="birthPlace != null">
+				BIRTHPLACE_ = #{birthPlace, jdbcType=VARCHAR},
+			</if>
+			<if test="homeAddress != null">
+				HOMEADDRESS_ = #{homeAddress, jdbcType=VARCHAR},
+			</if>
+			<if test="marryStatus != null">
+				MARRYSTATUS_ = #{marryStatus, jdbcType=VARCHAR},
+			</if>
+			<if test="natureAccount != null">
+				NATUREACCOUNT_ = #{natureAccount, jdbcType=VARCHAR},
+			</if>
+			<if test="natureType != null">
+				NATURETYPE_ = #{natureType, jdbcType=VARCHAR},
+			</if>
+			<if test="education != null">
+				EDUCATION_ = #{education, jdbcType=VARCHAR},
+			</if>
+			<if test="seniority != null">
+				SENIORITY_ = #{seniority, jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				POSITION_ = #{position, jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE_ = #{type, jdbcType=VARCHAR},
+			</if>
+			<if test="category != null">
+				CATEGORY_ = #{category, jdbcType=VARCHAR},
+			</if>
+			<if test="joinDate != null">
+				JOINDATE_ = #{joinDate, jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				REMARK_ = #{remark, jdbcType=VARCHAR},
+			</if>
+			<if test="updateBy != null">
+				UPDATEBY_ = #{updateBy, jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATETIME_ = #{updateTime, jdbcType=TIMESTAMP},
+			</if>
+			<if test="deleteFlag != null">
+				DELETEFLAG_ = #{deleteFlag, jdbcType=INTEGER},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=VARCHAR}
+
+	</update>
+
+
+	<delete id="deleteEmployeeById" parameterType="string">
+		delete from
+		T_EMPLOYEE
+		where ID_ = #{id}
+	</delete>
+
+
+	<select id="getEmployeeById" parameterType="string"
+		resultMap="employeeResultMap">
+		select * from T_EMPLOYEE where ID_ = #{id}
+	</select>
+
+
+	<select id="getEmployees"
+		parameterType="com.glaf.modules.employee.query.EmployeeQuery"
+		resultMap="employeeResultMap">
+		select distinct E.*
+		<include refid="selectEmployeesSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.JOINDATE_ desc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getEmployeeCount"
+		parameterType="com.glaf.modules.employee.query.EmployeeQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectEmployeesSql" />
+	</select>
+
+
+	<sql id="selectEmployeesSql">
+
+		from T_EMPLOYEE E
+
+		<where>
+			1 = 1
+
+			<if test="tenantId != null and tenantId != '' ">
+				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="nameLike != null and nameLike != '' ">
+				and E.NAME_ like #{nameLike}
+			</if>
+
+			<if test="sex != null and sex != '' ">
+				and E.SEX_ = #{sex}
+			</if>
+
+			<if test="mobileLike != null and mobileLike != '' ">
+				and E.MOBILE_ like #{mobileLike}
+			</if>
+
+			<if test="nation != null and nation != '' ">
+				and E.NATION_ = #{nation}
+			</if>
+
+			<if test="marryStatus != null and marryStatus != '' ">
+				and E.MARRYSTATUS_ = #{marryStatus}
+			</if>
+
+			<if test="education != null and education != '' ">
+				and E.EDUCATION_ = #{education}
+			</if>
+
+			<if test="seniority != null and seniority != '' ">
+				and E.SENIORITY_ = #{seniority}
+			</if>
+
+			<if test="type != null and type != '' ">
+				and E.TYPE_ = #{type}
+			</if>
+
+			<if test="category != null and category != '' ">
+				and E.CATEGORY_ = #{category}
+			</if>
+
+			<if test="joinDateGreaterThanOrEqual != null">
+				and E.JOINDATE_ &gt;= #{joinDateGreaterThanOrEqual}
+			</if>
+
+			<if test="joinDateLessThanOrEqual != null">
+				and E.JOINDATE_ &lt;= #{joinDateLessThanOrEqual}
+			</if>
+
+			<if test="createBy != null and createBy != '' ">
+				and E.CREATEBY_ = #{createBy}
+			</if>
+
+			<if test="createTimeGreaterThanOrEqual != null">
+				and E.CREATETIME_ &gt;= #{createTimeGreaterThanOrEqual}
+			</if>
+
+			<if test="createTimeLessThanOrEqual != null">
+				and E.CREATETIME_ &lt;= #{createTimeLessThanOrEqual}
+			</if>
+
+			<if test="deleteFlag != null">
+				and E.DELETEFLAG_ = #{deleteFlag}
+			</if>
+
+		</where>
+	</sql>
+
+</mapper>

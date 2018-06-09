@@ -19,8 +19,6 @@
 package com.glaf.heathcare.bean;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,16 +28,15 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellType;
 
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.security.Authentication;
 import com.glaf.core.util.DateUtils;
+import com.glaf.core.util.ExcelUtils;
 import com.glaf.core.util.StringTools;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.PersonQuery;
@@ -67,7 +64,7 @@ public class PersonSimpleXlsImporter {
 		List<Person> users = new ArrayList<Person>();
 		int rows = sheet.getLastRowNum();
 		logger.debug("row num:" + rows);
-		for (int rowIndex = 2; rowIndex <= rows; rowIndex++) {
+		for (int rowIndex = 1; rowIndex <= rows; rowIndex++) {// 第二行开始取数
 			HSSFRow row = sheet.getRow(rowIndex);
 			if (row == null) {
 				continue;
@@ -82,7 +79,7 @@ public class PersonSimpleXlsImporter {
 			for (int colIndex = 0; colIndex < cells; colIndex++) {
 				HSSFCell cell = row.getCell(colIndex);
 				if (cell != null) {
-					cellValue = this.getValue(cell, 0);
+					cellValue = ExcelUtils.getStringOrDateValue(cell, 0);
 					if (cellValue == null) {
 						cellValue = "";
 					}
@@ -201,51 +198,11 @@ public class PersonSimpleXlsImporter {
 						personService.save(user);
 					}
 				} catch (Exception ex) {
-					//ex.printStackTrace();
-					//logger.error(ex);
+					// ex.printStackTrace();
+					// logger.error(ex);
 				}
 			}
 		}
-	}
-
-	public String getValue(HSSFCell cell, int precision) {
-		String strValue = null;
-		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
-			short format = cell.getCellStyle().getDataFormat();
-			SimpleDateFormat sdf = null;
-			if (format == 14 || format == 31 || format == 57 || format == 58 || (176 <= format && format <= 178)
-					|| (182 <= format && format <= 196) || (210 <= format && format <= 213) || (208 == format)) { // 日期
-				sdf = new SimpleDateFormat("yyyy-MM-dd");
-			} else if (format == 20 || format == 32 || format == 183 || (200 <= format && format <= 209)) { // 时间
-				sdf = new SimpleDateFormat("HH:mm");
-			} else { // 不是日期格式
-				double value = cell.getNumericCellValue();
-				DecimalFormat nf = new DecimalFormat("###");
-				// logger.debug("value->" + nf.format(value));
-				return String.valueOf(nf.format(value));
-			}
-			double value = cell.getNumericCellValue();
-			Date date = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(value);
-			if (date == null) {
-				return "";
-			}
-			String result = "";
-			try {
-				result = sdf.format(date);
-			} catch (Exception e) {
-				return "";
-			}
-			// logger.debug(result);
-			return result;
-		} else if (cell.getCellTypeEnum() == CellType.STRING) {
-			strValue = cell.getStringCellValue();
-		} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
-
-		}
-		if (strValue != null) {
-			return strValue;
-		}
-		return "";
 	}
 
 }

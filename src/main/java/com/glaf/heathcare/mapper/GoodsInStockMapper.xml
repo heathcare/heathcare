@@ -4,44 +4,62 @@
 
 <mapper namespace="com.glaf.heathcare.mapper.GoodsInStockMapper">
 
-	<resultMap id="goodsInStockResultMap" type="com.glaf.heathcare.domain.GoodsInStock">
+	<resultMap id="goodsInStockResultMap"
+		type="com.glaf.heathcare.domain.GoodsInStock">
 		<id property="id" column="ID_" jdbcType="BIGINT" />
-		<result property="tenantId" column="TENANTID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
 		<result property="goodsId" column="GOODSID_" jdbcType="BIGINT" />
-		<result property="goodsName" column="GOODSNAME_" jdbcType="VARCHAR" />
-		<result property="goodsNodeId" column="GOODSNODEID_" jdbcType="BIGINT" />
-		<result property="inStockTime" column="INSTOCKTIME_" jdbcType="TIMESTAMP" />
-		<result property="semester" column="SEMESTER_" jdbcType="INTEGER" />
+		<result property="goodsName" column="GOODSNAME_"
+			jdbcType="VARCHAR" />
+		<result property="goodsNodeId" column="GOODSNODEID_"
+			jdbcType="BIGINT" />
+		<result property="inStockTime" column="INSTOCKTIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="semester" column="SEMESTER_"
+			jdbcType="INTEGER" />
 		<result property="year" column="YEAR_" jdbcType="INTEGER" />
 		<result property="month" column="MONTH_" jdbcType="INTEGER" />
 		<result property="day" column="DAY_" jdbcType="INTEGER" />
 		<result property="week" column="WEEK_" jdbcType="INTEGER" />
 		<result property="fullDay" column="FULLDAY_" jdbcType="INTEGER" />
 		<result property="batchNo" column="BATCHNO_" jdbcType="VARCHAR" />
-		<result property="supplier" column="SUPPLIER_" jdbcType="VARCHAR" />
+		<result property="supplier" column="SUPPLIER_"
+			jdbcType="VARCHAR" />
 		<result property="contact" column="CONTACT_" jdbcType="VARCHAR" />
-		<result property="standard" column="STANDARD_" jdbcType="VARCHAR" />
+		<result property="standard" column="STANDARD_"
+			jdbcType="VARCHAR" />
 		<result property="address" column="ADDRESS_" jdbcType="VARCHAR" />
-		<result property="quantity" column="QUANTITY_" jdbcType="DOUBLE" />
+		<result property="quantity" column="QUANTITY_"
+			jdbcType="DOUBLE" />
 		<result property="unit" column="UNIT_" jdbcType="VARCHAR" />
 		<result property="price" column="PRICE_" jdbcType="DOUBLE" />
-		<result property="totalPrice" column="TOTALPRICE_" jdbcType="DOUBLE" />
-		<result property="expiryDate" column="EXPIRYDATE_" jdbcType="TIMESTAMP" />
-		<result property="available" column="AVAILABLE_" jdbcType="INTEGER" />
-		<result property="receiverId" column="RECEIVERID_" jdbcType="VARCHAR" />
+		<result property="totalPrice" column="TOTALPRICE_"
+			jdbcType="DOUBLE" />
+		<result property="expiryDate" column="EXPIRYDATE_"
+			jdbcType="TIMESTAMP" />
+		<result property="available" column="AVAILABLE_"
+			jdbcType="INTEGER" />
+		<result property="receiverId" column="RECEIVERID_"
+			jdbcType="VARCHAR" />
 		<result property="receiverName" column="RECEIVERNAME_"
 			jdbcType="VARCHAR" />
 		<result property="remark" column="REMARK_" jdbcType="VARCHAR" />
 		<result property="businessStatus" column="BUSINESSSTATUS_"
 			jdbcType="INTEGER" />
-		<result property="confirmTime" column="CONFIRMTIME_" jdbcType="TIMESTAMP" />
-		<result property="confirmBy" column="CONFIRMBY_" jdbcType="VARCHAR" />
-		<result property="createBy" column="CREATEBY_" jdbcType="VARCHAR" />
-		<result property="createTime" column="CREATETIME_" jdbcType="TIMESTAMP" />
+		<result property="confirmTime" column="CONFIRMTIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="confirmBy" column="CONFIRMBY_"
+			jdbcType="VARCHAR" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
 	</resultMap>
 
 
-	<insert id="insertGoodsInStock" parameterType="com.glaf.heathcare.domain.GoodsInStock">
+	<insert id="insertGoodsInStock"
+		parameterType="com.glaf.heathcare.domain.GoodsInStock">
 		insert into GOODS_IN_STOCK${tableSuffix}
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
@@ -234,7 +252,8 @@
 	</insert>
 
 
-	<insert id="bulkInsertGoodsInStock" parameterType="com.glaf.core.base.ListModel">
+	<insert id="bulkInsertGoodsInStock"
+		parameterType="com.glaf.core.base.ListModel">
 		insert into GOODS_IN_STOCK${tableSuffix} (
 		ID_
 		,TENANTID_
@@ -315,7 +334,8 @@
 	</insert>
 
 
-	<insert id="bulkInsertGoodsInStock_oracle" parameterType="java.util.List">
+	<insert id="bulkInsertGoodsInStock_oracle"
+		parameterType="java.util.List">
 		INSERT ALL
 		<foreach collection="list" item="goodsInStock" index="index">
 			insert
@@ -399,7 +419,8 @@
 	</insert>
 
 
-	<update id="updateGoodsInStock" parameterType="com.glaf.heathcare.domain.GoodsInStock">
+	<update id="updateGoodsInStock"
+		parameterType="com.glaf.heathcare.domain.GoodsInStock">
 		update GOODS_IN_STOCK${tableSuffix}
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
@@ -449,46 +470,56 @@
 	</update>
 
 
-	<update id="updateGoodsInStockStatus" parameterType="com.glaf.heathcare.domain.GoodsInStock">
-	
+	<update id="updateGoodsInStockStatus"
+		parameterType="com.glaf.heathcare.domain.GoodsInStock">
+
 		update GOODS_IN_STOCK${tableSuffix}
-		set AVAILABLE_ = #{available, jdbcType=INTEGER},
-			BUSINESSSTATUS_ = #{businessStatus, jdbcType=INTEGER},
-			CONFIRMBY_ = #{confirmBy, jdbcType=VARCHAR},
-			CONFIRMTIME_ = #{confirmTime, jdbcType=TIMESTAMP}
-		where ID_ = #{id, jdbcType=BIGINT}
+		set AVAILABLE_ = #{available,
+		jdbcType=INTEGER},
+		BUSINESSSTATUS_ = #{businessStatus, jdbcType=INTEGER},
+		CONFIRMBY_ = #{confirmBy, jdbcType=VARCHAR},
+		CONFIRMTIME_ = #{confirmTime, jdbcType=TIMESTAMP}
+		where ID_ = #{id,
+		jdbcType=BIGINT}
 
 	</update>
 
 
-	<update id="updateGoodsInStockAvailable" parameterType="com.glaf.heathcare.domain.GoodsInStock">
+	<update id="updateGoodsInStockAvailable"
+		parameterType="com.glaf.heathcare.domain.GoodsInStock">
 		update
 		GOODS_IN_STOCK${tableSuffix}
 		set
-		AVAILABLE_ = #{available,
+		AVAILABLE_ =
+		#{available,
 		jdbcType=INTEGER}
-		where TENANTID_ = #{tenantId, jdbcType=VARCHAR}
+		where TENANTID_ = #{tenantId,
+		jdbcType=VARCHAR}
 		and
 		GOODSID_ = #{goodsId, jdbcType=BIGINT}
-		and BUSINESSSTATUS_ =
+		and
+		BUSINESSSTATUS_ =
 		#{businessStatus, jdbcType=INTEGER}
 	</update>
 
 
-	<delete id="deleteGoodsInStockById" parameterType="com.glaf.heathcare.query.GoodsInStockQuery">
+	<delete id="deleteGoodsInStockById"
+		parameterType="com.glaf.heathcare.query.GoodsInStockQuery">
 		delete from
 		GOODS_IN_STOCK${tableSuffix}
 		where ID_ = #{id}
 	</delete>
 
 
-	<select id="getGoodsInStockById" parameterType="com.glaf.heathcare.query.GoodsInStockQuery"
+	<select id="getGoodsInStockById"
+		parameterType="com.glaf.heathcare.query.GoodsInStockQuery"
 		resultMap="goodsInStockResultMap">
 		select * from GOODS_IN_STOCK${tableSuffix} where ID_ = #{id}
 	</select>
 
 
-	<select id="getGoodsInStocks" parameterType="com.glaf.heathcare.query.GoodsInStockQuery"
+	<select id="getGoodsInStocks"
+		parameterType="com.glaf.heathcare.query.GoodsInStockQuery"
 		resultMap="goodsInStockResultMap">
 		select distinct E.*
 		<include refid="selectGoodsInStocksSql" />
@@ -503,7 +534,8 @@
 	</select>
 
 
-	<select id="getGoodsInStockCount" parameterType="com.glaf.heathcare.query.GoodsInStockQuery"
+	<select id="getGoodsInStockCount"
+		parameterType="com.glaf.heathcare.query.GoodsInStockQuery"
 		resultType="int">
 		select count(*)
 		<include refid="selectGoodsInStocksSql" />
@@ -531,8 +563,8 @@
 
 			<if test="tenantIds != null and tenantIds.size() &gt; 0">
 				and E.TENANTID_ IN
-				<foreach item="x_tenantId" index="index" collection="tenantIds"
-					open="(" separator="," close=")">
+				<foreach item="x_tenantId" index="index"
+					collection="tenantIds" open="(" separator="," close=")">
 					#{x_tenantId}
 				</foreach>
 			</if>
@@ -543,8 +575,8 @@
 
 			<if test="goodsIds != null and goodsIds.size() &gt; 0">
 				and E.GOODSID_ IN
-				<foreach item="x_goodsId" index="index" collection="goodsIds"
-					open="(" separator="," close=")">
+				<foreach item="x_goodsId" index="index"
+					collection="goodsIds" open="(" separator="," close=")">
 					#{x_goodsId}
 				</foreach>
 			</if>
@@ -571,6 +603,10 @@
 
 			<if test="year != null">
 				and E.YEAR_ = #{year}
+			</if>
+
+			<if test="yearGreaterThanOrEqual != null">
+				and E.YEAR_ &gt;= #{yearGreaterThanOrEqual}
 			</if>
 
 			<if test="month != null">
@@ -643,8 +679,8 @@
 
 			<if test="receiverIds != null and receiverIds.size() &gt; 0">
 				and E.RECEIVERID_ IN
-				<foreach item="x_receiverId" index="index" collection="receiverIds"
-					open="(" separator="," close=")">
+				<foreach item="x_receiverId" index="index"
+					collection="receiverIds" open="(" separator="," close=")">
 					#{x_receiverId}
 				</foreach>
 			</if>

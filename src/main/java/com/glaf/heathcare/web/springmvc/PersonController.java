@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.concurrent.Semaphore;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -74,6 +75,8 @@ import com.glaf.heathcare.service.PersonService;
 @RequestMapping("/heathcare/person")
 public class PersonController {
 	protected static final Log logger = LogFactory.getLog(PersonController.class);
+
+	protected static final Semaphore semaphore2 = new Semaphore(20);
 
 	protected DistrictService districtService;
 
@@ -143,29 +146,36 @@ public class PersonController {
 			PersonAndLinkmanXlsImporter importer1 = new PersonAndLinkmanXlsImporter();
 			PersonAndLinkmanXlsxImporter importer2 = new PersonAndLinkmanXlsxImporter();
 
-			if (loginContext.isSystemAdministrator()) {
-				if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-					importer2.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
-				} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-					importer1.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
-				}
-			} else {
-				if (loginContext.isTenantAdmin()) {
+			try {
+				semaphore2.acquire();
+				if (loginContext.isSystemAdministrator()) {
 					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						importer2.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
 					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						importer1.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
 					}
 				} else {
-					if (!loginContext.getGradeIds().contains(gradeId)) {
-						throw new RuntimeException("您没有该数据操作权限。");
-					}
-					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
-					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+					if (loginContext.isTenantAdmin()) {
+						if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+							importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+							importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						}
+					} else {
+						if (!loginContext.getGradeIds().contains(gradeId)) {
+							throw new RuntimeException("您没有该数据操作权限。");
+						}
+						if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+							importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+							importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						}
 					}
 				}
+			} catch (Exception ex) {
+				logger.error(ex);
+			} finally {
+				semaphore2.release();
 			}
 		}
 		return this.list(request, modelMap);
@@ -189,30 +199,36 @@ public class PersonController {
 			Date joinDate = RequestUtils.getDate(request, "joinDate");
 			PersonSimpleXlsImporter importer1 = new PersonSimpleXlsImporter();
 			PersonSimpleXlsxImporter importer2 = new PersonSimpleXlsxImporter();
-
-			if (loginContext.isSystemAdministrator()) {
-				if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-					importer2.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
-				} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-					importer1.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
-				}
-			} else {
-				if (loginContext.isTenantAdmin()) {
+			try {
+				semaphore2.acquire();
+				if (loginContext.isSystemAdministrator()) {
 					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						importer2.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
 					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						importer1.doImport(tenantId, gradeId, joinDate, mFile.getInputStream());
 					}
 				} else {
-					if (!loginContext.getGradeIds().contains(gradeId)) {
-						throw new RuntimeException("您没有该数据操作权限。");
-					}
-					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
-					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
-						importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+					if (loginContext.isTenantAdmin()) {
+						if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+							importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+							importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						}
+					} else {
+						if (!loginContext.getGradeIds().contains(gradeId)) {
+							throw new RuntimeException("您没有该数据操作权限。");
+						}
+						if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+							importer2.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+							importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
+						}
 					}
 				}
+			} catch (Exception ex) {
+				logger.error(ex);
+			} finally {
+				semaphore2.release();
 			}
 		}
 		return this.list(request, modelMap);
@@ -495,7 +511,7 @@ public class PersonController {
 
 			person.setGradeId(gradeId);
 			person.setIdCardNo(idCardNo);
-			person.setName(request.getParameter("name"));
+			person.setName(name.trim());
 			person.setBirthday(birthday);
 			person.setJoinDate(joinDate);
 			person.setStudentCode(request.getParameter("studentCode"));

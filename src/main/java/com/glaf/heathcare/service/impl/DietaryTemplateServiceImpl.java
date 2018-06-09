@@ -109,7 +109,7 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 				}
 
 				FoodCompositionQuery query3 = new FoodCompositionQuery();
-				query3.setIds(foodIds);
+				query3.setFoodIds(foodIds);
 				List<FoodComposition> foods = foodCompositionService.list(query3);// 获取食物成分
 				Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 				for (FoodComposition food : foods) {

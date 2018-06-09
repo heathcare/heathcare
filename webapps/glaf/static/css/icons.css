@@ -22,6 +22,10 @@
 	background: url('../images/zip.gif') no-repeat;
 }
 
+.icon_upload {
+	background: url('../images/upload.gif') no-repeat;
+}
+
 
 .icon-user-message {
 	background: url('../images/user_message.png') no-repeat;
