@@ -18,9 +18,11 @@
 
 package com.glaf.core.util;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 
@@ -41,6 +43,23 @@ public class ExcelXlsxUtils {
 		} else if (cell.getCellTypeEnum() == CellType.STRING) {
 			strValue = cell.getStringCellValue();
 		} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
+		}
+		if (strValue != null) {
+			return strValue;
+		}
+		return "";
+	}
+
+	public static String getString(HSSFCell cell, int precision) {
+		String strValue = null;
+		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+			double value = cell.getNumericCellValue();
+			DecimalFormat nf = new DecimalFormat("###");
+			return nf.format(value);
+		} else if (cell.getCellTypeEnum() == CellType.STRING) {
+			strValue = cell.getStringCellValue();
+		} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
+
 		}
 		if (strValue != null) {
 			return strValue;

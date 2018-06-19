@@ -18,6 +18,7 @@
 
 package com.glaf.core.util;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,6 +46,23 @@ public class ExcelUtils {
 			cellValue = cell.getStringValue();
 		}
 		return cellValue;
+	}
+
+	public static String getString(HSSFCell cell, int precision) {
+		String strValue = null;
+		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+			double value = cell.getNumericCellValue();
+			DecimalFormat nf = new DecimalFormat("###");
+			return nf.format(value);
+		} else if (cell.getCellTypeEnum() == CellType.STRING) {
+			strValue = cell.getStringCellValue();
+		} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
+
+		}
+		if (strValue != null) {
+			return strValue;
+		}
+		return "";
 	}
 
 	public static String getStringOrDateValue(HSSFCell cell, int precision) {

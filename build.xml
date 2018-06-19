@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="SAAS" basedir="." default="jar">
+<project name="heathcare" basedir="." default="jar">
 	<!-- Project settings -->
-	<property name="project.title" value="GLAF SAAS System" />
-	<property name="project.distname" value="glaf-saas" />
+	<property name="project.title" value="GLAF Heathcare System" />
+	<property name="project.distname" value="glaf-heathcare" />
 
 	<!-- 路径设置 -->
 	<property name="src.dir" value="./src" />
@@ -63,11 +63,11 @@
 	</target>
 
 	<target name="web_jar" description="Create java jar file">
-		<jar jarfile="glaf-saas-web-views.zip">
+		<jar jarfile="glaf-heathcare-web-views.zip">
 			<fileset dir="webapps/glaf/WEB-INF/views" includes="**/*.*" excludes="**/*.jar,**/*.class,**/archives/*.*,**/*.ttc,**/*.lib,**/*.dll,**/*.so, **/data/index/**/*.*,**/examples/**/*.*,**/logs/**/*.*, **/locks,**/*.cvs,**/*.bak,**/*.tmp,**/*.scc,**/*.svn" casesensitive="yes" />
 		</jar>
 
-		<jar jarfile="glaf-saas-web.zip">
+		<jar jarfile="glaf-heathcare-web.zip">
 			<fileset dir="webapps/glaf" includes="**/*.*" excludes="**/*.jar,**/*.class,**/archives/*.*,**/*.ttc,**/*.lib,**/*.dll,**/*.so, **/data/index/**/*.*,**/examples/**/*.*,**/logs/**/*.*, **/locks,**/*.cvs,**/*.bak,**/*.tmp,**/*.scc,**/*.svn" casesensitive="yes" />
 		</jar>
 
