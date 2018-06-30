@@ -200,6 +200,8 @@
 				<option value="N">异常</option>
 				<option value="T">沙眼</option>
 				<option value="A">弱视</option>
+				<option value="X">斜视</option>
+				<option value="S">闪光</option>
 				<option value="O">未检查</option>
 				</select>
 				<div id="eyeLeftRemarkDiv" style="display:none; margin:2px; ">
@@ -229,6 +231,8 @@
 				<option value="N">异常</option>
 				<option value="T">沙眼</option>
 				<option value="A">弱视</option>
+				<option value="X">斜视</option>
+				<option value="S">闪光</option>
 				<option value="O">未检查</option>
 			    </select>
 				<div id="eyeRightRemarkDiv" style="display:none; margin:2px; ">

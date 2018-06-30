@@ -44,6 +44,8 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 
 	protected int amblyopiaTotal;
 
+	protected int eyesightDysfunctionTotal;
+
 	protected int hemoglobin110Total;
 
 	protected int hemoglobin90Total;
@@ -68,6 +70,10 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 
 	public int getAmblyopiaTotal() {
 		return amblyopiaTotal;
+	}
+
+	public int getEyesightDysfunctionTotal() {
+		return eyesightDysfunctionTotal;
 	}
 
 	public String getGradeId() {
@@ -136,6 +142,10 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 
 	public void setAmblyopiaTotal(int amblyopiaTotal) {
 		this.amblyopiaTotal = amblyopiaTotal;
+	}
+
+	public void setEyesightDysfunctionTotal(int eyesightDysfunctionTotal) {
+		this.eyesightDysfunctionTotal = eyesightDysfunctionTotal;
 	}
 
 	public void setGradeId(String gradeId) {

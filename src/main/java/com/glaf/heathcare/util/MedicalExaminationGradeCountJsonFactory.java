@@ -108,11 +108,20 @@ public class MedicalExaminationGradeCountJsonFactory {
 		if (jsonObject.containsKey("amblyopia")) {
 			model.setAmblyopia(jsonObject.getInteger("amblyopia"));
 		}
+		if (jsonObject.containsKey("eyesightDysfunction")) {
+			model.setEyesightDysfunction(jsonObject.getInteger("eyesightDysfunction"));
+		}
 		if (jsonObject.containsKey("hemoglobin110")) {
 			model.setHemoglobin110(jsonObject.getInteger("hemoglobin110"));
 		}
 		if (jsonObject.containsKey("hemoglobin90")) {
 			model.setHemoglobin90(jsonObject.getInteger("hemoglobin90"));
+		}
+		if (jsonObject.containsKey("hemoglobin60")) {
+			model.setHemoglobin60(jsonObject.getInteger("hemoglobin60"));
+		}
+		if (jsonObject.containsKey("alt")) {
+			model.setAlt(jsonObject.getInteger("alt"));
 		}
 		if (jsonObject.containsKey("hbsab")) {
 			model.setHbsab(jsonObject.getInteger("hbsab"));
@@ -182,8 +191,11 @@ public class MedicalExaminationGradeCountJsonFactory {
 		jsonObject.put("saprodontia", model.getSaprodontia());
 		jsonObject.put("trachoma", model.getTrachoma());
 		jsonObject.put("amblyopia", model.getAmblyopia());
+		jsonObject.put("eyesightDysfunction", model.getEyesightDysfunction());
 		jsonObject.put("hemoglobin110", model.getHemoglobin110());
 		jsonObject.put("hemoglobin90", model.getHemoglobin90());
+		jsonObject.put("hemoglobin60", model.getHemoglobin60());
+		jsonObject.put("alt", model.getAlt());
 		jsonObject.put("hbsab", model.getHbsab());
 		jsonObject.put("sgpt", model.getSgpt());
 		jsonObject.put("hvaigm", model.getHvaigm());
@@ -242,8 +254,11 @@ public class MedicalExaminationGradeCountJsonFactory {
 		jsonObject.put("saprodontia", model.getSaprodontia());
 		jsonObject.put("trachoma", model.getTrachoma());
 		jsonObject.put("amblyopia", model.getAmblyopia());
+		jsonObject.put("eyesightDysfunction", model.getEyesightDysfunction());
 		jsonObject.put("hemoglobin110", model.getHemoglobin110());
 		jsonObject.put("hemoglobin90", model.getHemoglobin90());
+		jsonObject.put("hemoglobin60", model.getHemoglobin60());
+		jsonObject.put("alt", model.getAlt());
 		jsonObject.put("hbsab", model.getHbsab());
 		jsonObject.put("sgpt", model.getSgpt());
 		jsonObject.put("hvaigm", model.getHvaigm());

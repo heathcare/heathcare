@@ -285,6 +285,23 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 	protected double amblyopiaPercent;
 
 	/**
+	 * 视力低常
+	 */
+	@Column(name = "EYESIGHTDYSFUNCTION_")
+	protected int eyesightDysfunction;
+
+	@javax.persistence.Transient
+	protected double eyesightDysfunctionPercent;
+
+	/**
+	 * 谷丙转氨酶超标人数
+	 */
+	@Column(name = "ALT_")
+	protected int alt;
+
+	protected double altPercent;
+
+	/**
 	 * Hb≤110克人数
 	 */
 	@Column(name = "HEMOGLOBIN110_")
@@ -301,6 +318,15 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	@javax.persistence.Transient
 	protected double hemoglobin90Percent;
+
+	/**
+	 * Hb≤60克人数
+	 */
+	@Column(name = "HEMOGLOBIN60_")
+	protected int hemoglobin60;
+
+	@javax.persistence.Transient
+	protected double hemoglobin60Percent;
 
 	/**
 	 * 乙肝表面抗体阳性人数
@@ -359,6 +385,14 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public MedicalExaminationGradeCount() {
 
+	}
+
+	public int getAlt() {
+		return alt;
+	}
+
+	public double getAltPercent() {
+		return altPercent;
 	}
 
 	public int getAmblyopia() {
@@ -439,6 +473,14 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		return checkPerson;
 	}
 
+	public int getEyesightDysfunction() {
+		return eyesightDysfunction;
+	}
+
+	public double getEyesightDysfunctionPercent() {
+		return eyesightDysfunctionPercent;
+	}
+
 	public int getFemale() {
 		return female;
 	}
@@ -490,6 +532,14 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 			hemoglobin110Percent = Math.round(hemoglobin110 * 100.D / checkPerson);
 		}
 		return hemoglobin110Percent;
+	}
+
+	public int getHemoglobin60() {
+		return hemoglobin60;
+	}
+
+	public double getHemoglobin60Percent() {
+		return hemoglobin60Percent;
 	}
 
 	public int getHemoglobin90() {
@@ -649,6 +699,14 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		return MedicalExaminationGradeCountJsonFactory.jsonToObject(jsonObject);
 	}
 
+	public void setAlt(int alt) {
+		this.alt = alt;
+	}
+
+	public void setAltPercent(double altPercent) {
+		this.altPercent = altPercent;
+	}
+
 	public void setAmblyopia(int amblyopia) {
 		this.amblyopia = amblyopia;
 	}
@@ -709,6 +767,14 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		this.checkPerson = checkPerson;
 	}
 
+	public void setEyesightDysfunction(int eyesightDysfunction) {
+		this.eyesightDysfunction = eyesightDysfunction;
+	}
+
+	public void setEyesightDysfunctionPercent(double eyesightDysfunctionPercent) {
+		this.eyesightDysfunctionPercent = eyesightDysfunctionPercent;
+	}
+
 	public void setFemale(int female) {
 		this.female = female;
 	}
@@ -751,6 +817,14 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public void setHemoglobin110Percent(double hemoglobin110Percent) {
 		this.hemoglobin110Percent = hemoglobin110Percent;
+	}
+
+	public void setHemoglobin60(int hemoglobin60) {
+		this.hemoglobin60 = hemoglobin60;
+	}
+
+	public void setHemoglobin60Percent(double hemoglobin60Percent) {
+		this.hemoglobin60Percent = hemoglobin60Percent;
 	}
 
 	public void setHemoglobin90(int hemoglobin90) {

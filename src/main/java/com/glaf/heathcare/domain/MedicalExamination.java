@@ -23,6 +23,8 @@ import java.util.*;
 import javax.persistence.*;
 import com.alibaba.fastjson.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.glaf.core.base.*;
@@ -259,6 +261,9 @@ public class MedicalExamination implements Serializable, JSONable {
 	 */
 	@Column(name = "EYESIGHTRIGHT_")
 	protected double eyesightRight;
+
+	@javax.persistence.Transient
+	protected boolean eyesightDysfunction;
 
 	@javax.persistence.Transient
 	protected String ear;
@@ -1329,6 +1334,26 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setCheckDate(Date checkDate) {
 		this.checkDate = checkDate;
+	}
+
+	public boolean isEyesightDysfunction() {
+		eyesightDysfunction = false;
+		if (this.eyesightLeft < 1.0 || this.eyesightRight < 1.0) {
+			eyesightDysfunction = true;
+		}
+		if (StringUtils.equals(eyeRight, "N") || StringUtils.equals(eyeRight, "A") || StringUtils.equals(eyeRight, "S")
+				|| StringUtils.equals(eyeRight, "X")) {
+			eyesightDysfunction = true;
+		}
+		if (StringUtils.equals(eyeLeft, "N") || StringUtils.equals(eyeLeft, "A") || StringUtils.equals(eyeLeft, "S")
+				|| StringUtils.equals(eyeLeft, "X")) {
+			eyesightDysfunction = true;
+		}
+		return eyesightDysfunction;
+	}
+
+	public void setEyesightDysfunction(boolean eyesightDysfunction) {
+		this.eyesightDysfunction = eyesightDysfunction;
 	}
 
 	public void setCheckDateString(String checkDateString) {

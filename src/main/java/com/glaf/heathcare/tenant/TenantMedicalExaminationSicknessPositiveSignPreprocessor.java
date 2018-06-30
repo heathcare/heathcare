@@ -118,6 +118,9 @@ public class TenantMedicalExaminationSicknessPositiveSignPreprocessor implements
 						if (StringUtils.equals(me.getEyeLeft(), "A") || StringUtils.equals(me.getEyeRight(), "A")) {
 							sign.setAmblyopiaTotal(sign.getAmblyopiaTotal() + 1);// 弱视人数
 						}
+						if (me.isEyesightDysfunction()) {
+							sign.setEyesightDysfunctionTotal(sign.getEyesightDysfunctionTotal() + 1);// 视力低常
+						}
 						if (me.getAltValue() > 40) {
 							sign.setAltTotal(sign.getAltTotal() + 1);// 谷丙转氨酶超标人数
 						}

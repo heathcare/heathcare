@@ -60,6 +60,8 @@ import com.glaf.heathcare.util.PhysicalGrowthCountDomainFactory;
 public class MedicalExaminationGradeCountBean {
 	protected static final Log logger = LogFactory.getLog(MedicalExaminationGradeCountBean.class);
 
+	protected static boolean checkTable = false;
+
 	public void execute(String tenantId, String type, int year, int month) {
 		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
 		GrowthStandardService growthStandardService = ContextFactory
@@ -81,29 +83,51 @@ public class MedicalExaminationGradeCountBean {
 			Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 			database = databaseService.getDatabaseByMapping("etl");
 			if (database != null) {
-				if (!DBUtils.tableExists(database.getName(), "SYS_DBID")) {
-					TableDefinition tableDefinition = DbidDomainFactory.getTableDefinition("SYS_DBID");
-					DBUtils.createTable(database.getName(), tableDefinition);
-				}
-				if (!DBUtils.tableExists(database.getName(), "HEALTH_PHYSICAL_GROWTH_COUNT")) {
-					TableDefinition tableDefinition = PhysicalGrowthCountDomainFactory
-							.getTableDefinition("HEALTH_PHYSICAL_GROWTH_COUNT");
-					DBUtils.createTable(database.getName(), tableDefinition);
-				}
-				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_EVAL")) {
-					TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
-							.getTableDefinition("HEALTH_MEDICAL_EXAM_EVAL");
-					DBUtils.createTable(database.getName(), tableDefinition);
-				}
-				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_COUNT")) {
-					TableDefinition tableDefinition = MedicalExaminationCountDomainFactory
-							.getTableDefinition("HEALTH_MEDICAL_EXAM_COUNT");
-					DBUtils.createTable(database.getName(), tableDefinition);
-				}
-				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_GRADE_CNT")) {
-					TableDefinition tableDefinition = MedicalExaminationGradeCountDomainFactory
-							.getTableDefinition("HEALTH_MEDICAL_EXAM_GRADE_CNT");
-					DBUtils.createTable(database.getName(), tableDefinition);
+				if (!checkTable) {
+					if (!DBUtils.tableExists(database.getName(), "SYS_DBID")) {
+						TableDefinition tableDefinition = DbidDomainFactory.getTableDefinition("SYS_DBID");
+						DBUtils.createTable(database.getName(), tableDefinition);
+					}
+					if (!DBUtils.tableExists(database.getName(), "HEALTH_PHYSICAL_GROWTH_COUNT")) {
+						TableDefinition tableDefinition = PhysicalGrowthCountDomainFactory
+								.getTableDefinition("HEALTH_PHYSICAL_GROWTH_COUNT");
+						DBUtils.createTable(database.getName(), tableDefinition);
+					} else {
+						TableDefinition tableDefinition = PhysicalGrowthCountDomainFactory
+								.getTableDefinition("HEALTH_PHYSICAL_GROWTH_COUNT");
+						DBUtils.alterTable(database.getName(), tableDefinition);
+					}
+
+					if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_EVAL")) {
+						TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
+								.getTableDefinition("HEALTH_MEDICAL_EXAM_EVAL");
+						DBUtils.createTable(database.getName(), tableDefinition);
+					} else {
+						TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
+								.getTableDefinition("HEALTH_MEDICAL_EXAM_EVAL");
+						DBUtils.alterTable(database.getName(), tableDefinition);
+					}
+
+					if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_COUNT")) {
+						TableDefinition tableDefinition = MedicalExaminationCountDomainFactory
+								.getTableDefinition("HEALTH_MEDICAL_EXAM_COUNT");
+						DBUtils.createTable(database.getName(), tableDefinition);
+					} else {
+						TableDefinition tableDefinition = MedicalExaminationCountDomainFactory
+								.getTableDefinition("HEALTH_MEDICAL_EXAM_COUNT");
+						DBUtils.alterTable(database.getName(), tableDefinition);
+					}
+
+					if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_GRADE_CNT")) {
+						TableDefinition tableDefinition = MedicalExaminationGradeCountDomainFactory
+								.getTableDefinition("HEALTH_MEDICAL_EXAM_GRADE_CNT");
+						DBUtils.createTable(database.getName(), tableDefinition);
+					} else {
+						TableDefinition tableDefinition = MedicalExaminationGradeCountDomainFactory
+								.getTableDefinition("HEALTH_MEDICAL_EXAM_GRADE_CNT");
+						DBUtils.alterTable(database.getName(), tableDefinition);
+					}
+					checkTable = true;
 				}
 			}
 
@@ -266,12 +290,20 @@ public class MedicalExaminationGradeCountBean {
 									cnt.setAmblyopia(cnt.getAmblyopia() + 1);
 								}
 
-								if (exam.getHemoglobinValue() >= 90 && exam.getHemoglobinValue() < 110) {// 血红蛋白Hb
-									cnt.setHemoglobin110(cnt.getHemoglobin110() + 1);
+								if (exam.isEyesightDysfunction()) {
+									cnt.setEyesightDysfunction(cnt.getEyesightDysfunction() + 1);// 视力异常
 								}
 
-								if (exam.getHemoglobinValue() > 0 && exam.getHemoglobinValue() < 90) {
+								if (exam.getHemoglobinValue() >= 90 && exam.getHemoglobinValue() < 110) {// 血红蛋白Hb
+									cnt.setHemoglobin110(cnt.getHemoglobin110() + 1);
+								} else if (exam.getHemoglobinValue() >= 60 && exam.getHemoglobinValue() < 90) {
 									cnt.setHemoglobin90(cnt.getHemoglobin90() + 1);
+								} else if (exam.getHemoglobinValue() > 0 && exam.getHemoglobinValue() < 60) {
+									cnt.setHemoglobin60(cnt.getHemoglobin60() + 1);
+								}
+
+								if (exam.getAltValue() > 40) {// 谷丙转氨酶超标人数
+									cnt.setAlt(cnt.getAlt() + 1);
 								}
 
 								if (exam.getHbsabValue() > 10) {// 乙肝表面抗体

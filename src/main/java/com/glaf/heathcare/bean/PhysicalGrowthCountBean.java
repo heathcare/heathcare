@@ -54,6 +54,8 @@ import com.glaf.heathcare.util.PhysicalGrowthCountDomainFactory;
 public class PhysicalGrowthCountBean {
 	protected static final Log logger = LogFactory.getLog(PhysicalGrowthCountBean.class);
 
+	protected static boolean checkTable = false;
+
 	public void execute(String tenantId, String type, int year, int month) {
 		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
 		GrowthStandardService growthStandardService = ContextFactory
@@ -73,10 +75,17 @@ public class PhysicalGrowthCountBean {
 			Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 			database = databaseService.getDatabaseByMapping("etl");
 			if (database != null) {
-				if (!DBUtils.tableExists(database.getName(), "HEALTH_PHYSICAL_GROWTH_COUNT")) {
-					TableDefinition tableDefinition = PhysicalGrowthCountDomainFactory
-							.getTableDefinition("HEALTH_PHYSICAL_GROWTH_COUNT");
-					DBUtils.createTable(database.getName(), tableDefinition);
+				if (!checkTable) {
+					if (!DBUtils.tableExists(database.getName(), "HEALTH_PHYSICAL_GROWTH_COUNT")) {
+						TableDefinition tableDefinition = PhysicalGrowthCountDomainFactory
+								.getTableDefinition("HEALTH_PHYSICAL_GROWTH_COUNT");
+						DBUtils.createTable(database.getName(), tableDefinition);
+					} else {
+						TableDefinition tableDefinition = PhysicalGrowthCountDomainFactory
+								.getTableDefinition("HEALTH_PHYSICAL_GROWTH_COUNT");
+						DBUtils.alterTable(database.getName(), tableDefinition);
+					}
+					checkTable = true;
 				}
 			}
 

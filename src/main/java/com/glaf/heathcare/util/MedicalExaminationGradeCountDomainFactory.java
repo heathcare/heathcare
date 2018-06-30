@@ -53,8 +53,11 @@ public class MedicalExaminationGradeCountDomainFactory {
 		columnMap.put("saprodontia", "SAPRODONTIA_");
 		columnMap.put("trachoma", "TRACHOMA_");
 		columnMap.put("amblyopia", "AMBLYOPIA_");
+		columnMap.put("eyesightDysfunction", "EYESIGHTDYSFUNCTION_");
 		columnMap.put("hemoglobin110", "HEMOGLOBIN110_");
 		columnMap.put("hemoglobin90", "HEMOGLOBIN90_");
+		columnMap.put("hemoglobin60", "HEMOGLOBIN60_");
+		columnMap.put("alt", "ALT_");
 		columnMap.put("hbsab", "HBSAB_");
 		columnMap.put("sgpt", "SGPT_");
 		columnMap.put("hvaigm", "HVAIGM_");
@@ -95,8 +98,11 @@ public class MedicalExaminationGradeCountDomainFactory {
 		javaTypeMap.put("saprodontia", "Integer");
 		javaTypeMap.put("trachoma", "Integer");
 		javaTypeMap.put("amblyopia", "Integer");
+		javaTypeMap.put("eyesightDysfunction", "Integer");
 		javaTypeMap.put("hemoglobin110", "Integer");
 		javaTypeMap.put("hemoglobin90", "Integer");
+		javaTypeMap.put("hemoglobin60", "Integer");
+		javaTypeMap.put("alt", "Integer");
 		javaTypeMap.put("hbsab", "Integer");
 		javaTypeMap.put("sgpt", "Integer");
 		javaTypeMap.put("hvaigm", "Integer");
@@ -334,6 +340,12 @@ public class MedicalExaminationGradeCountDomainFactory {
 		amblyopia.setJavaType("Integer");
 		tableDefinition.addColumn(amblyopia);
 
+		ColumnDefinition eyesightDysfunction = new ColumnDefinition();
+		eyesightDysfunction.setName("eyesightDysfunction");
+		eyesightDysfunction.setColumnName("EYESIGHTDYSFUNCTION_");
+		eyesightDysfunction.setJavaType("Integer");
+		tableDefinition.addColumn(eyesightDysfunction);
+
 		ColumnDefinition hemoglobin110 = new ColumnDefinition();
 		hemoglobin110.setName("hemoglobin110");
 		hemoglobin110.setColumnName("HEMOGLOBIN110_");
@@ -345,6 +357,18 @@ public class MedicalExaminationGradeCountDomainFactory {
 		hemoglobin90.setColumnName("HEMOGLOBIN90_");
 		hemoglobin90.setJavaType("Integer");
 		tableDefinition.addColumn(hemoglobin90);
+
+		ColumnDefinition hemoglobin60 = new ColumnDefinition();
+		hemoglobin60.setName("hemoglobin60");
+		hemoglobin60.setColumnName("HEMOGLOBIN60_");
+		hemoglobin60.setJavaType("Integer");
+		tableDefinition.addColumn(hemoglobin60);
+
+		ColumnDefinition alt = new ColumnDefinition();
+		alt.setName("alt");
+		alt.setColumnName("ALT_");
+		alt.setJavaType("Integer");
+		tableDefinition.addColumn(alt);
 
 		ColumnDefinition hbsab = new ColumnDefinition();
 		hbsab.setName("hbsab");

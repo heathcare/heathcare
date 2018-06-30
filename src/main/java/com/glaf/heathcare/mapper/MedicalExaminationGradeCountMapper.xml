@@ -64,9 +64,14 @@
 			jdbcType="INTEGER" />
 		<result property="amblyopia" column="AMBLYOPIA_"
 			jdbcType="INTEGER" />
+		<result property="eyesightDysfunction"
+			column="EYESIGHTDYSFUNCTION_" jdbcType="INTEGER" />
+		<result property="alt" column="ALT_" jdbcType="INTEGER" />
 		<result property="hemoglobin110" column="HEMOGLOBIN110_"
 			jdbcType="INTEGER" />
 		<result property="hemoglobin90" column="HEMOGLOBIN90_"
+			jdbcType="INTEGER" />
+		<result property="hemoglobin60" column="HEMOGLOBIN60_"
 			jdbcType="INTEGER" />
 		<result property="hbsab" column="HBSAB_" jdbcType="INTEGER" />
 		<result property="sgpt" column="SGPT_" jdbcType="INTEGER" />
@@ -175,11 +180,20 @@
 			<if test="amblyopia != null">
 				,AMBLYOPIA_
 			</if>
+			<if test="eyesightDysfunction != null">
+				,EYESIGHTDYSFUNCTION_
+			</if>
+			<if test="alt != null">
+				,ALT_
+			</if>
 			<if test="hemoglobin110 != null">
 				,HEMOGLOBIN110_
 			</if>
 			<if test="hemoglobin90 != null">
 				,HEMOGLOBIN90_
+			</if>
+			<if test="hemoglobin60 != null">
+				,HEMOGLOBIN60_
 			</if>
 			<if test="hbsab != null">
 				,HBSAB_
@@ -300,11 +314,20 @@
 			<if test="amblyopia != null">
 				,#{amblyopia, jdbcType=INTEGER}
 			</if>
+			<if test="eyesightDysfunction != null">
+				,#{eyesightDysfunction, jdbcType=INTEGER}
+			</if>
+			<if test="alt != null">
+				,#{alt, jdbcType=INTEGER}
+			</if>
 			<if test="hemoglobin110 != null">
 				,#{hemoglobin110, jdbcType=INTEGER}
 			</if>
 			<if test="hemoglobin90 != null">
 				,#{hemoglobin90, jdbcType=INTEGER}
+			</if>
+			<if test="hemoglobin60 != null">
+				,#{hemoglobin60, jdbcType=INTEGER}
 			</if>
 			<if test="hbsab != null">
 				,#{hbsab, jdbcType=INTEGER}
@@ -368,8 +391,11 @@
 		,SAPRODONTIA_
 		,TRACHOMA_
 		,AMBLYOPIA_
+		,EYESIGHTDYSFUNCTION_
+		,ALT_
 		,HEMOGLOBIN110_
 		,HEMOGLOBIN90_
+		,HEMOGLOBIN60_
 		,HBSAB_
 		,SGPT_
 		,HVAIGM_
@@ -444,9 +470,15 @@
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.amblyopia,
 			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.eyesightDysfunction,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.alt,
+			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.hemoglobin110,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.hemoglobin90,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hemoglobin60,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.hbsab,
 			jdbcType=INTEGER}
@@ -506,8 +538,11 @@
 			,SAPRODONTIA_
 			,TRACHOMA_
 			,AMBLYOPIA_
+			,EYESIGHTDYSFUNCTION_
+			,ALT_
 			,HEMOGLOBIN110_
 			,HEMOGLOBIN90_
+			,HEMOGLOBIN60_
 			,HBSAB_
 			,SGPT_
 			,HVAIGM_
@@ -579,9 +614,15 @@
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.amblyopia,
 			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.eyesightDysfunction,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.alt,
+			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.hemoglobin110,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.hemoglobin90,
+			jdbcType=INTEGER}
+			,#{medicalExaminationGradeCount.hemoglobin60,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.hbsab,
 			jdbcType=INTEGER}
