@@ -146,6 +146,12 @@ public class TenantMedicalExaminationGradePreprocessor implements IReportPreproc
 							exam.setBirthdayString(DateUtils.getDate(person.getBirthday()));
 						}
 
+						if (StringUtils.equals(exam.getHvaigm(), "X")) {
+							exam.setHvaigmText("阳性");
+						} else if (StringUtils.equals(exam.getHvaigm(), "Y")) {
+							exam.setHvaigmText("阴性");
+						}
+
 						if (StringUtils.equals(person.getSex(), "1")) {
 							exam.setSex("男");
 						} else {

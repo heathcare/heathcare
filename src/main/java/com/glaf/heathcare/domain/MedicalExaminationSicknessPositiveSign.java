@@ -48,6 +48,10 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 
 	protected int hemoglobin90Total;
 
+	protected int hemoglobin60Total;
+
+	protected int altTotal;
+
 	protected int hbsabTotal;
 
 	protected int sgptTotal;
@@ -56,6 +60,10 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 
 	public MedicalExaminationSicknessPositiveSign() {
 
+	}
+
+	public int getAltTotal() {
+		return altTotal;
 	}
 
 	public int getAmblyopiaTotal() {
@@ -76,6 +84,10 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 
 	public int getHemoglobin110Total() {
 		return hemoglobin110Total;
+	}
+
+	public int getHemoglobin60Total() {
+		return hemoglobin60Total;
 	}
 
 	public int getHemoglobin90Total() {
@@ -118,6 +130,10 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 		return trachomaTotal;
 	}
 
+	public void setAltTotal(int altTotal) {
+		this.altTotal = altTotal;
+	}
+
 	public void setAmblyopiaTotal(int amblyopiaTotal) {
 		this.amblyopiaTotal = amblyopiaTotal;
 	}
@@ -136,6 +152,10 @@ public class MedicalExaminationSicknessPositiveSign implements Serializable {
 
 	public void setHemoglobin110Total(int hemoglobin110Total) {
 		this.hemoglobin110Total = hemoglobin110Total;
+	}
+
+	public void setHemoglobin60Total(int hemoglobin60Total) {
+		this.hemoglobin60Total = hemoglobin60Total;
 	}
 
 	public void setHemoglobin90Total(int hemoglobin90Total) {

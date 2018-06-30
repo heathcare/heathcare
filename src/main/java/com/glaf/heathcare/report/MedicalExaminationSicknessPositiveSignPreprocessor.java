@@ -123,6 +123,9 @@ public class MedicalExaminationSicknessPositiveSignPreprocessor implements IRepo
 						if (StringUtils.equals(me.getEyeLeft(), "A") || StringUtils.equals(me.getEyeRight(), "A")) {
 							sign.setAmblyopiaTotal(sign.getAmblyopiaTotal() + 1);// 弱视人数
 						}
+						if (me.getAltValue() > 40) {
+							sign.setAltTotal(sign.getAltTotal() + 1);// 谷丙转氨酶超标人数
+						}
 						if (StringUtils.equals(me.getHbsab(), "X")) {
 							sign.setHbsabTotal(sign.getHbsabTotal() + 1);// 乙肝表面抗体阳性人数
 						}
@@ -134,10 +137,11 @@ public class MedicalExaminationSicknessPositiveSignPreprocessor implements IRepo
 						}
 						if (StringUtils.isNotEmpty(me.getHemoglobin()) && StringUtils.isNumeric(me.getHemoglobin())) {
 							int hb = Integer.parseInt(me.getHemoglobin());
-							if (hb <= 90) {
+							if (hb <= 60) {
+								sign.setHemoglobin60Total(sign.getHemoglobin60Total() + 1);// Hb≤60克人数
+							} else if (hb <= 90) {
 								sign.setHemoglobin90Total(sign.getHemoglobin90Total() + 1);// Hb≤90克人数
-							}
-							if (hb <= 110) {
+							} else if (hb <= 110) {
 								sign.setHemoglobin110Total(sign.getHemoglobin110Total() + 1);// Hb≤110克人数
 							}
 						}

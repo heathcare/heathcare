@@ -109,6 +109,15 @@ public class MedicalExaminationCount implements Serializable {
 	protected double meanWeightLowPercent;
 
 	/**
+	 * 体重低于3SD人数
+	 */
+	@Column(name = "MEANWEIGHTLOW3_")
+	protected int meanWeightLow3;
+
+	@Column(name = "MEANWEIGHTLOWPCT3_")
+	protected double meanWeightLow3Percent;
+
+	/**
 	 * 身高低于2SD人数
 	 */
 	@Column(name = "MEANHEIGHTLOW_")
@@ -118,6 +127,15 @@ public class MedicalExaminationCount implements Serializable {
 	protected double meanHeightLowPercent;
 
 	/**
+	 * 身高低于3SD人数
+	 */
+	@Column(name = "MEANHEIGHTLOW3_")
+	protected int meanHeightLow3;
+
+	@Column(name = "MEANHEIGHTLOWPCT3_")
+	protected double meanHeightLow3Percent;
+
+	/**
 	 * 消瘦人数
 	 */
 	@Column(name = "MEANWEIGHTSKINNY_")
@@ -125,6 +143,15 @@ public class MedicalExaminationCount implements Serializable {
 
 	@Column(name = "MEANWEIGHTSKINNYPCT_")
 	protected double meanWeightSkinnyPercent;
+
+	/**
+	 * 重度消瘦人数
+	 */
+	@Column(name = "MEANWEIGHTSERIOUSSKINNY_")
+	protected int meanWeightSeriousSkinny;
+
+	@Column(name = "MEANWEIGHTSERIOUSSKINNYPCT_")
+	protected double meanWeightSeriousSkinnyPercent;
 
 	/**
 	 * 超重人数
@@ -320,6 +347,14 @@ public class MedicalExaminationCount implements Serializable {
 		return meanHeightLow;
 	}
 
+	public int getMeanHeightLow3() {
+		return meanHeightLow3;
+	}
+
+	public double getMeanHeightLow3Percent() {
+		return meanHeightLow3Percent;
+	}
+
 	public double getMeanHeightLowPercent() {
 		if (meanHeightLowPercent > 0) {
 			meanHeightLowPercent = Math.round(meanHeightLowPercent * 100D) / 100D;
@@ -353,6 +388,14 @@ public class MedicalExaminationCount implements Serializable {
 		return meanWeightLow;
 	}
 
+	public int getMeanWeightLow3() {
+		return meanWeightLow3;
+	}
+
+	public double getMeanWeightLow3Percent() {
+		return meanWeightLow3Percent;
+	}
+
 	public double getMeanWeightLowPercent() {
 		if (meanWeightLowPercent > 0) {
 			meanWeightLowPercent = Math.round(meanWeightLowPercent * 100D) / 100D;
@@ -380,6 +423,14 @@ public class MedicalExaminationCount implements Serializable {
 			meanWeightObesityPercent = Math.round(meanWeightObesityPercent * 100D) / 100D;
 		}
 		return meanWeightObesityPercent;
+	}
+
+	public int getMeanWeightSeriousSkinny() {
+		return meanWeightSeriousSkinny;
+	}
+
+	public double getMeanWeightSeriousSkinnyPercent() {
+		return meanWeightSeriousSkinnyPercent;
 	}
 
 	public int getMeanWeightSkinny() {
@@ -569,6 +620,14 @@ public class MedicalExaminationCount implements Serializable {
 		this.meanHeightLow = meanHeightLow;
 	}
 
+	public void setMeanHeightLow3(int meanHeightLow3) {
+		this.meanHeightLow3 = meanHeightLow3;
+	}
+
+	public void setMeanHeightLow3Percent(double meanHeightLow3Percent) {
+		this.meanHeightLow3Percent = meanHeightLow3Percent;
+	}
+
 	public void setMeanHeightLowPercent(double meanHeightLowPercent) {
 		this.meanHeightLowPercent = meanHeightLowPercent;
 	}
@@ -593,6 +652,14 @@ public class MedicalExaminationCount implements Serializable {
 		this.meanWeightLow = meanWeightLow;
 	}
 
+	public void setMeanWeightLow3(int meanWeightLow3) {
+		this.meanWeightLow3 = meanWeightLow3;
+	}
+
+	public void setMeanWeightLow3Percent(double meanWeightLow3Percent) {
+		this.meanWeightLow3Percent = meanWeightLow3Percent;
+	}
+
 	public void setMeanWeightLowPercent(double meanWeightLowPercent) {
 		this.meanWeightLowPercent = meanWeightLowPercent;
 	}
@@ -611,6 +678,14 @@ public class MedicalExaminationCount implements Serializable {
 
 	public void setMeanWeightObesityPercent(double meanWeightObesityPercent) {
 		this.meanWeightObesityPercent = meanWeightObesityPercent;
+	}
+
+	public void setMeanWeightSeriousSkinny(int meanWeightSeriousSkinny) {
+		this.meanWeightSeriousSkinny = meanWeightSeriousSkinny;
+	}
+
+	public void setMeanWeightSeriousSkinnyPercent(double meanWeightSeriousSkinnyPercent) {
+		this.meanWeightSeriousSkinnyPercent = meanWeightSeriousSkinnyPercent;
 	}
 
 	public void setMeanWeightSkinny(int meanWeightSkinny) {

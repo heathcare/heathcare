@@ -151,21 +151,37 @@ public class MedicalExaminationCountPreprocessor implements IReportPreprocessor 
 							cnt.setMeanWeightObesity(cnt.getMeanWeightObesity() + 1);// 肥胖人数
 						} else if (ex.getBmiIndex() == 1.0) {
 							cnt.setMeanOverWeight(cnt.getMeanOverWeight() + 1);// 超重人数
-						} else if (ex.getBmiIndex() <= -1) {
-							cnt.setMeanWeightSkinny(cnt.getMeanWeightSkinny() + 1);// 消瘦人数
 						} else {
-							cnt.setMeanWeightNormal(cnt.getMeanWeightNormal() + 1);// 体重正常人数
+							if (ex.getBmiIndex() == 0) {
+								cnt.setMeanWeightNormal(cnt.getMeanWeightNormal() + 1);// 体重正常人数
+							}
+						}
+
+						if (ex.getBmiIndex() <= -3) {
+							cnt.setMeanWeightSeriousSkinny(cnt.getMeanWeightSeriousSkinny() + 1);// 重度消瘦人数
+						} else if (ex.getBmiIndex() <= -2 && ex.getBmiIndex() > -3) {
+							cnt.setMeanWeightSkinny(cnt.getMeanWeightSkinny() + 1);// 中度消瘦人数
 						}
 
 						if (ex.getWeightLevel() <= -3) {
+							cnt.setMeanWeightSeriousSkinny(cnt.getMeanWeightSeriousSkinny() + 1);// 消瘦人数
+						} else if (ex.getWeightLevel() <= -2) {
 							cnt.setMeanWeightSkinny(cnt.getMeanWeightSkinny() + 1);// 消瘦人数
+						}
+
+						if (ex.getWeightLevel() <= -3) {
+							cnt.setMeanWeightLow3(cnt.getMeanWeightLow3() + 1);// 体重低于3SD人数
 						}
 
 						if (ex.getWeightLevel() <= -2 && ex.getWeightLevel() > -3) {
 							cnt.setMeanWeightLow(cnt.getMeanWeightLow() + 1);// 体重低于2SD人数
 						}
 
-						if (ex.getHeightLevel() <= -2) {
+						if (ex.getHeightLevel() <= -3) {
+							cnt.setMeanHeightLow3(cnt.getMeanHeightLow3() + 1);// 身高低于3SD人数
+						}
+
+						if (ex.getHeightLevel() <= -2 && ex.getHeightLevel() > -3) {
 							cnt.setMeanHeightLow(cnt.getMeanHeightLow() + 1);// 身高低于2SD人数
 						}
 
@@ -192,7 +208,7 @@ public class MedicalExaminationCountPreprocessor implements IReportPreprocessor 
 						if (ex.getWeightLevel() == 0) {
 							cnt.setPrctileWeightAgeNormal(cnt.getPrctileWeightAgeNormal() + 1); // W/A正常人数(年龄别体重)
 						} else {
-							//logger.debug("ex.getWeightLevel():" + ex.getWeightLevel());
+							// logger.debug("ex.getWeightLevel():" + ex.getWeightLevel());
 						}
 
 						if (ex.getHeightLevel() <= -2) {
@@ -211,16 +227,20 @@ public class MedicalExaminationCountPreprocessor implements IReportPreprocessor 
 				if (cnt.getTotalPerson() > 0 && cnt.getCheckPerson() > 0) {
 					cnt.setCheckPercent(Math.round(cnt.getCheckPerson() * 100.0D / cnt.getTotalPerson()));
 					cnt.setMeanHeightLowPercent(Math.round(cnt.getMeanHeightLow() * 100.0D / cnt.getCheckPerson()));
+					cnt.setMeanHeightLow3Percent(Math.round(cnt.getMeanHeightLow3() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanHeightNormalPercent(
 							Math.round(cnt.getMeanHeightNormal() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanOverWeightPercent(Math.round(cnt.getMeanOverWeight() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanWeightLowPercent(Math.round(cnt.getMeanWeightLow() * 100.0D / cnt.getCheckPerson()));
+					cnt.setMeanWeightLow3Percent(Math.round(cnt.getMeanWeightLow3() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanWeightNormalPercent(
 							Math.round(cnt.getMeanWeightNormal() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanWeightObesityPercent(
 							Math.round(cnt.getMeanWeightObesity() * 100.0D / cnt.getCheckPerson()));
 					cnt.setMeanWeightSkinnyPercent(
 							Math.round(cnt.getMeanWeightSkinny() * 100.0D / cnt.getCheckPerson()));
+					cnt.setMeanWeightSeriousSkinnyPercent(
+							Math.round(cnt.getMeanWeightSeriousSkinny() * 100.0D / cnt.getCheckPerson()));
 
 					cnt.setPrctileHeightAgeLowPercent(
 							Math.round(cnt.getPrctileHeightAgeLow() * 100.0D / cnt.getCheckPerson()));

@@ -452,6 +452,9 @@ public class MedicalExamination implements Serializable, JSONable {
 	@Column(name = "HVAIGM_", length = 1)
 	protected String hvaigm;
 
+	@javax.persistence.Transient
+	protected String hvaigmText;
+
 	/**
 	 * 淋巴结
 	 */
@@ -1036,6 +1039,10 @@ public class MedicalExamination implements Serializable, JSONable {
 		return hvaigm;
 	}
 
+	public String getHvaigmText() {
+		return hvaigmText;
+	}
+
 	public long getId() {
 		return this.id;
 	}
@@ -1490,6 +1497,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setHvaigm(String hvaigm) {
 		this.hvaigm = hvaigm;
+	}
+
+	public void setHvaigmText(String hvaigmText) {
+		this.hvaigmText = hvaigmText;
 	}
 
 	public void setId(long id) {

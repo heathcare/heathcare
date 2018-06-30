@@ -66,12 +66,12 @@ public class MedicalExaminationHelper {
 							.setBmiEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>超重</span>");
 				} else if (BMI < gs.getNegativeThreeDSDeviation()) {
 					medicalExamination.setBmiIndex(-3);
-					medicalExamination.setBmiEvaluate("消瘦");
+					medicalExamination.setBmiEvaluate("重度消瘦");
 					medicalExamination
 							.setBmiEvaluateHtml("<span style='color:#ff0000; font:bold 12px 微软雅黑;'>消瘦</span>");
 				} else if (BMI < gs.getNegativeTwoDSDeviation() && BMI >= gs.getNegativeThreeDSDeviation()) {
 					medicalExamination.setBmiIndex(-2);
-					medicalExamination.setBmiEvaluate("低体重");
+					medicalExamination.setBmiEvaluate("中度消瘦");
 					medicalExamination
 							.setBmiEvaluateHtml("<span style='color:#ff6666; font:bold 12px 微软雅黑;'>低体重</span>");
 				} else if (BMI < gs.getNegativeOneDSDeviation() && BMI >= gs.getNegativeTwoDSDeviation()) {
@@ -156,12 +156,12 @@ public class MedicalExaminationHelper {
 							.setWeightEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>超重</span>");
 				} else if (weight < gs.getNegativeThreeDSDeviation()) {
 					medicalExamination.setWeightLevel(-3);
-					medicalExamination.setWeightEvaluate("消瘦");
+					medicalExamination.setWeightEvaluate("重度消瘦");
 					medicalExamination
 							.setWeightEvaluateHtml("<span style='color:#ff6666; font:bold 12px 微软雅黑;'>消瘦</span>");
 				} else if (weight < gs.getNegativeTwoDSDeviation() && weight >= gs.getNegativeThreeDSDeviation()) {
 					medicalExamination.setWeightLevel(-2);
-					medicalExamination.setWeightEvaluate("低体重");
+					medicalExamination.setWeightEvaluate("中度消瘦");
 					medicalExamination
 							.setWeightEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>低体重</span>");
 				} else if (weight < gs.getNegativeOneDSDeviation() && weight >= gs.getNegativeTwoDSDeviation()) {
@@ -205,12 +205,12 @@ public class MedicalExaminationHelper {
 							.setWeightHeightEvaluateHtml("<span style='color:#ffff00; font:bold 12px 微软雅黑;'>超重</span>");
 				} else if (weight < gs.getNegativeThreeDSDeviation()) {
 					medicalExamination.setWeightHeightLevel(-3);
-					medicalExamination.setWeightHeightEvaluate("消瘦");
+					medicalExamination.setWeightHeightEvaluate("重度消瘦");
 					medicalExamination
 							.setWeightHeightEvaluateHtml("<span style='color:#ff6666; font:bold 12px 微软雅黑;'>消瘦</span>");
 				} else if (weight < gs.getNegativeTwoDSDeviation() && weight >= gs.getNegativeThreeDSDeviation()) {
 					medicalExamination.setWeightLevel(-2);
-					medicalExamination.setWeightEvaluate("体重低下");
+					medicalExamination.setWeightEvaluate("中度消瘦");
 					medicalExamination.setWeightHeightEvaluateHtml(
 							"<span style='color:#ff9900; font:bold 12px 微软雅黑;'>体重低下</span>");
 				} else if (weight < gs.getNegativeOneDSDeviation() && weight >= gs.getNegativeTwoDSDeviation()) {

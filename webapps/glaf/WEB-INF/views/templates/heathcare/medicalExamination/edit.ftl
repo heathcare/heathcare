@@ -644,7 +644,7 @@
 			       class="easyui-numberbox  x-small-text  x-text" style="width:60px"
 				   value="${medicalExamination.hemoglobinValue}"/>（g/L）&nbsp;${medicalExamination.hemoglobinHtml}
 		</td>
-		<td width="12%" align="left">丙氨酸氨基转移酶ALT</td>
+		<td width="12%" align="left">谷丙转氨酶ALT</td>
 		<td width="38%" align="left">
             <input id="altValue" name="altValue" type="text" precision="1"
 			       class="easyui-numberbox  x-small-text  x-text" style="width:60px"
