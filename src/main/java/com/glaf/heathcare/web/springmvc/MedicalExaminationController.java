@@ -634,6 +634,14 @@ public class MedicalExaminationController {
 			}
 		}
 
+		int heightLevel = RequestUtils.getInt(request, "heightLevel");
+		if (heightLevel >= 0) {
+			query.heightLevelGreaterThanOrEqual(heightLevel);
+		}
+		if (heightLevel < 0) {
+			query.heightLevelLessThanOrEqual(heightLevel);
+		}
+
 		if (StringUtils.isNotEmpty(gradeId)) {
 			query.gradeId(gradeId);
 		} else {
@@ -1171,6 +1179,14 @@ public class MedicalExaminationController {
 			}
 		} else {
 			return result.toJSONString().getBytes();
+		}
+		
+		int heightLevel = RequestUtils.getInt(request, "heightLevel");
+		if (heightLevel >= 0) {
+			query.heightLevelGreaterThanOrEqual(heightLevel);
+		}
+		if (heightLevel < 0) {
+			query.heightLevelLessThanOrEqual(heightLevel);
 		}
 
 		int start = 0;

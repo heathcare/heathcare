@@ -50,6 +50,7 @@ import com.glaf.core.config.SystemProperties;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.ColumnDefinition;
 import com.glaf.core.entity.hibernate.HibernateBeanFactory;
+import com.glaf.core.entity.jpa.EntitySchemaUpdate;
 import com.glaf.core.service.EntityService;
 import com.glaf.core.tree.helper.TreeUpdateBean;
 import com.glaf.core.util.DBUtils;
@@ -666,6 +667,9 @@ public class BaseDataManager {
 
 			if (updateSchema) {
 				HibernateBeanFactory.reload();
+
+				EntitySchemaUpdate bean = new EntitySchemaUpdate();
+				bean.updateDDL();
 			}
 
 		} catch (Exception ex) {

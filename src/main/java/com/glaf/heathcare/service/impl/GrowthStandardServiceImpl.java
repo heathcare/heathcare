@@ -139,9 +139,7 @@ public class GrowthStandardServiceImpl implements GrowthStandardService {
 			growthStandard.setCreateTime(new Date());
 			growthStandardMapper.insertGrowthStandard(growthStandard);
 		} else {
-			String complexKey = growthStandard.getStandardType() + "_" + growthStandard.getType() + "_"
-					+ growthStandard.getSex() + "_" + growthStandard.getAgeOfTheMoon();
-			GrowthStandard model = growthStandardMapper.getGrowthStandardByComplexKey(complexKey);
+			GrowthStandard model = growthStandardMapper.getGrowthStandardById(growthStandard.getId());
 			if (model != null) {
 				growthStandardMapper.updateGrowthStandard(growthStandard);
 			} else {

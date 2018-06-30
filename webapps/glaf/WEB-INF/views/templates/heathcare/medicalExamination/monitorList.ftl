@@ -99,6 +99,9 @@
 	   if(jQuery("#sex").val() != ""){
            link_ = link_+"&sex="+jQuery("#sex").val();
 	   }
+	   if(jQuery("#heightLevel").val() != ""){
+           link_ = link_+"&heightLevel="+jQuery("#heightLevel").val();
+	   }
 	   return link_;
 	}
 
@@ -582,6 +585,16 @@
 					</select>
 					<script type="text/javascript">
 						document.getElementById("sex").value="${sex}";
+					</script>
+				</td>
+				<td>身高评价&nbsp;&nbsp;
+					<select id="heightLevel" name="heightLevel" onchange="switchXY();">
+						<option value="">--请选择--</option>
+						<option value="0">正常</option>
+						<option value="-1">生长迟缓</option>
+					</select>
+					<script type="text/javascript">
+						document.getElementById("heightLevel").value="${heightLevel}";
 					</script>
 				</td>
 				<td>

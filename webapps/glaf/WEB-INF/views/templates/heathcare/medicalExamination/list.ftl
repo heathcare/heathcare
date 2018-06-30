@@ -98,6 +98,9 @@
 	   if(jQuery("#sex").val() != ""){
            link_ = link_+"&sex="+jQuery("#sex").val();
 	   }
+	   if(jQuery("#heightLevel").val() != ""){
+           link_ = link_+"&heightLevel="+jQuery("#heightLevel").val();
+	   }
 	   return link_;
 	}
 
@@ -115,7 +118,7 @@
 				singleSelect: true,
 				idField: 'id',
 				columns:[[
-				        {title:'序号', field:'startIndex', width:60, sortable:false},
+				        {title:'序号', field:'startIndex', width:60, sortable:true},
 						{title:'班级', field:'gradeName', width:150, align:"left", sortable:true},
 						{title:'姓名', field:'name', width:80, align:"center", sortable:true, formatter:formatterName},
 						{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center", sortable:true},
@@ -710,6 +713,15 @@
 					</select>
 					<script type="text/javascript">
 						document.getElementById("sex").value="${sex}";
+					</script>
+					&nbsp;身高评价&nbsp;&nbsp;
+					<select id="heightLevel" name="heightLevel" onchange="switchXY();">
+						<option value="">--请选择--</option>
+						<option value="0">正常</option>
+						<option value="-1">生长迟缓</option>
+					</select>
+					<script type="text/javascript">
+						document.getElementById("heightLevel").value="${heightLevel}";
 					</script>
 				</td>
 				<td width="40%">

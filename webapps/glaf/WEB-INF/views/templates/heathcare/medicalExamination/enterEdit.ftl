@@ -457,9 +457,17 @@
 					 }
 			    </script>
 			</td>
-			<td width="10%" align="center" class="table-content">&nbsp;</td>
+			<td width="10%" align="center" class="table-content">乙肝表面抗体</td>
 			<td width="10%" align="center" class="table-content">
-			    &nbsp;&nbsp;
+			    <select id="hbsab" name="hbsab">
+					<option value="">----请选择----</option> 
+					<option value="X">阳性</option>
+					<option value="Y">阴性</option>
+					<option value="O">未检查</option>
+				</select>
+				<script type="text/javascript">
+					 document.getElementById("hbsab").value="${medicalExamination.hbsab}";
+				</script>
 			</td> 
 		</tr>
 		
@@ -580,9 +588,17 @@
 					 }
 			    </script>
 			</td>
-			<td width="10%" align="center" class="table-content">其他</td>
+			<td width="10%" align="center" class="table-content">HVAIgM</td>
 			<td width="10%" align="center" class="table-content">
-			    &nbsp;&nbsp;
+			    <select id="hvaigm" name="hvaigm">
+					<option value="">----请选择----</option> 
+					<option value="X">阳性</option>
+					<option value="Y">阴性</option>
+					<option value="O">未检查</option>
+				</select>
+				<script type="text/javascript">
+					 document.getElementById("hvaigm").value="${medicalExamination.hvaigm}";
+				</script>
 			</td> 
 		</tr>
 		
@@ -602,15 +618,17 @@
 		</tr>
 
 		<tr>
-		  <td width="10%" align="center" class="table-content">其他</td>
+		  <td width="10%" align="center" class="table-content" style="line-height:45px;">其他</td>
 		  <td width="90%" align="left" class="table-content" colspan="9">
-		      
+		      &nbsp;<input id="remark" name="remark" type="text" 
+			                     class="easyui-validatebox x-text" style="width:620px"
+				                 value="${medicalExamination.remark}"/>
 		  </td>
 		</tr>
 
 		<tr>
 		  <td width="10%" align="center" class="table-content" style="line-height: 64px;" valign="middle">体检结果</td>
-		  <td width="40%" align="left" class="table-content" colspan="4" style="line-height: 64px;" valign="middle">
+		  <td width="40%" align="left" class="table-content" colspan="4" style="line-height:64px;" valign="middle">
 		      &nbsp;
 		      <textarea id="checkResult" name="checkResult" type="text" 
 			            class="x-textarea" style="margin-top:15px;width:392px;height:60px">${medicalExamination.checkResult}</textarea>

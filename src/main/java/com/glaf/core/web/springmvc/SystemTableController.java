@@ -60,6 +60,7 @@ import com.glaf.core.domain.Database;
 import com.glaf.core.domain.SystemParam;
 import com.glaf.core.domain.TableDefinition;
 import com.glaf.core.entity.hibernate.HibernateBeanFactory;
+import com.glaf.core.entity.jpa.EntitySchemaUpdate;
 import com.glaf.core.factory.TableFactory;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.jdbc.QueryHelper;
@@ -979,7 +980,6 @@ public class SystemTableController {
 				}
 			}
 		} catch (Exception ex) {
-
 			logger.error(ex);
 		}
 		return ResponseUtils.responseJsonResult(false);
@@ -1029,9 +1029,22 @@ public class SystemTableController {
 			HibernateBeanFactory.getSessionFactory().close();
 			return ResponseUtils.responseJsonResult(true);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error(ex);
 		} finally {
 			Environment.setCurrentSystemName(currentName);
+		}
+
+		try {
+			if (StringUtils.isNotEmpty(systemName)) {
+				EntitySchemaUpdate bean = new EntitySchemaUpdate();
+				bean.updateDDL(systemName);
+			} else {
+				EntitySchemaUpdate bean = new EntitySchemaUpdate();
+				bean.updateDDL();
+			}
+			return ResponseUtils.responseJsonResult(true);
+		} catch (Exception ex) {
+			logger.error(ex);
 		}
 
 		return ResponseUtils.responseJsonResult(false);

@@ -1559,6 +1559,14 @@
 			<if test="heightLessThanOrEqual != null">
 				and E.HEIGHT_ &lt;= #{heightLessThanOrEqual}
 			</if>
+			
+			<if test="heightLevelGreaterThanOrEqual != null">
+				and E.HEIGHTLEVEL_ &gt;= #{heightLevelGreaterThanOrEqual}
+			</if>
+
+			<if test="heightLevelLessThanOrEqual != null">
+				and E.HEIGHTLEVEL_ &lt;= #{heightLevelLessThanOrEqual}
+			</if>
 
 			<if test="weightGreaterThanOrEqual != null">
 				and E.WEIGHT_ &gt;= #{weightGreaterThanOrEqual}

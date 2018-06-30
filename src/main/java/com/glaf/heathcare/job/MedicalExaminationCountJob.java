@@ -51,6 +51,7 @@ public class MedicalExaminationCountJob extends BaseJob {
 		F_STEP++;
 		MedicalExaminationEvaluateCountBean bean = new MedicalExaminationEvaluateCountBean();
 		bean.executeAll();
+		lastExecuteTime.set(System.currentTimeMillis());
 	}
 
 }
