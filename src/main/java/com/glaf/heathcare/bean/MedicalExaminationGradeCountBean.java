@@ -187,10 +187,11 @@ public class MedicalExaminationGradeCountBean {
 						Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 						if (standards != null && !standards.isEmpty()) {
 							for (GrowthStandard gs : standards) {
-								gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								if (StringUtils.equals(gs.getType(), "4")) {
 									int height = (int) Math.round(gs.getHeight());
 									gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+								} else {
+									gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								}
 							}
 						}
@@ -332,6 +333,13 @@ public class MedicalExaminationGradeCountBean {
 									cnt.setAnemiaCheck(cnt.getCheckPerson());
 									cnt.setAnemiaCheckNormalPercent(
 											cnt.getAnemiaCheckNormal() * 1.0D / cnt.getCheckPerson());
+
+									cnt.setAltPercent(cnt.getAlt() * 1.0D / cnt.getCheckPerson());
+									cnt.setHemoglobin110Percent(cnt.getHemoglobin110() * 1.0D / cnt.getCheckPerson());
+									cnt.setHemoglobin90Percent(cnt.getHemoglobin90() * 1.0D / cnt.getCheckPerson());
+									cnt.setHemoglobin60Percent(cnt.getHemoglobin60() * 1.0D / cnt.getCheckPerson());
+									cnt.setHbsabPercent(cnt.getHbsab() * 1.0D / cnt.getCheckPerson());
+									cnt.setHvaigmPercent(cnt.getHvaigm() * 1.0D / cnt.getCheckPerson());
 								}
 							}
 

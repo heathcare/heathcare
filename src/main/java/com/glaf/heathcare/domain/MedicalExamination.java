@@ -401,6 +401,18 @@ public class MedicalExamination implements Serializable, JSONable {
 	protected String skinRemark;
 
 	/**
+	 * 内科疾病
+	 */
+	@javax.persistence.Transient
+	protected String internalDisease;
+
+	/**
+	 * 外科疾病
+	 */
+	@javax.persistence.Transient
+	protected String surgicalDisease;
+
+	/**
 	 * 血红蛋白
 	 */
 	@Column(name = "HEMOGLOBIN_", length = 200)
@@ -1052,6 +1064,10 @@ public class MedicalExamination implements Serializable, JSONable {
 		return this.id;
 	}
 
+	public String getInternalDisease() {
+		return internalDisease;
+	}
+
 	public String getLymphoid() {
 		return lymphoid;
 	}
@@ -1160,6 +1176,10 @@ public class MedicalExamination implements Serializable, JSONable {
 		return surgeryFlag;
 	}
 
+	public String getSurgicalDisease() {
+		return surgicalDisease;
+	}
+
 	public String getTenantId() {
 		return this.tenantId;
 	}
@@ -1242,6 +1262,23 @@ public class MedicalExamination implements Serializable, JSONable {
 		int result = 1;
 		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
+	}
+
+	public boolean isEyesightDysfunction() {
+		eyesightDysfunction = false;
+		if ((this.eyesightLeft > 0 && this.eyesightLeft < 1.0)
+				|| (this.eyesightRight > 0 && this.eyesightRight < 1.0)) {
+			eyesightDysfunction = true;
+		}
+		if (StringUtils.equals(eyeRight, "N") || StringUtils.equals(eyeRight, "A") || StringUtils.equals(eyeRight, "S")
+				|| StringUtils.equals(eyeRight, "X")) {
+			eyesightDysfunction = true;
+		}
+		if (StringUtils.equals(eyeLeft, "N") || StringUtils.equals(eyeLeft, "A") || StringUtils.equals(eyeLeft, "S")
+				|| StringUtils.equals(eyeLeft, "X")) {
+			eyesightDysfunction = true;
+		}
+		return eyesightDysfunction;
 	}
 
 	public MedicalExamination jsonToObject(JSONObject jsonObject) {
@@ -1336,26 +1373,6 @@ public class MedicalExamination implements Serializable, JSONable {
 		this.checkDate = checkDate;
 	}
 
-	public boolean isEyesightDysfunction() {
-		eyesightDysfunction = false;
-		if (this.eyesightLeft < 1.0 || this.eyesightRight < 1.0) {
-			eyesightDysfunction = true;
-		}
-		if (StringUtils.equals(eyeRight, "N") || StringUtils.equals(eyeRight, "A") || StringUtils.equals(eyeRight, "S")
-				|| StringUtils.equals(eyeRight, "X")) {
-			eyesightDysfunction = true;
-		}
-		if (StringUtils.equals(eyeLeft, "N") || StringUtils.equals(eyeLeft, "A") || StringUtils.equals(eyeLeft, "S")
-				|| StringUtils.equals(eyeLeft, "X")) {
-			eyesightDysfunction = true;
-		}
-		return eyesightDysfunction;
-	}
-
-	public void setEyesightDysfunction(boolean eyesightDysfunction) {
-		this.eyesightDysfunction = eyesightDysfunction;
-	}
-
 	public void setCheckDateString(String checkDateString) {
 		this.checkDateString = checkDateString;
 	}
@@ -1448,6 +1465,10 @@ public class MedicalExamination implements Serializable, JSONable {
 		this.eyeRightRemark = eyeRightRemark;
 	}
 
+	public void setEyesightDysfunction(boolean eyesightDysfunction) {
+		this.eyesightDysfunction = eyesightDysfunction;
+	}
+
 	public void setEyesightLeft(double eyesightLeft) {
 		this.eyesightLeft = eyesightLeft;
 	}
@@ -1530,6 +1551,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public void setInternalDisease(String internalDisease) {
+		this.internalDisease = internalDisease;
 	}
 
 	public void setLymphoid(String lymphoid) {
@@ -1638,6 +1663,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setSurgeryFlag(int surgeryFlag) {
 		this.surgeryFlag = surgeryFlag;
+	}
+
+	public void setSurgicalDisease(String surgicalDisease) {
+		this.surgicalDisease = surgicalDisease;
 	}
 
 	public void setTenantId(String tenantId) {

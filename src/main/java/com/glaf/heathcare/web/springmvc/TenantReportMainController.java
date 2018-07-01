@@ -175,7 +175,7 @@ public class TenantReportMainController {
 							"export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls");
 				}
 			} catch (Exception ex) {
-				// ex.printStackTrace();
+				ex.printStackTrace();
 				logger.error(ex);
 			} finally {
 				data = null;

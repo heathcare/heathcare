@@ -392,6 +392,9 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 	}
 
 	public double getAltPercent() {
+		if (checkPerson > 0) {
+			altPercent = Math.round(alt * 100.D / checkPerson);
+		}
 		return altPercent;
 	}
 
@@ -478,6 +481,9 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 	}
 
 	public double getEyesightDysfunctionPercent() {
+		if (eyesightDysfunction > 0) {
+			eyesightDysfunctionPercent = Math.round(eyesightDysfunction * 100.D / checkPerson);
+		}
 		return eyesightDysfunctionPercent;
 	}
 
@@ -539,6 +545,9 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 	}
 
 	public double getHemoglobin60Percent() {
+		if (checkPerson > 0) {
+			hemoglobin60Percent = Math.round(hemoglobin60 * 100.D / checkPerson);
+		}
 		return hemoglobin60Percent;
 	}
 

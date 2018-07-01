@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
@@ -43,9 +45,11 @@ import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
 
 public class TenantMedicalExaminationGradePreprocessor implements IReportPreprocessor {
+	protected static final Log logger = LogFactory.getLog(TenantMedicalExaminationGradePreprocessor.class);
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {
+		logger.debug("--------------------TenantMedicalExaminationGradePreprocessor---------------");
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		MedicalExaminationService medicalExaminationService = ContextFactory
@@ -112,11 +116,12 @@ public class TenantMedicalExaminationGradePreprocessor implements IReportPreproc
 					Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 					MedicalExaminationHelper helper = new MedicalExaminationHelper();
 					if (standards != null && !standards.isEmpty()) {
-						for (GrowthStandard gs : standards) {
-							gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
-							if (StringUtils.equals(gs.getType(), "4")) {
-								int height = (int) Math.round(gs.getHeight());
-								gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						for (GrowthStandard std : standards) {
+							if (StringUtils.equals(std.getType(), "4")) {
+								int height = (int) Math.round(std.getHeight());
+								gsMap.put(height + "_" + std.getSex() + "_" + std.getType(), std);
+							} else {
+								gsMap.put(std.getAgeOfTheMoon() + "_" + std.getSex() + "_" + std.getType(), std);
 							}
 						}
 					}

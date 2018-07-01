@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
@@ -50,9 +52,11 @@ import com.glaf.heathcare.service.PersonService;
 import com.glaf.heathcare.service.PhysicalGrowthCountService;
 
 public class TenantMedicalExaminationGradeCountPreprocessor implements IReportPreprocessor {
-
+	protected static final Log logger = LogFactory.getLog(TenantMedicalExaminationGradeCountPreprocessor.class);
+	
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {
+		logger.debug("--------------------TenantMedicalExaminationGradeCountPreprocessor---------------");
 		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		GradePersonRelationService gradePersonRelationService = ContextFactory
