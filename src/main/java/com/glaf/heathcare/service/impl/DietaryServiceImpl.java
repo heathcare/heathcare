@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -110,6 +111,8 @@ public class DietaryServiceImpl implements DietaryService {
 	@Transactional
 	public void adjust(String tenantId, Map<String, Date> dateMap) {
 		if (StringUtils.isNotEmpty(tenantId) && dateMap != null && !dateMap.isEmpty()) {
+			List<Dietary> masters = new ArrayList<Dietary>();
+			List<DietaryItem> children = new ArrayList<DietaryItem>();
 			Iterator<Entry<String, Date>> iterator = dateMap.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<String, Date> entry = iterator.next();
@@ -126,23 +129,31 @@ public class DietaryServiceImpl implements DietaryService {
 						item.setTenantId(tenantId);
 						item.setSectionId(sectionId);
 						item.setFullDay(m.getFullDay());
-						dietaryItemMapper.adjustDietaryItem(item);
+						children.add(item);
 
-						Dietary bean = new Dietary();
-						bean.setTenantId(tenantId);
-						bean.setSectionId(sectionId);
-						bean.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
-						bean.setYear(m.getYear());
-						bean.setMonth(m.getMonth());
-						bean.setDay(m.getDay());
-						bean.setWeek(m.getWeek());
-						bean.setDayOfWeek(m.getDayOfWeek());
-						bean.setFullDay(m.getFullDay());
-						dietaryMapper.adjustDietary(bean);
+						Dietary master = new Dietary();
+						master.setTenantId(tenantId);
+						master.setSectionId(sectionId);
+						master.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						master.setYear(m.getYear());
+						master.setMonth(m.getMonth());
+						master.setDay(m.getDay());
+						master.setWeek(m.getWeek());
+						master.setDayOfWeek(m.getDayOfWeek());
+						master.setFullDay(m.getFullDay());
+						masters.add(master);
 
 						break;
 					}
 				}
+			}
+
+			for (Dietary master : masters) {
+				dietaryMapper.adjustDietary(master);
+			}
+
+			for (DietaryItem child : children) {
+				dietaryItemMapper.adjustDietaryItem(child);
 			}
 		}
 	}
@@ -662,7 +673,15 @@ public class DietaryServiceImpl implements DietaryService {
 	}
 
 	public Map<String, Integer> getDietarySectionIds(DietaryQuery query) {
-		return dietaryMapper.getDietarySectionIds(query);
+		Map<String, Integer> dataMap = new LinkedHashMap<String, Integer>();
+		List<Dietary> rows = dietaryMapper.getDietarySectionIds(query);
+		if (rows != null && !rows.isEmpty()) {
+			for (Dietary d : rows) {
+				logger.debug("sectionId:" + d.getSectionId());
+				dataMap.put(d.getSectionId(), d.getFullDay());
+			}
+		}
+		return dataMap;
 	}
 
 	public int getMaxWeek(String tenantId, int year, int semester) {

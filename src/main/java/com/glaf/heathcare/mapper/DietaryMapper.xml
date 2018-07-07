@@ -800,15 +800,14 @@
 
 	<select id="getDietarySectionIds"
 		parameterType="com.glaf.heathcare.query.DietaryQuery"
-		resultType="java.util.HashMap">
-		select distinct SECTIONID_ as sectionId, FULLDAY_ as
-		fullDay
+		resultType="com.glaf.heathcare.domain.Dietary">
+		select distinct SECTIONID_ as sectionId, FULLDAY_ as fullDay
 		from HEALTH_DIETARY${tableSuffix}
 		where TENANTID_ = #{tenantId}
-		and YEAR_ =
-		#{year}
+		and YEAR_ = #{year}
 		and SEMESTER_ = #{semester}
 		and WEEK_ = #{week}
+		order by FULLDAY_ asc 
 	</select>
 
 

@@ -122,10 +122,11 @@ public class DietaryClearBean {
 	public void removePlanData(String tenantId, int year, int semester, int week, int dateAfter) {
 		logger.debug("hash:" + IdentityFactory.getTenantHash(tenantId));
 		SysTenantService sysTenantService = ContextFactory.getBean("sysTenantService");
-		SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+		final SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		PreparedStatement psmt2 = null;
+		PreparedStatement psmt3 = null;
 		ResultSet rs = null;
 		try {
 			conn = DBConnectionFactory.getConnection();
@@ -174,6 +175,7 @@ public class DietaryClearBean {
 			}
 			psmt2.executeUpdate();
 			JdbcUtils.close(psmt2);
+			psmt2 = null;
 
 			sqlBuffer.delete(0, sqlBuffer.length());
 			sqlBuffer.append(" delete from HEALTH_DIETARY_COUNT").append(IdentityFactory.getTenantHash(tenantId))
@@ -191,22 +193,27 @@ public class DietaryClearBean {
 			}
 			psmt2.executeUpdate();
 			JdbcUtils.close(psmt2);
+			psmt2 = null;
 
+			sqlBuffer.delete(0, sqlBuffer.length());
 			sqlBuffer.append(" delete from GOODS_PURCHASE_PLAN").append(IdentityFactory.getTenantHash(tenantId))
 					.append(" where TENANTID_ = ? and WEEK_ = ? and SEMESTER_ = ? and YEAR_ = ? ");
 			if (tenant.getLimit() != Constants.UNLIMIT) {
 				sqlBuffer.append(" and FULLDAY_ > ? ");
 			}
-			psmt2 = conn.prepareStatement(sqlBuffer.toString());
-			psmt2.setString(1, tenantId);
-			psmt2.setInt(2, week);
-			psmt2.setInt(3, semester);
-			psmt2.setInt(4, year);
+			logger.debug(sqlBuffer.toString());
+			psmt3 = conn.prepareStatement(sqlBuffer.toString());
+			psmt3.setString(1, tenantId);
+			psmt3.setInt(2, week);
+			psmt3.setInt(3, semester);
+			psmt3.setInt(4, year);
 			if (tenant.getLimit() != Constants.UNLIMIT) {
-				psmt2.setInt(5, dateAfter);
+				logger.debug("dateAfter:" + dateAfter);
+				psmt3.setInt(5, dateAfter);
 			}
-			psmt2.executeUpdate();
-			JdbcUtils.close(psmt2);
+			psmt3.executeUpdate();
+			JdbcUtils.close(psmt3);
+			psmt3 = null;
 
 			sqlBuffer.delete(0, sqlBuffer.length());
 			sqlBuffer.append(" delete from GOODS_PLAN_QUANTITY").append(IdentityFactory.getTenantHash(tenantId))
@@ -224,6 +231,7 @@ public class DietaryClearBean {
 			}
 			psmt2.executeUpdate();
 			JdbcUtils.close(psmt2);
+			psmt2 = null;
 
 			sqlBuffer.delete(0, sqlBuffer.length());
 			sqlBuffer.append(" delete from HEALTH_DIETARY_STATISTICS")
@@ -235,6 +243,7 @@ public class DietaryClearBean {
 			psmt2.setInt(4, year);
 			psmt2.executeUpdate();
 			JdbcUtils.close(psmt2);
+			psmt2 = null;
 
 			conn.commit();
 		} catch (Exception ex) {
@@ -242,8 +251,9 @@ public class DietaryClearBean {
 			logger.error(ex);
 		} finally {
 			JdbcUtils.close(rs);
-			JdbcUtils.close(psmt2);
 			JdbcUtils.close(psmt);
+			JdbcUtils.close(psmt2);
+			JdbcUtils.close(psmt3);
 			JdbcUtils.close(conn);
 		}
 	}

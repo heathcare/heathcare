@@ -19,7 +19,6 @@
 package com.glaf.heathcare.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -50,7 +49,7 @@ public interface DietaryMapper {
 
 	List<Dietary> getDietarys(DietaryQuery query);
 
-	Map<String, Integer> getDietarySectionIds(DietaryQuery query);
+	List<Dietary> getDietarySectionIds(DietaryQuery query);
 
 	Integer getMaxWeek(DietaryQuery query);
 

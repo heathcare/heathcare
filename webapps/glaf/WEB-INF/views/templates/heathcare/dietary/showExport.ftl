@@ -105,6 +105,33 @@
 		});
 	}
 
+	function adjustWeek(){
+		var year = jQuery("#year").val();
+        var week = jQuery("#week").val();
+		if(year == ""){
+            alert('请选择年份！');
+			return;
+		}
+		if(week == ""){
+            alert('请选择周次！');
+			return;
+		}
+        var link = "${contextPath}/heathcare/dietary/showAdjust?year="+year+"&week="+week;
+		jQuery.layer({
+				type: 2,
+				maxmin: true,
+				shadeClose: true,
+				title: "日期调整",
+				closeBtn: [0, true],
+				shade: [0.8, '#000'],
+				border: [10, 0.3, '#000'],
+				offset: ['20px',''],
+				fadeIn: 100,
+				area: ['680px', (jQuery(window).height() - 50) +'px'],
+				iframe: {src: link}
+		});
+	}
+
 	function execute(){
 		var form = document.getElementById("iForm");
 	    var link = "${contextPath}/heathcare/dietaryStatistics/execute";
@@ -194,6 +221,9 @@
 			  &nbsp;
 			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 	             onclick="javascript:exportWeek();" >导出</a>
+			  &nbsp;
+			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-adjust'" 
+	             onclick="javascript:adjustWeek();" >调整</a>
 			  &nbsp;
 			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 	             onclick="javascript:exportNutrition();" >营养成分统计表</a>

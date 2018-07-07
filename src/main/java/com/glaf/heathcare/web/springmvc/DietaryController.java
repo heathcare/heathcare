@@ -295,6 +295,7 @@ public class DietaryController {
 							}
 						}
 						if (newDateMap.size() > 0) {
+							logger.debug(newDateMap);
 							dietaryService.adjust(loginContext.getTenantId(), newDateMap);
 						}
 					}
@@ -1305,6 +1306,7 @@ public class DietaryController {
 
 	@RequestMapping("/showAdjust")
 	public ModelAndView showAdjust(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
@@ -1351,15 +1353,45 @@ public class DietaryController {
 			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(loginContext.getTenantId())));
 			Map<String, Integer> dateMap = dietaryService.getDietarySectionIds(query);
 			if (dateMap != null && !dateMap.isEmpty()) {
+				Date date = null;
+				String wkName = "";
+				java.util.Calendar cal = Calendar.getInstance();
 				List<BaseItem> items = new ArrayList<BaseItem>();
 				Iterator<Entry<String, Integer>> iterator = dateMap.entrySet().iterator();
 				while (iterator.hasNext()) {
 					Entry<String, Integer> entry = iterator.next();
 					String key = (String) entry.getKey();
 					Integer value = entry.getValue();
+					date = DateUtils.toDate(String.valueOf(value));
+					cal.setTime(date);
+					int wk = cal.get(Calendar.DAY_OF_WEEK);
+					switch (wk) {
+					case Calendar.SUNDAY:
+						wkName = "星期日";
+						break;
+					case Calendar.MONDAY:
+						wkName = "星期一";
+						break;
+					case Calendar.TUESDAY:
+						wkName = "星期二";
+						break;
+					case Calendar.WEDNESDAY:
+						wkName = "星期三";
+						break;
+					case Calendar.THURSDAY:
+						wkName = "星期四";
+						break;
+					case Calendar.FRIDAY:
+						wkName = "星期五";
+						break;
+					case Calendar.SATURDAY:
+						wkName = "星期六";
+						break;
+					}
 					BaseItem item = new BaseItem();
 					item.setName(key);
-					item.setValue(DateUtils.getDate(DateUtils.toDate(String.valueOf(value))));
+					item.setValue(DateUtils.getDate(date));
+					item.setText(wkName + "(" + DateUtils.getDate(date) + ")");
 					items.add(item);
 				}
 				request.setAttribute("items", items);

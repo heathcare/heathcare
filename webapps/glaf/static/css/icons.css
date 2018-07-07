@@ -6,6 +6,10 @@
 	background: url('../images/add.png') no-repeat;
 }
 
+.icon-adjust {
+	background: url('../images/adjust.gif') no-repeat;
+}
+
 .icon-analyzer {
 	background: url('../images/analyzer.png') no-repeat;
 }
