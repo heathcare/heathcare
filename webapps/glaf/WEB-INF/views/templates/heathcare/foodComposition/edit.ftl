@@ -59,6 +59,7 @@
         "code": "${foodComposition.code}",
         "discriminator": "${foodComposition.discriminator}",
         "description": "${foodComposition.description}",
+		"initQuantity": "${foodComposition.initQuantity}",
         "radical": "${foodComposition.radical}",
         "heatEnergy": "${foodComposition.heatEnergy}",
         "protein": "${foodComposition.protein}",
@@ -287,6 +288,17 @@
         <textarea  id="description" name="description" rows="6" cols="46" class="k-textbox" 
 		           style="height:90px;width:320px;" >${foodComposition.description}</textarea>
 	    <span class="k-invalid-msg" data-for="description"></span>
+    </td>
+  </tr>
+  <tr>
+    <td width="2%" align="left">&nbsp;</td>
+    <td align="left">
+		<label for="initQuantity" >推荐量&nbsp;</label>
+		<input id="initQuantity" name="initQuantity" type="text" class="k-textbox" 
+		       data-bind="value: initQuantity" style="width:60px; text-align:right; "
+			   value="${foodComposition.initQuantity}" validationMessage="请输入推荐量"/>
+		&nbsp;(单位：克)
+		<span class="k-invalid-msg" data-for="initQuantity"></span>
     </td>
   </tr>
   <tr>

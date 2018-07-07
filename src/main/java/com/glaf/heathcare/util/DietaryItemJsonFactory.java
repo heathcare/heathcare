@@ -40,6 +40,9 @@ public class DietaryItemJsonFactory {
 		if (jsonObject.containsKey("tenantId")) {
 			model.setTenantId(jsonObject.getString("tenantId"));
 		}
+		if (jsonObject.containsKey("sectionId")) {
+			model.setSectionId(jsonObject.getString("sectionId"));
+		}
 		if (jsonObject.containsKey("name")) {
 			model.setName(jsonObject.getString("name"));
 		}
@@ -92,7 +95,9 @@ public class DietaryItemJsonFactory {
 		if (model.getTenantId() != null) {
 			jsonObject.put("tenantId", model.getTenantId());
 		}
-
+		if (model.getSectionId() != null) {
+			jsonObject.put("sectionId", model.getSectionId());
+		} 
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
 		}
@@ -132,7 +137,9 @@ public class DietaryItemJsonFactory {
 		if (model.getTenantId() != null) {
 			jsonObject.put("tenantId", model.getTenantId());
 		}
-
+		if (model.getSectionId() != null) {
+			jsonObject.put("sectionId", model.getSectionId());
+		} 
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
 		}

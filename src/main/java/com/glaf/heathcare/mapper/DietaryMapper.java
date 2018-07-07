@@ -19,6 +19,7 @@
 package com.glaf.heathcare.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,8 @@ import com.glaf.heathcare.query.*;
 @Component("com.glaf.heathcare.mapper.DietaryMapper")
 public interface DietaryMapper {
 
+	void adjustDietary(Dietary model);
+
 	void bulkInsertDietary(ListModel listModel);
 
 	void bulkInsertDietary_oracle(List<Dietary> list);
@@ -43,11 +46,13 @@ public interface DietaryMapper {
 
 	Dietary getDietaryById(DietaryQuery query);
 
-	Integer getMaxWeek(DietaryQuery query);
-
 	int getDietaryCount(DietaryQuery query);
 
 	List<Dietary> getDietarys(DietaryQuery query);
+
+	Map<String, Integer> getDietarySectionIds(DietaryQuery query);
+
+	Integer getMaxWeek(DietaryQuery query);
 
 	void insertDietary(Dietary model);
 

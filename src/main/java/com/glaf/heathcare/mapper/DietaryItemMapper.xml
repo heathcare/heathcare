@@ -4,32 +4,47 @@
 
 <mapper namespace="com.glaf.heathcare.mapper.DietaryItemMapper">
 
-	<resultMap id="dietaryItemResultMap" type="com.glaf.heathcare.domain.DietaryItem">
+	<resultMap id="dietaryItemResultMap"
+		type="com.glaf.heathcare.domain.DietaryItem">
 		<id property="id" column="ID_" jdbcType="BIGINT" />
-		<result property="tenantId" column="TENANTID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="sectionId" column="SECTIONID_"
+			jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
-		<result property="description" column="DESCRIPTION_" jdbcType="VARCHAR" />
+		<result property="description" column="DESCRIPTION_"
+			jdbcType="VARCHAR" />
 		<result property="foodId" column="FOODID_" jdbcType="BIGINT" />
-		<result property="foodName" column="FOODNAME_" jdbcType="VARCHAR" />
-		<result property="dietaryId" column="DIETARYID_" jdbcType="BIGINT" />
-		<result property="templateId" column="TEMPLATEID_" jdbcType="BIGINT" />
+		<result property="foodName" column="FOODNAME_"
+			jdbcType="VARCHAR" />
+		<result property="dietaryId" column="DIETARYID_"
+			jdbcType="BIGINT" />
+		<result property="templateId" column="TEMPLATEID_"
+			jdbcType="BIGINT" />
 		<result property="typeId" column="TYPEID_" jdbcType="BIGINT" />
-		<result property="quantity" column="QUANTITY_" jdbcType="DOUBLE" />
+		<result property="quantity" column="QUANTITY_"
+			jdbcType="DOUBLE" />
 		<result property="unit" column="UNIT_" jdbcType="VARCHAR" />
 		<result property="fullDay" column="FULLDAY_" jdbcType="INTEGER" />
-		<result property="createBy" column="CREATEBY_" jdbcType="VARCHAR" />
-		<result property="createTime" column="CREATETIME_" jdbcType="TIMESTAMP" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
 		<result property="lastModified" column="LASTMODIFIED_"
 			jdbcType="BIGINT" />
 	</resultMap>
 
 
-	<insert id="insertDietaryItem" parameterType="com.glaf.heathcare.domain.DietaryItem">
+	<insert id="insertDietaryItem"
+		parameterType="com.glaf.heathcare.domain.DietaryItem">
 		insert into HEALTH_DIETARY_ITEM${tableSuffix}
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
 			<if test="tenantId != null">
 				,TENANTID_
+			</if>
+			<if test="sectionId != null">
+				,SECTIONID_
 			</if>
 			<if test="name != null">
 				,NAME_
@@ -77,6 +92,9 @@
 			<if test="tenantId != null">
 				,#{tenantId, jdbcType=VARCHAR}
 			</if>
+			<if test="sectionId != null">
+				,#{sectionId, jdbcType=VARCHAR}
+			</if>
 			<if test="name != null">
 				,#{name, jdbcType=VARCHAR}
 			</if>
@@ -120,10 +138,12 @@
 	</insert>
 
 
-	<insert id="bulkInsertDietaryItem" parameterType="com.glaf.core.base.ListModel">
+	<insert id="bulkInsertDietaryItem"
+		parameterType="com.glaf.core.base.ListModel">
 		insert into HEALTH_DIETARY_ITEM${tableSuffix} (
 		ID_
 		,TENANTID_
+		,SECTIONID_
 		,NAME_
 		,DESCRIPTION_
 		,FOODID_
@@ -145,6 +165,8 @@
 			#{dietaryItem.id, jdbcType=BIGINT}
 			,#{dietaryItem.tenantId,
 			jdbcType=VARCHAR}
+			,#{dietaryItem.sectionId,
+			jdbcType=VARCHAR}
 			,#{dietaryItem.name,
 			jdbcType=VARCHAR}
 			,#{dietaryItem.description, jdbcType=VARCHAR}
@@ -153,7 +175,8 @@
 			,#{dietaryItem.foodName,
 			jdbcType=VARCHAR}
 			,#{dietaryItem.dietaryId, jdbcType=BIGINT}
-			,#{dietaryItem.templateId, jdbcType=BIGINT}
+			,#{dietaryItem.templateId,
+			jdbcType=BIGINT}
 			,#{dietaryItem.typeId,
 			jdbcType=BIGINT}
 			,#{dietaryItem.quantity,
@@ -172,13 +195,15 @@
 	</insert>
 
 
-	<insert id="bulkInsertDietaryItem_oracle" parameterType="java.util.List">
+	<insert id="bulkInsertDietaryItem_oracle"
+		parameterType="java.util.List">
 		INSERT ALL
 		<foreach collection="list" item="dietaryItem" index="index">
 			insert
 			into HEALTH_DIETARY_ITEM${tableSuffix} (
 			ID_
 			,TENANTID_
+			,SECTIONID_
 			,NAME_
 			,DESCRIPTION_
 			,FOODID_
@@ -198,6 +223,7 @@
 			jdbcType=BIGINT}
 			,#{dietaryItem.tenantId,
 			jdbcType=VARCHAR}
+			,#{dietaryItem.sectionId, jdbcType=VARCHAR}
 			,#{dietaryItem.name,
 			jdbcType=VARCHAR}
 			,#{dietaryItem.description,
@@ -227,7 +253,8 @@
 	</insert>
 
 
-	<update id="updateDietaryItem" parameterType="com.glaf.heathcare.domain.DietaryItem">
+	<update id="updateDietaryItem"
+		parameterType="com.glaf.heathcare.domain.DietaryItem">
 		update HEALTH_DIETARY_ITEM${tableSuffix}
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
@@ -262,37 +289,60 @@
 	</update>
 
 
-	<delete id="deleteDietaryItemById" parameterType="com.glaf.heathcare.query.DietaryItemQuery">
+	<update id="adjustDietaryItem"
+		parameterType="com.glaf.heathcare.domain.DietaryItem">
+
+		update HEALTH_DIETARY_ITEM${tableSuffix}
+		set FULLDAY_ =
+		#{fullDay,
+		jdbcType=INTEGER }
+		where
+		TENANTID_ = #{tenantId,
+		jdbcType=VARCHAR}
+		and SECTIONID_ = #{sectionId, jdbcType=VARCHAR}
+
+	</update>
+
+
+	<delete id="deleteDietaryItemById"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery">
 		delete from
 		HEALTH_DIETARY_ITEM${tableSuffix}
-		where ID_ = #{id}
+		where ID_ =
+		#{id}
 	</delete>
 
 
-	<delete id="deleteDietaryItemsByDietaryId" parameterType="com.glaf.heathcare.query.DietaryItemQuery">
+	<delete id="deleteDietaryItemsByDietaryId"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery">
 		delete
 		from
 		HEALTH_DIETARY_ITEM${tableSuffix}
-		where DIETARYID_ = #{dietaryId}
+		where
+		DIETARYID_ = #{dietaryId}
 	</delete>
 
 
-	<delete id="deleteDietaryItemsByTemplateId" parameterType="com.glaf.heathcare.query.DietaryItemQuery">
+	<delete id="deleteDietaryItemsByTemplateId"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery">
 		delete from
 		HEALTH_DIETARY_ITEM${tableSuffix}
-		where TEMPLATEID_ =
+		where
+		TEMPLATEID_ =
 		#{templateId}
 	</delete>
 
 
-	<select id="getDietaryItemById" parameterType="com.glaf.heathcare.query.DietaryItemQuery"
+	<select id="getDietaryItemById"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery"
 		resultMap="dietaryItemResultMap">
 		select * from HEALTH_DIETARY_ITEM${tableSuffix} where ID_ =
 		#{id}
 	</select>
 
 
-	<select id="getDietaryItemsByDietaryId" parameterType="com.glaf.heathcare.query.DietaryItemQuery"
+	<select id="getDietaryItemsByDietaryId"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery"
 		resultMap="dietaryItemResultMap">
 		select * from HEALTH_DIETARY_ITEM${tableSuffix} where
 		DIETARYID_ =
@@ -300,7 +350,8 @@
 	</select>
 
 
-	<select id="getDietaryItemsByTemplateId" parameterType="com.glaf.heathcare.query.DietaryItemQuery"
+	<select id="getDietaryItemsByTemplateId"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery"
 		resultMap="dietaryItemResultMap">
 		select * from HEALTH_DIETARY_ITEM${tableSuffix} where
 		TEMPLATEID_ =
@@ -308,7 +359,8 @@
 	</select>
 
 
-	<select id="getDietaryItems" parameterType="com.glaf.heathcare.query.DietaryItemQuery"
+	<select id="getDietaryItems"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery"
 		resultMap="dietaryItemResultMap">
 		select distinct E.*
 		<include refid="selectDietaryItemsSql" />
@@ -323,7 +375,8 @@
 	</select>
 
 
-	<select id="getDietaryItemCount" parameterType="com.glaf.heathcare.query.DietaryItemQuery"
+	<select id="getDietaryItemCount"
+		parameterType="com.glaf.heathcare.query.DietaryItemQuery"
 		resultType="int">
 		select count(*)
 		<include refid="selectDietaryItemsSql" />
@@ -347,8 +400,8 @@
 
 			<if test="dietaryIds != null and dietaryIds.size() &gt; 0">
 				and E.DIETARYID_ IN
-				<foreach item="x_dietaryId" index="index" collection="dietaryIds"
-					open="(" separator="," close=")">
+				<foreach item="x_dietaryId" index="index"
+					collection="dietaryIds" open="(" separator="," close=")">
 					#{x_dietaryId}
 				</foreach>
 			</if>
@@ -359,8 +412,8 @@
 
 			<if test="templateIds != null and templateIds.size() &gt; 0">
 				and E.TEMPLATEID_ IN
-				<foreach item="x_templateId" index="index" collection="templateIds"
-					open="(" separator="," close=")">
+				<foreach item="x_templateId" index="index"
+					collection="templateIds" open="(" separator="," close=")">
 					#{x_templateId}
 				</foreach>
 			</if>
@@ -430,7 +483,8 @@
 			</if>
 
 			<if test="dataRequest != null and dataRequest.filter != null ">
-				<include refid="com.glaf.global.GlobalMapper.dataRequestFilterCondition" />
+				<include
+					refid="com.glaf.global.GlobalMapper.dataRequestFilterCondition" />
 			</if>
 
 		</where>

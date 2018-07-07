@@ -61,7 +61,7 @@
    function switchFood(){
        var nodeId = document.getElementById("nodeId").value;
 	   if(nodeId != ""){
-		   var link = "${contextPath}/heathcare/foodComposition/jsonFavorites?nodeId="+nodeId+"&rows=1000";
+		   var link = "${contextPath}/heathcare/foodComposition/jsonFavorites?nodeId="+nodeId+"&rows=1000&ts=${ts}";
 		   //alert(link);
 		   jQuery.getJSON(link, function(data){
 			  var food = document.getElementById("foodId");
@@ -76,7 +76,7 @@
    function switchFood2(selected){
        var nodeId = document.getElementById("nodeId").value;
 	   if(nodeId != ""){
-		   var link = "${contextPath}/heathcare/foodComposition/jsonFavorites?nodeId="+nodeId+"&rows=1000";
+		   var link = "${contextPath}/heathcare/foodComposition/jsonFavorites?nodeId="+nodeId+"&rows=1000&ts=${ts}&selected="+selected;
 		   //alert(link);
 		   jQuery.getJSON(link, function(data){
 			  var food = document.getElementById("foodId");

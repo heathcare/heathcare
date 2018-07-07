@@ -63,7 +63,7 @@ public class FtpUtils {
 					ftpClient.changeWorkingDirectory(tmp);
 				}
 			} catch (IOException ex) {
-				
+
 			}
 		}
 	}
@@ -91,7 +91,6 @@ public class FtpUtils {
 			}
 			return success;
 		} catch (IOException ex) {
-			
 			logger.error("login failed", ex);
 			throw new RuntimeException(ex);
 		}
@@ -136,7 +135,6 @@ public class FtpUtils {
 			}
 			return ftpClient;
 		} catch (IOException ex) {
-			
 			logger.error("login failed", ex);
 			throw new RuntimeException(ex);
 		}
@@ -172,7 +170,6 @@ public class FtpUtils {
 				ftpClient.deleteFile(remotePath);
 			}
 		} catch (IOException ex) {
-			
 			logger.error("deleteFile error", ex);
 			throw new RuntimeException(ex);
 		}
@@ -231,12 +228,11 @@ public class FtpUtils {
 			}
 			out.flush();
 		} catch (Exception ex) {
-			
 			logger.error("download error", ex);
 			throw new RuntimeException(ex);
 		} finally {
-			IOUtils.closeStream(in);
-			IOUtils.closeStream(out);
+			IOUtils.closeQuietly(in);
+			IOUtils.closeQuietly(out);
 		}
 	}
 
@@ -293,12 +289,11 @@ public class FtpUtils {
 			bos.flush();
 			bytes = out.toByteArray();
 		} catch (Exception ex) {
-			
 			logger.error("download error", ex);
 			throw new RuntimeException(ex);
 		} finally {
-			IOUtils.closeStream(in);
-			IOUtils.closeStream(out);
+			IOUtils.closeQuietly(in);
+			IOUtils.closeQuietly(out);
 		}
 		return bytes;
 	}
@@ -325,7 +320,6 @@ public class FtpUtils {
 					}
 				}
 			} catch (IOException ex) {
-				
 				logger.error("mkdirs error", ex);
 				throw new RuntimeException(ex);
 			}
@@ -365,7 +359,6 @@ public class FtpUtils {
 				ftpClient.rmd(remotePath);
 			}
 		} catch (IOException ex) {
-			
 			logger.error("removeDirectory error", ex);
 			throw new RuntimeException(ex);
 		}
@@ -410,12 +403,11 @@ public class FtpUtils {
 			}
 			return flag;
 		} catch (IOException ex) {
-			
 			logger.error("upload error", ex);
 			throw new RuntimeException(ex);
 		} finally {
-			IOUtils.closeStream(bis);
-			IOUtils.closeStream(bais);
+			IOUtils.closeQuietly(bis);
+			IOUtils.closeQuietly(bais);
 		}
 	}
 
@@ -452,7 +444,6 @@ public class FtpUtils {
 			}
 			return flag;
 		} catch (IOException ex) {
-			
 			logger.error("upload error", ex);
 			throw new RuntimeException(ex);
 		}
@@ -495,11 +486,10 @@ public class FtpUtils {
 			}
 			return flag;
 		} catch (IOException ex) {
-			
 			logger.error("upload error", ex);
 			throw new RuntimeException(ex);
 		} finally {
-			IOUtils.closeStream(input);
+			IOUtils.closeQuietly(input);
 		}
 	}
 

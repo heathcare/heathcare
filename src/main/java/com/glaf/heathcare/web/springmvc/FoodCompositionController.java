@@ -367,33 +367,46 @@ public class FoodCompositionController {
 
 		Set<Long> favorites = new HashSet<Long>();
 		long nodeId = RequestUtils.getLong(request, "nodeId");
+		FoodComposition fd = null;
 		if (nodeId > 0) {
 			query.nodeId(nodeId);
-
-			FoodFavoriteQuery queryx = new FoodFavoriteQuery();
-			queryx.tenantId(loginContext.getTenantId());
-			if (nodeId > 0) {
-				queryx.nodeId(nodeId);
-
-				List<FoodComposition> foods = foodCompositionService.getFoodCompositions(nodeId);
-				request.setAttribute("foods", foods);
-				Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
-				for (FoodComposition food : foods) {
-					if (StringUtils.equals(food.getEnableFlag(), "N")) {
-						continue;
-					}
-					foodMap.put(food.getId(), food);
+			try {
+				FoodFavoriteQuery queryx = new FoodFavoriteQuery();
+				if (!loginContext.isSystemAdministrator()) {
+					queryx.tenantId(loginContext.getTenantId());
 				}
+				if (nodeId > 0) {
+					queryx.nodeId(nodeId);
 
-				List<FoodFavorite> foodFavorites = foodFavoriteService.list(queryx);
-				if (foodFavorites != null && !foodFavorites.isEmpty()) {
-					for (FoodFavorite f : foodFavorites) {
-						if (foodMap.get(f.getFoodId()) != null) {
-							favorites.add(f.getFoodId());
+					List<FoodComposition> foods = foodCompositionService.getFoodCompositions(nodeId);
+					request.setAttribute("foods", foods);
+					Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
+					for (FoodComposition food : foods) {
+						if (StringUtils.equals(food.getEnableFlag(), "N")) {
+							continue;
+						}
+						foodMap.put(food.getId(), food);
+					}
+
+					long selected = RequestUtils.getLong(request, "selected");
+					if (selected > 0) {
+						fd = foodCompositionService.getFoodComposition(selected);
+					}
+
+					if (!loginContext.isSystemAdministrator()) {
+						List<FoodFavorite> foodFavorites = foodFavoriteService.list(queryx);
+						if (foodFavorites != null && !foodFavorites.isEmpty()) {
+							for (FoodFavorite f : foodFavorites) {
+								if (foodMap.get(f.getFoodId()) != null) {
+									favorites.add(f.getFoodId());
+								}
+							}
 						}
 					}
-				}
 
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
 			}
 		}
 
@@ -453,6 +466,14 @@ public class FoodCompositionController {
 			if (list != null && !list.isEmpty()) {
 				JSONArray rowsJSON = new JSONArray();
 				for (FoodComposition foodComposition : list) {
+					if (fd != null && foodComposition.getId() == fd.getId()) {
+						JSONObject rowJSON = foodComposition.toJsonObject();
+						rowJSON.put("startIndex", ++start);
+						rowJSON.put("id", foodComposition.getId());
+						rowJSON.put("foodCompositionId", foodComposition.getId());
+						rowsJSON.add(rowJSON);
+						continue;
+					}
 					if (StringUtils.equals(foodComposition.getEnableFlag(), "N")) {
 						continue;
 					}
@@ -645,6 +666,7 @@ public class FoodCompositionController {
 			foodComposition.setCode(request.getParameter("code"));
 			foodComposition.setDiscriminator(request.getParameter("discriminator"));
 			foodComposition.setDescription(request.getParameter("description"));
+			foodComposition.setInitQuantity(RequestUtils.getDouble(request, "initQuantity"));
 			foodComposition.setRadical(RequestUtils.getDouble(request, "radical"));
 			foodComposition.setHeatEnergy(RequestUtils.getDouble(request, "heatEnergy"));
 			foodComposition.setProtein(RequestUtils.getDouble(request, "protein"));

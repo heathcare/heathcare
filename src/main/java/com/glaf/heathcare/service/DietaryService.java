@@ -21,6 +21,7 @@ package com.glaf.heathcare.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,11 +33,21 @@ import com.glaf.heathcare.query.DietaryQuery;
 @Transactional(readOnly = true)
 public interface DietaryService {
 
+	/**
+	 * 调整日期
+	 * 
+	 * @param tenantId
+	 * @param dateMap
+	 */
+	@Transactional
+	void adjust(String tenantId, Map<String, Date> dateMap);
+
 	@Transactional
 	void batchPurchase(String tenantId, Collection<Long> ids, String purchaseFlag, List<GoodsPurchasePlan> list);
-	
+
 	@Transactional
-	void batchPurchase(String tenantId, int fullDay, Collection<Long> ids, String purchaseFlag, List<GoodsPurchasePlan> list);
+	void batchPurchase(String tenantId, int fullDay, Collection<Long> ids, String purchaseFlag,
+			List<GoodsPurchasePlan> list);
 
 	@Transactional
 	void bulkInsert(String tenantId, Date date, List<Dietary> list);
@@ -89,6 +100,8 @@ public interface DietaryService {
 	 */
 	List<Dietary> getDietarysByQueryCriteria(int start, int pageSize, DietaryQuery query);
 
+	Map<String, Integer> getDietarySectionIds(DietaryQuery query);
+
 	int getMaxWeek(String tenantId, int year, int semester);
 
 	int getNowWeek(String tenantId, int year, int semester);
@@ -109,7 +122,7 @@ public interface DietaryService {
 	 */
 	@Transactional
 	void save(Dietary dietary);
-	
+
 	@Transactional
 	void updateAll(String tenantId, List<Dietary> list);
 

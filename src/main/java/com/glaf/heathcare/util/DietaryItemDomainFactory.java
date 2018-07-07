@@ -49,6 +49,7 @@ public class DietaryItemDomainFactory {
 	static {
 		columnMap.put("id", "ID_");
 		columnMap.put("tenantId", "TENANTID_");
+		columnMap.put("sectionId", "SECTIONID_");
 		columnMap.put("name", "NAME_");
 		columnMap.put("description", "DESCRIPTION_");
 		columnMap.put("foodId", "FOODID_");
@@ -65,6 +66,7 @@ public class DietaryItemDomainFactory {
 
 		javaTypeMap.put("id", "Long");
 		javaTypeMap.put("tenantId", "String");
+		javaTypeMap.put("sectionId", "String");
 		javaTypeMap.put("name", "String");
 		javaTypeMap.put("description", "String");
 		javaTypeMap.put("foodId", "Long");
@@ -198,6 +200,13 @@ public class DietaryItemDomainFactory {
 		tenantId.setJavaType("String");
 		tenantId.setLength(50);
 		tableDefinition.addColumn(tenantId);
+
+		ColumnDefinition sectionId = new ColumnDefinition();
+		sectionId.setName("sectionId");
+		sectionId.setColumnName("SECTIONID_");
+		sectionId.setJavaType("String");
+		sectionId.setLength(50);
+		tableDefinition.addColumn(sectionId);
 
 		ColumnDefinition name = new ColumnDefinition();
 		name.setName("name");

@@ -11,6 +11,8 @@
 			jdbcType="BIGINT" />
 		<result property="tenantId" column="TENANTID_"
 			jdbcType="VARCHAR" />
+		<result property="sectionId" column="SECTIONID_"
+			jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
 		<result property="description" column="DESCRIPTION_"
 			jdbcType="VARCHAR" />
@@ -88,6 +90,9 @@
 			</if>
 			<if test="tenantId != null">
 				,TENANTID_
+			</if>
+			<if test="sectionId != null">
+				,SECTIONID_
 			</if>
 			<if test="name != null">
 				,NAME_
@@ -220,6 +225,9 @@
 			<if test="tenantId != null">
 				,#{tenantId, jdbcType=VARCHAR}
 			</if>
+			<if test="sectionId != null">
+				,#{sectionId, jdbcType=VARCHAR}
+			</if>
 			<if test="name != null">
 				,#{name, jdbcType=VARCHAR}
 			</if>
@@ -350,6 +358,7 @@
 		ID_
 		,TEMPLATEID_
 		,TENANTID_
+		,SECTIONID_
 		,NAME_
 		,DESCRIPTION_
 		,TYPE_
@@ -399,14 +408,17 @@
 			,#{dietary.templateId,
 			jdbcType=BIGINT}
 			,#{dietary.tenantId, jdbcType=VARCHAR}
-			,#{dietary.name, jdbcType=VARCHAR}
+			,#{dietary.sectionId, jdbcType=VARCHAR}
+			,#{dietary.name,
+			jdbcType=VARCHAR}
 			,#{dietary.description,
 			jdbcType=VARCHAR}
 			,#{dietary.type, jdbcType=VARCHAR}
 			,#{dietary.typeId, jdbcType=BIGINT}
 			,#{dietary.heatEnergy,
 			jdbcType=DOUBLE}
-			,#{dietary.protein, jdbcType=DOUBLE}
+			,#{dietary.protein,
+			jdbcType=DOUBLE}
 			,#{dietary.fat,
 			jdbcType=DOUBLE}
 			,#{dietary.carbohydrate, jdbcType=DOUBLE}
@@ -481,6 +493,7 @@
 			ID_
 			,TEMPLATEID_
 			,TENANTID_
+			,SECTIONID_
 			,NAME_
 			,DESCRIPTION_
 			,TYPE_
@@ -527,6 +540,8 @@
 			,#{dietary.templateId,
 			jdbcType=BIGINT}
 			,#{dietary.tenantId,
+			jdbcType=VARCHAR}
+			,#{dietary.sectionId,
 			jdbcType=VARCHAR}
 			,#{dietary.name,
 			jdbcType=VARCHAR}
@@ -727,8 +742,41 @@
 		parameterType="com.glaf.heathcare.domain.Dietary">
 
 		update HEALTH_DIETARY${tableSuffix}
-		set NAME_ = #{name,jdbcType=VARCHAR}
+		set NAME_ =
+		#{name,jdbcType=VARCHAR}
 		where ID_ = #{id, jdbcType=BIGINT}
+
+	</update>
+
+
+	<update id="adjustDietary"
+		parameterType="com.glaf.heathcare.domain.Dietary">
+		update HEALTH_DIETARY${tableSuffix}
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="year != null">
+				YEAR_ = #{year, jdbcType=INTEGER},
+			</if>
+			<if test="month != null">
+				MONTH_ = #{month, jdbcType=INTEGER},
+			</if>
+			<if test="day != null">
+				DAY_ = #{day, jdbcType=INTEGER},
+			</if>
+			<if test="dayOfWeek != null">
+				DAYOFWEEK_ = #{dayOfWeek, jdbcType=INTEGER},
+			</if>
+			<if test="week != null">
+				WEEK_ = #{week, jdbcType=INTEGER},
+			</if>
+			<if test="fullDay != null">
+				FULLDAY_ = #{fullDay, jdbcType=INTEGER}
+			</if>
+		</trim>
+		where
+		TENANTID_ = #{tenantId, jdbcType=VARCHAR}
+		and SECTIONID_ =
+		#{sectionId, jdbcType=VARCHAR}
 
 	</update>
 
@@ -747,6 +795,20 @@
 		resultMap="dietaryResultMap">
 		select * from HEALTH_DIETARY${tableSuffix} where ID_ =
 		#{dietaryId}
+	</select>
+
+
+	<select id="getDietarySectionIds"
+		parameterType="com.glaf.heathcare.query.DietaryQuery"
+		resultType="java.util.HashMap">
+		select distinct SECTIONID_ as sectionId, FULLDAY_ as
+		fullDay
+		from HEALTH_DIETARY${tableSuffix}
+		where TENANTID_ = #{tenantId}
+		and YEAR_ =
+		#{year}
+		and SEMESTER_ = #{semester}
+		and WEEK_ = #{week}
 	</select>
 
 
@@ -771,7 +833,7 @@
 				order by ${orderBy}
 			</when>
 			<otherwise>
-				order by E.FULLDAY_ desc, E.TYPEID_ asc
+				order by E.FULLDAY_ desc, E.TYPEID_ asc, E.SORTNO_ asc
 			</otherwise>
 		</choose>
 	</select>

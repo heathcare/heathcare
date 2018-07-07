@@ -53,6 +53,7 @@ public class FoodCompositionDomainFactory {
 		columnMap.put("code", "CODE_");
 		columnMap.put("discriminator", "DISCRIMINATOR_");
 		columnMap.put("description", "DESCRIPTION_");
+		columnMap.put("initQuantity", "INITQUANTITY_");
 		columnMap.put("radical", "RADICAL_");
 		columnMap.put("heatEnergy", "HEATENERGY_");
 		columnMap.put("protein", "PROTEIN_");
@@ -102,6 +103,7 @@ public class FoodCompositionDomainFactory {
 		javaTypeMap.put("code", "String");
 		javaTypeMap.put("discriminator", "String");
 		javaTypeMap.put("description", "String");
+		javaTypeMap.put("initQuantity", "Double");
 		javaTypeMap.put("radical", "Double");
 		javaTypeMap.put("heatEnergy", "Double");
 		javaTypeMap.put("protein", "Double");
@@ -253,6 +255,12 @@ public class FoodCompositionDomainFactory {
 		description.setLength(4000);
 		tableDefinition.addColumn(description);
 
+		ColumnDefinition initQuantity = new ColumnDefinition();
+        initQuantity.setName("initQuantity");
+        initQuantity.setColumnName("INITQUANTITY_");
+        initQuantity.setJavaType("Double");
+        tableDefinition.addColumn(initQuantity);
+        
 		ColumnDefinition radical = new ColumnDefinition();
 		radical.setName("radical");
 		radical.setColumnName("RADICAL_");

@@ -57,6 +57,12 @@ public class Dietary implements Serializable, JSONable {
 	protected String tenantId;
 
 	/**
+	 * 分段编号
+	 */
+	@Column(name = "SECTIONID_", length = 50)
+	protected String sectionId;
+
+	/**
 	 * 名称
 	 */
 	@Column(name = "NAME_", length = 200)
@@ -466,6 +472,10 @@ public class Dietary implements Serializable, JSONable {
 		return this.retinol;
 	}
 
+	public String getSectionId() {
+		return sectionId;
+	}
+
 	public int getSemester() {
 		return semester;
 	}
@@ -679,6 +689,10 @@ public class Dietary implements Serializable, JSONable {
 
 	public void setRetinol(double retinol) {
 		this.retinol = retinol;
+	}
+
+	public void setSectionId(String sectionId) {
+		this.sectionId = sectionId;
 	}
 
 	public void setSemester(int semester) {

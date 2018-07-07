@@ -23,8 +23,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
@@ -46,6 +48,7 @@ import com.glaf.core.security.LoginContext;
 import com.glaf.core.service.ITableDataService;
 import com.glaf.core.util.DBUtils;
 import com.glaf.core.util.DateUtils;
+import com.glaf.core.util.UUID32;
 import com.glaf.heathcare.SysConfig;
 import com.glaf.heathcare.domain.Dietary;
 import com.glaf.heathcare.domain.DietaryItem;
@@ -96,6 +99,52 @@ public class DietaryServiceImpl implements DietaryService {
 
 	public DietaryServiceImpl() {
 
+	}
+
+	/**
+	 * 调整日期
+	 * 
+	 * @param tenantId
+	 * @param dateMap
+	 */
+	@Transactional
+	public void adjust(String tenantId, Map<String, Date> dateMap) {
+		if (StringUtils.isNotEmpty(tenantId) && dateMap != null && !dateMap.isEmpty()) {
+			Iterator<Entry<String, Date>> iterator = dateMap.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<String, Date> entry = iterator.next();
+				String sectionId = (String) entry.getKey();
+				Date date = entry.getValue();
+				DietaryQuery query = new DietaryQuery();
+				query.tenantId(tenantId);
+				query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+				query.fullDay(DateUtils.getYearMonthDay(date));
+				List<Dietary> list = dietaryMapper.getDietarys(query);
+				if (list != null && !list.isEmpty()) {
+					for (Dietary m : list) {
+						DietaryItem item = new DietaryItem();
+						item.setTenantId(tenantId);
+						item.setSectionId(sectionId);
+						item.setFullDay(m.getFullDay());
+						dietaryItemMapper.adjustDietaryItem(item);
+
+						Dietary bean = new Dietary();
+						bean.setTenantId(tenantId);
+						bean.setSectionId(sectionId);
+						bean.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						bean.setYear(m.getYear());
+						bean.setMonth(m.getMonth());
+						bean.setDay(m.getDay());
+						bean.setWeek(m.getWeek());
+						bean.setDayOfWeek(m.getDayOfWeek());
+						bean.setFullDay(m.getFullDay());
+						dietaryMapper.adjustDietary(bean);
+
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	@Transactional
@@ -161,10 +210,12 @@ public class DietaryServiceImpl implements DietaryService {
 
 	@Transactional
 	public void bulkInsert(String tenantId, Date date, List<Dietary> list) {
+		String sectionId = UUID32.getUUID();
 		List<TableModel> tableModels = new ArrayList<TableModel>();
 		for (Dietary dietary : list) {
 			if (dietary.getId() == 0) {
 				dietary.setId(idGenerator.nextId("HEALTH_DIETARY"));
+				dietary.setSectionId(sectionId);
 				TableModel table = new TableModel();
 				table.addLongColumn("DIETARYID_", dietary.getId());
 				if (StringUtils.isNotEmpty(tenantId)) {
@@ -410,6 +461,7 @@ public class DietaryServiceImpl implements DietaryService {
 
 			}
 
+			String sectionId = UUID32.getUUID();
 			for (Long templateId : templateIds) {
 				DietaryTemplate dietaryTemplate = dietaryTemplateService.getDietaryTemplate(templateId);
 				if (dietaryTemplate != null) {
@@ -418,6 +470,7 @@ public class DietaryServiceImpl implements DietaryService {
 						Dietary dietary = new Dietary();
 						DietaryDomainFactory.copyProperties(dietary, dietaryTemplate);
 						dietary.setId(idGenerator.nextId("HEALTH_DIETARY_TEMPLATE"));
+						dietary.setSectionId(sectionId);
 						dietary.setCreateTime(new Date());
 						dietary.setCreateBy(loginContext.getActorId());
 						dietary.setUpdateBy(loginContext.getActorId());
@@ -453,6 +506,7 @@ public class DietaryServiceImpl implements DietaryService {
 
 						for (DietaryItem item : items) {
 							item.setId(idGenerator.nextId("HEALTH_DIETARY_ITEM"));
+							item.setSectionId(sectionId);
 							item.setCreateTime(new Date());
 							item.setCreateBy(loginContext.getActorId());
 							item.setTenantId(loginContext.getTenantId());
@@ -607,6 +661,10 @@ public class DietaryServiceImpl implements DietaryService {
 		return rows;
 	}
 
+	public Map<String, Integer> getDietarySectionIds(DietaryQuery query) {
+		return dietaryMapper.getDietarySectionIds(query);
+	}
+
 	public int getMaxWeek(String tenantId, int year, int semester) {
 		DietaryQuery query = new DietaryQuery();
 		query.year(year);
@@ -669,17 +727,29 @@ public class DietaryServiceImpl implements DietaryService {
 		if (dietary.getId() == 0) {
 			dietary.setId(idGenerator.nextId("HEALTH_DIETARY"));
 			dietary.setCreateTime(new Date());
+
+			if (StringUtils.isNotEmpty(dietary.getTenantId())) {
+				String sectionId = UUID32.getUUID();
+
+				DietaryQuery query = new DietaryQuery();
+				query.tenantId(dietary.getTenantId());
+				query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(dietary.getTenantId())));
+				query.fullDay(dietary.getFullDay());
+				List<Dietary> list = dietaryMapper.getDietarys(query);
+				if (list != null && !list.isEmpty()) {
+					for (Dietary m : list) {
+						if (StringUtils.isNotEmpty(m.getSectionId())) {
+							sectionId = m.getSectionId();
+							break;
+						}
+					}
+				}
+				dietary.setSectionId(sectionId);
+			}
+
 			dietaryMapper.insertDietary(dietary);
 		} else {
 			dietaryMapper.updateDietary(dietary);
-		}
-	}
-
-	@Transactional
-	public void updateDietaryName(Dietary dietary) {
-		if (StringUtils.isNotEmpty(dietary.getTenantId())) {
-			dietary.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(dietary.getTenantId())));
-			dietaryMapper.updateDietaryName(dietary);
 		}
 	}
 
@@ -750,6 +820,14 @@ public class DietaryServiceImpl implements DietaryService {
 				dietary.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(dietary.getTenantId())));
 			}
 			dietaryMapper.updateDietary(dietary);
+		}
+	}
+
+	@Transactional
+	public void updateDietaryName(Dietary dietary) {
+		if (StringUtils.isNotEmpty(dietary.getTenantId())) {
+			dietary.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(dietary.getTenantId())));
+			dietaryMapper.updateDietaryName(dietary);
 		}
 	}
 

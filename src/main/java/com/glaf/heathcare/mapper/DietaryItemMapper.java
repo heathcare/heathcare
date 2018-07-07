@@ -57,6 +57,8 @@ public interface DietaryItemMapper {
 
 	void insertDietaryItem(DietaryItem model);
 
+	void adjustDietaryItem(DietaryItem model);
+	
 	void updateDietaryItem(DietaryItem model);
 
 }

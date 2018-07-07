@@ -37,12 +37,10 @@ public interface FoodCompositionMapper {
 
 	void bulkInsertFoodComposition_oracle(List<FoodComposition> list);
 
-	void deleteFoodCompositions(FoodCompositionQuery query);
-
 	void deleteFoodCompositionById(Long id);
 
 	FoodComposition getFoodCompositionById(Long id);
-	
+
 	FoodComposition getFoodCompositionByName(String name);
 
 	int getFoodCompositionCount(FoodCompositionQuery query);

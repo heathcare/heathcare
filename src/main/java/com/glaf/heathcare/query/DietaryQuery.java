@@ -27,6 +27,7 @@ public class DietaryQuery extends DataQuery {
 	protected List<Long> dietaryIds;
 	protected Long templateId;
 	protected List<Long> templateIds;
+	protected String sectionId;
 	protected String name;
 	protected String nameLike;
 	protected String descriptionLike;
@@ -362,6 +363,10 @@ public class DietaryQuery extends DataQuery {
 		return purchaseFlagIsNull;
 	}
 
+	public String getSectionId() {
+		return sectionId;
+	}
+
 	public Integer getSemester() {
 		return semester;
 	}
@@ -491,6 +496,14 @@ public class DietaryQuery extends DataQuery {
 		return this;
 	}
 
+	public DietaryQuery sectionId(String sectionId) {
+		if (sectionId == null) {
+			throw new RuntimeException("sectionId is null");
+		}
+		this.sectionId = sectionId;
+		return this;
+	}
+
 	public DietaryQuery semester(Integer semester) {
 		if (semester == null) {
 			throw new RuntimeException("semester is null");
@@ -557,6 +570,10 @@ public class DietaryQuery extends DataQuery {
 
 	public void setPurchaseFlagIsNull(String purchaseFlagIsNull) {
 		this.purchaseFlagIsNull = purchaseFlagIsNull;
+	}
+
+	public void setSectionId(String sectionId) {
+		this.sectionId = sectionId;
 	}
 
 	public void setSemester(Integer semester) {

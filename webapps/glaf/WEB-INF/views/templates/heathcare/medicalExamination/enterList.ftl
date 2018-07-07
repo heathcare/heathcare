@@ -693,7 +693,7 @@
 			<input type="hidden" id="type" name="type" value="${type}">
 			<table>
 			  <tr>
-				<td width="60%" valign="top">
+				<td width="65%" valign="top">
 					<img src="${contextPath}/static/images/window.png">
 					&nbsp;<span class="x_content_title">入园健康检查</span>
 					<#if hasWritePermission>
@@ -759,7 +759,7 @@
 						document.getElementById("heightLevel").value="${heightLevel}";
 					</script>
 				</td>
-				<td width="40%" valign="top">
+				<td width="35%" valign="top">
 				    &nbsp; &nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls();">统计结果</a>

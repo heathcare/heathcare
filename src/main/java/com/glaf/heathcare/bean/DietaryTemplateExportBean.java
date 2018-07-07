@@ -119,16 +119,16 @@ public class DietaryTemplateExportBean {
 
 		// List<DietaryTemplate> list = getDietaryTemplateService().list(query);
 
-		List<DietaryTemplate> list = null;
+		List<DietaryTemplate> templates = null;
 		if (StringUtils.equals(sysFlag, "Y")) {
-			list = getDietaryTemplateService().getDietaryTemplates(suitNo, sysFlag);
+			templates = getDietaryTemplateService().getDietaryTemplates(suitNo, sysFlag);
 		} else {
-			list = getDietaryTemplateService().list(query);
+			templates = getDietaryTemplateService().list(query);
 		}
 
-		if (list != null && !list.isEmpty()) {
+		if (templates != null && !templates.isEmpty()) {
 			List<Long> templateIds = new ArrayList<Long>();
-			for (DietaryTemplate dietaryTemplate : list) {
+			for (DietaryTemplate dietaryTemplate : templates) {
 				templateIds.add(dietaryTemplate.getId());
 			}
 
@@ -236,7 +236,7 @@ public class DietaryTemplateExportBean {
 				day5.setDinnerList(dinnerList5);
 				weekList.add(day5);
 
-				for (DietaryTemplate template : list) {
+				for (DietaryTemplate template : templates) {
 					items = dietaryTemplateMap.get(template.getId());
 					if (items != null && !items.isEmpty()) {
 						model = new DietaryRptModel();

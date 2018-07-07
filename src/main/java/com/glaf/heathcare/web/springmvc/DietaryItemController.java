@@ -131,6 +131,8 @@ public class DietaryItemController {
 			request.setAttribute("foodCategories", foodCategories);
 		}
 
+		request.setAttribute("ts", System.currentTimeMillis());
+
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
 			return new ModelAndView(view, modelMap);
@@ -335,6 +337,8 @@ public class DietaryItemController {
 			List<SysTree> foodCategories = sysTreeService.getSysTreeList(root.getId());
 			request.setAttribute("foodCategories", foodCategories);
 		}
+
+		request.setAttribute("ts", System.currentTimeMillis());
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {

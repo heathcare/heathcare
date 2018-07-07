@@ -64,6 +64,8 @@
 			jdbcType="DOUBLE" />
 		<result property="selenium" column="SELENIUM_"
 			jdbcType="DOUBLE" />
+		<result property="initQuantity" column="INITQUANTITY_"
+			jdbcType="DOUBLE" />
 		<result property="sortNo" column="SORTNO_" jdbcType="INTEGER" />
 		<result property="sysFlag" column="SYSFLAG_" jdbcType="VARCHAR" />
 		<result property="useFlag" column="USEFLAG_" jdbcType="VARCHAR" />
@@ -122,6 +124,9 @@
 			</if>
 			<if test="description != null">
 				,DESCRIPTION_
+			</if>
+			<if test="initQuantity != null">
+				,INITQUANTITY_
 			</if>
 			<if test="radical != null">
 				,RADICAL_
@@ -268,6 +273,9 @@
 			<if test="description != null">
 				,#{description, jdbcType=VARCHAR}
 			</if>
+			<if test="initQuantity != null">
+				,#{initQuantity, jdbcType=DOUBLE}
+			</if>
 			<if test="radical != null">
 				,#{radical, jdbcType=DOUBLE}
 			</if>
@@ -397,6 +405,7 @@
 		,CODE_
 		,DISCRIMINATOR_
 		,DESCRIPTION_
+		,INITQUANTITY_
 		,RADICAL_
 		,HEATENERGY_
 		,PROTEIN_
@@ -452,6 +461,7 @@
 			jdbcType=VARCHAR}
 			,#{foodComposition.discriminator, jdbcType=VARCHAR}
 			,#{foodComposition.description, jdbcType=VARCHAR}
+			,#{foodComposition.initQuantity, jdbcType=DOUBLE}
 			,#{foodComposition.radical, jdbcType=DOUBLE}
 			,#{foodComposition.heatEnergy, jdbcType=DOUBLE}
 			,#{foodComposition.protein, jdbcType=DOUBLE}
@@ -513,6 +523,7 @@
 			,CODE_
 			,DISCRIMINATOR_
 			,DESCRIPTION_
+			,INITQUANTITY_
 			,RADICAL_
 			,HEATENERGY_
 			,PROTEIN_
@@ -570,6 +581,7 @@
 			jdbcType=VARCHAR}
 			,#{foodComposition.discriminator, jdbcType=VARCHAR}
 			,#{foodComposition.description, jdbcType=VARCHAR}
+			,#{foodComposition.initQuantity, jdbcType=DOUBLE}
 			,#{foodComposition.radical, jdbcType=DOUBLE}
 			,#{foodComposition.heatEnergy, jdbcType=DOUBLE}
 			,#{foodComposition.protein, jdbcType=DOUBLE}
@@ -637,6 +649,9 @@
 			</if>
 			<if test="description != null">
 				DESCRIPTION_ = #{description, jdbcType=VARCHAR},
+			</if>
+			<if test="initQuantity != null">
+				INITQUANTITY_ = #{initQuantity, jdbcType=DOUBLE},
 			</if>
 			<if test="radical != null">
 				RADICAL_ = #{radical, jdbcType=DOUBLE},
@@ -748,19 +763,6 @@
 		delete from
 		HEALTH_FOOD_COMPOSITION
 		where ID_ = #{id}
-	</delete>
-
-
-	<delete id="deleteFoodCompositions"
-		parameterType="com.glaf.heathcare.query.FoodCompositionQuery">
-		delete from HEALTH_FOOD_COMPOSITION
-		where (
-		ID_ IN
-		<foreach item="x_id" index="index" collection="ids" open="("
-			separator="," close=")">
-			#{x_id}
-		</foreach>
-		)
 	</delete>
 
 

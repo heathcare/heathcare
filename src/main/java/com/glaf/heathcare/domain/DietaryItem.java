@@ -63,6 +63,12 @@ public class DietaryItem implements java.lang.Comparable<DietaryItem>, Serializa
 	protected String tenantId;
 
 	/**
+	 * 分段编号
+	 */
+	@Column(name = "SECTIONID_", length = 50)
+	protected String sectionId;
+
+	/**
 	 * 名称
 	 */
 	@Column(name = "NAME_", length = 200)
@@ -231,6 +237,10 @@ public class DietaryItem implements java.lang.Comparable<DietaryItem>, Serializa
 		return quantity > 0 ? String.valueOf((int) quantity) : "";
 	}
 
+	public String getSectionId() {
+		return sectionId;
+	}
+
 	public String getTableSuffix() {
 		if (tableSuffix == null) {
 			tableSuffix = "";
@@ -308,6 +318,10 @@ public class DietaryItem implements java.lang.Comparable<DietaryItem>, Serializa
 
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
+	}
+
+	public void setSectionId(String sectionId) {
+		this.sectionId = sectionId;
 	}
 
 	public void setTableSuffix(String tableSuffix) {

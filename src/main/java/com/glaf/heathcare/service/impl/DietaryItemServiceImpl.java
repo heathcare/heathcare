@@ -42,12 +42,15 @@ import com.glaf.core.id.IdGenerator;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.util.DBUtils;
+import com.glaf.heathcare.domain.Dietary;
 import com.glaf.heathcare.domain.DietaryItem;
 import com.glaf.heathcare.domain.DietaryTemplate;
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.mapper.DietaryItemMapper;
+import com.glaf.heathcare.mapper.DietaryMapper;
 import com.glaf.heathcare.mapper.DietaryTemplateMapper;
 import com.glaf.heathcare.query.DietaryItemQuery;
+import com.glaf.heathcare.query.DietaryQuery;
 import com.glaf.heathcare.query.DietaryTemplateQuery;
 import com.glaf.heathcare.query.FoodCompositionQuery;
 import com.glaf.heathcare.service.DietaryItemService;
@@ -68,6 +71,8 @@ public class DietaryItemServiceImpl implements DietaryItemService {
 	protected JdbcTemplate jdbcTemplate;
 
 	protected SqlSessionTemplate sqlSessionTemplate;
+
+	protected DietaryMapper dietaryMapper;
 
 	protected DietaryItemMapper dietaryItemMapper;
 
@@ -387,6 +392,16 @@ public class DietaryItemServiceImpl implements DietaryItemService {
 			dietaryItem.setId(idGenerator.nextId("HEALTH_DIETARY_ITEM"));
 			dietaryItem.setCreateTime(new Date());
 			dietaryItem.setLastModified(System.currentTimeMillis());
+			if (dietaryItem.getDietaryId() != 0 && StringUtils.isNotEmpty(dietaryItem.getTenantId())) {
+				DietaryQuery query = new DietaryQuery();
+				query.tenantId(dietaryItem.getTenantId());
+				query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(dietaryItem.getTenantId())));
+				query.setDietaryId(dietaryItem.getDietaryId());
+				Dietary dietary = dietaryMapper.getDietaryById(query);
+				if (dietary != null && dietary.getSectionId() != null) {
+					dietaryItem.setSectionId(dietary.getSectionId());
+				}
+			}
 			dietaryItemMapper.insertDietaryItem(dietaryItem);
 		} else {
 			dietaryItem.setLastModified(System.currentTimeMillis());
@@ -414,6 +429,18 @@ public class DietaryItemServiceImpl implements DietaryItemService {
 			dietaryItem.setId(idGenerator.nextId("HEALTH_DIETARY_ITEM"));
 			dietaryItem.setCreateTime(new Date());
 			dietaryItem.setLastModified(System.currentTimeMillis());
+
+			if (dietaryItem.getDietaryId() != 0 && StringUtils.isNotEmpty(dietaryItem.getTenantId())) {
+				DietaryQuery query = new DietaryQuery();
+				query.tenantId(dietaryItem.getTenantId());
+				query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(dietaryItem.getTenantId())));
+				query.setDietaryId(dietaryItem.getDietaryId());
+				Dietary dietary = dietaryMapper.getDietaryById(query);
+				if (dietary != null && dietary.getSectionId() != null) {
+					dietaryItem.setSectionId(dietary.getSectionId());
+				}
+			}
+
 			dietaryItemMapper.insertDietaryItem(dietaryItem);
 		} else {
 			dietaryItem.setLastModified(System.currentTimeMillis());
@@ -426,6 +453,11 @@ public class DietaryItemServiceImpl implements DietaryItemService {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append("health_di_list_").append(dietaryItem.getTemplateId());
 		CacheFactory.remove("health_di_list", buffer.toString());
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.DietaryMapper")
+	public void setDietaryMapper(DietaryMapper dietaryMapper) {
+		this.dietaryMapper = dietaryMapper;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.DietaryItemMapper")

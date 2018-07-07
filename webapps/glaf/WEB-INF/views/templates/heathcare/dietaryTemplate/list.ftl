@@ -406,20 +406,24 @@
                return $(this).val();
            }).get().join(',');
 		//alert(objectIds);
-        var link = '${contextPath}/heathcare/dietaryTemplate/showSort?objectIds='+objectIds;
-	    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "食谱排序",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['698px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
+		if(objectIds.length>5){
+			var link = '${contextPath}/heathcare/dietaryTemplate/showSort?objectIds='+objectIds;
+			jQuery.layer({
+				type: 2,
+				maxmin: true,
+				shadeClose: true,
+				title: "食谱排序",
+				closeBtn: [0, true],
+				shade: [0.8, '#000'],
+				border: [10, 0.3, '#000'],
+				offset: ['20px',''],
+				fadeIn: 100,
+				area: ['698px', (jQuery(window).height() - 50) +'px'],
+				iframe: {src: link}
+			});
+		} else {
+             alert("请选中需要排序的项目。");
+		}
 	}
 </script>
 </head>

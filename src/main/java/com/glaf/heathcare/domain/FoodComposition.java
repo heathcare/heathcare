@@ -105,6 +105,12 @@ public class FoodComposition implements Serializable, JSONable {
 	protected String description;
 
 	/**
+	 * 推荐量(单位:克)
+	 */
+	@Column(name = "INITQUANTITY_")
+	protected double initQuantity;
+
+	/**
 	 * 食部
 	 */
 	@Column(name = "RADICAL_")
@@ -456,6 +462,10 @@ public class FoodComposition implements Serializable, JSONable {
 		return this.id;
 	}
 
+	public double getInitQuantity() {
+		return initQuantity;
+	}
+
 	public double getIodine() {
 		if (iodine > 0) {
 			iodine = Math.round(iodine * 1000D) / 1000D;
@@ -737,6 +747,10 @@ public class FoodComposition implements Serializable, JSONable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public void setInitQuantity(double initQuantity) {
+		this.initQuantity = initQuantity;
 	}
 
 	public void setIodine(double iodine) {

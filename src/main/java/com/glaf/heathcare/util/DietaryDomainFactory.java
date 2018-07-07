@@ -24,7 +24,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
- 
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.ColumnDefinition;
 import com.glaf.core.domain.Database;
@@ -53,6 +52,7 @@ public class DietaryDomainFactory {
 		columnMap.put("id", "ID_");
 		columnMap.put("templateId", "TEMPLATEID_");
 		columnMap.put("tenantId", "TENANTID_");
+		columnMap.put("sectionId", "SECTIONID_");
 		columnMap.put("name", "NAME_");
 		columnMap.put("description", "DESCRIPTION_");
 		columnMap.put("type", "TYPE_");
@@ -97,6 +97,7 @@ public class DietaryDomainFactory {
 		javaTypeMap.put("id", "Long");
 		javaTypeMap.put("templateId", "Long");
 		javaTypeMap.put("tenantId", "String");
+		javaTypeMap.put("sectionId", "String");
 		javaTypeMap.put("name", "String");
 		javaTypeMap.put("description", "String");
 		javaTypeMap.put("type", "String");
@@ -290,6 +291,13 @@ public class DietaryDomainFactory {
 		tenantId.setJavaType("String");
 		tenantId.setLength(50);
 		tableDefinition.addColumn(tenantId);
+
+		ColumnDefinition sectionId = new ColumnDefinition();
+		sectionId.setName("sectionId");
+		sectionId.setColumnName("SECTIONID_");
+		sectionId.setJavaType("String");
+		sectionId.setLength(50);
+		tableDefinition.addColumn(sectionId);
 
 		ColumnDefinition name = new ColumnDefinition();
 		name.setName("name");

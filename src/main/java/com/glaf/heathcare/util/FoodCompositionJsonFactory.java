@@ -22,7 +22,6 @@ import com.alibaba.fastjson.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import com.glaf.core.util.DateUtils;
 import com.glaf.heathcare.domain.*;
 
 /**
@@ -76,6 +75,9 @@ public class FoodCompositionJsonFactory {
 		}
 		if (jsonObject.containsKey("description")) {
 			model.setDescription(jsonObject.getString("description"));
+		}
+		if (jsonObject.containsKey("initQuantity")) {
+			model.setInitQuantity(jsonObject.getDouble("initQuantity"));
 		}
 		if (jsonObject.containsKey("radical")) {
 			model.setRadical(jsonObject.getDouble("radical"));
@@ -222,6 +224,7 @@ public class FoodCompositionJsonFactory {
 		if (model.getDescription() != null) {
 			jsonObject.put("description", model.getDescription());
 		}
+		jsonObject.put("initQuantity", model.getInitQuantity());
 		jsonObject.put("radical", model.getRadical());
 		jsonObject.put("heatEnergy", model.getHeatEnergy());
 		jsonObject.put("protein", model.getProtein());
@@ -269,22 +272,7 @@ public class FoodCompositionJsonFactory {
 		if (model.getUseFlag() != null) {
 			jsonObject.put("useFlag", model.getUseFlag());
 		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getCreateTime() != null) {
-			jsonObject.put("createTime", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_date", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_datetime", DateUtils.getDateTime(model.getCreateTime()));
-		}
-		if (model.getUpdateBy() != null) {
-			jsonObject.put("updateBy", model.getUpdateBy());
-		}
-		if (model.getUpdateTime() != null) {
-			jsonObject.put("updateTime", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_date", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_datetime", DateUtils.getDateTime(model.getUpdateTime()));
-		}
+
 		return jsonObject;
 	}
 
@@ -319,6 +307,7 @@ public class FoodCompositionJsonFactory {
 		if (model.getDescription() != null) {
 			jsonObject.put("description", model.getDescription());
 		}
+		jsonObject.put("initQuantity", model.getInitQuantity());
 		jsonObject.put("radical", model.getRadical());
 		jsonObject.put("heatEnergy", model.getHeatEnergy());
 		jsonObject.put("protein", model.getProtein());
@@ -366,22 +355,7 @@ public class FoodCompositionJsonFactory {
 		if (model.getUseFlag() != null) {
 			jsonObject.put("useFlag", model.getUseFlag());
 		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getCreateTime() != null) {
-			jsonObject.put("createTime", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_date", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_datetime", DateUtils.getDateTime(model.getCreateTime()));
-		}
-		if (model.getUpdateBy() != null) {
-			jsonObject.put("updateBy", model.getUpdateBy());
-		}
-		if (model.getUpdateTime() != null) {
-			jsonObject.put("updateTime", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_date", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_datetime", DateUtils.getDateTime(model.getUpdateTime()));
-		}
+
 		return jsonObject;
 	}
 

@@ -23,9 +23,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,6 +49,7 @@ import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.base.utils.ContextUtil;
 import com.glaf.core.base.BaseItem;
 import com.glaf.core.config.ViewProperties;
+import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.Constants;
 import com.glaf.core.util.DateUtils;
@@ -252,6 +255,53 @@ public class DietaryController {
 					}
 				} else {
 					return ResponseUtils.responseJsonResult(false, "任务处理中，请稍等！");
+				}
+			}
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/adjust")
+	public byte[] adjust(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		/**
+		 * 角色HealthPhysician和TenantAdmin可以增加食谱
+		 */
+		if (loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("TenantAdmin")) {
+			int year = RequestUtils.getInt(request, "year");
+			int week = RequestUtils.getInt(request, "week");
+			if (year > 0 && week > 0) {
+				try {
+					DietaryQuery query = new DietaryQuery();
+					query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(loginContext.getTenantId())));
+					query.tenantId(loginContext.getTenantId());
+					query.year(year);
+					query.week(week);
+					query.semester(SysConfig.getSemester());
+
+					Map<String, Integer> dateMap = dietaryService.getDietarySectionIds(query);
+					if (dateMap != null && !dateMap.isEmpty()) {
+						Map<String, Date> newDateMap = new HashMap<String, Date>();
+						Iterator<Entry<String, Integer>> iterator = dateMap.entrySet().iterator();
+						while (iterator.hasNext()) {
+							Entry<String, Integer> entry = iterator.next();
+							String key = (String) entry.getKey();
+							Integer value = entry.getValue();
+							Date date = RequestUtils.getDate(request, "date_" + key);
+							int fullDay = DateUtils.getYearMonthDay(date);
+							if (value != fullDay) {
+								newDateMap.put(key, date);
+							}
+						}
+						if (newDateMap.size() > 0) {
+							dietaryService.adjust(loginContext.getTenantId(), newDateMap);
+						}
+					}
+					return ResponseUtils.responseResult(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					logger.error(ex);
 				}
 			}
 		}
@@ -1251,6 +1301,77 @@ public class DietaryController {
 	@javax.annotation.Resource
 	public void setTenantConfigService(TenantConfigService tenantConfigService) {
 		this.tenantConfigService = tenantConfigService;
+	}
+
+	@RequestMapping("/showAdjust")
+	public ModelAndView showAdjust(HttpServletRequest request, ModelMap modelMap) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+
+		List<Integer> years = new ArrayList<Integer>();
+		List<Integer> months = new ArrayList<Integer>();
+		List<Integer> days = new ArrayList<Integer>();
+		List<Integer> weeks = new ArrayList<Integer>();
+
+		years.add(year);
+		months.add(month);
+		if (month == 12) {
+			years.add(year + 1);
+			months.add(1);
+		} else {
+			months.add(month + 1);
+		}
+
+		for (int i = 1; i <= 31; i++) {
+			days.add(i);
+		}
+
+		for (int i = 1; i <= 20; i++) {
+			weeks.add(i);
+		}
+
+		request.setAttribute("years", years);
+		request.setAttribute("months", months);
+		request.setAttribute("days", days);
+		request.setAttribute("weeks", weeks);
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
+
+		int year2 = RequestUtils.getInt(request, "year");
+		int week2 = RequestUtils.getInt(request, "week");
+		if (year2 > 0 && week2 > 0) {
+			DietaryQuery query = new DietaryQuery();
+			query.tenantId(loginContext.getTenantId());
+			query.year(year2);
+			query.week(week2);
+			query.semester(SysConfig.getSemester());
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(loginContext.getTenantId())));
+			Map<String, Integer> dateMap = dietaryService.getDietarySectionIds(query);
+			if (dateMap != null && !dateMap.isEmpty()) {
+				List<BaseItem> items = new ArrayList<BaseItem>();
+				Iterator<Entry<String, Integer>> iterator = dateMap.entrySet().iterator();
+				while (iterator.hasNext()) {
+					Entry<String, Integer> entry = iterator.next();
+					String key = (String) entry.getKey();
+					Integer value = entry.getValue();
+					BaseItem item = new BaseItem();
+					item.setName(key);
+					item.setValue(DateUtils.getDate(DateUtils.toDate(String.valueOf(value))));
+					items.add(item);
+				}
+				request.setAttribute("items", items);
+			}
+		}
+
+		String view = request.getParameter("view");
+		if (StringUtils.isNotEmpty(view)) {
+			return new ModelAndView(view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/dietary/showAdjust", modelMap);
 	}
 
 	@RequestMapping("/showPlanParam")
