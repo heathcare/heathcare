@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -85,7 +85,7 @@ public class GoodsPurchaseWeeklyPreprocessor implements IReportPreprocessor {
 			String wkName = "";
 			FoodComposition food = null;
 			java.util.Calendar cal = Calendar.getInstance();
-			Map<Integer, WeeklyDataModel> dataMap = new LinkedHashMap<Integer, WeeklyDataModel>();
+			Map<Integer, WeeklyDataModel> dataMap = new TreeMap<Integer, WeeklyDataModel>();
 			for (GoodsPurchase m : rows) {
 				WeeklyDataModel dm = dataMap.get(m.getFullDay());
 				if (dm == null) {

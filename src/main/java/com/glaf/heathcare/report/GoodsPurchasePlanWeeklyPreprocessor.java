@@ -22,10 +22,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +85,7 @@ public class GoodsPurchasePlanWeeklyPreprocessor implements IReportPreprocessor 
 			String wkName = "";
 			FoodComposition food = null;
 			java.util.Calendar cal = Calendar.getInstance();
-			Map<Integer, WeeklyDataModel> dataMap = new LinkedHashMap<Integer, WeeklyDataModel>();
+			Map<Integer, WeeklyDataModel> dataMap = new TreeMap<Integer, WeeklyDataModel>();
 			for (GoodsPurchasePlan m : rows) {
 				WeeklyDataModel dm = dataMap.get(m.getFullDay());
 				if (dm == null) {
