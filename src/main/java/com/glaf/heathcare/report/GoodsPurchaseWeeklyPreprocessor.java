@@ -126,23 +126,23 @@ public class GoodsPurchaseWeeklyPreprocessor implements IReportPreprocessor {
 				}
 			}
 
-			int maxLength = 0;
+			int maxSize = 0;
 			Iterator<Entry<Integer, WeeklyDataModel>> iterator = dataMap.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<Integer, WeeklyDataModel> entry = iterator.next();
 				WeeklyDataModel value = entry.getValue();
-				if (value.getDataList().size() > maxLength) {
-					maxLength = value.getDataList().size();
+				if (value.getDataList().size() > maxSize) {
+					maxSize = value.getDataList().size();
 				}
 			}
 
-			int len = 0;
+			int size = 0;
 			iterator = dataMap.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<Integer, WeeklyDataModel> entry = iterator.next();
 				WeeklyDataModel value = entry.getValue();
-				len = maxLength - value.getDataList().size();
-				for (int i = 0; i < len; i++) {
+				size = maxSize - value.getDataList().size();
+				for (int i = 0; i < size; i++) {
 					GoodsPurchase plan = new GoodsPurchase();
 					value.getDataList().add(plan);
 				}
