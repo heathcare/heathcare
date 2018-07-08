@@ -477,6 +477,19 @@
         window.open(link);
     }
 
+	function exportWeeklyXls(){
+        var startTime = jQuery("#startTime").val();
+        var endTime = jQuery("#endTime").val();
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=GoodsPurchasePlanWeekly";
+		if(startTime != ""){
+			link = link + "&startTime=" + startTime ;
+		}
+		if(endTime != ""){
+			link = link  + "&endTime="+endTime+" 23:59:59";
+		}
+        window.open(link);
+	}
+
 	function doSearch(){
 		var startTime = jQuery("#startTime").val();
         var endTime = jQuery("#endTime").val();
@@ -572,6 +585,9 @@
 	<td valign="middle">
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 		   onclick="javascript:exportXls();">导出Excel</a>
+		&nbsp;
+		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
+		   onclick="javascript:exportWeeklyXls();">按周导出Excel</a>
 	</td>
     </tr>
    </table>

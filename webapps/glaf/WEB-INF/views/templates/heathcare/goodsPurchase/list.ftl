@@ -493,6 +493,19 @@
         window.open(link);
     }
 
+	function exportWeeklyXls(){
+        var startTime = jQuery("#startTime").val();
+        var endTime = jQuery("#endTime").val();
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=GoodsPurchaseWeekly";
+		if(startTime != ""){
+			link = link + "&startTime=" + startTime ;
+		}
+		if(endTime != ""){
+			link = link  + "&endTime="+endTime+" 23:59:59";
+		}
+        window.open(link);
+	}
+
 	function doWeeklyExport(){
         var startTime = jQuery("#startTime").val();
         var endTime = jQuery("#endTime").val();

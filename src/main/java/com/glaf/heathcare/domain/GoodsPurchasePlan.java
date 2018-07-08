@@ -116,6 +116,9 @@ public class GoodsPurchasePlan implements Serializable, JSONable {
 	@Column(name = "QUANTITY_")
 	protected double quantity;
 
+	@javax.persistence.Transient
+	protected String quantityString;
+
 	/**
 	 * 库存量
 	 */
@@ -269,6 +272,9 @@ public class GoodsPurchasePlan implements Serializable, JSONable {
 	}
 
 	public String getGoodsName() {
+		if (goodsName == null) {
+			goodsName = "";
+		}
 		return this.goodsName;
 	}
 
@@ -315,6 +321,15 @@ public class GoodsPurchasePlan implements Serializable, JSONable {
 			quantity = Math.round(quantity * 10D) / 10D;
 		}
 		return this.quantity;
+	}
+
+	public String getQuantityString() {
+		quantityString = "";
+		if (quantity > 0) {
+			quantity = Math.round(quantity * 10D) / 10D;
+			quantityString = String.valueOf(quantity);
+		}
+		return quantityString;
 	}
 
 	public String getRemark() {
@@ -452,6 +467,10 @@ public class GoodsPurchasePlan implements Serializable, JSONable {
 
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
+	}
+
+	public void setQuantityString(String quantityString) {
+		this.quantityString = quantityString;
 	}
 
 	public void setRemark(String remark) {

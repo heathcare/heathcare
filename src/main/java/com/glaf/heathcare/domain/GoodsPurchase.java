@@ -341,6 +341,9 @@ public class GoodsPurchase implements Serializable, JSONable {
 	}
 
 	public String getGoodsName() {
+		if (goodsName == null) {
+			goodsName = "";
+		}
 		return this.goodsName;
 	}
 

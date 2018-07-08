@@ -32,7 +32,11 @@ public class WeeklyDataModel implements Serializable {
 
 	protected int maxSize;
 
+	protected int startIndex;
+
 	protected List<RptModel> items = new ArrayList<RptModel>();
+
+	protected List<Object> dataList = new ArrayList<Object>();
 
 	protected List<Object> items1 = new ArrayList<Object>();
 
@@ -50,6 +54,10 @@ public class WeeklyDataModel implements Serializable {
 
 	public WeeklyDataModel() {
 
+	}
+
+	public List<Object> getDataList() {
+		return dataList;
 	}
 
 	public String getDateString() {
@@ -96,6 +104,14 @@ public class WeeklyDataModel implements Serializable {
 		return name;
 	}
 
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setDataList(List<Object> dataList) {
+		this.dataList = dataList;
+	}
+
 	public void setDateString(String dateString) {
 		this.dateString = dateString;
 	}
@@ -138,6 +154,10 @@ public class WeeklyDataModel implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
 	}
 
 }

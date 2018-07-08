@@ -235,6 +235,24 @@ public class FoodCompositionController {
 				}
 			}
 
+			Set<Long> favorites = new HashSet<Long>();
+			FoodFavoriteQuery queryx = new FoodFavoriteQuery();
+			if (!loginContext.isSystemAdministrator()) {
+				queryx.tenantId(loginContext.getTenantId());
+			}
+			if (nodeId > 0) {
+				queryx.nodeId(nodeId);
+			}
+
+			if (!loginContext.isSystemAdministrator()) {
+				List<FoodFavorite> foodFavorites = foodFavoriteService.list(queryx);
+				if (foodFavorites != null && !foodFavorites.isEmpty()) {
+					for (FoodFavorite f : foodFavorites) {
+						favorites.add(f.getFoodId());
+					}
+				}
+			}
+
 			List<FoodComposition> list = foodCompositionService.getFoodCompositionsByQueryCriteria(start, limit, query);
 
 			if (list != null && !list.isEmpty()) {
@@ -248,6 +266,9 @@ public class FoodCompositionController {
 					rowJSON.put("startIndex", ++start);
 					rowJSON.put("id", foodComposition.getId());
 					rowJSON.put("foodCompositionId", foodComposition.getId());
+					if (favorites.contains(foodComposition.getId())) {
+						rowJSON.put("favorite", true);
+					}
 					rowsJSON.add(rowJSON);
 				}
 				result.put("rows", rowsJSON);
@@ -330,6 +351,24 @@ public class FoodCompositionController {
 				}
 			}
 
+			Set<Long> favorites = new HashSet<Long>();
+			FoodFavoriteQuery queryx = new FoodFavoriteQuery();
+			if (!loginContext.isSystemAdministrator()) {
+				queryx.tenantId(loginContext.getTenantId());
+			}
+			if (nodeId > 0) {
+				queryx.nodeId(nodeId);
+			}
+
+			if (!loginContext.isSystemAdministrator()) {
+				List<FoodFavorite> foodFavorites = foodFavoriteService.list(queryx);
+				if (foodFavorites != null && !foodFavorites.isEmpty()) {
+					for (FoodFavorite f : foodFavorites) {
+						favorites.add(f.getFoodId());
+					}
+				}
+			}
+
 			List<FoodComposition> list = foodCompositionService.getFoodCompositionsByQueryCriteria(start, limit, query);
 
 			if (list != null && !list.isEmpty()) {
@@ -340,6 +379,11 @@ public class FoodCompositionController {
 					rowJSON.put("startIndex", ++start);
 					rowJSON.put("id", foodComposition.getId());
 					rowJSON.put("foodCompositionId", foodComposition.getId());
+
+					if (favorites.contains(foodComposition.getId())) {
+						rowJSON.put("favorite", true);
+					}
+
 					rowsJSON.add(rowJSON);
 				}
 				result.put("rows", rowsJSON);
