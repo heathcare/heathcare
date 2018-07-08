@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+
+	<report id="rpt_dietary">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/Dietary.xls</templateFile>
+	</report>
+
+	<report id="rpt_dietary_fee">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryFee.xls</templateFile>
+	</report>
+
+	<report id="rpt_dietary_template">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryTemplate.xls</templateFile>
+	</report>
+
+	<report id="rpt_goods_purchase">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsPurchase.xls</templateFile>
+	</report>
+
+	<report id="rpt_month_fee">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MonthFee.xls</templateFile>
+	</report>
+
+	<report id="DietaryAnalyze">
+	    <title>膳食营养分析统计表</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryAnalyze.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.DietaryAnalyzePreprocessor</prepareClass>
+	</report>
+
+	<report id="DailyGoodsActualQuantity">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DailyGoodsActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.DailyGoodsActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="DailyGoodsActualQuantity2">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DailyGoodsActualQuantity2.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.DailyGoodsActualQuantitySecondPreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantDailyGoodsActualQuantity2">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DailyGoodsActualQuantity2.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantDailyGoodsActualQuantitySecondPreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsCountQuantity">
+	    <title>出入库登记表</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsCountQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsInOutStockActualQuantity">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsInOutStockActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsInOutStockActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyFoodActualQuantityCount">
+	    <title>一周食物用量表</title>
+	    <templateType>jxls1</templateType>
+		<templateFile>conf/report/templates/WeeklyFoodActualQuantityCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyFoodActualQuantityCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="MonthGoodsActualQuantity">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MonthGoodsActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MonthGoodsActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeekGoodsActualQuantity">
+	    <title>食物用量汇总表</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeekGoodsActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeekGoodsActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsInStock">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsInStock.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsInStockPreprocessor</prepareClass>
+	</report>
+
+	<report id="MonthGoodsInStock">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MonthGoodsInStock.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MonthGoodsInStockPreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsOutStock">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsOutStock.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsOutStockPreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsPurchase">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsPurchase.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsPurchasePreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsPurchaseWeekly">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsPurchaseWeekly.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsPurchaseWeeklyPreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsPurchasePlan">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsPurchasePlan.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsPurchasePlanPreprocessor</prepareClass>
+	</report>
+
+	<report id="GoodsPurchasePlanWeekly">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/GoodsPurchasePlanWeekly.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GoodsPurchasePlanWeeklyPreprocessor</prepareClass>
+	</report>
+
+    <report id="InfectiousDiseaseCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/InfectiousDiseaseCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.InfectiousDiseaseCountPreprocessor</prepareClass>
+	</report>
+
+    <report id="InfectiousDiseaseList">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/InfectiousDiseaseList.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.InfectiousDiseaseListPreprocessor</prepareClass>
+	</report>
+
+	<report id="MedicalExaminationCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExaminationCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalExaminationCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantMedicalExaminationCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExaminationCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="MedicalExaminationSicknessPositiveSign">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExaminationSicknessPositiveSign.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationGradeCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantMedicalExaminationSicknessPositiveSign">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExaminationSicknessPositiveSign.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationGradeCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="PersonExport">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/PersonExport.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.PersonExportPreprocessor</prepareClass>
+        <perms>TenantAdmin|SystemAdministrator</perms>
+	</report>
+
+	<report id="PersonInspection">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/PersonInspection.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.PersonInspectionPreprocessor</prepareClass>
+	</report>
+
+	<report id="PersonTransferSchool">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/PersonTransferSchool.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.PersonTransferSchoolPreprocessor</prepareClass>
+	</report>
+
+	<report id="PersonAttendanceCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/PersonAttendanceCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.PersonAttendancePreprocessor</prepareClass>
+	</report>
+
+	<report id="PersonAttendanceWeeklyCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/PersonAttendanceWeeklyCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.PersonAttendanceWeeklyCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="PersonAbsenceSicknessCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/PersonAbsenceSicknessCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.PersonAbsenceSicknessCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="Growth">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/Growth.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.GrowthPreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantGrowth">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/Growth.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantGrowthPreprocessor</prepareClass>
+	</report>
+
+	<report id="Triphopathia">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/Triphopathia.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.TriphopathiaPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyFoodActualQuantity">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyFoodActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyFoodActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyGoodsPurchase">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyGoodsPurchase.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyGoodsPurchasePreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyGoodsInStock">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyGoodsInStock.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyGoodsInStockPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyGoodsOutStock">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyGoodsOutStock.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyGoodsOutStockPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyGoodsPurchasePlan">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyGoodsPurchasePlan.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyGoodsPurchasePlanPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyMultiAreaFoodActualQuantity">
+	    <title>食物用量表2</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyMultiAreaFoodActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyMultiSheetFoodActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyMultiSheetFoodActualQuantity"> 
+	    <title>食物用量表2</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyMultiSheetFoodActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyMultiSheetFoodActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeekMultiSheetGoodsActualQuantity">
+	    <title>食物用量表1</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeekMultiSheetGoodsActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeekMultiSheetGoodsActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeekMultiAreaGoodsActualQuantity">
+	    <title>食物用量表1</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeekMultiAreaGoodsActualQuantity.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeekMultiAreaGoodsActualQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="DietaryNutritionCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.DietaryNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="DietaryMultiAreaNutritionCount">
+	    <title>养成分统计表</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryMultiAreaNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.DietaryNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyDietaryNutritionCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyDietaryNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyDietaryNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyDietaryTemplateNutritionCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyDietaryTemplateNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyDietaryTemplateNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="WeeklyFoodNutritionCount">
+	    <title>养成分统计表</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyFoodNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.WeeklyFoodNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="DailyDietaryNutritionCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DailyDietaryNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.DailyDietaryNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="DietaryTemplateMultiAreaNutritionCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryTemplateMultiAreaNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.DietaryTemplateNutritionCountPreprocessor</prepareClass>
+	</report>
+
+
+	<report id="TenantDailyDietaryNutritionCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DailyDietaryNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantDailyDietaryNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantWeeklyDietaryNutritionCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/WeeklyDietaryNutritionCount.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantWeeklyDietaryNutritionCountPreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantDietaryStructAnalyze">
+	    <title>膳食调查分析表</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryStructAnalyze.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantDietaryStructAnalyzePreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantDietaryNutritionAvgQuantityV1">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/DietaryNutritionAvgQuantityV1.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantDietaryNutritionAvgQuantityPreprocessor</prepareClass>
+	</report>
+
+	<report id="MedicalExamination1">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExamination1.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationExportPreprocessor</prepareClass>
+	</report>
+
+	<report id="MedicalExamination5">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExamination5.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationExportPreprocessor</prepareClass>
+	</report>
+
+	<report id="MedicalExaminationPersonExport">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExaminationPersonExport.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationPersonExportPreprocessor</prepareClass>
+	</report>
+
+
+	<report id="TenantMedicalExaminationGrade">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExaminationGradePerson.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationGradePreprocessor</prepareClass>
+	</report>
+
+	<report id="TenantMedicalExaminationGradeCount">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalExaminationStatistics.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationGradeCountPreprocessor</prepareClass>
+	</report>
+
+</reports>
