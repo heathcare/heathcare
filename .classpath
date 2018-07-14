@@ -215,7 +215,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/flowable-identitylink-service.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/flowable-idm-api.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/flowable-idm-engine.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/flowable-idm-spring.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/hibernate-core.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/hibernate-validator.jar"/>

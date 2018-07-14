@@ -21,7 +21,7 @@ package com.glaf.flowable.util;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.flowable.engine.common.impl.db.DbSqlSession;
+import org.flowable.common.engine.impl.db.DbSqlSession;
 
 import io.netty.util.concurrent.FastThreadLocal;
 

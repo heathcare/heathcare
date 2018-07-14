@@ -18,10 +18,10 @@
 
 package com.glaf.flowable.executionlistener;
 
-import org.flowable.engine.common.api.delegate.Expression;
+import org.flowable.common.engine.api.delegate.Expression;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.delegate.ExecutionListener;
- 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -29,13 +29,12 @@ import com.glaf.flowable.util.ExecutionUtils;
 
 public class SqlUpdateListener implements ExecutionListener {
 	private static final long serialVersionUID = 1L;
-	
-	private static final Log logger = LogFactory
-			.getLog(SqlUpdateListener.class);
+
+	private static final Log logger = LogFactory.getLog(SqlUpdateListener.class);
 
 	protected Expression sql;
 
-	public void notify(DelegateExecution execution)   {
+	public void notify(DelegateExecution execution) {
 		logger.debug("-------------------------------------------------------");
 		logger.debug("------------------------SQLUpdateListener--------------");
 		logger.debug("-------------------------------------------------------");
