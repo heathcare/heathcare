@@ -327,7 +327,7 @@ public class DailyDietaryExportBean {
 							proteinNoonTotal = proteinNoonTotal + dietary.getProtein();
 							fatNoonTotal = fatNoonTotal + dietary.getFat();
 						}
-						if (typeId == 3305 || typeId == 3406) {
+						if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 							dinnerList.add(model);
 							carbohydrateDinnerTotal = carbohydrateDinnerTotal + dietary.getCarbohydrate();
 							heatEnergyDinnerTotal = heatEnergyDinnerTotal + dietary.getHeatEnergy();

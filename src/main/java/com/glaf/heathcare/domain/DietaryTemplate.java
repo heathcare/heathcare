@@ -87,12 +87,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 	protected int season;
 
 	/**
-	 * 类别码
-	 */
-	@Column(name = "TYPE_", length = 50)
-	protected String type;
-
-	/**
 	 * 餐点类别编号
 	 */
 	@Column(name = "TYPEID_")
@@ -207,34 +201,10 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 	protected double phosphorus;
 
 	/**
-	 * 年
-	 */
-	@Column(name = "YEAR_")
-	protected int year;
-
-	/**
-	 * 月
-	 */
-	@Column(name = "MONTH_")
-	protected int month;
-
-	/**
-	 * 日
-	 */
-	@Column(name = "DAY_")
-	protected int day;
-
-	/**
 	 * 星期几
 	 */
 	@Column(name = "DAYOFWEEK_")
 	protected int dayOfWeek;
-
-	/**
-	 * 周
-	 */
-	@Column(name = "WEEK_")
-	protected int week;
 
 	/**
 	 * 排序号
@@ -409,10 +379,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		return "";
 	}
 
-	public int getDay() {
-		return this.day;
-	}
-
 	public int getDayOfWeek() {
 		return dayOfWeek;
 	}
@@ -466,10 +432,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 			Collections.sort(items);
 		}
 		return items;
-	}
-
-	public int getMonth() {
-		return this.month;
 	}
 
 	public String getName() {
@@ -534,10 +496,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 
 	public String getTenantId() {
 		return tenantId;
-	}
-
-	public String getType() {
-		return this.type;
 	}
 
 	public long getTypeId() {
@@ -605,14 +563,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		return this.vitaminC;
 	}
 
-	public int getWeek() {
-		return this.week;
-	}
-
-	public int getYear() {
-		return this.year;
-	}
-
 	public double getZinc() {
 		if (zinc > 0) {
 			zinc = Math.round(zinc * 100D) / 100D;
@@ -660,10 +610,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		this.createTime = createTime;
 	}
 
-	public void setDay(int day) {
-		this.day = day;
-	}
-
 	public void setDayOfWeek(int dayOfWeek) {
 		this.dayOfWeek = dayOfWeek;
 	}
@@ -702,10 +648,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 
 	public void setItems(List<DietaryItem> items) {
 		this.items = items;
-	}
-
-	public void setMonth(int month) {
-		this.month = month;
 	}
 
 	public void setName(String name) {
@@ -760,10 +702,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		this.tenantId = tenantId;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public void setTypeId(long typeId) {
 		this.typeId = typeId;
 	}
@@ -802,14 +740,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 
 	public void setVitaminC(double vitaminC) {
 		this.vitaminC = vitaminC;
-	}
-
-	public void setWeek(int week) {
-		this.week = week;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
 	}
 
 	public void setZinc(double zinc) {

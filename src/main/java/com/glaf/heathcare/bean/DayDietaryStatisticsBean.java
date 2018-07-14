@@ -225,7 +225,7 @@ public class DayDietaryStatisticsBean {
 							fatNoonTotal = fatNoonTotal + dietary.getFat();
 							heatEnergyNoon = heatEnergyNoon + dietary.getHeatEnergy();
 						}
-						if (typeId == 3305 || typeId == 3406) {
+						if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 							dinnerList.add(model);
 							carbohydrateDinnerTotal = carbohydrateDinnerTotal + dietary.getCarbohydrate();
 							heatEnergyDinnerTotal = heatEnergyDinnerTotal + dietary.getHeatEnergy();
@@ -1341,7 +1341,7 @@ public class DayDietaryStatisticsBean {
 							fatNoonTotal = fatNoonTotal + dietary.getFat();
 							heatEnergyNoon = heatEnergyNoon + dietary.getHeatEnergy();
 						}
-						if (typeId == 3305 || typeId == 3406) {
+						if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 							dinnerList.add(model);
 							carbohydrateDinnerTotal = carbohydrateDinnerTotal + dietary.getCarbohydrate();
 							heatEnergyDinnerTotal = heatEnergyDinnerTotal + dietary.getHeatEnergy();

@@ -50,7 +50,6 @@ public class DietaryTemplateDomainFactory {
 		columnMap.put("province", "PROVINCE_");
 		columnMap.put("region", "REGION_");
 		columnMap.put("season", "SEASON_");
-		columnMap.put("type", "TYPE_");
 		columnMap.put("typeId", "TYPEID_");
 		columnMap.put("heatEnergy", "HEATENERGY_");
 		columnMap.put("protein", "PROTEIN_");
@@ -70,11 +69,7 @@ public class DietaryTemplateDomainFactory {
 		columnMap.put("zinc", "ZINC_");
 		columnMap.put("iodine", "IODINE_");
 		columnMap.put("phosphorus", "PHOSPHORUS_");
-		columnMap.put("year", "YEAR_");
-		columnMap.put("month", "MONTH_");
-		columnMap.put("day", "DAY_");
 		columnMap.put("dayOfWeek", "DAYOFWEEK_");
-		columnMap.put("week", "WEEK_");
 		columnMap.put("sortNo", "SORTNO_");
 		columnMap.put("suitNo", "SUITNO_");
 		columnMap.put("sysFlag", "SYSFLAG_");
@@ -98,7 +93,6 @@ public class DietaryTemplateDomainFactory {
 		javaTypeMap.put("province", "String");
 		javaTypeMap.put("region", "String");
 		javaTypeMap.put("season", "Integer");
-		javaTypeMap.put("type", "String");
 		javaTypeMap.put("typeId", "Long");
 		javaTypeMap.put("heatEnergy", "Double");
 		javaTypeMap.put("protein", "Double");
@@ -118,11 +112,7 @@ public class DietaryTemplateDomainFactory {
 		javaTypeMap.put("zinc", "Double");
 		javaTypeMap.put("iodine", "Double");
 		javaTypeMap.put("phosphorus", "Double");
-		javaTypeMap.put("year", "Integer");
-		javaTypeMap.put("month", "Integer");
-		javaTypeMap.put("day", "Integer");
 		javaTypeMap.put("dayOfWeek", "Integer");
-		javaTypeMap.put("week", "Integer");
 		javaTypeMap.put("sortNo", "Integer");
 		javaTypeMap.put("suitNo", "Integer");
 		javaTypeMap.put("sysFlag", "String");
@@ -190,33 +180,26 @@ public class DietaryTemplateDomainFactory {
 		ageGroup.setJavaType("String");
 		ageGroup.setLength(50);
 		tableDefinition.addColumn(ageGroup);
-		
-		ColumnDefinition province = new ColumnDefinition();
-        province.setName("province");
-        province.setColumnName("PROVINCE_");
-        province.setJavaType("String");
-        province.setLength(50);
-        tableDefinition.addColumn(province);
 
-        ColumnDefinition region = new ColumnDefinition();
-        region.setName("region");
-        region.setColumnName("REGION_");
-        region.setJavaType("String");
-        region.setLength(50);
-        tableDefinition.addColumn(region);
+		ColumnDefinition province = new ColumnDefinition();
+		province.setName("province");
+		province.setColumnName("PROVINCE_");
+		province.setJavaType("String");
+		province.setLength(50);
+		tableDefinition.addColumn(province);
+
+		ColumnDefinition region = new ColumnDefinition();
+		region.setName("region");
+		region.setColumnName("REGION_");
+		region.setJavaType("String");
+		region.setLength(50);
+		tableDefinition.addColumn(region);
 
 		ColumnDefinition season = new ColumnDefinition();
 		season.setName("season");
 		season.setColumnName("SEASON_");
 		season.setJavaType("Integer");
 		tableDefinition.addColumn(season);
-
-		ColumnDefinition type = new ColumnDefinition();
-		type.setName("type");
-		type.setColumnName("TYPE_");
-		type.setJavaType("String");
-		type.setLength(50);
-		tableDefinition.addColumn(type);
 
 		ColumnDefinition typeId = new ColumnDefinition();
 		typeId.setName("typeId");
@@ -332,35 +315,11 @@ public class DietaryTemplateDomainFactory {
 		phosphorus.setJavaType("Double");
 		tableDefinition.addColumn(phosphorus);
 
-		ColumnDefinition year = new ColumnDefinition();
-		year.setName("year");
-		year.setColumnName("YEAR_");
-		year.setJavaType("Integer");
-		tableDefinition.addColumn(year);
-
-		ColumnDefinition month = new ColumnDefinition();
-		month.setName("month");
-		month.setColumnName("MONTH_");
-		month.setJavaType("Integer");
-		tableDefinition.addColumn(month);
-
-		ColumnDefinition day = new ColumnDefinition();
-		day.setName("day");
-		day.setColumnName("DAY_");
-		day.setJavaType("Integer");
-		tableDefinition.addColumn(day);
-
 		ColumnDefinition dayOfWeek = new ColumnDefinition();
 		dayOfWeek.setName("dayOfWeek");
 		dayOfWeek.setColumnName("DAYOFWEEK_");
 		dayOfWeek.setJavaType("Integer");
 		tableDefinition.addColumn(dayOfWeek);
-
-		ColumnDefinition week = new ColumnDefinition();
-		week.setName("week");
-		week.setColumnName("WEEK_");
-		week.setJavaType("Integer");
-		tableDefinition.addColumn(week);
 
 		ColumnDefinition sortNo = new ColumnDefinition();
 		sortNo.setName("sortNo");

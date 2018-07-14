@@ -307,7 +307,7 @@ public class DietaryStatisticsServiceImpl implements DietaryStatisticsService {
 							fatNoonTotal = fatNoonTotal + template.getFat();
 							heatEnergyNoon = heatEnergyNoon + template.getHeatEnergy();
 						}
-						if (typeId == 3305 || typeId == 3406) {
+						if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 							dinnerList.add(model);
 							carbohydrateDinnerTotal = carbohydrateDinnerTotal + template.getCarbohydrate();
 							heatEnergyDinnerTotal = heatEnergyDinnerTotal + template.getHeatEnergy();
@@ -1424,7 +1424,7 @@ public class DietaryStatisticsServiceImpl implements DietaryStatisticsService {
 							fatNoonTotal = fatNoonTotal + template.getFat();
 							heatEnergyNoon = heatEnergyNoon + template.getHeatEnergy();
 						}
-						if (typeId == 3305 || typeId == 3406) {
+						if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 							dinnerList.add(model);
 							carbohydrateDinnerTotal = carbohydrateDinnerTotal + template.getCarbohydrate();
 							heatEnergyDinnerTotal = heatEnergyDinnerTotal + template.getHeatEnergy();

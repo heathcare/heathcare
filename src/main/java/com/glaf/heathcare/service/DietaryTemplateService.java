@@ -21,6 +21,7 @@ package com.glaf.heathcare.service;
 import java.util.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONArray;
 import com.glaf.core.security.LoginContext;
 import com.glaf.heathcare.domain.*;
 import com.glaf.heathcare.query.*;
@@ -92,6 +93,17 @@ public interface DietaryTemplateService {
 	List<DietaryTemplate> getDietaryTemplatesByQueryCriteria(int start, int pageSize, DietaryTemplateQuery query);
 
 	/**
+	 * 获取某套模板的数据
+	 * 
+	 * @param loginContext
+	 * @param sysFlag
+	 * @param suitNo
+	 * @param typeIdX
+	 * @return
+	 */
+	JSONArray getSuiteData(LoginContext loginContext, String sysFlag, int suitNo, long typeIdX);
+
+	/**
 	 * 根据查询参数获取记录列表
 	 * 
 	 * @return
@@ -105,6 +117,9 @@ public interface DietaryTemplateService {
 	 */
 	@Transactional
 	void save(DietaryTemplate dietaryTemplate);
+
+	@Transactional
+	void saveAll(LoginContext loginContext, JSONArray array, int suitNo, long typeIdX);
 
 	@Transactional
 	void saveAs(DietaryTemplate dietaryTemplate);

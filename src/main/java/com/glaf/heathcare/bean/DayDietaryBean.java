@@ -498,7 +498,7 @@ public class DayDietaryBean {
 					ids.add(dietary.getId());
 					listMap.put("snack", ids);
 				}
-				if (typeId == 3305 || typeId == 3406) {
+				if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 					List<Long> ids = listMap.get("dinner");
 					if (ids == null) {
 						ids = new ArrayList<Long>();
@@ -590,7 +590,7 @@ public class DayDietaryBean {
 					ids.add(dietary.getId());
 					listMap.put("snack", ids);
 				}
-				if (typeId == 3305 || typeId == 3406) {
+				if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 					List<Long> ids = listMap.get("dinner");
 					if (ids == null) {
 						ids = new ArrayList<Long>();

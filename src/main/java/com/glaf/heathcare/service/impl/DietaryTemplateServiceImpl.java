@@ -21,8 +21,10 @@ package com.glaf.heathcare.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
@@ -35,6 +37,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.glaf.base.modules.sys.model.Dictory;
+import com.glaf.base.modules.sys.model.TenantConfig;
+import com.glaf.base.modules.sys.service.DictoryService;
+import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.core.cache.CacheFactory;
 import com.glaf.core.config.SystemConfig;
 import com.glaf.core.dao.EntityDAO;
@@ -75,6 +82,10 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 	protected DietaryTemplateMapper dietaryTemplateMapper;
 
 	protected FoodCompositionService foodCompositionService;
+
+	protected DictoryService dictoryService;
+
+	protected TenantConfigService tenantConfigService;
 
 	public DietaryTemplateServiceImpl() {
 
@@ -412,6 +423,115 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 		return rows;
 	}
 
+	public JSONArray getSuiteData(LoginContext loginContext, String sysFlag, int suitNo, long typeIdX) {
+		JSONArray result = new JSONArray();
+		Map<String, Long> typeMap = new HashMap<String, Long>();
+
+		if (loginContext.isSystemAdministrator()) {
+			Dictory dict = dictoryService.find(typeIdX);
+			List<Dictory> dicts = dictoryService.getDictories(dict.getCode() + "%");
+			if (dicts != null && !dicts.isEmpty()) {
+				for (Dictory d : dicts) {
+					String code = d.getCode();
+					if (code.indexOf("|") > 0) {
+						code = code.substring(code.lastIndexOf("|") + 1, code.length());
+						typeMap.put(code, d.getId());
+					}
+				}
+			}
+		} else {
+			TenantConfig tenantConfig = tenantConfigService.getTenantConfigByTenantId(loginContext.getTenantId());
+			if (tenantConfig != null && tenantConfig.getTypeId() > 0) {
+				Dictory dict = dictoryService.find(tenantConfig.getTypeId());
+				List<Dictory> dicts = dictoryService.getDictories(dict.getCode() + "%");
+				if (dicts != null && !dicts.isEmpty()) {
+					for (Dictory d : dicts) {
+						String code = d.getCode();
+						if (code.indexOf("|") > 0) {
+							code = code.substring(code.lastIndexOf("|") + 1, code.length());
+							typeMap.put(code, d.getId());
+						}
+					}
+				}
+			}
+		}
+
+		DietaryTemplateQuery query = new DietaryTemplateQuery();
+		query.suitNo(suitNo);
+		if (StringUtils.equals(sysFlag, "Y")) {
+			query.sysFlag("Y");
+		} else {
+			if (!loginContext.isSystemAdministrator()) {
+				query.tenantId(loginContext.getTenantId());
+				query.sysFlag("N");
+			}
+		}
+
+		List<DietaryTemplate> list = this.list(query);
+		List<Long> dietaryTemplateIds = new ArrayList<Long>();
+		Map<Long, DietaryTemplate> dietaryTemplateMap = new HashMap<Long, DietaryTemplate>();
+		Map<Integer, List<DietaryTemplate>> dayOfWeekTemplateMap = new HashMap<Integer, List<DietaryTemplate>>();
+		for (DietaryTemplate dietaryTemplate : list) {
+			if (!dietaryTemplateIds.contains(dietaryTemplate.getId())) {
+				dietaryTemplateIds.add(dietaryTemplate.getId());
+				dietaryTemplateMap.put(dietaryTemplate.getId(), dietaryTemplate);
+			}
+			List<DietaryTemplate> rows = dayOfWeekTemplateMap.get(dietaryTemplate.getDayOfWeek());
+			if (rows == null) {
+				rows = new ArrayList<DietaryTemplate>();
+				dayOfWeekTemplateMap.put(dietaryTemplate.getDayOfWeek(), rows);
+			}
+			rows.add(dietaryTemplate);
+		}
+
+		List<Long> templateIds = new ArrayList<Long>();
+		for (DietaryTemplate t : list) {
+			templateIds.add(t.getId());
+		}
+		DietaryItemQuery query2 = new DietaryItemQuery();
+		query2.templateIds(dietaryTemplateIds);
+		List<DietaryItem> items = dietaryItemMapper.getDietaryItems(query2);
+		if (items != null && !items.isEmpty()) {
+			for (DietaryItem item : items) {
+				DietaryTemplate dietaryTemplate = dietaryTemplateMap.get(item.getTemplateId());
+				if (dietaryTemplate != null) {
+					dietaryTemplate.addItem(item);
+				}
+			}
+		}
+
+		JSONObject jsonObject = null;
+		JSONArray array = null;
+		Iterator<Entry<Integer, List<DietaryTemplate>>> iterator = dayOfWeekTemplateMap.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<Integer, List<DietaryTemplate>> entry = iterator.next();
+			Integer dayOfWeek = entry.getKey();
+			List<DietaryTemplate> rows = entry.getValue();
+			jsonObject = new JSONObject();
+			jsonObject.put("DayOfWeek", dayOfWeek);
+
+			Iterator<Entry<String, Long>> iterator2 = typeMap.entrySet().iterator();
+			while (iterator2.hasNext()) {
+				Entry<String, Long> entry2 = iterator2.next();
+				String key = entry2.getKey();
+				Long typeId = entry2.getValue();
+				for (DietaryTemplate dietaryTemplate : rows) {
+					if (typeId == dietaryTemplate.getTypeId()) {
+						array = jsonObject.getJSONArray(key);
+						if (array == null) {
+							array = new JSONArray();
+							jsonObject.put(key, array);
+						}
+						array.add(DietaryTemplateJsonFactory.toJsonObject(dietaryTemplate));
+					}
+				}
+			}
+			result.add(jsonObject);
+		}
+
+		return result;
+	}
+
 	public List<DietaryTemplate> list(DietaryTemplateQuery query) {
 		if (query.getSuitNo() != null && query.getSuitNo() > 0) {
 			query.setOrderBy(" E.DAYOFWEEK_ asc, E.TYPEID_ asc, E.SORTNO_ asc ");
@@ -435,6 +555,121 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 	}
 
 	@Transactional
+	public void saveAll(LoginContext loginContext, JSONArray array, int suitNo, long typeIdX) {
+		JSONObject jsonObject = null;
+		JSONArray children = null;
+		List<DietaryTemplate> list = null;
+		int sortNo = 0;
+		int dayOfWeek = 0;
+		Date now = new Date();
+
+		Map<String, Long> typeMap = new HashMap<String, Long>();
+
+		if (loginContext.isSystemAdministrator()) {
+			Dictory dict = dictoryService.find(typeIdX);
+			List<Dictory> dicts = dictoryService.getDictories(dict.getCode() + "%");
+			if (dicts != null && !dicts.isEmpty()) {
+				for (Dictory d : dicts) {
+					String code = d.getCode();
+					if (code.indexOf("|") > 0) {
+						code = code.substring(code.lastIndexOf("|") + 1, code.length());
+						typeMap.put(code, d.getId());
+					}
+				}
+			}
+		} else {
+			TenantConfig tenantConfig = tenantConfigService.getTenantConfigByTenantId(loginContext.getTenantId());
+			if (tenantConfig != null && tenantConfig.getTypeId() > 0) {
+				Dictory dict = dictoryService.find(tenantConfig.getTypeId());
+				List<Dictory> dicts = dictoryService.getDictories(dict.getCode() + "%");
+				if (dicts != null && !dicts.isEmpty()) {
+					for (Dictory d : dicts) {
+						String code = d.getCode();
+						if (code.indexOf("|") > 0) {
+							code = code.substring(code.lastIndexOf("|") + 1, code.length());
+							typeMap.put(code, d.getId());
+						}
+					}
+				}
+			}
+		}
+
+		int size = array.size();
+		for (int i = 0; i < size; i++) {
+			sortNo = 0;
+
+			jsonObject = array.getJSONObject(i);
+			dayOfWeek = jsonObject.getInteger("DayOfWeek");
+			DietaryTemplateQuery query = new DietaryTemplateQuery();
+			if (loginContext.isSystemAdministrator()) {
+				query.sysFlag("Y");
+				query.createBy(loginContext.getActorId());
+			} else {
+				query.tenantId(loginContext.getTenantId());
+				query.sysFlag("N");
+			}
+			query.suitNo(suitNo);
+
+			List<DietaryTemplate> templates = this.list(query);
+			List<Long> templateIds = new ArrayList<Long>();
+			for (DietaryTemplate t : templates) {
+				templateIds.add(t.getId());
+			}
+
+			dietaryTemplateMapper.deleteDietaryTemplates(query);
+
+			DietaryItemQuery query2 = new DietaryItemQuery();
+			query2.templateIds(templateIds);
+
+			dietaryItemMapper.deleteDietaryTemplates(query2);
+
+			Iterator<Entry<String, Long>> iterator = typeMap.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<String, Long> entry = iterator.next();
+				String key = entry.getKey();
+				Long typeId = entry.getValue();
+				children = jsonObject.getJSONArray(key);
+				if (children != null && !children.isEmpty()) {
+					list = DietaryTemplateJsonFactory.arrayToList(children);
+					if (list != null && !list.isEmpty()) {
+						for (DietaryTemplate dietaryTemplate : list) {
+							dietaryTemplate.setId(idGenerator.nextId("HEALTH_DIETARY_TEMPLATE"));
+							dietaryTemplate.setCreateTime(now);
+							dietaryTemplate.setCreateBy(loginContext.getActorId());
+							dietaryTemplate.setDayOfWeek(dayOfWeek);
+							dietaryTemplate.setSuitNo(suitNo);
+							dietaryTemplate.setTypeId(typeId);
+							dietaryTemplate.setSortNo(++sortNo);
+
+							if (loginContext.isSystemAdministrator()) {
+								dietaryTemplate.setSysFlag("Y");
+								dietaryTemplate.setCreateBy(loginContext.getActorId());
+							} else {
+								dietaryTemplate.setTenantId(loginContext.getTenantId());
+								dietaryTemplate.setSysFlag("N");
+							}
+
+							dietaryTemplateMapper.insertDietaryTemplate(dietaryTemplate);
+
+							if (dietaryTemplate.getItems() != null && !dietaryTemplate.getItems().isEmpty()) {
+								for (DietaryItem item : dietaryTemplate.getItems()) {
+									item.setId(idGenerator.nextId("HEALTH_DIETARY_ITEM"));
+									item.setTemplateId(dietaryTemplate.getId());
+									item.setTypeId(typeId);
+									item.setLastModified(System.currentTimeMillis());
+									item.setCreateTime(now);
+									item.setCreateBy(loginContext.getActorId());
+									dietaryItemMapper.insertDietaryItem(item);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Transactional
 	public void saveAs(DietaryTemplate dietaryTemplate) {
 		DietaryTemplate model = this.getDietaryTemplate(dietaryTemplate.getId());
 		if (model != null) {
@@ -453,6 +688,11 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 				}
 			}
 		}
+	}
+
+	@javax.annotation.Resource
+	public void setDictoryService(DictoryService dictoryService) {
+		this.dictoryService = dictoryService;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.DietaryItemMapper")
@@ -493,6 +733,11 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 	@javax.annotation.Resource
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	@javax.annotation.Resource
+	public void setTenantConfigService(TenantConfigService tenantConfigService) {
+		this.tenantConfigService = tenantConfigService;
 	}
 
 	@Transactional

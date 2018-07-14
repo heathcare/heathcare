@@ -755,7 +755,7 @@ public class DietaryExportBean {
 									|| typeId == 3415) {
 								snackList1.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList1.add(model);
 							}
 							dietaryCount = countMap.get(dayOfWeek);
@@ -782,7 +782,7 @@ public class DietaryExportBean {
 									|| typeId == 3415) {
 								snackList2.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList2.add(model);
 							}
 							dietaryCount = countMap.get(dayOfWeek);
@@ -809,7 +809,7 @@ public class DietaryExportBean {
 									|| typeId == 3415) {
 								snackList3.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList3.add(model);
 							}
 							dietaryCount = countMap.get(dayOfWeek);
@@ -836,7 +836,7 @@ public class DietaryExportBean {
 									|| typeId == 3415) {
 								snackList4.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList4.add(model);
 							}
 							dietaryCount = countMap.get(dayOfWeek);
@@ -863,7 +863,7 @@ public class DietaryExportBean {
 									|| typeId == 3415) {
 								snackList5.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList5.add(model);
 							}
 							dietaryCount = countMap.get(dayOfWeek);
@@ -891,7 +891,7 @@ public class DietaryExportBean {
 									|| typeId == 3415) {
 								snackList6.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList6.add(model);
 							}
 							dietaryCount = countMap.get(dayOfWeek);
@@ -919,7 +919,7 @@ public class DietaryExportBean {
 									|| typeId == 3415) {
 								snackList7.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList7.add(model);
 							}
 							dietaryCount = countMap.get(dayOfWeek);

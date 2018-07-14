@@ -38,6 +38,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.glaf.base.modules.sys.model.Dictory;
+import com.glaf.base.modules.sys.model.TenantConfig;
+import com.glaf.base.modules.sys.service.DictoryService;
+import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.core.base.ColumnModel;
 import com.glaf.core.base.ListModel;
 import com.glaf.core.base.TableModel;
@@ -68,6 +74,7 @@ import com.glaf.heathcare.service.DietaryTemplateService;
 import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.service.GoodsPurchasePlanService;
 import com.glaf.heathcare.util.DietaryDomainFactory;
+import com.glaf.heathcare.util.DietaryJsonFactory;
 
 @Service("com.glaf.heathcare.service.dietaryService")
 @Transactional(readOnly = true)
@@ -92,11 +99,15 @@ public class DietaryServiceImpl implements DietaryService {
 
 	protected DietaryTemplateService dietaryTemplateService;
 
+	protected DictoryService dictoryService;
+
 	protected ITableDataService tableDataService;
 
 	protected GoodsPurchasePlanService goodsPurchasePlanService;
 
 	protected FoodCompositionService foodCompositionService;
+
+	protected TenantConfigService tenantConfigService;
 
 	public DietaryServiceImpl() {
 
@@ -401,7 +412,6 @@ public class DietaryServiceImpl implements DietaryService {
 				dietary.setName(dietaryTemplate.getName());
 				dietary.setShareFlag(dietaryTemplate.getShareFlag());
 				// dietary.setSysFlag(dietaryTemplate.getSysFlag());
-				dietary.setType(dietaryTemplate.getType());
 				dietary.setTypeId(dietaryTemplate.getTypeId());
 				dietary.setVerifyFlag(dietaryTemplate.getVerifyFlag());
 				dietary.setTemplateId(dietaryTemplate.getId());
@@ -493,7 +503,6 @@ public class DietaryServiceImpl implements DietaryService {
 						dietary.setName(dietaryTemplate.getName());
 						dietary.setShareFlag(dietaryTemplate.getShareFlag());
 						// dietary.setSysFlag(dietaryTemplate.getSysFlag());
-						dietary.setType(dietaryTemplate.getType());
 						dietary.setTypeId(dietaryTemplate.getTypeId());
 						dietary.setVerifyFlag(dietaryTemplate.getVerifyFlag());
 						dietary.setTemplateId(dietaryTemplate.getId());
@@ -729,6 +738,95 @@ public class DietaryServiceImpl implements DietaryService {
 		return 0;
 	}
 
+	public JSONArray getWeekData(LoginContext loginContext, int year, int semester, int week) {
+		JSONArray result = new JSONArray();
+		Map<String, Long> typeMap = new HashMap<String, Long>();
+		TenantConfig tenantConfig = tenantConfigService.getTenantConfigByTenantId(loginContext.getTenantId());
+		if (tenantConfig != null && tenantConfig.getTypeId() > 0) {
+			Dictory dict = dictoryService.find(tenantConfig.getTypeId());
+			List<Dictory> dicts = dictoryService.getDictories(dict.getCode() + "%");
+			if (dicts != null && !dicts.isEmpty()) {
+				for (Dictory d : dicts) {
+					String code = d.getCode();
+					if (code.indexOf("|") > 0) {
+						code = code.substring(code.lastIndexOf("|") + 1, code.length());
+						typeMap.put(code, d.getId());
+					}
+				}
+			}
+		}
+
+		DietaryQuery query = new DietaryQuery();
+		query.tenantId(loginContext.getTenantId());
+		query.year(year);
+		query.semester(semester);
+		query.week(week);
+		query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(loginContext.getTenantId())));
+
+		DietaryItemQuery query2 = new DietaryItemQuery();
+		query2.tenantId(loginContext.getTenantId());
+		query2.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(loginContext.getTenantId())));
+
+		List<Dietary> list = this.list(query);
+		List<Long> dietaryIds = new ArrayList<Long>();
+		Map<Long, Dietary> dietaryMap = new HashMap<Long, Dietary>();
+		Map<Integer, List<Dietary>> dayDietaryMap = new HashMap<Integer, List<Dietary>>();
+		for (Dietary dietary : list) {
+			if (!dietaryIds.contains(dietary.getId())) {
+				dietaryIds.add(dietary.getId());
+				dietaryMap.put(dietary.getId(), dietary);
+			}
+			List<Dietary> rows = dayDietaryMap.get(dietary.getFullDay());
+			if (rows == null) {
+				rows = new ArrayList<Dietary>();
+				dayDietaryMap.put(dietary.getFullDay(), rows);
+			}
+			rows.add(dietary);
+		}
+
+		query2.dietaryIds(dietaryIds);
+		List<DietaryItem> items = dietaryItemMapper.getDietaryItems(query2);
+		if (items != null && !items.isEmpty()) {
+			for (DietaryItem item : items) {
+				Dietary dietary = dietaryMap.get(item.getDietaryId());
+				if (dietary != null) {
+					dietary.addItem(item);
+				}
+			}
+		}
+
+		JSONObject jsonObject = null;
+		JSONArray array = null;
+		Iterator<Entry<Integer, List<Dietary>>> iterator = dayDietaryMap.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<Integer, List<Dietary>> entry = iterator.next();
+			Integer fullDay = entry.getKey();
+			List<Dietary> rows = entry.getValue();
+			jsonObject = new JSONObject();
+			jsonObject.put("Day", fullDay);
+
+			Iterator<Entry<String, Long>> iterator2 = typeMap.entrySet().iterator();
+			while (iterator2.hasNext()) {
+				Entry<String, Long> entry2 = iterator2.next();
+				String key = entry2.getKey();
+				Long typeId = entry2.getValue();
+				for (Dietary dietary : rows) {
+					if (typeId == dietary.getTypeId()) {
+						array = jsonObject.getJSONArray(key);
+						if (array == null) {
+							array = new JSONArray();
+							jsonObject.put(key, array);
+						}
+						array.add(DietaryJsonFactory.toJsonObject(dietary));
+					}
+				}
+			}
+			result.add(jsonObject);
+		}
+
+		return result;
+	}
+
 	public List<Dietary> list(DietaryQuery query) {
 		if (StringUtils.isNotEmpty(query.getTenantId())) {
 			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
@@ -770,6 +868,112 @@ public class DietaryServiceImpl implements DietaryService {
 		} else {
 			dietaryMapper.updateDietary(dietary);
 		}
+	}
+
+	@Transactional
+	public void saveAll(LoginContext loginContext, JSONArray array) {
+		JSONObject jsonObject = null;
+		JSONArray children = null;
+		List<Dietary> list = null;
+		int sortNo = 0;
+		int fullDay = 0;
+		Date now = new Date();
+		Calendar calendar = Calendar.getInstance();
+		String tenantId = loginContext.getTenantId();
+		Map<String, Long> typeMap = new HashMap<String, Long>();
+		Map<Integer, String> sectionMap = new HashMap<Integer, String>();
+		TenantConfig tenantConfig = tenantConfigService.getTenantConfigByTenantId(loginContext.getTenantId());
+		if (tenantConfig != null && tenantConfig.getTypeId() > 0) {
+			Dictory dict = dictoryService.find(tenantConfig.getTypeId());
+			List<Dictory> dicts = dictoryService.getDictories(dict.getCode() + "%");
+			if (dicts != null && !dicts.isEmpty()) {
+				for (Dictory d : dicts) {
+					String code = d.getCode();
+					if (code.indexOf("|") > 0) {
+						code = code.substring(code.lastIndexOf("|") + 1, code.length());
+						typeMap.put(code, d.getId());
+					}
+				}
+			}
+		}
+
+		int size = array.size();
+		for (int i = 0; i < size; i++) {
+			sortNo = 0;
+
+			jsonObject = array.getJSONObject(i);
+			fullDay = jsonObject.getInteger("Day");
+			DietaryQuery query = new DietaryQuery();
+			query.tenantId(loginContext.getTenantId());
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(loginContext.getTenantId())));
+			query.fullDay(fullDay);
+			dietaryMapper.deleteDietaryList(query);
+
+			DietaryItemQuery query2 = new DietaryItemQuery();
+			query2.tenantId(loginContext.getTenantId());
+			query2.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(loginContext.getTenantId())));
+			query2.fullDay(fullDay);
+			dietaryItemMapper.deleteDietaryItems(query2);
+
+			sectionMap.put(fullDay, UUID32.getUUID());
+			calendar.setTime(DateUtils.toDate(String.valueOf(fullDay)));
+			int year = calendar.get(Calendar.YEAR);
+			int month = calendar.get(Calendar.MONTH) + 1;
+			int week = calendar.get(Calendar.WEEK_OF_MONTH);
+			int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+			Iterator<Entry<String, Long>> iterator = typeMap.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<String, Long> entry = iterator.next();
+				String key = entry.getKey();
+				Long typeId = entry.getValue();
+				children = jsonObject.getJSONArray(key);
+				if (children != null && !children.isEmpty()) {
+					list = DietaryJsonFactory.arrayToList(children);
+					if (list != null && !list.isEmpty()) {
+						for (Dietary dietary : list) {
+							dietary.setId(idGenerator.nextId("HEALTH_DIETARY"));
+							dietary.setCreateTime(now);
+							dietary.setCreateBy(loginContext.getActorId());
+							dietary.setYear(year);
+							dietary.setMonth(month);
+							dietary.setWeek(week);
+							dietary.setDay(day);
+							dietary.setDayOfWeek(dayOfWeek);
+							dietary.setSemester(SysConfig.getSemester());
+							dietary.setFullDay(fullDay);
+							dietary.setSectionId(sectionMap.get(dietary.getFullDay()));
+							dietary.setTypeId(typeId);
+							dietary.setTenantId(tenantId);
+							dietary.setSortNo(++sortNo);
+							dietary.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+							dietaryMapper.insertDietary(dietary);
+
+							if (dietary.getItems() != null && !dietary.getItems().isEmpty()) {
+								for (DietaryItem item : dietary.getItems()) {
+									item.setId(idGenerator.nextId("HEALTH_DIETARY_ITEM"));
+									item.setLastModified(System.currentTimeMillis());
+									item.setCreateTime(now);
+									item.setCreateBy(loginContext.getActorId());
+									item.setFullDay(fullDay);
+									item.setDietaryId(dietary.getId());
+									item.setTypeId(typeId);
+									item.setSectionId(sectionMap.get(dietary.getFullDay()));
+									item.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+									dietaryItemMapper.insertDietaryItem(item);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@javax.annotation.Resource
+	public void setDictoryService(DictoryService dictoryService) {
+		this.dictoryService = dictoryService;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.DietaryItemMapper")
@@ -830,6 +1034,11 @@ public class DietaryServiceImpl implements DietaryService {
 	@javax.annotation.Resource
 	public void setTableDataService(ITableDataService tableDataService) {
 		this.tableDataService = tableDataService;
+	}
+
+	@javax.annotation.Resource
+	public void setTenantConfigService(TenantConfigService tenantConfigService) {
+		this.tenantConfigService = tenantConfigService;
 	}
 
 	@Transactional

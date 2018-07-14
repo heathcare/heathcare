@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONArray;
 import com.glaf.core.security.LoginContext;
 import com.glaf.heathcare.domain.Dietary;
 import com.glaf.heathcare.domain.GoodsPurchasePlan;
@@ -109,6 +110,16 @@ public interface DietaryService {
 	int getWeek(String tenantId, int fullDay);
 
 	/**
+	 * 获取某个租户一周的数据。
+	 * @param loginContext
+	 * @param year
+	 * @param semester
+	 * @param week
+	 * @return
+	 */
+	JSONArray getWeekData(LoginContext loginContext, int year, int semester, int week);
+
+	/**
 	 * 根据查询参数获取记录列表
 	 * 
 	 * @return
@@ -122,6 +133,9 @@ public interface DietaryService {
 	 */
 	@Transactional
 	void save(Dietary dietary);
+
+	@Transactional
+	void saveAll(LoginContext loginContext, JSONArray array);
 
 	@Transactional
 	void updateAll(String tenantId, List<Dietary> list);

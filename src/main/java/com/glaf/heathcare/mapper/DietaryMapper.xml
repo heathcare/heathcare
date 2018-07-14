@@ -788,6 +788,15 @@
 		where ID_ =
 		#{dietaryId}
 	</delete>
+	
+	
+	<delete id="deleteDietaryList"
+		parameterType="com.glaf.heathcare.query.DietaryQuery">
+		delete from
+		HEALTH_DIETARY${tableSuffix}
+		where TENANTID_ = #{tenantId, jdbcType=VARCHAR}
+		and FULLDAY_ = #{fullDay, jdbcType=INTEGER }
+	</delete>
 
 
 	<select id="getDietaryById"

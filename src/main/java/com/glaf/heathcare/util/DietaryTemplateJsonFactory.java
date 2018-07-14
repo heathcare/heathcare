@@ -60,9 +60,7 @@ public class DietaryTemplateJsonFactory {
 		if (jsonObject.containsKey("season")) {
 			model.setSeason(jsonObject.getInteger("season"));
 		}
-		if (jsonObject.containsKey("type")) {
-			model.setType(jsonObject.getString("type"));
-		}
+
 		if (jsonObject.containsKey("typeId")) {
 			model.setTypeId(jsonObject.getLong("typeId"));
 		}
@@ -120,21 +118,11 @@ public class DietaryTemplateJsonFactory {
 		if (jsonObject.containsKey("phosphorus")) {
 			model.setPhosphorus(jsonObject.getDouble("phosphorus"));
 		}
-		if (jsonObject.containsKey("year")) {
-			model.setYear(jsonObject.getInteger("year"));
-		}
-		if (jsonObject.containsKey("month")) {
-			model.setMonth(jsonObject.getInteger("month"));
-		}
-		if (jsonObject.containsKey("day")) {
-			model.setDay(jsonObject.getInteger("day"));
-		}
+
 		if (jsonObject.containsKey("dayOfWeek")) {
 			model.setDayOfWeek(jsonObject.getInteger("dayOfWeek"));
 		}
-		if (jsonObject.containsKey("week")) {
-			model.setWeek(jsonObject.getInteger("week"));
-		}
+
 		if (jsonObject.containsKey("sortNo")) {
 			model.setSortNo(jsonObject.getInteger("sortNo"));
 		}
@@ -213,9 +201,7 @@ public class DietaryTemplateJsonFactory {
 			jsonObject.put("region", model.getRegion());
 		}
 		jsonObject.put("season", model.getSeason());
-		if (model.getType() != null) {
-			jsonObject.put("type", model.getType());
-		}
+
 		jsonObject.put("typeId", model.getTypeId());
 		jsonObject.put("heatEnergy", model.getHeatEnergy());
 		jsonObject.put("heatEnergyKJ", Math.round(model.getHeatEnergy() * Constants.CALORIE_TO_JOULE));
@@ -236,11 +222,7 @@ public class DietaryTemplateJsonFactory {
 		jsonObject.put("zinc", model.getZinc());
 		jsonObject.put("iodine", model.getIodine());
 		jsonObject.put("phosphorus", model.getPhosphorus());
-		jsonObject.put("year", model.getYear());
-		jsonObject.put("month", model.getMonth());
-		jsonObject.put("day", model.getDay());
 		jsonObject.put("dayOfWeek", model.getDayOfWeek());
-		jsonObject.put("week", model.getWeek());
 		jsonObject.put("sortNo", model.getSortNo());
 		jsonObject.put("suitNo", model.getSuitNo());
 		if (model.getSysFlag() != null) {
@@ -316,9 +298,7 @@ public class DietaryTemplateJsonFactory {
 			jsonObject.put("region", model.getRegion());
 		}
 		jsonObject.put("season", model.getSeason());
-		if (model.getType() != null) {
-			jsonObject.put("type", model.getType());
-		}
+
 		jsonObject.put("typeId", model.getTypeId());
 		jsonObject.put("heatEnergy", model.getHeatEnergy());
 		jsonObject.put("heatEnergyKJ", Math.round(model.getHeatEnergy() * Constants.CALORIE_TO_JOULE));
@@ -339,11 +319,7 @@ public class DietaryTemplateJsonFactory {
 		jsonObject.put("zinc", model.getZinc());
 		jsonObject.put("iodine", model.getIodine());
 		jsonObject.put("phosphorus", model.getPhosphorus());
-		jsonObject.put("year", model.getYear());
-		jsonObject.put("month", model.getMonth());
-		jsonObject.put("day", model.getDay());
 		jsonObject.put("dayOfWeek", model.getDayOfWeek());
-		jsonObject.put("week", model.getWeek());
 		jsonObject.put("sortNo", model.getSortNo());
 		jsonObject.put("suitNo", model.getSuitNo());
 		if (model.getSysFlag() != null) {

@@ -18,6 +18,8 @@
 
 package com.glaf.heathcare.util;
 
+import java.util.List;
+
 import com.alibaba.fastjson.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -177,6 +179,12 @@ public class DietaryJsonFactory {
 			model.setUpdateTime(jsonObject.getDate("updateTime"));
 		}
 
+		if (jsonObject.containsKey("items")) {
+			JSONArray array = jsonObject.getJSONArray("items");
+			List<DietaryItem> items = DietaryItemJsonFactory.arrayToList(array);
+			model.setItems(items);
+		}
+
 		return model;
 	}
 
@@ -202,7 +210,7 @@ public class DietaryJsonFactory {
 		}
 		if (model.getSectionId() != null) {
 			jsonObject.put("sectionId", model.getSectionId());
-		} 
+		}
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
 		}
@@ -213,7 +221,7 @@ public class DietaryJsonFactory {
 			jsonObject.put("type", model.getType());
 		}
 		jsonObject.put("typeId", model.getTypeId());
-		
+
 		jsonObject.put("heatEnergy", model.getHeatEnergy());
 		jsonObject.put("heatEnergyKJ", Math.round(model.getHeatEnergy() * Constants.CALORIE_TO_JOULE));
 		jsonObject.put("protein", model.getProtein());
@@ -275,6 +283,11 @@ public class DietaryJsonFactory {
 			jsonObject.put("updateTime_date", DateUtils.getDate(model.getUpdateTime()));
 			jsonObject.put("updateTime_datetime", DateUtils.getDateTime(model.getUpdateTime()));
 		}
+
+		if (model.getItems() != null && !model.getItems().isEmpty()) {
+			JSONArray array = DietaryItemJsonFactory.listToArray(model.getItems());
+			jsonObject.put("items", array);
+		}
 		return jsonObject;
 	}
 
@@ -289,7 +302,7 @@ public class DietaryJsonFactory {
 		}
 		if (model.getSectionId() != null) {
 			jsonObject.put("sectionId", model.getSectionId());
-		} 
+		}
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
 		}
@@ -300,7 +313,7 @@ public class DietaryJsonFactory {
 			jsonObject.put("type", model.getType());
 		}
 		jsonObject.put("typeId", model.getTypeId());
-		
+
 		jsonObject.put("heatEnergy", model.getHeatEnergy());
 		jsonObject.put("heatEnergyKJ", Math.round(model.getHeatEnergy() * Constants.CALORIE_TO_JOULE));
 		jsonObject.put("protein", model.getProtein());

@@ -445,7 +445,7 @@ public class DayDietaryExportBean {
 									|| typeId == 3415) {
 								snackList.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList.add(model);
 							}
 						}

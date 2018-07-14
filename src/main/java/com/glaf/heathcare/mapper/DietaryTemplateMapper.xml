@@ -2,31 +2,44 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.glaf.heathcare.mapper.DietaryTemplateMapper">
+<mapper
+	namespace="com.glaf.heathcare.mapper.DietaryTemplateMapper">
 
-	<resultMap id="dietaryTemplateResultMap" type="com.glaf.heathcare.domain.DietaryTemplate">
+	<resultMap id="dietaryTemplateResultMap"
+		type="com.glaf.heathcare.domain.DietaryTemplate">
 		<id property="id" column="ID_" jdbcType="BIGINT" />
-		<result property="tenantId" column="TENANTID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
-		<result property="description" column="DESCRIPTION_" jdbcType="VARCHAR" />
-		<result property="ageGroup" column="AGEGROUP_" jdbcType="VARCHAR" />
-		<result property="province" column="PROVINCE_" jdbcType="VARCHAR" />
+		<result property="description" column="DESCRIPTION_"
+			jdbcType="VARCHAR" />
+		<result property="ageGroup" column="AGEGROUP_"
+			jdbcType="VARCHAR" />
+		<result property="province" column="PROVINCE_"
+			jdbcType="VARCHAR" />
 		<result property="region" column="REGION_" jdbcType="VARCHAR" />
 		<result property="season" column="SEASON_" jdbcType="INTEGER" />
-		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
 		<result property="typeId" column="TYPEID_" jdbcType="BIGINT" />
-		<result property="heatEnergy" column="HEATENERGY_" jdbcType="DOUBLE" />
+		<result property="heatEnergy" column="HEATENERGY_"
+			jdbcType="DOUBLE" />
 		<result property="protein" column="PROTEIN_" jdbcType="DOUBLE" />
 		<result property="fat" column="FAT_" jdbcType="DOUBLE" />
 		<result property="carbohydrate" column="CARBOHYDRATE_"
 			jdbcType="DOUBLE" />
-		<result property="vitaminA" column="VITAMINA_" jdbcType="DOUBLE" />
-		<result property="vitaminB1" column="VITAMINB1_" jdbcType="DOUBLE" />
-		<result property="vitaminB2" column="VITAMINB2_" jdbcType="DOUBLE" />
-		<result property="vitaminB6" column="VITAMINB6_" jdbcType="DOUBLE" />
-		<result property="vitaminB12" column="VITAMINB12_" jdbcType="DOUBLE" />
-		<result property="vitaminC" column="VITAMINC_" jdbcType="DOUBLE" />
-		<result property="carotene" column="CAROTENE_" jdbcType="DOUBLE" />
+		<result property="vitaminA" column="VITAMINA_"
+			jdbcType="DOUBLE" />
+		<result property="vitaminB1" column="VITAMINB1_"
+			jdbcType="DOUBLE" />
+		<result property="vitaminB2" column="VITAMINB2_"
+			jdbcType="DOUBLE" />
+		<result property="vitaminB6" column="VITAMINB6_"
+			jdbcType="DOUBLE" />
+		<result property="vitaminB12" column="VITAMINB12_"
+			jdbcType="DOUBLE" />
+		<result property="vitaminC" column="VITAMINC_"
+			jdbcType="DOUBLE" />
+		<result property="carotene" column="CAROTENE_"
+			jdbcType="DOUBLE" />
 		<result property="retinol" column="RETINOL_" jdbcType="DOUBLE" />
 		<result property="nicotinicCid" column="NICOTINICCID_"
 			jdbcType="DOUBLE" />
@@ -34,32 +47,40 @@
 		<result property="iron" column="IRON_" jdbcType="DOUBLE" />
 		<result property="zinc" column="ZINC_" jdbcType="DOUBLE" />
 		<result property="iodine" column="IODINE_" jdbcType="DOUBLE" />
-		<result property="phosphorus" column="PHOSPHORUS_" jdbcType="DOUBLE" />
-		<result property="year" column="YEAR_" jdbcType="INTEGER" />
-		<result property="month" column="MONTH_" jdbcType="INTEGER" />
-		<result property="day" column="DAY_" jdbcType="INTEGER" />
-		<result property="dayOfWeek" column="DAYOFWEEK_" jdbcType="INTEGER" />
-		<result property="week" column="WEEK_" jdbcType="INTEGER" />
+		<result property="phosphorus" column="PHOSPHORUS_"
+			jdbcType="DOUBLE" />
+		<result property="dayOfWeek" column="DAYOFWEEK_"
+			jdbcType="INTEGER" />
 		<result property="sortNo" column="SORTNO_" jdbcType="INTEGER" />
 		<result property="suitNo" column="SUITNO_" jdbcType="INTEGER" />
-		<result property="enableFlag" column="ENABLEFLAG_" jdbcType="VARCHAR" />
+		<result property="enableFlag" column="ENABLEFLAG_"
+			jdbcType="VARCHAR" />
 		<result property="instanceFlag" column="INSTANCEFLAG_"
 			jdbcType="VARCHAR" />
-		<result property="shareFlag" column="SHAREFLAG_" jdbcType="VARCHAR" />
+		<result property="shareFlag" column="SHAREFLAG_"
+			jdbcType="VARCHAR" />
 		<result property="sysFlag" column="SYSFLAG_" jdbcType="VARCHAR" />
-		<result property="verifyFlag" column="VERIFYFLAG_" jdbcType="VARCHAR" />
+		<result property="verifyFlag" column="VERIFYFLAG_"
+			jdbcType="VARCHAR" />
 		<result property="businessStatus" column="BUSINESSSTATUS_"
 			jdbcType="INTEGER" />
-		<result property="confirmBy" column="CONFIRMBY_" jdbcType="VARCHAR" />
-		<result property="confirmTime" column="CONFIRMTIME_" jdbcType="TIMESTAMP" />
-		<result property="createBy" column="CREATEBY_" jdbcType="VARCHAR" />
-		<result property="createTime" column="CREATETIME_" jdbcType="TIMESTAMP" />
-		<result property="updateBy" column="UPDATEBY_" jdbcType="VARCHAR" />
-		<result property="updateTime" column="UPDATETIME_" jdbcType="TIMESTAMP" />
+		<result property="confirmBy" column="CONFIRMBY_"
+			jdbcType="VARCHAR" />
+		<result property="confirmTime" column="CONFIRMTIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="updateBy" column="UPDATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="updateTime" column="UPDATETIME_"
+			jdbcType="TIMESTAMP" />
 	</resultMap>
 
 
-	<insert id="insertDietaryTemplate" parameterType="com.glaf.heathcare.domain.DietaryTemplate">
+	<insert id="insertDietaryTemplate"
+		parameterType="com.glaf.heathcare.domain.DietaryTemplate">
 		insert into HEALTH_DIETARY_TEMPLATE
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
@@ -83,9 +104,6 @@
 			</if>
 			<if test="season != null">
 				,SEASON_
-			</if>
-			<if test="type != null">
-				,TYPE_
 			</if>
 			<if test="typeId != null">
 				,TYPEID_
@@ -144,20 +162,8 @@
 			<if test="phosphorus != null">
 				,PHOSPHORUS_
 			</if>
-			<if test="year != null">
-				,YEAR_
-			</if>
-			<if test="month != null">
-				,MONTH_
-			</if>
-			<if test="day != null">
-				,DAY_
-			</if>
 			<if test="dayOfWeek != null">
 				,DAYOFWEEK_
-			</if>
-			<if test="week != null">
-				,WEEK_
 			</if>
 			<if test="sortNo != null">
 				,SORTNO_
@@ -226,9 +232,6 @@
 			<if test="season != null">
 				,#{season, jdbcType=INTEGER}
 			</if>
-			<if test="type != null">
-				,#{type, jdbcType=VARCHAR}
-			</if>
 			<if test="typeId != null">
 				,#{typeId, jdbcType=BIGINT}
 			</if>
@@ -286,20 +289,8 @@
 			<if test="phosphorus != null">
 				,#{phosphorus, jdbcType=DOUBLE}
 			</if>
-			<if test="year != null">
-				,#{year, jdbcType=INTEGER}
-			</if>
-			<if test="month != null">
-				,#{month, jdbcType=INTEGER}
-			</if>
-			<if test="day != null">
-				,#{day, jdbcType=INTEGER}
-			</if>
 			<if test="dayOfWeek != null">
 				,#{dayOfWeek, jdbcType=INTEGER}
-			</if>
-			<if test="week != null">
-				,#{week, jdbcType=INTEGER}
 			</if>
 			<if test="sortNo != null">
 				,#{sortNo, jdbcType=INTEGER}
@@ -347,7 +338,8 @@
 	</insert>
 
 
-	<insert id="bulkInsertDietaryTemplate" parameterType="java.util.List">
+	<insert id="bulkInsertDietaryTemplate"
+		parameterType="java.util.List">
 		insert into HEALTH_DIETARY_TEMPLATE (
 		ID_
 		,TENANTID_
@@ -357,7 +349,6 @@
 		,PROVINCE_
 		,REGION_
 		,SEASON_
-		,TYPE_
 		,TYPEID_
 		,HEATENERGY_
 		,PROTEIN_
@@ -377,11 +368,7 @@
 		,ZINC_
 		,IODINE_
 		,PHOSPHORUS_
-		,YEAR_
-		,MONTH_
-		,DAY_
 		,DAYOFWEEK_
-		,WEEK_
 		,SORTNO_
 		,SUITNO_
 		,SYSFLAG_
@@ -398,8 +385,8 @@
 		,UPDATETIME_
 		)
 		values
-		<foreach collection="list" item="dietaryTemplate" index="index"
-			separator=",">
+		<foreach collection="list" item="dietaryTemplate"
+			index="index" separator=",">
 			(
 			#{dietaryTemplate.id, jdbcType=BIGINT}
 			,#{dietaryTemplate.tenantId, jdbcType=VARCHAR}
@@ -409,8 +396,6 @@
 			,#{dietaryTemplate.province, jdbcType=VARCHAR}
 			,#{dietaryTemplate.region, jdbcType=VARCHAR}
 			,#{dietaryTemplate.season, jdbcType=INTEGER}
-			,#{dietaryTemplate.type,
-			jdbcType=VARCHAR}
 			,#{dietaryTemplate.typeId, jdbcType=BIGINT}
 			,#{dietaryTemplate.heatEnergy, jdbcType=DOUBLE}
 			,#{dietaryTemplate.protein, jdbcType=DOUBLE}
@@ -432,12 +417,7 @@
 			,#{dietaryTemplate.zinc, jdbcType=DOUBLE}
 			,#{dietaryTemplate.iodine, jdbcType=DOUBLE}
 			,#{dietaryTemplate.phosphorus, jdbcType=DOUBLE}
-			,#{dietaryTemplate.year, jdbcType=INTEGER}
-			,#{dietaryTemplate.month,
-			jdbcType=INTEGER}
-			,#{dietaryTemplate.day, jdbcType=INTEGER}
 			,#{dietaryTemplate.dayOfWeek, jdbcType=INTEGER}
-			,#{dietaryTemplate.week, jdbcType=INTEGER}
 			,#{dietaryTemplate.sortNo,
 			jdbcType=INTEGER}
 			,#{dietaryTemplate.suitNo, jdbcType=INTEGER}
@@ -458,9 +438,11 @@
 	</insert>
 
 
-	<insert id="bulkInsertDietaryTemplate_oracle" parameterType="java.util.List">
+	<insert id="bulkInsertDietaryTemplate_oracle"
+		parameterType="java.util.List">
 		INSERT ALL
-		<foreach collection="list" item="dietaryTemplate" index="index">
+		<foreach collection="list" item="dietaryTemplate"
+			index="index">
 			insert into HEALTH_DIETARY_TEMPLATE (
 			ID_
 			,TENANTID_
@@ -470,7 +452,6 @@
 			,PROVINCE_
 			,REGION_
 			,SEASON_
-			,TYPE_
 			,TYPEID_
 			,HEATENERGY_
 			,PROTEIN_
@@ -490,11 +471,7 @@
 			,ZINC_
 			,IODINE_
 			,PHOSPHORUS_
-			,YEAR_
-			,MONTH_
-			,DAY_
 			,DAYOFWEEK_
-			,WEEK_
 			,SORTNO_
 			,SUITNO_
 			,SYSFLAG_
@@ -521,8 +498,6 @@
 			,#{dietaryTemplate.province, jdbcType=VARCHAR}
 			,#{dietaryTemplate.region, jdbcType=VARCHAR}
 			,#{dietaryTemplate.season, jdbcType=INTEGER}
-			,#{dietaryTemplate.type,
-			jdbcType=VARCHAR}
 			,#{dietaryTemplate.typeId, jdbcType=BIGINT}
 			,#{dietaryTemplate.heatEnergy, jdbcType=DOUBLE}
 			,#{dietaryTemplate.protein, jdbcType=DOUBLE}
@@ -544,12 +519,7 @@
 			,#{dietaryTemplate.zinc, jdbcType=DOUBLE}
 			,#{dietaryTemplate.iodine, jdbcType=DOUBLE}
 			,#{dietaryTemplate.phosphorus, jdbcType=DOUBLE}
-			,#{dietaryTemplate.year, jdbcType=INTEGER}
-			,#{dietaryTemplate.month,
-			jdbcType=INTEGER}
-			,#{dietaryTemplate.day, jdbcType=INTEGER}
 			,#{dietaryTemplate.dayOfWeek, jdbcType=INTEGER}
-			,#{dietaryTemplate.week, jdbcType=INTEGER}
 			,#{dietaryTemplate.sortNo,
 			jdbcType=INTEGER}
 			,#{dietaryTemplate.suitNo, jdbcType=INTEGER}
@@ -571,7 +541,8 @@
 	</insert>
 
 
-	<update id="updateDietaryTemplate" parameterType="com.glaf.heathcare.domain.DietaryTemplate">
+	<update id="updateDietaryTemplate"
+		parameterType="com.glaf.heathcare.domain.DietaryTemplate">
 		update HEALTH_DIETARY_TEMPLATE
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
@@ -592,9 +563,6 @@
 			</if>
 			<if test="season != null">
 				SEASON_ = #{season, jdbcType=INTEGER},
-			</if>
-			<if test="type != null">
-				TYPE_ = #{type, jdbcType=VARCHAR},
 			</if>
 			<if test="typeId != null">
 				TYPEID_ = #{typeId, jdbcType=BIGINT},
@@ -653,20 +621,8 @@
 			<if test="phosphorus != null">
 				PHOSPHORUS_ = #{phosphorus, jdbcType=DOUBLE},
 			</if>
-			<if test="year != null">
-				YEAR_ = #{year, jdbcType=INTEGER},
-			</if>
-			<if test="month != null">
-				MONTH_ = #{month, jdbcType=INTEGER},
-			</if>
-			<if test="day != null">
-				DAY_ = #{day, jdbcType=INTEGER},
-			</if>
 			<if test="dayOfWeek != null">
 				DAYOFWEEK_ = #{dayOfWeek, jdbcType=INTEGER},
-			</if>
-			<if test="week != null">
-				WEEK_ = #{week, jdbcType=INTEGER},
 			</if>
 			<if test="sortNo != null">
 				SORTNO_ = #{sortNo, jdbcType=INTEGER},
@@ -715,13 +671,32 @@
 	</delete>
 
 
+	<delete id="deleteDietaryTemplates"
+		parameterType="com.glaf.heathcare.query.DietaryTemplateQuery">
+		delete from
+		HEALTH_DIETARY_TEMPLATE
+		where SYSFLAG_ = #{sysFlag}
+		and
+		SUITNO_ = #{suitNo}
+		<choose>
+			<when test="tenantId != null and tenantId !='' ">
+				and TENANTID_ = #{tenantId}
+			</when>
+			<otherwise>
+				and CREATEBY_ = #{createBy}
+			</otherwise>
+		</choose>
+	</delete>
+
+
 	<select id="getDietaryTemplateById" parameterType="long"
 		resultMap="dietaryTemplateResultMap">
 		select * from HEALTH_DIETARY_TEMPLATE where ID_ = #{id}
 	</select>
 
 
-	<select id="getDietaryTemplates" parameterType="com.glaf.heathcare.query.DietaryTemplateQuery"
+	<select id="getDietaryTemplates"
+		parameterType="com.glaf.heathcare.query.DietaryTemplateQuery"
 		resultMap="dietaryTemplateResultMap">
 		select distinct E.*
 		<include refid="selectDietaryTemplatesSql" />
@@ -730,13 +705,15 @@
 				order by ${orderBy}
 			</when>
 			<otherwise>
-				order by E.SUITNO_ asc, DAYOFWEEK_ asc, E.TYPEID_ asc, E.SORTNO_ asc
+				order by E.SUITNO_ asc, DAYOFWEEK_ asc, E.TYPEID_ asc,
+				E.SORTNO_ asc
 			</otherwise>
 		</choose>
 	</select>
 
 
-	<select id="getDietaryTemplateCount" parameterType="com.glaf.heathcare.query.DietaryTemplateQuery"
+	<select id="getDietaryTemplateCount"
+		parameterType="com.glaf.heathcare.query.DietaryTemplateQuery"
 		resultType="int">
 		select count(*)
 		<include refid="selectDietaryTemplatesSql" />
@@ -792,14 +769,6 @@
 
 			<if test="season != null">
 				and E.SEASON_ = #{season}
-			</if>
-
-			<if test="type != null and type != '' ">
-				and E.TYPE_ = #{type}
-			</if>
-
-			<if test="typeLike != null and typeLike != '' ">
-				and E.TYPE_ like #{typeLike}
 			</if>
 
 			<if test="typeId != null">
@@ -944,24 +913,8 @@
 				and E.ZINC_ &lt;= #{zincLessThanOrEqual}
 			</if>
 
-			<if test="year != null">
-				and E.YEAR_ = #{year}
-			</if>
-
-			<if test="month != null">
-				and E.MONTH_ = #{month}
-			</if>
-
-			<if test="day != null">
-				and E.DAY_ = #{day}
-			</if>
-
 			<if test="dayOfWeek != null and dayOfWeek !=0 ">
 				and E.DAYOFWEEK_ = #{dayOfWeek}
-			</if>
-
-			<if test="week != null">
-				and E.WEEK_ = #{week}
 			</if>
 
 			<if test="suitNo != null">
@@ -1013,7 +966,8 @@
 			</if>
 
 			<if test="dataRequest != null and dataRequest.filter != null ">
-				<include refid="com.glaf.global.GlobalMapper.dataRequestFilterCondition" />
+				<include
+					refid="com.glaf.global.GlobalMapper.dataRequestFilterCondition" />
 			</if>
 
 		</where>

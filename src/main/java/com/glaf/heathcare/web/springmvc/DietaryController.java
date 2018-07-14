@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -788,6 +789,7 @@ public class DietaryController {
 				typeIds.add(3413L);
 				typeIds.add(3414L);
 				typeIds.add(3415L);
+				typeIds.add(3416L);
 			} else if (typeId == 3311) {// 二餐一点
 				typeIds.add(3311L);
 				typeIds.add(3312L);
@@ -1495,6 +1497,29 @@ public class DietaryController {
 			logger.error(ex);
 		}
 		return ResponseUtils.responseJsonResult(false);
+	}
+
+	///heathcare/dietary/weekJson?year=2018&week=13
+	@ResponseBody
+	@RequestMapping("/weekJson")
+	public byte[] weekJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug("params:" + params);
+		int year = RequestUtils.getInt(request, "year");
+		int week = RequestUtils.getInt(request, "week");
+		int semester = SysConfig.getSemester();
+		try {
+			if (year > 0 && week > 0) {
+				return dietaryService.getWeekData(loginContext, year, semester, week).toJSONString().getBytes("UTF-8");
+			}
+		} catch (Exception ex) {
+			logger.error(ex);
+		}
+
+		return "[]".getBytes();
 	}
 
 }

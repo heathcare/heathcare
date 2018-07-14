@@ -287,6 +287,7 @@ public class DietaryTemplateController {
 				typeIds.add(3413L);
 				typeIds.add(3414L);
 				typeIds.add(3415L);
+				typeIds.add(3416L);
 			} else if (typeId == 3311) {// 二餐一点
 				typeIds.add(3311L);
 				typeIds.add(3312L);
@@ -527,12 +528,8 @@ public class DietaryTemplateController {
 			dietaryTemplate.setProvince(request.getParameter("province"));
 			dietaryTemplate.setRegion(request.getParameter("region"));
 			dietaryTemplate.setSeason(RequestUtils.getInt(request, "season"));
-			dietaryTemplate.setType(request.getParameter("type"));
 			dietaryTemplate.setTypeId(RequestUtils.getLong(request, "typeId"));
-			dietaryTemplate.setYear(RequestUtils.getInt(request, "year"));
-			dietaryTemplate.setMonth(RequestUtils.getInt(request, "month"));
-			dietaryTemplate.setDay(RequestUtils.getInt(request, "day"));
-			dietaryTemplate.setWeek(RequestUtils.getInt(request, "week"));
+			dietaryTemplate.setDayOfWeek(RequestUtils.getInt(request, "dayOfWeek"));
 			dietaryTemplate.setSortNo(RequestUtils.getInt(request, "sortNo"));
 			dietaryTemplate.setSysFlag(request.getParameter("sysFlag"));
 			dietaryTemplate.setEnableFlag(request.getParameter("enableFlag"));
@@ -608,13 +605,8 @@ public class DietaryTemplateController {
 			dietaryTemplate.setProvince(request.getParameter("province"));
 			dietaryTemplate.setRegion(request.getParameter("region"));
 			dietaryTemplate.setSeason(RequestUtils.getInt(request, "season"));
-			dietaryTemplate.setType(request.getParameter("type"));
 			dietaryTemplate.setTypeId(RequestUtils.getLong(request, "typeId"));
-			dietaryTemplate.setYear(RequestUtils.getInt(request, "year"));
-			dietaryTemplate.setMonth(RequestUtils.getInt(request, "month"));
-			dietaryTemplate.setDay(RequestUtils.getInt(request, "day"));
 			dietaryTemplate.setDayOfWeek(RequestUtils.getInt(request, "dayOfWeek"));
-			dietaryTemplate.setWeek(RequestUtils.getInt(request, "week"));
 			dietaryTemplate.setSortNo(RequestUtils.getInt(request, "sortNo"));
 			dietaryTemplate.setSuitNo(RequestUtils.getInt(request, "suitNo"));
 			dietaryTemplate.setEnableFlag(request.getParameter("enableFlag"));

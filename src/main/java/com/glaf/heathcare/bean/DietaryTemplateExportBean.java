@@ -265,7 +265,7 @@ public class DietaryTemplateExportBean {
 									|| typeId == 3415) {
 								snackList1.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList1.add(model);
 							}
 							break;
@@ -287,7 +287,7 @@ public class DietaryTemplateExportBean {
 									|| typeId == 3415) {
 								snackList2.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList2.add(model);
 							}
 							break;
@@ -309,7 +309,7 @@ public class DietaryTemplateExportBean {
 									|| typeId == 3415) {
 								snackList3.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList3.add(model);
 							}
 							break;
@@ -331,7 +331,7 @@ public class DietaryTemplateExportBean {
 									|| typeId == 3415) {
 								snackList4.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList4.add(model);
 							}
 							break;
@@ -353,7 +353,7 @@ public class DietaryTemplateExportBean {
 									|| typeId == 3415) {
 								snackList5.add(model);
 							}
-							if (typeId == 3305 || typeId == 3406) {
+							if (typeId == 3305 || typeId == 3406 || typeId == 3416) {
 								dinnerList5.add(model);
 							}
 							break;

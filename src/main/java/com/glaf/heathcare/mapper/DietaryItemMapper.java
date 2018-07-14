@@ -35,15 +35,21 @@ import com.glaf.heathcare.query.*;
 @Component("com.glaf.heathcare.mapper.DietaryItemMapper")
 public interface DietaryItemMapper {
 
+	void adjustDietaryItem(DietaryItem model);
+
 	void bulkInsertDietaryItem(ListModel listModel);
 
 	void bulkInsertDietaryItem_oracle(List<DietaryItem> list);
 
 	void deleteDietaryItemById(DietaryItemQuery query);
 
+	void deleteDietaryItems(DietaryItemQuery query);
+
 	void deleteDietaryItemsByDietaryId(DietaryItemQuery query);
 
 	void deleteDietaryItemsByTemplateId(DietaryItemQuery query);
+
+	void deleteDietaryTemplates(DietaryItemQuery query);
 
 	DietaryItem getDietaryItemById(DietaryItemQuery query);
 
@@ -57,8 +63,6 @@ public interface DietaryItemMapper {
 
 	void insertDietaryItem(DietaryItem model);
 
-	void adjustDietaryItem(DietaryItem model);
-	
 	void updateDietaryItem(DietaryItem model);
 
 }

@@ -42,6 +42,8 @@ public interface DietaryMapper {
 	void bulkInsertDietary_oracle(List<Dietary> list);
 
 	void deleteDietaryById(DietaryQuery query);
+	
+	void deleteDietaryList(DietaryQuery query);
 
 	Dietary getDietaryById(DietaryQuery query);
 
