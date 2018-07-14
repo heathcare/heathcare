@@ -19,6 +19,7 @@
 package com.glaf.heathcare.web.springmvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -48,6 +49,7 @@ import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.Tools;
 
 import com.glaf.heathcare.domain.Dishes;
+import com.glaf.heathcare.domain.DishesItem;
 import com.glaf.heathcare.query.DishesQuery;
 import com.glaf.heathcare.service.DishesService;
 import com.glaf.heathcare.util.DishesJsonFactory;
@@ -185,15 +187,18 @@ public class DishesController {
 		DishesQuery query = new DishesQuery();
 		Tools.populate(query, params);
 		query.deleteFlag(0);
-		query.setActorId(loginContext.getActorId());
-		query.setLoginContext(loginContext);
 
-		if (loginContext.isSystemAdministrator()) {
-			query.sysFlag("Y");
-			query.createBy(loginContext.getActorId());
+		String sysFlag = request.getParameter("sysFlag");
+
+		if (StringUtils.equals(sysFlag, "N")) {
+			if (loginContext.isSystemAdministrator()) {
+				query.createBy(loginContext.getActorId());
+			} else {
+				query.sysFlag("N");
+				query.tenantId(loginContext.getTenantId());
+			}
 		} else {
-			query.sysFlag("F");
-			query.tenantId(loginContext.getTenantId());
+			query.sysFlag("Y");
 		}
 
 		String nameLike = request.getParameter("nameLike_enc");
@@ -298,32 +303,53 @@ public class DishesController {
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		String actorId = loginContext.getActorId();
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug("params:" + params);
 		long dishesId = RequestUtils.getLong(request, "dishesId");
 		String saveAsFlag = request.getParameter("saveAsFlag");
 		Dishes dishes = null;
 		try {
-			if (StringUtils.equals(saveAsFlag, "true")) {
-				dishes = new Dishes();
-				Tools.populate(dishes, params);
-				dishes.setId(dishesId);
-				if (loginContext.isSystemAdministrator()) {
-					dishes.setSysFlag("Y");
-				} else {
-					dishes.setTenantId(loginContext.getTenantId());
-					dishes.setSysFlag("N");
+			if (dishesId > 0) {
+				dishes = dishesService.getDishes(dishesId);
+				if (StringUtils.equals(dishes.getSysFlag(), "Y")) {
+					if (!loginContext.isSystemAdministrator()) {
+						saveAsFlag = "true";
+					}
 				}
-			} else {
-				if (dishesId > 0) {
-					dishes = dishesService.getDishes(dishesId);
-				} else {
-					dishes = new Dishes();
-					Tools.populate(dishes, params);
+				logger.debug("saveAsFlag:" + saveAsFlag);
+				logger.debug("items:" + dishes.getItems());
+				if (StringUtils.equals(saveAsFlag, "true")) {
+					List<DishesItem> items = dishes.getItems();
+					List<DishesItem> newItems = new ArrayList<DishesItem>();
+					for (DishesItem item : items) {
+						DishesItem m = new DishesItem();
+						m.setCreateBy(actorId);
+						m.setUpdateBy(actorId);
+						m.setDescription(item.getDescription());
+						m.setFoodId(item.getFoodId());
+						m.setFoodName(item.getFoodName());
+						m.setName(item.getName());
+						m.setQuantity(item.getQuantity());
+						m.setSortNo(item.getSortNo());
+						m.setTenantId(loginContext.getTenantId());
+						newItems.add(m);
+					}
+					dishes.setId(0);
+					dishes.setItems(newItems);
 					if (loginContext.isSystemAdministrator()) {
 						dishes.setSysFlag("Y");
 					} else {
 						dishes.setTenantId(loginContext.getTenantId());
 						dishes.setSysFlag("N");
 					}
+				}
+			} else {
+				dishes = new Dishes();
+				Tools.populate(dishes, params);
+				if (loginContext.isSystemAdministrator()) {
+					dishes.setSysFlag("Y");
+				} else {
+					dishes.setTenantId(loginContext.getTenantId());
+					dishes.setSysFlag("N");
 				}
 			}
 

@@ -215,6 +215,9 @@ public class DishesServiceImpl implements DishesService {
 			return null;
 		}
 		Dishes dishes = dishesMapper.getDishesById(dishesId);
+		if (dishes != null) {
+			dishes.setItems(dishesItemMapper.getDishesItemsByDishesId(dishesId));
+		}
 		return dishes;
 	}
 
@@ -324,6 +327,7 @@ public class DishesServiceImpl implements DishesService {
 				dishes.setZinc(dishes.getZinc() + food.getZinc() * factor);// 累加计算
 				dishes.setIodine(dishes.getIodine() + food.getIodine() * factor);// 累加计算
 				dishes.setPhosphorus(dishes.getPhosphorus() + food.getPhosphorus() * factor);// 累加计算
+				item.setId(idGenerator.nextId("HEALTH_DISHES_ITEM"));
 				item.setDishesId(dishes.getId());
 			}
 			if (isNew) {

@@ -165,22 +165,13 @@ public class DishesItemController {
 	@RequestMapping("/json")
 	@ResponseBody
 	public byte[] json(HttpServletRequest request, ModelMap modelMap) throws IOException {
-		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
 		DishesItemQuery query = new DishesItemQuery();
 		Tools.populate(query, params);
 		query.deleteFlag(0);
-		query.setActorId(loginContext.getActorId());
-		query.setLoginContext(loginContext);
 
 		long dishesId = RequestUtils.getLong(request, "dishesId");
 		query.dishesId(dishesId);
-
-		if (loginContext.isSystemAdministrator()) {
-			query.createBy(loginContext.getActorId());
-		} else {
-			query.tenantId(loginContext.getTenantId());
-		}
 
 		int start = 0;
 		int limit = 10;
@@ -303,10 +294,21 @@ public class DishesItemController {
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		String actorId = loginContext.getActorId();
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		long dishesId = RequestUtils.getLong(request, "dishesId");
 		long itemId = RequestUtils.getLong(request, "itemId");
 		String saveAsFlag = request.getParameter("saveAsFlag");
 		DishesItem dishesItem = null;
 		try {
+			Dishes dishes = dishesService.getDishes(dishesId);
+
+			if (dishes != null) {
+				if (!loginContext.isSystemAdministrator()) {
+					if (StringUtils.equals(loginContext.getTenantId(), dishes.getTenantId())) {
+						return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+					}
+				}
+			}
+
 			if (StringUtils.equals(saveAsFlag, "true")) {
 				dishesItem = new DishesItem();
 				Tools.populate(dishesItem, params);
