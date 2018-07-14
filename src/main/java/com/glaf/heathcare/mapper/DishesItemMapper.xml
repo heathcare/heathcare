@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.glaf.heathcare.mapper.DishesItemMapper">
+
+	<resultMap id="dishesItemResultMap"
+		type="com.glaf.heathcare.domain.DishesItem">
+		<id property="id" column="ID_" jdbcType="BIGINT" />
+		<result property="dishesId" column="DISHESID_"
+			jdbcType="BIGINT" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="description" column="DESCRIPTION_"
+			jdbcType="VARCHAR" />
+		<result property="foodId" column="FOODID_" jdbcType="BIGINT" />
+		<result property="foodName" column="FOODNAME_"
+			jdbcType="VARCHAR" />
+		<result property="quantity" column="QUANTITY_"
+			jdbcType="DOUBLE" />
+		<result property="sortNo" column="SORTNO_" jdbcType="INTEGER" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+		<result property="updateBy" column="UPDATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="updateTime" column="UPDATETIME_"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<insert id="insertDishesItem"
+		parameterType="com.glaf.heathcare.domain.DishesItem">
+		insert into HEALTH_DISHES_ITEM
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="dishesId != null">
+				,DISHESID_
+			</if>
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="name != null">
+				,NAME_
+			</if>
+			<if test="description != null">
+				,DESCRIPTION_
+			</if>
+			<if test="foodId != null">
+				,FOODID_
+			</if>
+			<if test="foodName != null">
+				,FOODNAME_
+			</if>
+			<if test="quantity != null">
+				,QUANTITY_
+			</if>
+			<if test="sortNo != null">
+				,SORTNO_
+			</if>
+			<if test="createBy != null">
+				,CREATEBY_
+			</if>
+			<if test="createTime != null">
+				,CREATETIME_
+			</if>
+			<if test="updateBy != null">
+				,UPDATEBY_
+			</if>
+			<if test="updateTime != null">
+				,UPDATETIME_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=BIGINT}
+
+			<if test="dishesId != null">
+				,#{dishesId, jdbcType=BIGINT}
+			</if>
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				,#{name, jdbcType=VARCHAR}
+			</if>
+			<if test="description != null">
+				,#{description, jdbcType=VARCHAR}
+			</if>
+			<if test="foodId != null">
+				,#{foodId, jdbcType=BIGINT}
+			</if>
+			<if test="foodName != null">
+				,#{foodName, jdbcType=VARCHAR}
+			</if>
+			<if test="quantity != null">
+				,#{quantity, jdbcType=DOUBLE}
+			</if>
+			<if test="sortNo != null">
+				,#{sortNo, jdbcType=INTEGER}
+			</if>
+			<if test="createBy != null">
+				,#{createBy, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				,#{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+				,#{updateBy, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				,#{updateTime, jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertDishesItem" parameterType="java.util.List">
+		insert into HEALTH_DISHES_ITEM (
+		ID_
+		,DISHESID_
+		,TENANTID_
+		,NAME_
+		,DESCRIPTION_
+		,FOODID_
+		,FOODNAME_
+		,QUANTITY_
+		,SORTNO_
+		,CREATEBY_
+		,CREATETIME_
+		,UPDATEBY_
+		,UPDATETIME_
+		) values
+		<foreach collection="list" item="dishesItem" index="index"
+			separator=",">
+			(
+			#{dishesItem.id, jdbcType=BIGINT}
+			,#{dishesItem.dishesId,
+			jdbcType=BIGINT}
+			,#{dishesItem.tenantId, jdbcType=VARCHAR}
+			,#{dishesItem.name, jdbcType=VARCHAR}
+			,#{dishesItem.description,
+			jdbcType=VARCHAR}
+			,#{dishesItem.foodId, jdbcType=BIGINT}
+			,#{dishesItem.foodName, jdbcType=VARCHAR}
+			,#{dishesItem.quantity,
+			jdbcType=DOUBLE}
+			,#{dishesItem.sortNo, jdbcType=INTEGER}
+			,#{dishesItem.createBy, jdbcType=VARCHAR}
+			,#{dishesItem.createTime,
+			jdbcType=TIMESTAMP}
+			,#{dishesItem.updateBy, jdbcType=VARCHAR}
+			,#{dishesItem.updateTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertDishesItem_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="dishesItem" index="index">
+			insert into
+			HEALTH_DISHES_ITEM (
+			ID_
+			,DISHESID_
+			,TENANTID_
+			,NAME_
+			,DESCRIPTION_
+			,FOODID_
+			,FOODNAME_
+			,QUANTITY_
+			,SORTNO_
+			,CREATEBY_
+			,CREATETIME_
+			,UPDATEBY_
+			,UPDATETIME_
+			) values (
+			#{dishesItem.id, jdbcType=BIGINT}
+			,#{dishesItem.dishesId, jdbcType=BIGINT}
+			,#{dishesItem.tenantId,
+			jdbcType=VARCHAR}
+			,#{dishesItem.name, jdbcType=VARCHAR}
+			,#{dishesItem.description, jdbcType=VARCHAR}
+			,#{dishesItem.foodId,
+			jdbcType=BIGINT}
+			,#{dishesItem.foodName, jdbcType=VARCHAR}
+			,#{dishesItem.quantity, jdbcType=DOUBLE}
+			,#{dishesItem.sortNo,
+			jdbcType=INTEGER}
+			,#{dishesItem.createBy, jdbcType=VARCHAR}
+			,#{dishesItem.createTime, jdbcType=TIMESTAMP}
+			,#{dishesItem.updateBy,
+			jdbcType=VARCHAR}
+			,#{dishesItem.updateTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateDishesItem"
+		parameterType="com.glaf.heathcare.domain.DishesItem">
+		update HEALTH_DISHES_ITEM
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="name != null">
+				NAME_ = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION_ = #{description, jdbcType=VARCHAR},
+			</if>
+			<if test="foodId != null">
+				FOODID_ = #{foodId, jdbcType=BIGINT},
+			</if>
+			<if test="foodName != null">
+				FOODNAME_ = #{foodName, jdbcType=VARCHAR},
+			</if>
+			<if test="quantity != null">
+				QUANTITY_ = #{quantity, jdbcType=DOUBLE},
+			</if>
+			<if test="sortNo != null">
+				SORTNO_ = #{sortNo, jdbcType=INTEGER},
+			</if>
+			<if test="updateBy != null">
+				UPDATEBY_ = #{updateBy, jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATETIME_ = #{updateTime, jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=BIGINT}
+
+	</update>
+
+
+	<delete id="deleteDishesItemById" parameterType="long">
+		delete from
+		HEALTH_DISHES_ITEM
+		where ID_ = #{id}
+	</delete>
+
+
+	<delete id="deleteDishesItemsByDishesId" parameterType="long">
+		delete
+		from
+		HEALTH_DISHES_ITEM
+		where DISHESID_ = #{dishesId}
+	</delete>
+
+
+	<select id="getDishesItemById" parameterType="long"
+		resultMap="dishesItemResultMap">
+		select * from HEALTH_DISHES_ITEM where ID_ = #{id}
+	</select>
+
+
+	<select id="getDishesItemsByDishesId" parameterType="long"
+		resultMap="dishesItemResultMap">
+		select * from HEALTH_DISHES_ITEM where DISHESID_ = #{dishesId}
+	</select>
+
+
+	<select id="getDishesItems"
+		parameterType="com.glaf.heathcare.query.DishesItemQuery"
+		resultMap="dishesItemResultMap">
+		select distinct E.*
+		<include refid="selectDishesItemsSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.SORTNO_ asc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getDishesItemCount"
+		parameterType="com.glaf.heathcare.query.DishesItemQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectDishesItemsSql" />
+	</select>
+
+
+	<sql id="selectDishesItemsSql">
+
+		from HEALTH_DISHES_ITEM E
+
+		<where>
+			1 = 1
+
+			<if test="dishesId != null">
+				and E.DISHESID_ = #{dishesId}
+			</if>
+
+			<if test="dishesIds != null and dishesIds.size() &gt; 0">
+				and E.DISHESID_ IN
+				<foreach item="x_dishesId" index="index"
+					collection="dishesIds" open="(" separator="," close=")">
+					#{x_dishesId}
+				</foreach>
+			</if>
+
+			<if test="tenantId != null and tenantId != '' ">
+				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="tenantIds != null and tenantIds.size() &gt; 0">
+				and E.TENANTID_ IN
+				<foreach item="x_tenantId" index="index"
+					collection="tenantIds" open="(" separator="," close=")">
+					#{x_tenantId}
+				</foreach>
+			</if>
+
+			<if test="nameLike != null and nameLike != '' ">
+				and E.NAME_ like #{nameLike}
+			</if>
+
+			<if test="foodId != null">
+				and E.FOODID_ = #{foodId}
+			</if>
+
+			<if test="foodIds != null and foodIds.size() &gt; 0">
+				and E.FOODID_ IN
+				<foreach item="x_foodId" index="index" collection="foodIds"
+					open="(" separator="," close=")">
+					#{x_foodId}
+				</foreach>
+			</if>
+
+			<if test="createBy != null and createBy != '' ">
+				and E.CREATEBY_ = #{createBy}
+			</if>
+
+			<if test="createTimeGreaterThanOrEqual != null">
+				and E.CREATETIME_ &gt;= #{createTimeGreaterThanOrEqual}
+			</if>
+
+			<if test="createTimeLessThanOrEqual != null">
+				and E.CREATETIME_ &lt;= #{createTimeLessThanOrEqual}
+			</if>
+
+		</where>
+	</sql>
+
+</mapper>
