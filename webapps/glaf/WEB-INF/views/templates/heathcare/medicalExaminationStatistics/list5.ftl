@@ -7,11 +7,11 @@
 <script type="text/javascript" src="${contextPath}/static/scripts/global.js"></script>
 <script type="text/javascript">
   
-	function exportXls(){
+	function exportXls(outputFormat){
 		var gradeId = jQuery("#gradeId").val();
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationSicknessPositiveSign&checkId=${checkId}&ts=${ts}&type=${type}&outputFormat=html";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationSicknessPositiveSign&checkId=${checkId}&ts=${ts}&type=${type}&outputFormat="+outputFormat;
 		if(gradeId != ""){
 			link = link + "&gradeId=" + gradeId;
 		}
@@ -29,24 +29,24 @@
 		frm.src=link;
     }
 
-	function exportXls2(){
-		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=Growth&personId=${personId}&checkId=${checkId}&ts=${ts}&outputFormat=html";
+	function exportXls2(outputFormat){
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=Growth&personId=${personId}&checkId=${checkId}&ts=${ts}&outputFormat="+outputFormat;
         var frm = document.getElementById("frm2");
 		frm.src=link;
     }
 	
-	function exportXls3(){
+	function exportXls3(outputFormat){
 		var personId = document.getElementById("personId").value;
-		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=Growth&personId="+personId+"&checkId=${checkId}&ts=${ts}&outputFormat=html";
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=Growth&personId="+personId+"&checkId=${checkId}&ts=${ts}&outputFormat="+outputFormat;
         var frm = document.getElementById("frm2");
 		frm.src=link;
     }	
 
-	function exportXls55(){
+	function exportXls55(outputFormat){
 		var gradeId = jQuery("#gradeId").val();
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
-		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalExaminationCount&checkId=${checkId}&ts=${ts}&outputFormat=html";
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalExaminationCount&checkId=${checkId}&ts=${ts}&outputFormat="+outputFormat;
 		if(gradeId != ""){
 			link = link + "&gradeId=" + gradeId;
 		}
@@ -60,7 +60,7 @@
 		frm.src=link;
     }
 
-	function exportXls60(){
+	function exportXls60(outputFormat){
 		var gradeId = jQuery("#gradeId").val();
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
@@ -76,7 +76,7 @@
 			alert("请选择月份！");
 			return;
 		}
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationGrade&ts=${ts}&type=${type}&outputFormat=html";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationGrade&ts=${ts}&type=${type}&outputFormat="+outputFormat;
 		if(gradeId != ""){
 			link = link + "&gradeId=" + gradeId;
 		}
@@ -90,7 +90,7 @@
 		frm.src=link;
     }
 
-	function exportXls65(){
+	function exportXls65(outputFormat){
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
         if(year == ""){
@@ -101,7 +101,7 @@
 			alert("请选择月份！");
 			return;
 		}
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationGradeCount&ts=${ts}&type=${type}&outputFormat=html";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=TenantMedicalExaminationGradeCount&ts=${ts}&type=${type}&outputFormat="+outputFormat;
 		if(year != ""){
 			link = link + "&year=" + year;
 		}
@@ -112,7 +112,7 @@
 		frm.src=link;
     }
 
-	function exportXls70(){
+	function exportXls70(outputFormat){
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
         if(year == ""){
@@ -123,7 +123,7 @@
 			alert("请选择月份！");
 			return;
 		}
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationPersonExport&ts=${ts}&type=${type}&outputFormat=html";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationPersonExport&ts=${ts}&type=${type}&outputFormat="+outputFormat;
 		if(year != ""){
 			link = link + "&year=" + year;
 		}
@@ -185,19 +185,29 @@
 				<td width="60%">
 				    &nbsp;&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'" 
-					   onclick="javascript:exportXls();">统计结果</a>
+					   onclick="javascript:exportXls('html');">统计结果</a>&nbsp;
+					<img src="${contextPath}/static/images/excel.gif" style="cursor:pointer;margin-top:3px;width:14px;height:14px;"  
+					     onclick="javascript:exportXls('xls');">
 					&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'" 
-					   onclick="javascript:exportXls55();">体格统计</a>
+					   onclick="javascript:exportXls55('html');">体格统计</a>&nbsp;
+					<img src="${contextPath}/static/images/excel.gif" style="cursor:pointer;margin-top:3px;width:14px;height:14px;"  
+					     onclick="javascript:exportXls55('xls');">
 					&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'" 
-					   onclick="javascript:exportXls60();">班级</a>
+					   onclick="javascript:exportXls60('html');">班级</a>&nbsp;
+					<img src="${contextPath}/static/images/excel.gif" style="cursor:pointer;margin-top:3px;width:14px;height:14px;"  
+					     onclick="javascript:exportXls60('xls');">
 					&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'" 
-					   onclick="javascript:exportXls65();">全园</a>
+					   onclick="javascript:exportXls65('html');">全园</a>&nbsp;
+					<img src="${contextPath}/static/images/excel.gif" style="cursor:pointer;margin-top:3px;width:14px;height:14px;"  
+					     onclick="javascript:exportXls65('xls');">
 					&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'" 
-					   onclick="javascript:exportXls70();">超重与肥胖</a>
+					   onclick="javascript:exportXls70('html');">超重与肥胖</a>&nbsp;
+					<img src="${contextPath}/static/images/excel.gif" style="cursor:pointer;margin-top:3px;width:14px;height:14px;"  
+					     onclick="javascript:exportXls70('xls');">
 				    &nbsp;
 				</td>
 			 </tr>
