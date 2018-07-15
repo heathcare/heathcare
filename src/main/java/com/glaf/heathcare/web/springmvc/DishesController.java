@@ -42,7 +42,6 @@ import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
-import com.glaf.core.util.Paging;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
@@ -222,7 +221,7 @@ public class DishesController {
 		}
 
 		if (limit <= 0) {
-			limit = Paging.DEFAULT_PAGE_SIZE;
+			limit = 100;
 		}
 
 		JSONObject result = new JSONObject();
