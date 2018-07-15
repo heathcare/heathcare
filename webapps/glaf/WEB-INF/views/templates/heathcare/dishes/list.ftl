@@ -70,10 +70,11 @@
 
 
 	function formatterKeys(val, row){
-		if(row.purchaseFlag == "Y"){
-			return "<a href='javascript:details(\""+row.id+"\");'><img src='${contextPath}/static/images/statistics.png' border='0'>构成项</a>";
-		}
-		var str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>&nbsp;<a href='javascript:calRow(\""+row.id+"\");'>计算</a>&nbsp;<a href='javascript:details(\""+row.id+"\");'><img src='${contextPath}/static/images/statistics.png' border='0'>组成</a>";
+		var str = "";
+		<#if canEdit == true>
+		str = str +"<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>&nbsp;<a href='javascript:calRow(\""+row.id+"\");'>计算</a>";
+		</#if>
+		str = str="&nbsp;<a href='javascript:details(\""+row.id+"\");'><img src='${contextPath}/static/images/statistics.png' border='0'>组成</a>";
 	    return str;
 	}
 
@@ -351,8 +352,8 @@
 		var nodeId = document.getElementById("nodeId").value;
 		var sysFlag = document.getElementById("sysFlag").value;
         var nameLike = document.getElementById("nameLike").value;
-        var link = "${contextPath}/heathcare/dishes/json?nodeId="+nodeId+"&nameLike="+nameLike+"&sysFlag="+sysFlag;
-		loadGridData(link);
+        var link = "${contextPath}/heathcare/dishes?nodeId="+nodeId+"&nameLike="+nameLike+"&sysFlag="+sysFlag;
+		window.location.href=link;
 	}
 
 	function loadGridData(url){
@@ -382,6 +383,7 @@
 		    <td width="35%" align="left">
 				&nbsp;<img src="${contextPath}/static/images/window.png">
 				&nbsp;<span class="x_content_title">菜肴列表</span>
+				<#if canEdit == true>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
 				   onclick="javascript:addNew();">新增</a>  
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
@@ -390,10 +392,11 @@
 				   onclick="javascript:deleteSelections();">删除</a> 
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-formula'"
 				   onclick="javascript:calAll();">计算</a>
+				</#if>
 			</td>
 			<td width="65%" align="left">
 			  &nbsp;类型&nbsp;
-			  <select id="sysFlag" name="sysFlag">
+			  <select id="sysFlag" name="sysFlag" onchange="javascript:doSearch();">
 				  <option value="">----请选择----</option> 
 				  <option value="Y">系统内置</option>
 				  <option value="N">我自己的</option>

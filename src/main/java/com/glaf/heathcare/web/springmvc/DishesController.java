@@ -53,6 +53,8 @@ import com.glaf.heathcare.query.DishesQuery;
 import com.glaf.heathcare.service.DishesService;
 import com.glaf.heathcare.util.DishesJsonFactory;
 
+import net.iharder.Base64;
+
 /**
  * 
  * SpringMVC控制器
@@ -155,14 +157,28 @@ public class DishesController {
 
 	@RequestMapping("/edit")
 	public ModelAndView edit(HttpServletRequest request, ModelMap modelMap) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		RequestUtils.setRequestParameterToAttribute(request);
 
 		List<SysTree> trees = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", trees);
 
+		request.setAttribute("canSave", true);
+
 		Dishes dishes = dishesService.getDishes(RequestUtils.getLong(request, "id"));
 		if (dishes != null) {
 			request.setAttribute("dishes", dishes);
+
+			if (loginContext.isSystemAdministrator()) {
+				if (!StringUtils.equals(dishes.getCreateBy(), loginContext.getActorId())) {
+					request.setAttribute("canSave", false);
+				}
+			} else {
+				if (!StringUtils.equals(dishes.getTenantId(), loginContext.getTenantId())) {
+					request.setAttribute("canSave", false);
+					logger.debug("--------canSave false");
+				}
+			}
 		}
 
 		String view = request.getParameter("view");
@@ -197,7 +213,15 @@ public class DishesController {
 				query.tenantId(loginContext.getTenantId());
 			}
 		} else {
-			query.sysFlag("Y");
+			if (StringUtils.isNotEmpty(sysFlag)) {
+				query.sysFlag(sysFlag);
+			} else {
+				if (loginContext.isSystemAdministrator()) {
+					query.sysFlag("Y");
+				} else {
+					query.sysFlag("N");
+				}
+			}
 		}
 
 		String nameLike = request.getParameter("nameLike_enc");
@@ -269,7 +293,30 @@ public class DishesController {
 
 	@RequestMapping
 	public ModelAndView list(HttpServletRequest request, ModelMap modelMap) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		RequestUtils.setRequestParameterToAttribute(request);
+
+		request.setAttribute("canEdit", true);
+
+		String nameLike = request.getParameter("nameLike");
+		if (StringUtils.isNotEmpty(nameLike)) {
+			nameLike = nameLike.trim();
+			request.setAttribute("nameLike_enc", RequestUtils.encodeString(nameLike));
+			request.setAttribute("nameLike_base64", Base64.encodeBytes(nameLike.getBytes()));
+		}
+
+		String sysFlag = request.getParameter("sysFlag");
+		if (loginContext.isSystemAdministrator()) {
+			sysFlag = "Y";
+		} else {
+			if (StringUtils.isEmpty(sysFlag)) {
+				sysFlag = "N";
+			}
+			if (StringUtils.equals(sysFlag, "Y")) {
+				request.setAttribute("canEdit", false);
+			}
+		}
+		request.setAttribute("sysFlag", sysFlag);
 
 		List<SysTree> trees = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", trees);

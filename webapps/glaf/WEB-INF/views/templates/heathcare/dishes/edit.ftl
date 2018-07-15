@@ -84,7 +84,9 @@
   <div data-options="region:'north', split:false, border:true" style="height:42px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 	<img src="${contextPath}/static/images/window.png"><span class="x_content_title">&nbsp;编辑菜肴</span>
-	<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-save'" onclick="javascript:saveData();" >保存</a> 
+	<#if canSave == true>
+	<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-save'" onclick="javascript:saveData();" >保存</a>
+	</#if>
 	<#if dishes.id?exists>
 	<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-save'" onclick="javascript:saveAsData();" >另存</a> 
 	</#if>
