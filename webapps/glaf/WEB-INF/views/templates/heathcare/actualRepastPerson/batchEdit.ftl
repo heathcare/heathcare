@@ -123,13 +123,13 @@
              <input id="male_${person.age}" name="male_${person.age}" type="text" class="easyui-numberbox x-text" 
 			        style="width:60px; text-align:right;"
 			        value="${person.male}" size="3" maxlength="3"/>
-		     &nbsp;(计划：${person.malePlan})
+		     &nbsp;(计划：${person.malePlan}，在册：${person.malePark})
 		</td>
 		<td  class="table-content" align="left">
 		     <input id="female_${person.age}" name="female_${person.age}" type="text" class="easyui-numberbox x-text" 
 			        style="width:60px; text-align:right;"
 				    value="${person.female}" size="3" maxlength="3"/>
-		     &nbsp;(计划：${person.femalePlan})
+		     &nbsp;(计划：${person.femalePlan}，在册：${person.femalePark})
 		</td>
 	</tr>
 	</#list>

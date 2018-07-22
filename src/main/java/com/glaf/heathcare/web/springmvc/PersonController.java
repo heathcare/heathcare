@@ -295,8 +295,6 @@ public class PersonController {
 				}
 			}
 		}
-		
-		
 
 		String nameLike = request.getParameter("nameLike");
 		if (StringUtils.isNotEmpty(nameLike)) {

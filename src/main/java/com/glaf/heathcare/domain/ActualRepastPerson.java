@@ -57,22 +57,40 @@ public class ActualRepastPerson implements Serializable, JSONable {
 	protected String tenantId;
 
 	/**
-	 * 男性
+	 * 男生人数
 	 */
 	@Column(name = "MALE_")
 	protected int male;
 
+	/**
+	 * 计划男生人数
+	 */
 	@javax.persistence.Transient
 	protected int malePlan;
 
 	/**
-	 * 女性
+	 * 在园男生人数
+	 */
+	@javax.persistence.Transient
+	protected int malePark;
+
+	/**
+	 * 女生人数
 	 */
 	@Column(name = "FEMALE_")
 	protected int female;
 
+	/**
+	 * 计划女生人数
+	 */
 	@javax.persistence.Transient
 	protected int femalePlan;
+
+	/**
+	 * 在园女生人数
+	 */
+	@javax.persistence.Transient
+	protected int femalePark;
 
 	/**
 	 * 年龄
@@ -200,6 +218,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 		return this.female;
 	}
 
+	public int getFemalePark() {
+		return femalePark;
+	}
+
 	public int getFemalePlan() {
 		return femalePlan;
 	}
@@ -214,6 +236,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 
 	public int getMale() {
 		return this.male;
+	}
+
+	public int getMalePark() {
+		return malePark;
 	}
 
 	public int getMalePlan() {
@@ -295,6 +321,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 		this.female = female;
 	}
 
+	public void setFemalePark(int femalePark) {
+		this.femalePark = femalePark;
+	}
+
 	public void setFemalePlan(int femalePlan) {
 		this.femalePlan = femalePlan;
 	}
@@ -309,6 +339,10 @@ public class ActualRepastPerson implements Serializable, JSONable {
 
 	public void setMale(int male) {
 		this.male = male;
+	}
+
+	public void setMalePark(int malePark) {
+		this.malePark = malePark;
 	}
 
 	public void setMalePlan(int malePlan) {

@@ -145,7 +145,7 @@ public class PersonInfoController {
 		List<Person> persons = personService.list(query2);
 		Map<Integer, Integer> maleMap = new HashMap<Integer, Integer>();
 		Map<Integer, Integer> femaleMap = new HashMap<Integer, Integer>();
-		for (int age = 3; age <= 7; age++) {
+		for (int age = 3; age <= 6; age++) {
 			maleMap.put(age, 0);
 			femaleMap.put(age, 0);
 		}
@@ -155,7 +155,7 @@ public class PersonInfoController {
 				if (age < 3) {
 					age = 3;
 				}
-				if (age >= 3 && age <= 7) {
+				if (age >= 3 && age <= 6) {
 					if (StringUtils.equals(person.getSex(), "1")) {
 						Integer cnt = maleMap.get(age);
 						if (cnt != null) {

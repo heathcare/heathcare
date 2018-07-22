@@ -139,5 +139,8 @@
   </form>
 </div>
 </div>
+ <script type="text/javascript">
+    switchPersonCnt();
+ </script>
 </body>
 </html>
