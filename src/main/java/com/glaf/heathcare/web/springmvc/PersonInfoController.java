@@ -19,6 +19,7 @@
 package com.glaf.heathcare.web.springmvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +50,16 @@ import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.Tools;
-
+import com.glaf.heathcare.domain.GradeInfo;
+import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.PersonInfo;
 import com.glaf.heathcare.helper.PersonInfoHelper;
+import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.PersonInfoQuery;
+import com.glaf.heathcare.query.PersonQuery;
+import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.heathcare.service.PersonInfoService;
+import com.glaf.heathcare.service.PersonService;
 
 /**
  * 
@@ -67,6 +73,10 @@ public class PersonInfoController {
 	protected static final Log logger = LogFactory.getLog(PersonInfoController.class);
 
 	protected DictoryService dictoryService;
+
+	protected GradeInfoService gradeInfoService;
+
+	protected PersonService personService;
 
 	protected PersonInfoService personInfoService;
 
@@ -115,6 +125,64 @@ public class PersonInfoController {
 		if (personInfo != null) {
 			request.setAttribute("personInfo", personInfo);
 		}
+
+		GradeInfoQuery query1 = new GradeInfoQuery();
+		query1.tenantId(loginContext.getTenantId());
+		query1.locked(0);
+		List<GradeInfo> grades = gradeInfoService.list(query1);
+		List<String> gradeIds = new ArrayList<String>();
+		if (grades != null && !grades.isEmpty()) {
+			for (GradeInfo grade : grades) {
+				gradeIds.add(grade.getId());
+			}
+		}
+
+		PersonQuery query2 = new PersonQuery();
+		query2.tenantId(loginContext.getTenantId());
+		query2.gradeIds(gradeIds);
+		query2.locked(0);
+
+		List<Person> persons = personService.list(query2);
+		Map<Integer, Integer> maleMap = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> femaleMap = new HashMap<Integer, Integer>();
+		for (int age = 3; age <= 7; age++) {
+			maleMap.put(age, 0);
+			femaleMap.put(age, 0);
+		}
+		if (persons != null && !persons.isEmpty()) {
+			for (Person person : persons) {
+				int age = person.getAge();
+				if (age < 3) {
+					age = 3;
+				}
+				if (age >= 3 && age <= 7) {
+					if (StringUtils.equals(person.getSex(), "1")) {
+						Integer cnt = maleMap.get(age);
+						if (cnt != null) {
+							cnt = cnt + 1;
+							maleMap.put(age, cnt);
+						}
+					} else {
+						Integer cnt = femaleMap.get(age);
+						if (cnt != null) {
+							cnt = cnt + 1;
+							femaleMap.put(age, cnt);
+						}
+					}
+				}
+			}
+		}
+
+		JSONArray result = new JSONArray();
+		for (int age = 3; age <= 7; age++) {
+			JSONObject json = new JSONObject();
+			json.put("age", age);
+			json.put("male", maleMap.get(age));
+			json.put("female", femaleMap.get(age));
+			result.add(json);
+		}
+
+		request.setAttribute("jsonCnt", result.toJSONString());
 
 		if (loginContext.isTenantAdmin()) {
 			request.setAttribute("privilege_write", true);
@@ -344,9 +412,19 @@ public class PersonInfoController {
 		this.dictoryService = dictoryService;
 	}
 
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.gradeInfoService")
+	public void setGradeInfoService(GradeInfoService gradeInfoService) {
+		this.gradeInfoService = gradeInfoService;
+	}
+
 	@javax.annotation.Resource(name = "com.glaf.heathcare.service.personInfoService")
 	public void setPersonInfoService(PersonInfoService personInfoService) {
 		this.personInfoService = personInfoService;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.personService")
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 
 	@javax.annotation.Resource

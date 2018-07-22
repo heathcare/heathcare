@@ -4,7 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>就餐人数信息</title>
 <#include "/inc/init_easyui_import.ftl"/> 
+<script type="text/javascript" src="${contextPath}/static/scripts/map.js"></script>
 <script type="text/javascript">
+
+    
 
 	function saveData(){
 		var params = jQuery("#iForm").formSerialize();
@@ -12,7 +15,7 @@
 				   type: "POST",
 				   url: '${contextPath}/heathcare/personInfo/savePersonInfo',
 				   data: params,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -36,7 +39,7 @@
 				   type: "POST",
 				   url: '${contextPath}/heathcare/personInfo/savePersonInfo',
 				   data: params,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -51,6 +54,18 @@
 					   }
 				   }
 			 });
+	}
+
+	function switchPersonCnt(){
+		var age = document.getElementById("age").value;
+        var json = ${jsonCnt};
+	    $.each(json, function(idx, obj) {
+			if(obj.age == age){
+				//alert(obj.male +" "+ obj.female);
+                document.getElementById("malePlan").innerHTML=age+"岁在册男生人数:"+obj.male;
+				document.getElementById("femalePlan").innerHTML=age+"岁在册女生人数:"+obj.female;
+			}
+        });
 	}
 
 </script>
@@ -86,11 +101,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td width="20%" align="left">年龄</td>
+		<td width="20%" align="left">年龄组</td>
 		<td align="left">
-			 <select id="age" name="age">
-				<!-- <option value="1">1岁</option>
-				<option value="2">2岁</option> -->
+			 <select id="age" name="age" onchange="javascript:switchPersonCnt();">
 				<option value="3">3岁</option>
 				<option value="4">4岁</option>
 				<option value="5">5岁</option>
@@ -107,7 +120,8 @@
 			<input id="male" name="male" type="text" 
 			       class="easyui-numberbox x-text" 
 				   increment="10" style="width:60px; text-align:right;" 
-				   value="${personInfo.male}"/>
+				   value="${personInfo.male}"/>&nbsp;
+			<span id="malePlan"></span>
 		</td>
 	</tr>
 	<tr>
@@ -116,7 +130,8 @@
 			<input id="female" name="female" type="text" 
 			       class="easyui-numberbox x-text" 
 				   increment="10" style="width:60px; text-align:right;" 
-				   value="${personInfo.female}"/>
+				   value="${personInfo.female}"/>&nbsp;
+			<span id="femalePlan"></span>
 		</td>
 	</tr>
     </tbody>

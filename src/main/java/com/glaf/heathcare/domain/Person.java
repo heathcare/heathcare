@@ -376,6 +376,9 @@ public class Person implements Serializable, JSONable {
 	protected int deleteFlag;
 
 	@javax.persistence.Transient
+	protected int ageOfTheMoon;
+
+	@javax.persistence.Transient
 	protected int status;
 
 	@javax.persistence.Transient
@@ -415,8 +418,11 @@ public class Person implements Serializable, JSONable {
 		return true;
 	}
 
+	public int getAge() {
+		return getAgeOfTheMoon() / 12;
+	}
+
 	public int getAgeOfTheMoon() {
-		int ageOfTheMoon = 0;
 		if (birthday != null) {
 			Calendar startDate = Calendar.getInstance();
 			startDate.setTime(birthday);
