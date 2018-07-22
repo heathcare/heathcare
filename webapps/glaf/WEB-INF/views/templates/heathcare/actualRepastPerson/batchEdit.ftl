@@ -75,7 +75,7 @@
 </head>
 <body>
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north',split:false,border:true" style="height:42px" class="toolbar-backgroud"> 
+  <div data-options="region:'north',split:false,border:true" style="height:45px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 	<span class="x_content_title">&nbsp;&nbsp;每日实际就餐人数</span>
 	<#if privilege_write == true>

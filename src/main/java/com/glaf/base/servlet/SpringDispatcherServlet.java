@@ -52,7 +52,7 @@ public class SpringDispatcherServlet extends DispatcherServlet {
 
 	protected static final Log logger = LogFactory.getLog(SpringDispatcherServlet.class);
 
-	protected static final Semaphore semaphore = new Semaphore(20);
+	protected static final Semaphore semaphore = new Semaphore(50);
 
 	private static final long serialVersionUID = 1L;
 
@@ -111,13 +111,15 @@ public class SpringDispatcherServlet extends DispatcherServlet {
 				json.put("username", user.getName());
 				Authentication.setAuthenticatedUser(user);
 				com.glaf.core.security.Authentication.setAuthenticatedActorId(user.getActorId());
-			}
-
-			/**
-			 * 未登录或不是系统管理员，不允许访问系统管理地址
-			 */
-			if ((user == null) || (!user.isSystemAdministrator())) {
-				logger.debug("request uri:" + uri);
+			} else {
+				/**
+				 * 取不到用户会话信息，跳转到登录页
+				 */
+				if (!(StringUtils.contains(uri, "/login") || StringUtils.contains(uri, "/static/"))) {
+					logger.debug("->uri:" + uri);
+					response.sendRedirect(request.getContextPath() + "/login");
+					return;
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

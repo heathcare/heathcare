@@ -324,7 +324,7 @@
 				order by ${orderBy}
 			</when>
 			<otherwise>
-				order by E.ID_ desc
+				order by E.TYPEID_ asc, E.SORTNO_ asc
 			</otherwise>
 		</choose>
 	</select>

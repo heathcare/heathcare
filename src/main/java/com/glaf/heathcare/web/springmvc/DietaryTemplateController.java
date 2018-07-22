@@ -58,9 +58,12 @@ import com.glaf.core.util.StringTools;
 import com.glaf.core.util.Tools;
 
 import com.glaf.heathcare.bean.DietaryTemplateBean;
+import com.glaf.heathcare.domain.DietaryCategory;
 import com.glaf.heathcare.domain.DietaryTemplate;
 import com.glaf.heathcare.helper.PermissionHelper;
+import com.glaf.heathcare.query.DietaryCategoryQuery;
 import com.glaf.heathcare.query.DietaryTemplateQuery;
+import com.glaf.heathcare.service.DietaryCategoryService;
 import com.glaf.heathcare.service.DietaryItemService;
 import com.glaf.heathcare.service.DietaryTemplateService;
 import com.glaf.heathcare.service.FoodCompositionService;
@@ -81,6 +84,8 @@ public class DietaryTemplateController {
 	protected DictoryService dictoryService;
 
 	protected DistrictService districtService;
+
+	protected DietaryCategoryService dietaryCategoryService;
 
 	protected DietaryItemService dietaryItemService;
 
@@ -220,11 +225,20 @@ public class DietaryTemplateController {
 		List<District> districts = districtService.getDistrictList(0);
 		request.setAttribute("districts", districts);
 
-		List<Integer> suitNos = new ArrayList<Integer>();
-		for (int i = 1; i <= 80; i++) {
-			suitNos.add(i);
+		String sysFlag = request.getParameter("sysFlag");
+
+		if (loginContext.isSystemAdministrator()) {
+			List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+			request.setAttribute("categories", categories);
+		} else {
+			if (StringUtils.equals(sysFlag, "Y")) {
+				List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+				request.setAttribute("categories", categories);
+			} else {
+				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
+				request.setAttribute("categories", categories);
+			}
 		}
-		request.setAttribute("suitNos", suitNos);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -244,14 +258,53 @@ public class DietaryTemplateController {
 	public byte[] json(HttpServletRequest request, ModelMap modelMap) throws IOException {
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
+
+		DietaryCategoryQuery queryx = new DietaryCategoryQuery();
+		Tools.populate(queryx, params);
+
+		String sysFlag = request.getParameter("sysFlag");
+		int suitNo = RequestUtils.getInt(request, "suitNo");
+
+		if (StringUtils.equals(sysFlag, "N")) {
+			if (loginContext.isSystemAdministrator()) {
+				queryx.createBy(loginContext.getActorId());
+			} else {
+				queryx.sysFlag("N");
+				queryx.tenantId(loginContext.getTenantId());
+			}
+		} else {
+			if (StringUtils.isNotEmpty(sysFlag)) {
+				queryx.sysFlag(sysFlag);
+			} else {
+				if (loginContext.isSystemAdministrator()) {
+					queryx.sysFlag("Y");
+				} else {
+					queryx.sysFlag("N");
+				}
+			}
+		}
+
 		DietaryTemplateQuery query = new DietaryTemplateQuery();
 		Tools.populate(query, params);
+
+		if (suitNo > 0) {
+			query.suitNo(suitNo);
+		} else {
+			List<DietaryCategory> categories = dietaryCategoryService.list(queryx);
+			if (categories != null && !categories.isEmpty()) {
+				List<Integer> suitNos = new ArrayList<Integer>();
+				for (DietaryCategory cat : categories) {
+					suitNos.add(cat.getSuitNo());
+				}
+				query.suitNos(suitNos);
+			}
+		}
+
 		query.deleteFlag(0);
 		query.setActorId(loginContext.getActorId());
 		query.setLoginContext(loginContext);
 		query.instanceFlag("N");
 
-		String sysFlag = request.getParameter("sysFlag");
 		String selected = request.getParameter("selected");
 
 		if (StringUtils.equals(sysFlag, "Y")) {
@@ -370,24 +423,6 @@ public class DietaryTemplateController {
 						rowJSON.put("checked", 1);
 					}
 
-					switch (dietaryTemplate.getSeason()) {
-					case 1:
-						rowJSON.put("seasonName", "春季");
-						break;
-					case 2:
-						rowJSON.put("seasonName", "夏季");
-						break;
-					case 3:
-						rowJSON.put("seasonName", "秋季");
-						break;
-					case 4:
-						rowJSON.put("seasonName", "冬季");
-						break;
-					default:
-						rowJSON.put("seasonName", "-");
-						break;
-					}
-
 					switch (dietaryTemplate.getDayOfWeek()) {
 					case 1:
 						rowJSON.put("dayOfWeekName", "星期一");
@@ -474,11 +509,20 @@ public class DietaryTemplateController {
 		List<District> districts = districtService.getDistrictList(0);
 		request.setAttribute("districts", districts);
 
-		List<Integer> suitNos = new ArrayList<Integer>();
-		for (int i = 1; i <= 80; i++) {
-			suitNos.add(i);
+		String sysFlag = request.getParameter("sysFlag");
+
+		if (loginContext.isSystemAdministrator()) {
+			List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+			request.setAttribute("categories", categories);
+		} else {
+			if (StringUtils.equals(sysFlag, "Y")) {
+				List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+				request.setAttribute("categories", categories);
+			} else {
+				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
+				request.setAttribute("categories", categories);
+			}
 		}
-		request.setAttribute("suitNos", suitNos);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -524,10 +568,6 @@ public class DietaryTemplateController {
 
 			dietaryTemplate.setName(request.getParameter("name"));
 			dietaryTemplate.setDescription(request.getParameter("description"));
-			dietaryTemplate.setAgeGroup(request.getParameter("ageGroup"));
-			dietaryTemplate.setProvince(request.getParameter("province"));
-			dietaryTemplate.setRegion(request.getParameter("region"));
-			dietaryTemplate.setSeason(RequestUtils.getInt(request, "season"));
 			dietaryTemplate.setTypeId(RequestUtils.getLong(request, "typeId"));
 			dietaryTemplate.setDayOfWeek(RequestUtils.getInt(request, "dayOfWeek"));
 			dietaryTemplate.setSortNo(RequestUtils.getInt(request, "sortNo"));
@@ -601,10 +641,6 @@ public class DietaryTemplateController {
 
 			dietaryTemplate.setName(request.getParameter("name"));
 			dietaryTemplate.setDescription(request.getParameter("description"));
-			dietaryTemplate.setAgeGroup(request.getParameter("ageGroup"));
-			dietaryTemplate.setProvince(request.getParameter("province"));
-			dietaryTemplate.setRegion(request.getParameter("region"));
-			dietaryTemplate.setSeason(RequestUtils.getInt(request, "season"));
 			dietaryTemplate.setTypeId(RequestUtils.getLong(request, "typeId"));
 			dietaryTemplate.setDayOfWeek(RequestUtils.getInt(request, "dayOfWeek"));
 			dietaryTemplate.setSortNo(RequestUtils.getInt(request, "sortNo"));
@@ -748,6 +784,7 @@ public class DietaryTemplateController {
 
 	@RequestMapping("/searchlist")
 	public ModelAndView searchlist(HttpServletRequest request, ModelMap modelMap) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		RequestUtils.setRequestParameterToAttribute(request);
 		PermissionHelper helper = new PermissionHelper();
 		helper.setUserPermission(request);
@@ -769,11 +806,20 @@ public class DietaryTemplateController {
 		List<District> districts = districtService.getDistrictList(0);
 		request.setAttribute("districts", districts);
 
-		List<Integer> suitNos = new ArrayList<Integer>();
-		for (int i = 1; i <= 80; i++) {
-			suitNos.add(i);
+		String sysFlag = request.getParameter("sysFlag");
+
+		if (loginContext.isSystemAdministrator()) {
+			List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+			request.setAttribute("categories", categories);
+		} else {
+			if (StringUtils.equals(sysFlag, "Y")) {
+				List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+				request.setAttribute("categories", categories);
+			} else {
+				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
+				request.setAttribute("categories", categories);
+			}
 		}
-		request.setAttribute("suitNos", suitNos);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -816,11 +862,18 @@ public class DietaryTemplateController {
 		}
 		request.setAttribute("sysFlag", sysFlag);
 
-		List<Integer> suitNos = new ArrayList<Integer>();
-		for (int i = 1; i <= 80; i++) {
-			suitNos.add(i);
+		if (loginContext.isSystemAdministrator()) {
+			List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+			request.setAttribute("categories", categories);
+		} else {
+			if (StringUtils.equals(sysFlag, "Y")) {
+				List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+				request.setAttribute("categories", categories);
+			} else {
+				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
+				request.setAttribute("categories", categories);
+			}
 		}
-		request.setAttribute("suitNos", suitNos);
 
 		List<District> districts = districtService.getDistrictList(0);
 		request.setAttribute("districts", districts);
@@ -840,6 +893,11 @@ public class DietaryTemplateController {
 	@javax.annotation.Resource
 	public void setDictoryService(DictoryService dictoryService) {
 		this.dictoryService = dictoryService;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.dietaryCategoryService")
+	public void setDietaryCategoryService(DietaryCategoryService dietaryCategoryService) {
+		this.dietaryCategoryService = dietaryCategoryService;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.service.dietaryItemService")

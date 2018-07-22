@@ -222,7 +222,7 @@
 <body>
 <div style="margin:0px;"></div>
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north',split:true,border:true" style="height:42px" class="toolbar-backgroud"> 
+  <div data-options="region:'north',split:true,border:true" style="height:45px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 	<img src="${contextPath}/static/images/window.png">&nbsp;<span class="x_content_title">编辑物品采购计划单</span>
 	<#if audit == true>

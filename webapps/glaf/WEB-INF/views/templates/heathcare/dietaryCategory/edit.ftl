@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>编辑食谱类别</title>
+<title>编辑食谱模板类别</title>
 <#include "/inc/init_easyui_import.ftl"/>
 <script type="text/javascript">
                 
@@ -40,8 +40,8 @@
 <div id="main_content" class="k-content ">
 <br>
 <div class="x_content_title"><img
-	src="${contextPath}/static/images/window.png" alt="编辑食谱类别">&nbsp;
-编辑食谱类别</div>
+	src="${contextPath}/static/images/window.png" alt="编辑食谱模板类别">&nbsp;
+编辑食谱模板类别</div>
 <br>
 <form id="iForm" name="iForm" method="post" >
 <input type="hidden" id="id" name="id" value="${dietaryCategory.id}"/>

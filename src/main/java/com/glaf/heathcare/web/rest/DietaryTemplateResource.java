@@ -132,8 +132,8 @@ public class DietaryTemplateResource {
 				SortDescriptor sort = dataRequest.getSort().get(0);
 				orderName = sort.getField();
 				order = sort.getDir();
-				//logger.debug("orderName:" + orderName);
-				//logger.debug("order:" + order);
+				// logger.debug("orderName:" + orderName);
+				// logger.debug("order:" + order);
 			}
 
 			if (StringUtils.isNotEmpty(orderName)) {
@@ -164,23 +164,6 @@ public class DietaryTemplateResource {
 					rowJSON.put("typeName", nameMap2.get(dietaryTemplate.getTypeId()));
 					rowJSON.put("dietaryTemplateId", dietaryTemplate.getId());
 					rowJSON.put("startIndex", ++start);
-					switch (dietaryTemplate.getSeason()) {
-					case 1:
-						rowJSON.put("seasonName", "春季");
-						break;
-					case 2:
-						rowJSON.put("seasonName", "夏季");
-						break;
-					case 3:
-						rowJSON.put("seasonName", "秋季");
-						break;
-					case 4:
-						rowJSON.put("seasonName", "冬季");
-						break;
-					default:
-						rowJSON.put("seasonName", "-");
-						break;
-					}
 
 					switch (dietaryTemplate.getDayOfWeek()) {
 					case 1:

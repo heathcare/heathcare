@@ -13,12 +13,6 @@
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
 		<result property="description" column="DESCRIPTION_"
 			jdbcType="VARCHAR" />
-		<result property="ageGroup" column="AGEGROUP_"
-			jdbcType="VARCHAR" />
-		<result property="province" column="PROVINCE_"
-			jdbcType="VARCHAR" />
-		<result property="region" column="REGION_" jdbcType="VARCHAR" />
-		<result property="season" column="SEASON_" jdbcType="INTEGER" />
 		<result property="typeId" column="TYPEID_" jdbcType="BIGINT" />
 		<result property="heatEnergy" column="HEATENERGY_"
 			jdbcType="DOUBLE" />
@@ -92,18 +86,6 @@
 			</if>
 			<if test="description != null">
 				,DESCRIPTION_
-			</if>
-			<if test="ageGroup != null">
-				,AGEGROUP_
-			</if>
-			<if test="province != null">
-				,PROVINCE_
-			</if>
-			<if test="region != null">
-				,REGION_
-			</if>
-			<if test="season != null">
-				,SEASON_
 			</if>
 			<if test="typeId != null">
 				,TYPEID_
@@ -220,18 +202,6 @@
 			<if test="description != null">
 				,#{description, jdbcType=VARCHAR}
 			</if>
-			<if test="ageGroup != null">
-				,#{ageGroup, jdbcType=VARCHAR}
-			</if>
-			<if test="province != null">
-				,#{province, jdbcType=VARCHAR}
-			</if>
-			<if test="region != null">
-				,#{region, jdbcType=VARCHAR}
-			</if>
-			<if test="season != null">
-				,#{season, jdbcType=INTEGER}
-			</if>
 			<if test="typeId != null">
 				,#{typeId, jdbcType=BIGINT}
 			</if>
@@ -345,10 +315,6 @@
 		,TENANTID_
 		,NAME_
 		,DESCRIPTION_
-		,AGEGROUP_
-		,PROVINCE_
-		,REGION_
-		,SEASON_
 		,TYPEID_
 		,HEATENERGY_
 		,PROTEIN_
@@ -392,10 +358,6 @@
 			,#{dietaryTemplate.tenantId, jdbcType=VARCHAR}
 			,#{dietaryTemplate.name, jdbcType=VARCHAR}
 			,#{dietaryTemplate.description, jdbcType=VARCHAR}
-			,#{dietaryTemplate.ageGroup, jdbcType=VARCHAR}
-			,#{dietaryTemplate.province, jdbcType=VARCHAR}
-			,#{dietaryTemplate.region, jdbcType=VARCHAR}
-			,#{dietaryTemplate.season, jdbcType=INTEGER}
 			,#{dietaryTemplate.typeId, jdbcType=BIGINT}
 			,#{dietaryTemplate.heatEnergy, jdbcType=DOUBLE}
 			,#{dietaryTemplate.protein, jdbcType=DOUBLE}
@@ -448,10 +410,6 @@
 			,TENANTID_
 			,NAME_
 			,DESCRIPTION_
-			,AGEGROUP_
-			,PROVINCE_
-			,REGION_
-			,SEASON_
 			,TYPEID_
 			,HEATENERGY_
 			,PROTEIN_
@@ -494,10 +452,6 @@
 			,#{dietaryTemplate.name,
 			jdbcType=VARCHAR}
 			,#{dietaryTemplate.description, jdbcType=VARCHAR}
-			,#{dietaryTemplate.ageGroup, jdbcType=VARCHAR}
-			,#{dietaryTemplate.province, jdbcType=VARCHAR}
-			,#{dietaryTemplate.region, jdbcType=VARCHAR}
-			,#{dietaryTemplate.season, jdbcType=INTEGER}
 			,#{dietaryTemplate.typeId, jdbcType=BIGINT}
 			,#{dietaryTemplate.heatEnergy, jdbcType=DOUBLE}
 			,#{dietaryTemplate.protein, jdbcType=DOUBLE}
@@ -551,18 +505,6 @@
 			</if>
 			<if test="description != null">
 				DESCRIPTION_ = #{description, jdbcType=VARCHAR},
-			</if>
-			<if test="ageGroup != null">
-				AGEGROUP_ = #{ageGroup, jdbcType=VARCHAR},
-			</if>
-			<if test="province != null">
-				PROVINCE_ = #{province, jdbcType=VARCHAR},
-			</if>
-			<if test="region != null">
-				REGION_ = #{region, jdbcType=VARCHAR},
-			</if>
-			<if test="season != null">
-				SEASON_ = #{season, jdbcType=INTEGER},
 			</if>
 			<if test="typeId != null">
 				TYPEID_ = #{typeId, jdbcType=BIGINT},
@@ -755,22 +697,6 @@
 				and E.DESCRIPTION_ like #{descriptionLike}
 			</if>
 
-			<if test="ageGroup != null and ageGroup != '' ">
-				and E.AGEGROUP_ = #{ageGroup}
-			</if>
-
-			<if test="province != null and province != '' ">
-				and E.PROVINCE_ = #{province}
-			</if>
-
-			<if test="region != null and region != '' ">
-				and E.REGION_ = #{region}
-			</if>
-
-			<if test="season != null">
-				and E.SEASON_ = #{season}
-			</if>
-
 			<if test="typeId != null">
 				and E.TYPEID_ = #{typeId}
 			</if>
@@ -921,6 +847,14 @@
 				and E.SUITNO_ = #{suitNo}
 			</if>
 
+			<if test="suitNos != null and suitNos.size() &gt; 0">
+				and E.SUITNO_ IN
+				<foreach item="x_suitNo" index="index" collection="suitNos"
+					open="(" separator="," close=")">
+					#{x_suitNo}
+				</foreach>
+			</if>
+
 			<if test="sysFlag != null and sysFlag != '' ">
 				and E.SYSFLAG_ = #{sysFlag}
 			</if>
@@ -963,11 +897,6 @@
 
 			<if test="updateTimeLessThanOrEqual != null">
 				and E.UPDATETIME_ &lt;= #{updateTimeLessThanOrEqual}
-			</if>
-
-			<if test="dataRequest != null and dataRequest.filter != null ">
-				<include
-					refid="com.glaf.global.GlobalMapper.dataRequestFilterCondition" />
 			</if>
 
 		</where>

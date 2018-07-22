@@ -72,7 +72,7 @@
 <div style="margin:0px;"></div>  
 
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north',split:true,border:true" style="height:40px;margin-top:0px;"> 
+  <div data-options="region:'north',split:true,border:true" style="height:45px;margin-top:0px;"> 
     <div class="toolbar-backgroud"> 
 	<span class="x_content_title">&nbsp;&nbsp;${gradeInfo.name}检查及巡视信息</span>
 	<#if privilege_write == true>

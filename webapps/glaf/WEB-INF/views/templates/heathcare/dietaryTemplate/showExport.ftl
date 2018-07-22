@@ -187,10 +187,10 @@
 	   <table width="99%" align="left">
 		<tbody>
 		 <tr>
-		    <td align="left">
+		    <td width="10%" align="left">
 			<img src="${contextPath}/static/images/window.png"><span class="x_content_title">&nbsp;食谱模板</span>
 			</td>
-			<td width="25%" align="left">
+			<td width="35%" align="left">
 			  &nbsp;类型&nbsp;
 			  <select id="sysFlag" name="sysFlag" onchange="javascript:doSubmit();">
 				<option value="">----请选择----</option> 
@@ -202,9 +202,9 @@
 			  </script>
 			  &nbsp;序号&nbsp;
 			  <select id="suitNo" name="suitNo" onchange="javascript:doSubmit();">
-				<#list suitNos as suitNo>
-				<option value="${suitNo}">${suitNo}</option>
-				</#list>
+				<#list categories as category>
+				<option value="${category.suitNo}">${category.name}</option>
+				</#list> 
 			  </select>
 			  <script type="text/javascript">
 				   document.getElementById("suitNo").value="${suitNo}";

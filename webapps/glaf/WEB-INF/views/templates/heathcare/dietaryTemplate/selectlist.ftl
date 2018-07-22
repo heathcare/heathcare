@@ -101,6 +101,10 @@
        document.iForm.submit();
 	}
 
+	function doSubmit(){
+        document.iForm.submit();
+	}
+
 	function addBatch(){
          var objectIds = $("input[name='isCheck']:checked").map(function () {
                return $(this).val();
@@ -192,7 +196,7 @@
 		</td>
 		<td>
           &nbsp;模板类型&nbsp;
-		  <select id="sysFlag" name="sysFlag">
+		  <select id="sysFlag" name="sysFlag" onchange="javascript:doSubmit();">
 			<option value="">----请选择----</option> 
 			<option value="Y">系统内置</option>
 			<option value="N">我自己的</option>
@@ -205,9 +209,9 @@
           &nbsp;模板序号&nbsp;
 		  <select id="suitNo" name="suitNo">
 			<option value="">----请选择----</option>
-			<#list suitNos as suitNo>
-			<option value="${suitNo}">第${suitNo}套</option>
-			</#list>  
+			<#list categories as category>
+			<option value="${category.suitNo}">${category.name}</option>
+			</#list>   
 		  </select>
 		  <script type="text/javascript">
 			   document.getElementById("suitNo").value="${suitNo}";

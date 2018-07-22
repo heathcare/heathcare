@@ -178,9 +178,9 @@
 			  </#if>
 			  &nbsp;序号&nbsp;
 			  <select id="suitNo" name="suitNo" onchange="javascript:doSubmit();">
-				<#list suitNos as suitNo>
-				<option value="${suitNo}">${suitNo}</option>
-				</#list>
+				<#list categories as category>
+				<option value="${category.suitNo}">${category.name}</option>
+				</#list> 
 			  </select>
 			  <script type="text/javascript">
 				   document.getElementById("suitNo").value="${suitNo}";

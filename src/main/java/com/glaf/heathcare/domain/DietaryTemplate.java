@@ -63,30 +63,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 	protected String description;
 
 	/**
-	 * 年龄段
-	 */
-	@Column(name = "AGEGROUP_", length = 50)
-	protected String ageGroup;
-
-	/**
-	 * 省份
-	 */
-	@Column(name = "PROVINCE_", length = 50)
-	protected String province;
-
-	/**
-	 * 地域
-	 */
-	@Column(name = "REGION_", length = 50)
-	protected String region;
-
-	/**
-	 * 季节编号
-	 */
-	@Column(name = "SEASON_")
-	protected int season;
-
-	/**
 	 * 餐点类别编号
 	 */
 	@Column(name = "TYPEID_")
@@ -327,10 +303,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		return ret;
 	}
 
-	public String getAgeGroup() {
-		return this.ageGroup;
-	}
-
 	public int getBusinessStatus() {
 		return businessStatus;
 	}
@@ -459,23 +431,11 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		return this.protein;
 	}
 
-	public String getProvince() {
-		return province;
-	}
-
-	public String getRegion() {
-		return region;
-	}
-
 	public double getRetinol() {
 		if (retinol > 0) {
 			retinol = Math.round(retinol * 100D) / 100D;
 		}
 		return this.retinol;
-	}
-
-	public int getSeason() {
-		return this.season;
 	}
 
 	public String getShareFlag() {
@@ -574,10 +534,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		return DietaryTemplateJsonFactory.jsonToObject(jsonObject);
 	}
 
-	public void setAgeGroup(String ageGroup) {
-		this.ageGroup = ageGroup;
-	}
-
 	public void setBusinessStatus(int businessStatus) {
 		this.businessStatus = businessStatus;
 	}
@@ -666,20 +622,8 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		this.protein = protein;
 	}
 
-	public void setProvince(String province) {
-		this.province = province;
-	}
-
-	public void setRegion(String region) {
-		this.region = region;
-	}
-
 	public void setRetinol(double retinol) {
 		this.retinol = retinol;
-	}
-
-	public void setSeason(int season) {
-		this.season = season;
 	}
 
 	public void setShareFlag(String shareFlag) {

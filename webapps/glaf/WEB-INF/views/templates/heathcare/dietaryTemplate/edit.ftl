@@ -89,68 +89,13 @@
     </td>
   </tr>
   <tr>
-    <td width="15%" align="left">年龄段&nbsp;</td>
-    <td align="left">
-        <select id="ageGroup" name="ageGroup">
-		    <option value="3-6">3到6岁</option>
-		    <option value="1-2">1到2岁</option>
-        </select>
-		<script type="text/javascript">
-		    document.getElementById("ageGroup").value="${dietaryTemplate.ageGroup}";
-		</script>
-	    <span class="k-invalid-msg" data-for="ageGroup"></span>
-    </td>
-    <td width="15%" align="left">季节&nbsp;&nbsp;</td>
-    <td align="left">
-      <select id="season" name="season">
-		<option value="0">----请选择----</option>
-		<option value="1">春季</option>
-		<option value="2">夏季</option>
-		<option value="3">秋季</option>
-		<option value="4">冬季</option>
-	  </select>
-	  <script type="text/javascript">
-	       document.getElementById("season").value="${dietaryTemplate.season}";
-	  </script>
-	  <span class="k-invalid-msg" data-for="season"></span>
-    </td>
-  </tr>
-  <tr>
-    <td width="15%" align="left">餐点&nbsp;&nbsp;</td>
-    <td align="left">
-      <select id="typeId" name="typeId">
-		<option value="0">----请选择----</option>
-		<#list dictoryList as d>
-		<option value="${d.id}">${d.name}</option>
-		</#list> 
-	  </select>
-	  <script type="text/javascript">
-	       document.getElementById("typeId").value="${dietaryTemplate.typeId}";
-	  </script>
-	  <span class="k-invalid-msg" data-for="typeId"></span>
-    </td>
-	<td width="15%" align="left">省份&nbsp;</td>
-    <td align="left">
-      <select id="province" name="province">
-		 <option value="">----请选择----</option>
-         <#list districts as district>
-		 <option value="${district.name}">${district.name}</option>
-		 </#list>
-	  </select>
-	  <script type="text/javascript">
-	       document.getElementById("province").value="${dietaryTemplate.province}";
-	  </script>    
-	  <span class="k-invalid-msg" data-for="province"></span>
-    </td>
-  </tr>
-  <tr>
     <td width="15%" align="left">模板序号&nbsp;</td>
     <td align="left">
           <select id="suitNo" name="suitNo">
 			<option value="0">----请选择----</option>
-			<#list suitNos as suitNo>
-			<option value="${suitNo}">第${suitNo}套</option>
-			</#list>  
+			<#list categories as category>
+			<option value="${category.suitNo}">${category.name}</option>
+			</#list> 
 		  </select>
 		  <script type="text/javascript">
 			   document.getElementById("suitNo").value="${dietaryTemplate.suitNo}";
@@ -175,7 +120,20 @@
 	      <span class="k-invalid-msg" data-for="dayOfWeek"></span>
     </td>
   </tr>
-  <tr>
+    <tr>
+    <td width="15%" align="left">餐点&nbsp;&nbsp;</td>
+    <td align="left">
+      <select id="typeId" name="typeId">
+		<option value="0">----请选择----</option>
+		<#list dictoryList as d>
+		<option value="${d.id}">${d.name}</option>
+		</#list> 
+	  </select>
+	  <script type="text/javascript">
+	       document.getElementById("typeId").value="${dietaryTemplate.typeId}";
+	  </script>
+	  <span class="k-invalid-msg" data-for="typeId"></span>
+    </td>
     <td width="15%" align="left">是否有效&nbsp;</td>
     <td align="left">
       <select id="enableFlag" name="enableFlag">
@@ -187,9 +145,6 @@
 	  </script>    
 	  <span class="k-invalid-msg" data-for="enableFlag"></span>
     </td>
-	<td width="15%" align="left">
-	</td>
-    <td align="left"></td>
   </tr>
  
  <#if heathcare_curd_perm == true>

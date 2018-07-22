@@ -48,18 +48,6 @@ public class DietaryTemplateJsonFactory {
 		if (jsonObject.containsKey("description")) {
 			model.setDescription(jsonObject.getString("description"));
 		}
-		if (jsonObject.containsKey("ageGroup")) {
-			model.setAgeGroup(jsonObject.getString("ageGroup"));
-		}
-		if (jsonObject.containsKey("province")) {
-			model.setProvince(jsonObject.getString("province"));
-		}
-		if (jsonObject.containsKey("region")) {
-			model.setRegion(jsonObject.getString("region"));
-		}
-		if (jsonObject.containsKey("season")) {
-			model.setSeason(jsonObject.getInteger("season"));
-		}
 
 		if (jsonObject.containsKey("typeId")) {
 			model.setTypeId(jsonObject.getLong("typeId"));
@@ -191,16 +179,6 @@ public class DietaryTemplateJsonFactory {
 		if (model.getDescription() != null) {
 			jsonObject.put("description", model.getDescription());
 		}
-		if (model.getAgeGroup() != null) {
-			jsonObject.put("ageGroup", model.getAgeGroup());
-		}
-		if (model.getProvince() != null) {
-			jsonObject.put("province", model.getProvince());
-		}
-		if (model.getRegion() != null) {
-			jsonObject.put("region", model.getRegion());
-		}
-		jsonObject.put("season", model.getSeason());
 
 		jsonObject.put("typeId", model.getTypeId());
 		jsonObject.put("heatEnergy", model.getHeatEnergy());
@@ -288,16 +266,6 @@ public class DietaryTemplateJsonFactory {
 		if (model.getDescription() != null) {
 			jsonObject.put("description", model.getDescription());
 		}
-		if (model.getAgeGroup() != null) {
-			jsonObject.put("ageGroup", model.getAgeGroup());
-		}
-		if (model.getProvince() != null) {
-			jsonObject.put("province", model.getProvince());
-		}
-		if (model.getRegion() != null) {
-			jsonObject.put("region", model.getRegion());
-		}
-		jsonObject.put("season", model.getSeason());
 
 		jsonObject.put("typeId", model.getTypeId());
 		jsonObject.put("heatEnergy", model.getHeatEnergy());

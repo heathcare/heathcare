@@ -48,7 +48,7 @@
 <div style="margin:0;"></div>  
 
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north',split:true,border:true" style="height:40px"> 
+  <div data-options="region:'north',split:true,border:true" style="height:45px"> 
     <div class="toolbar-backgroud"> 
 	<span class="x_content_title">&nbsp;选择食谱</span>
 	<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-save'" onclick="javascript:saveData();" >确定</a>

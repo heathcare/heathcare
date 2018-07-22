@@ -39,6 +39,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.district.domain.District;
 import com.glaf.base.district.service.DistrictService;
 import com.glaf.base.modules.sys.model.Dictory;
+import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
@@ -269,6 +270,22 @@ public class DietaryCategoryController {
 			}
 		}
 		request.setAttribute("sysFlag", sysFlag);
+
+		List<Dictory> dictoryList = dictoryService.getDictoryListByCategory("CAT_MEAL");
+		request.setAttribute("dictoryList", dictoryList);
+
+		if (!loginContext.isSystemAdministrator()) {
+			TenantConfig cfg = tenantConfigService.getTenantConfigByTenantId(loginContext.getTenantId());
+			if (cfg != null) {
+				request.setAttribute("tenantConfig", cfg);
+				for (Dictory dict : dictoryList) {
+					if (cfg.getTypeId() == dict.getId()) {
+						request.setAttribute("typeDict", dict);
+						// request.setAttribute("typeId", dict.getId());
+					}
+				}
+			}
+		}
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {

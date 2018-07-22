@@ -46,10 +46,6 @@ public class DietaryTemplateDomainFactory {
 		columnMap.put("tenantId", "TENANTID_");
 		columnMap.put("name", "NAME_");
 		columnMap.put("description", "DESCRIPTION_");
-		columnMap.put("ageGroup", "AGEGROUP_");
-		columnMap.put("province", "PROVINCE_");
-		columnMap.put("region", "REGION_");
-		columnMap.put("season", "SEASON_");
 		columnMap.put("typeId", "TYPEID_");
 		columnMap.put("heatEnergy", "HEATENERGY_");
 		columnMap.put("protein", "PROTEIN_");
@@ -89,10 +85,6 @@ public class DietaryTemplateDomainFactory {
 		javaTypeMap.put("tenantId", "String");
 		javaTypeMap.put("name", "String");
 		javaTypeMap.put("description", "String");
-		javaTypeMap.put("ageGroup", "String");
-		javaTypeMap.put("province", "String");
-		javaTypeMap.put("region", "String");
-		javaTypeMap.put("season", "Integer");
 		javaTypeMap.put("typeId", "Long");
 		javaTypeMap.put("heatEnergy", "Double");
 		javaTypeMap.put("protein", "Double");
@@ -173,33 +165,6 @@ public class DietaryTemplateDomainFactory {
 		description.setJavaType("String");
 		description.setLength(4000);
 		tableDefinition.addColumn(description);
-
-		ColumnDefinition ageGroup = new ColumnDefinition();
-		ageGroup.setName("ageGroup");
-		ageGroup.setColumnName("AGEGROUP_");
-		ageGroup.setJavaType("String");
-		ageGroup.setLength(50);
-		tableDefinition.addColumn(ageGroup);
-
-		ColumnDefinition province = new ColumnDefinition();
-		province.setName("province");
-		province.setColumnName("PROVINCE_");
-		province.setJavaType("String");
-		province.setLength(50);
-		tableDefinition.addColumn(province);
-
-		ColumnDefinition region = new ColumnDefinition();
-		region.setName("region");
-		region.setColumnName("REGION_");
-		region.setJavaType("String");
-		region.setLength(50);
-		tableDefinition.addColumn(region);
-
-		ColumnDefinition season = new ColumnDefinition();
-		season.setName("season");
-		season.setColumnName("SEASON_");
-		season.setJavaType("Integer");
-		tableDefinition.addColumn(season);
 
 		ColumnDefinition typeId = new ColumnDefinition();
 		typeId.setName("typeId");

@@ -44,7 +44,7 @@ public interface DietaryCategoryService {
 	@Transactional
 	void deleteByIds(List<Long> ids);
 
-	List<DietaryCategory> getDietaryCategories(LoginContext loginContext);
+	List<DietaryCategory> getDietaryCategories(LoginContext loginContext, boolean incluseSys);
 
 	/**
 	 * 根据主键获取一条记录
@@ -66,6 +66,8 @@ public interface DietaryCategoryService {
 	 * @return
 	 */
 	List<DietaryCategory> getDietaryCategorysByQueryCriteria(int start, int pageSize, DietaryCategoryQuery query);
+
+	List<DietaryCategory> getSysDietaryCategories();
 
 	/**
 	 * 根据查询参数获取记录列表

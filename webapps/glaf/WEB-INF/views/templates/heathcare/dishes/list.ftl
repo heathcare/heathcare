@@ -415,7 +415,7 @@
 					document.getElementById("sysFlag").value="${sysFlag}";
 			  </script>
 			  &nbsp;品类&nbsp;
-			  <select id="nodeId" name="nodeId">
+			  <select id="nodeId" name="nodeId" onchange="javascript:doSearch();">
 			    <option value="">----请选择----</option> 
 				<#list categories as category>
 				<option value="${category.id}">${category.name}</option>

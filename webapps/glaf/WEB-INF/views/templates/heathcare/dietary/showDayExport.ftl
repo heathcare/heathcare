@@ -132,7 +132,7 @@
 </head>
 <body style="margin-left:5px;">
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north', split:false, border:false" style="height:42px"> 
+  <div data-options="region:'north', split:false, border:false" style="height:45px"> 
     <div class="toolbar-backgroud">
 	  <form id="iForm" name="iForm" method="post">
 	   <table width="1050" align="left">

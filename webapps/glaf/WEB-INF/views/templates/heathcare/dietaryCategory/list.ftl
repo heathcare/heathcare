@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>食谱类别</title>
+<title>食谱模板类别</title>
 <#include "/inc/init_easyui_layer3_import.ftl"/>
 <script type="text/javascript" src="${contextPath}/static/scripts/global.js"></script>
 <script type="text/javascript">
@@ -30,7 +30,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/dietaryCategory/json?nodeId=${nodeId}&nameLike_enc=${nameLike_enc}&sysFlag=${sysFlag}',
+				url: '${contextPath}/heathcare/dietaryCategory/json?nodeId=${nodeId}&nameLike_enc=${nameLike_enc}&sysFlag=${sysFlag}&typeId=${typeId}',
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -38,7 +38,7 @@
 				        {title:'序号', field:'startIndex', width:60, sortable:false},
 						{title:'名称', field:'name', width:280, align:"left"},	
 						{title:'描述', field:'description', width:320, align:"left"},
-						{title:'季节', field:'season', width:120, align:"left"},
+						{title:'季节', field:'season', width:120, align:"left", formatter:formatterSeason},
 						{title:'地域', field:'region', width:120, align:"left", formatter:formatterRegion},
 						{title:'功能键', field:'functionKey',width:130, formatter:formatterKeys}
 				]],
@@ -58,6 +58,19 @@
 		    });
 	});
 
+	function formatterSeason(value, row, index) {
+		if(row.season == "1"){
+           return "春季";
+		} else if(row.season == "2"){
+           return "夏季";
+		} else if(row.season == "3"){
+           return "秋季";
+		} else if(row.season == "4"){
+           return "冬季";
+		}
+	    return "";
+	}
+
 	function formatterRegion(value, row, index) {
 		if(row.region == "North"){
            return "北方特色";
@@ -73,9 +86,29 @@
 	function formatterKeys(val, row){
 		var str = "";
 		<#if canEdit == true>
-		str = str +"<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>";
+		str = str +"<a href='javascript:editRow(\""+row.id+"\");'>修改</a>";
+		if(row.suitNo > 1000){
+			str = str+"&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>";
+		}
 		</#if>
+		str = str +"&nbsp;<a href='javascript:templates(\""+row.sysFlag+"\""+", "+"\""+row.suitNo+"\");'>组成</a>";
 	    return str;
+	}
+
+
+    function templates(sysFlag, suitNo){
+	    var link = '${contextPath}/heathcare/dietaryTemplateExport/showExport?sysFlag='+sysFlag+'&suitNo='+suitNo;
+		layer.open({
+		  type: 2,
+          maxmin: true,
+		  shadeClose: true,
+		  title: "食物模板列表",
+		  area: ['1280px', (jQuery(window).height() - 50) +'px'],
+		  shade: 0.8,
+		  fixed: false, //不固定
+		  shadeClose: true,
+		  content: [link, 'no']
+		});
 	}
 
   
@@ -273,9 +306,10 @@
 
 
 	function doSearch(){
+		var typeId = document.getElementById("typeId").value;
 		var sysFlag = document.getElementById("sysFlag").value;
         var nameLike = document.getElementById("nameLike").value;
-        var link = "${contextPath}/heathcare/dietaryCategory?nameLike="+nameLike+"&sysFlag="+sysFlag;
+        var link = "${contextPath}/heathcare/dietaryCategory?nameLike="+nameLike+"&sysFlag="+sysFlag+"&typeId="+typeId;
 		window.location.href=link;
 	}
 
@@ -305,7 +339,7 @@
 		 <tr>
 		    <td width="35%" align="left">
 				&nbsp;<img src="${contextPath}/static/images/window.png">
-				&nbsp;<span class="x_content_title">食谱类别列表</span>
+				&nbsp;<span class="x_content_title">食谱模板类别列表</span>
 				<#if canEdit == true>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
 				   onclick="javascript:addNew();">新增</a>  
@@ -316,6 +350,20 @@
 				</#if>
 			</td>
 			<td width="65%" align="left">
+			  &nbsp;餐点&nbsp;
+			  <#if typeDict?exists>
+				<span style="color:#0066ff;font-weight:bold;">${typeDict.name}</span>
+			  </#if>
+			  &nbsp;
+			  <select id="typeId" name="typeId">
+					<option value="">----请选择----</option>
+					<#list dictoryList as d>
+					<option value="${d.id}">${d.name}</option>
+					</#list> 
+			  </select>
+			  <script type="text/javascript">
+				  document.getElementById("typeId").value="${typeId}";
+			  </script>
 			  &nbsp;类型&nbsp;
 			  <select id="sysFlag" name="sysFlag" onchange="javascript:doSearch();">
 				  <option value="">----请选择----</option> 

@@ -24,7 +24,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -64,6 +63,8 @@ import com.glaf.core.util.ResponseUtils;
 import com.glaf.heathcare.bean.DayDietaryTemplateExportBean;
 import com.glaf.heathcare.bean.DietaryStatisticsBean;
 import com.glaf.heathcare.bean.DietaryTemplateExportBean;
+import com.glaf.heathcare.domain.DietaryCategory;
+import com.glaf.heathcare.service.DietaryCategoryService;
 import com.glaf.heathcare.service.DietaryCountService;
 import com.glaf.heathcare.service.DietaryItemService;
 import com.glaf.heathcare.service.DietaryTemplateService;
@@ -77,6 +78,8 @@ public class DietaryTemplateExportController {
 	protected static final Log logger = LogFactory.getLog(DietaryTemplateExportController.class);
 
 	protected DictoryService dictoryService;
+
+	protected DietaryCategoryService dietaryCategoryService;
 
 	protected DietaryCountService dietaryCountService;
 
@@ -141,11 +144,19 @@ public class DietaryTemplateExportController {
 			}
 		}
 
-		List<Integer> suitNos = new ArrayList<Integer>();
-		for (int i = 1; i <= 80; i++) {
-			suitNos.add(i);
+		if (loginContext.isSystemAdministrator()) {
+			List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+			request.setAttribute("categories", categories);
+		} else {
+			if (StringUtils.equals(sysFlag, "Y")) {
+				List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+				request.setAttribute("categories", categories);
+			} else {
+				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
+				request.setAttribute("categories", categories);
+			}
 		}
-		request.setAttribute("suitNos", suitNos);
+
 		request.setAttribute("suitNo", targetSuitNo);
 		if (result) {
 			request.setAttribute("sysFlag", "N");
@@ -248,6 +259,11 @@ public class DietaryTemplateExportController {
 	@javax.annotation.Resource
 	public void setDictoryService(DictoryService dictoryService) {
 		this.dictoryService = dictoryService;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.dietaryCategoryService")
+	public void setDietaryCategoryService(DietaryCategoryService dietaryCategoryService) {
+		this.dietaryCategoryService = dietaryCategoryService;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.service.dietaryCountService")
@@ -361,11 +377,18 @@ public class DietaryTemplateExportController {
 			}
 		}
 
-		List<Integer> suitNos = new ArrayList<Integer>();
-		for (int i = 1; i <= 80; i++) {
-			suitNos.add(i);
+		if (loginContext.isSystemAdministrator()) {
+			List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+			request.setAttribute("categories", categories);
+		} else {
+			if (StringUtils.equals(sysFlag, "Y")) {
+				List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+				request.setAttribute("categories", categories);
+			} else {
+				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
+				request.setAttribute("categories", categories);
+			}
 		}
-		request.setAttribute("suitNos", suitNos);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -400,11 +423,18 @@ public class DietaryTemplateExportController {
 			}
 		}
 
-		List<Integer> suitNos = new ArrayList<Integer>();
-		for (int i = 1; i <= 80; i++) {
-			suitNos.add(i);
+		if (loginContext.isSystemAdministrator()) {
+			List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+			request.setAttribute("categories", categories);
+		} else {
+			if (StringUtils.equals(sysFlag, "Y")) {
+				List<DietaryCategory> categories = dietaryCategoryService.getSysDietaryCategories();
+				request.setAttribute("categories", categories);
+			} else {
+				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
+				request.setAttribute("categories", categories);
+			}
 		}
-		request.setAttribute("suitNos", suitNos);
 
 		request.removeAttribute("dietary_execute_perm");
 		request.removeAttribute("dietary_copy_add_perm");

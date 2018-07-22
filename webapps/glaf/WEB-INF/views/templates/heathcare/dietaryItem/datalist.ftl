@@ -347,7 +347,7 @@
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:42px" class="toolbar-backgroud"  > 
+   <div data-options="region:'north', split:false, border:true" style="height:45px" class="toolbar-backgroud"  > 
     <div style="margin:4px;"> 
 	 <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
        <tr>

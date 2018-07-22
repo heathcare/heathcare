@@ -653,8 +653,8 @@
 				   onclick="javascript:editSelected();">修改</a>  
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 				   onclick="javascript:deleteSelections();">删除</a> 
-				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_new'"
-				   onclick="javascript:makePlan();">制定食谱</a>
+				<!-- <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_new'"
+				   onclick="javascript:makePlan();">制定食谱</a> -->
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_check'"
 				   onclick="javascript:exportWin();">批量添加</a>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"

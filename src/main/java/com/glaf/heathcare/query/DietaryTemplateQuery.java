@@ -27,12 +27,6 @@ public class DietaryTemplateQuery extends DataQuery {
 	protected String name;
 	protected String nameLike;
 	protected String descriptionLike;
-	protected String ageGroup;
-	protected String province;
-	protected String region;
-	protected Integer season;
-	protected String type;
-	protected String typeLike;
 	protected Long typeId;
 	protected List<Long> typeIds;
 	protected Double heatEnergyGreaterThanOrEqual;
@@ -73,6 +67,7 @@ public class DietaryTemplateQuery extends DataQuery {
 	protected Integer dayOfWeek;
 	protected Integer week;
 	protected Integer suitNo;
+	protected List<Integer> suitNos;
 	protected String enableFlag;
 	protected String instanceFlag;
 	protected String shareFlag;
@@ -87,14 +82,6 @@ public class DietaryTemplateQuery extends DataQuery {
 
 	public DietaryTemplateQuery() {
 
-	}
-
-	public DietaryTemplateQuery ageGroup(String ageGroup) {
-		if (ageGroup == null) {
-			throw new RuntimeException("ageGroup is null");
-		}
-		this.ageGroup = ageGroup;
-		return this;
 	}
 
 	public DietaryTemplateQuery businessStatus(Integer businessStatus) {
@@ -215,10 +202,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		}
 		this.fatLessThanOrEqual = fatLessThanOrEqual;
 		return this;
-	}
-
-	public String getAgeGroup() {
-		return ageGroup;
 	}
 
 	public Integer getBusinessStatus() {
@@ -354,14 +337,6 @@ public class DietaryTemplateQuery extends DataQuery {
 
 			if ("description".equals(sortColumn)) {
 				orderBy = "E.DESCRIPTION_" + a_x;
-			}
-
-			if ("ageGroup".equals(sortColumn)) {
-				orderBy = "E.AGEGROUP_" + a_x;
-			}
-
-			if ("season".equals(sortColumn)) {
-				orderBy = "E.SEASON_" + a_x;
 			}
 
 			if ("type".equals(sortColumn)) {
@@ -500,24 +475,12 @@ public class DietaryTemplateQuery extends DataQuery {
 		return proteinLessThanOrEqual;
 	}
 
-	public String getProvince() {
-		return province;
-	}
-
-	public String getRegion() {
-		return region;
-	}
-
 	public Double getRetinolGreaterThanOrEqual() {
 		return retinolGreaterThanOrEqual;
 	}
 
 	public Double getRetinolLessThanOrEqual() {
 		return retinolLessThanOrEqual;
-	}
-
-	public Integer getSeason() {
-		return season;
 	}
 
 	public String getShareFlag() {
@@ -528,6 +491,10 @@ public class DietaryTemplateQuery extends DataQuery {
 		return suitNo;
 	}
 
+	public List<Integer> getSuitNos() {
+		return suitNos;
+	}
+
 	public String getSysFlag() {
 		return sysFlag;
 	}
@@ -536,28 +503,12 @@ public class DietaryTemplateQuery extends DataQuery {
 		return tenantCanSee;
 	}
 
-	public String getType() {
-		return type;
-	}
-
 	public Long getTypeId() {
 		return typeId;
 	}
 
 	public List<Long> getTypeIds() {
 		return typeIds;
-	}
-
-	public String getTypeLike() {
-		if (typeLike != null && typeLike.trim().length() > 0) {
-			if (!typeLike.startsWith("%")) {
-				typeLike = "%" + typeLike;
-			}
-			if (!typeLike.endsWith("%")) {
-				typeLike = typeLike + "%";
-			}
-		}
-		return typeLike;
 	}
 
 	public Date getUpdateTimeGreaterThanOrEqual() {
@@ -658,9 +609,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		addColumn("id", "ID_");
 		addColumn("name", "NAME_");
 		addColumn("description", "DESCRIPTION_");
-		addColumn("ageGroup", "AGEGROUP_");
-		addColumn("season", "SEASON_");
-		addColumn("type", "TYPE_");
 		addColumn("typeId", "TYPEID_");
 		addColumn("heatEnergy", "HEATENERGY_");
 		addColumn("protein", "PROTEIN_");
@@ -757,7 +705,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-
 	public DietaryTemplateQuery proteinGreaterThanOrEqual(Double proteinGreaterThanOrEqual) {
 		if (proteinGreaterThanOrEqual == null) {
 			throw new RuntimeException("protein is null");
@@ -771,22 +718,6 @@ public class DietaryTemplateQuery extends DataQuery {
 			throw new RuntimeException("protein is null");
 		}
 		this.proteinLessThanOrEqual = proteinLessThanOrEqual;
-		return this;
-	}
-
-	public DietaryTemplateQuery province(String province) {
-		if (province == null) {
-			throw new RuntimeException("province is null");
-		}
-		this.province = province;
-		return this;
-	}
-
-	public DietaryTemplateQuery region(String region) {
-		if (region == null) {
-			throw new RuntimeException("region is null");
-		}
-		this.region = region;
 		return this;
 	}
 
@@ -804,18 +735,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		}
 		this.retinolLessThanOrEqual = retinolLessThanOrEqual;
 		return this;
-	}
-
-	public DietaryTemplateQuery season(Integer season) {
-		if (season == null) {
-			throw new RuntimeException("season is null");
-		}
-		this.season = season;
-		return this;
-	}
-
-	public void setAgeGroup(String ageGroup) {
-		this.ageGroup = ageGroup;
 	}
 
 	public void setBusinessStatus(Integer businessStatus) {
@@ -930,24 +849,12 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.proteinLessThanOrEqual = proteinLessThanOrEqual;
 	}
 
-	public void setProvince(String province) {
-		this.province = province;
-	}
-
-	public void setRegion(String region) {
-		this.region = region;
-	}
-
 	public void setRetinolGreaterThanOrEqual(Double retinolGreaterThanOrEqual) {
 		this.retinolGreaterThanOrEqual = retinolGreaterThanOrEqual;
 	}
 
 	public void setRetinolLessThanOrEqual(Double retinolLessThanOrEqual) {
 		this.retinolLessThanOrEqual = retinolLessThanOrEqual;
-	}
-
-	public void setSeason(Integer season) {
-		this.season = season;
 	}
 
 	public void setShareFlag(String shareFlag) {
@@ -958,6 +865,10 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.suitNo = suitNo;
 	}
 
+	public void setSuitNos(List<Integer> suitNos) {
+		this.suitNos = suitNos;
+	}
+
 	public void setSysFlag(String sysFlag) {
 		this.sysFlag = sysFlag;
 	}
@@ -966,20 +877,12 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.tenantCanSee = tenantCanSee;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public void setTypeId(Long typeId) {
 		this.typeId = typeId;
 	}
 
 	public void setTypeIds(List<Long> typeIds) {
 		this.typeIds = typeIds;
-	}
-
-	public void setTypeLike(String typeLike) {
-		this.typeLike = typeLike;
 	}
 
 	public void setUpdateTimeGreaterThanOrEqual(Date updateTimeGreaterThanOrEqual) {
@@ -1074,19 +977,19 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
+	public DietaryTemplateQuery suitNos(List<Integer> suitNos) {
+		if (suitNos == null) {
+			throw new RuntimeException("suitNos is empty ");
+		}
+		this.suitNos = suitNos;
+		return this;
+	}
+
 	public DietaryTemplateQuery sysFlag(String sysFlag) {
 		if (sysFlag == null) {
 			throw new RuntimeException("sysFlag is null");
 		}
 		this.sysFlag = sysFlag;
-		return this;
-	}
-
-	public DietaryTemplateQuery type(String type) {
-		if (type == null) {
-			throw new RuntimeException("type is null");
-		}
-		this.type = type;
 		return this;
 	}
 
@@ -1103,14 +1006,6 @@ public class DietaryTemplateQuery extends DataQuery {
 			throw new RuntimeException("typeIds is empty ");
 		}
 		this.typeIds = typeIds;
-		return this;
-	}
-
-	public DietaryTemplateQuery typeLike(String typeLike) {
-		if (typeLike == null) {
-			throw new RuntimeException("type is null");
-		}
-		this.typeLike = typeLike;
 		return this;
 	}
 

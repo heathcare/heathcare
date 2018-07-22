@@ -494,8 +494,8 @@
 					  &nbsp;序号&nbsp;
 					  <select id="suitNo" name="suitNo">
 						<option value="">----请选择----</option>
-						<#list suitNos as suitNo>
-						<option value="${suitNo}">第${suitNo}套</option>
+						<#list categories as category>
+						<option value="${category.suitNo}">${category.name}</option>
 						</#list>  
 					  </select>
 					  <script type="text/javascript">
