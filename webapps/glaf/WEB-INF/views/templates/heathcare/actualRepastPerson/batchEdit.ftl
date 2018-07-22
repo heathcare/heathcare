@@ -110,9 +110,9 @@
   <table class="table-border" cellspacing="1" cellpadding="4" width="95%" nowrap align="center">
     <thead>
 	  <tr>
-	  <td class="table-head" width="30%" align="left">年龄</td>
-	  <td class="table-head" width="30%" align="left">男生人数</td>
-	  <td class="table-head" width="30%" align="left">女生人数</td>
+	  <td class="table-head" width="20%" align="left">年龄</td>
+	  <td class="table-head" width="40%" align="left">男生人数</td>
+	  <td class="table-head" width="40%" align="left">女生人数</td>
 	  </tr>
 	</thead>
     <tbody>
