@@ -6,7 +6,7 @@
 <#include "/inc/init_easyui_import.ftl"/>
 <style>
 
-.table-border { background-color:#3399cc; height: 32px; font-family:"宋体"}
+.table-border { background-color:#0099CC; height: 32px; font-family:"宋体"}
 .table-content { background-color:#ffffff; height: 32px;font-size: 16px; font-family:"宋体"}
 
 .x_y_title {
@@ -22,15 +22,24 @@
 	height: 20px;
 	line-height: 20px;
 	text-align: center;
-	font: bold 13px 宋体;
-	color: #484848;
+	font: bold 16px 微软雅黑;
+	color: #FF6600;
 	cursor: pointer;
+}
+
+.dietary_item {
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	font: bold 15px 宋体;
+	color: #0099CC;
 }
 
 .xz_input {
     background-color: #fff;
 	border: 1px solid #fff;
-	color: #666;
+	font: bold 15px 微软雅黑;
+	color: #FF6600;
 	padding: 2px 2px;
 	line-height: 22px;
 	width: 35px;
@@ -177,15 +186,13 @@
 
 </script>
 </head>
-
-<body>
+<body style="margin:5px;">
 <div style="margin-left:5px;"></div>  
-
 <div class="easyui-layout" data-options="fit:true">  
   <div data-options="region:'north', split:false, border:false" style="height:48px"> 
     <div class="toolbar-backgroud">
 	  <form id="iForm" name="iForm" method="post">
-	   <table width="99%" align="left">
+	   <table width="98%" align="left">
 		<tbody>
 		 <tr>
 		    <td width="10%" align="left">
@@ -243,10 +250,10 @@
   </div>
   <div data-options="region:'center',border:false,cache:true">
   <#if weekList?exists>
-    <table width="99%" height="99%" cellpadding='2' cellspacing='2' class="table-border" nowrap>
+    <table width="98%" height="98%" cellpadding='1' cellspacing='2' class="table-border" nowrap>
 	  <tr>
 	    <td colspan="8" align="center"  class="table-content">
-		   <table border='0' cellpadding='0' cellspacing='0'  width="99%">
+		   <table border='0' cellpadding='0' cellspacing='0'  width="98%">
 		    <tr>
 		     <td width="70%" align="center">
 		       <span class="x_y_title">  第 ${suitNo} 套  帯  量  食  谱  模  板 </span>
@@ -259,8 +266,8 @@
 		</td>
 	  </tr>
 	  <tr>
-		  <td width="5%" class="table-content"  align="center" >
-		      餐别
+		  <td width="2%" class="table-content"  align="center" >
+		     餐<br>别
 		  </td>
 		  <#list weekList as wkdata>
 		  <td width="18%" class="table-content">
@@ -280,8 +287,8 @@
 		  </#list>
         </tr>
 	    <tr>
-		  <td width="5%" class="table-content">
-		  &nbsp;&nbsp;早餐
+		  <td width="2%" class="table-content">
+		  早<br>餐
 		  </td>
 		  <#list weekList as wkdata>
 		  <td width="18%" class="table-content">
@@ -296,7 +303,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%" height="15">${item.name}</td>
+					  <td align="left" width="90%" height="15"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -316,7 +323,7 @@
 
 	    <tr>
 		  <td class="table-content">
-		  &nbsp;&nbsp;早点
+		  早<br>点
 		  </td>
           <#list weekList as wkdata>
 		  <td width="18%" class="table-content">
@@ -331,7 +338,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%" height="15">${item.name}</td>
+					  <td align="left" width="90%" height="15"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -351,7 +358,7 @@
 
 	    <tr>
 		  <td class="table-content">
-		   &nbsp;&nbsp;午餐
+		   午<br>餐
 		  </td>
           <#list weekList as wkdata>
 		  <td width="18%" class="table-content">
@@ -366,7 +373,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%" height="15">${item.name}</td>
+					  <td align="left" width="90%" height="15"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -386,7 +393,7 @@
 
 	    <tr>
 		  <td class="table-content">
-		   &nbsp;&nbsp;午点
+		   午<br>点
 		  </td>
           <#list weekList as wkdata>
 		  <td width="18%" class="table-content">
@@ -401,7 +408,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%" height="15">${item.name}</td>
+					  <td align="left" width="90%" height="15"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -421,7 +428,7 @@
 
 	    <tr>
 		  <td class="table-content">
-		   &nbsp;&nbsp;晚餐
+		   晚<br>餐
 		  </td>
           <#list weekList as wkdata>
 		  <td width="18%" class="table-content">
@@ -436,7 +443,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%" height="15">${item.name}</td>
+					  <td align="left" width="90%" height="15"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -462,7 +469,7 @@
     </table>
    <br>&nbsp;
    <br>&nbsp;
-   <table width="99%" height="99%" border="0">
+   <table width="98%" height="98%" border="0">
    <tr>
 	<td width="50%">
 	    <iframe id="x1" name="x1" style="width:380px; height:380px" frameborder="0" ></iframe>

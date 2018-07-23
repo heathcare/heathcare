@@ -6,7 +6,7 @@
 <#include "/inc/init_easyui_import.ftl"/>
 <style>
 
-.table-border { background-color:#3399cc;  font-family:"宋体"}
+.table-border { background-color:#0099CC;  font-family:"宋体"}
 .table-content { background-color:#ffffff; font-size: 16px; font-family:"宋体"}
 .red { color:#ff0000;font-weight: bold;}
 .blue { color:#3333ff;font-weight: bold;}
@@ -23,7 +23,8 @@
 .xz_input {
     background-color: #fff;
 	border: 1px solid #fff;
-	color: #666;
+	font: bold 15px 微软雅黑;
+	color: #FF6600;
 	padding: 2px 2px;
 	line-height: 22px;
 	width: 35px;
@@ -46,9 +47,17 @@
 	height: 20px;
 	line-height: 20px;
 	text-align: center;
-	font: bold 13px 宋体;
-	color: #484848;
+	font: bold 16px 微软雅黑;
+	color: #FF6600;
 	cursor: pointer;
+}
+
+.dietary_item {
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	font: bold 15px 宋体;
+	color: #0099CC;
 }
 
 </style>
@@ -183,9 +192,8 @@
 
 </script>
 </head>
-
-<body>
-<div style="margin:0;"></div>  
+<body style="margin:5px;">
+<div style="margin:5px;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
   <div data-options="region:'north', split:false, border:false" style="height:45px"> 
     <div class="toolbar-backgroud">
@@ -242,7 +250,7 @@
   </div>
   <div data-options="region:'center',border:false,cache:true">
   <#if weekList?exists>
-    <table width="99%" height="99%" cellpadding='2' cellspacing='2' class="table-border" nowrap>
+    <table width="98%" height="98%" cellpadding='2' cellspacing='2' class="table-border" nowrap>
 	  <tr>
 	    <td colspan="6" align="center"  class="table-content">
 		   <span class="x_y_title">  ${year} 第 ${week} 周  帯  量  食  谱 </span>
@@ -269,7 +277,7 @@
 			  <tr>
 				<td width="40%" class="table-content">&nbsp;食谱&nbsp;</td>
 				<td width="40%" class="table-content">&nbsp;食物&nbsp;</td>
-				<td width="20%" align="right" class="table-content">&nbsp;重量&nbsp;</td>
+				<td width="20%" align="right" class="table-content">&nbsp;重量</td>
 			  </tr>
 			  </table>
 		  </td>
@@ -293,7 +301,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -329,7 +337,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -365,7 +373,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -401,7 +409,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -437,7 +445,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -556,7 +564,7 @@
 		  <td width="18%" class="table-content">
 			 <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border" align="center">
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">&nbsp;总热能(kcal)</td>
+				<td valign="top" height="12" width="40%" class="table-content" align="center">总热能(kcal)</td>
 				<td valign="top" height="12" width="30%" class="table-content" align="center">碳水热</td>
 				<td valign="top" height="12" width="30%" class="table-content" align="center">脂肪热</td>
 			  </tr>
@@ -708,7 +716,7 @@
    </#if>
    <br>&nbsp;
    <br>&nbsp;
-   <table width="99%" height="99%" border="0">
+   <table width="98%" height="98%" border="0">
    <tr>
 	<td width="50%">
 	    <iframe id="x1" name="x1" style="width:380px; height:380px" frameborder="0" ></iframe>

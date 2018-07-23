@@ -6,7 +6,7 @@
 <#include "/inc/init_easyui_import.ftl"/>
 <style>
 
-.table-border { background-color:#3399cc; height: 32px; font-family:"宋体"}
+.table-border { background-color:#0099CC; height: 32px; font-family:"宋体"}
 .table-content { background-color:#ffffff; height: 32px;font-size: 16px; font-family:"宋体"}
 
 .x_y_title {
@@ -22,16 +22,24 @@
 	height: 20px;
 	line-height: 20px;
 	text-align: center;
-	font: bold 13px 宋体;
-	color: #484848;
+	font: bold 16px 微软雅黑;
+	color: #FF6600;
 	cursor: pointer;
 }
 
+.dietary_item {
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	font: bold 15px 宋体;
+	color: #0099CC;
+}
 
 .xz_input {
     background-color: #fff;
 	border: 1px solid #fff;
-	color: #666;
+	font: bold 15px 微软雅黑;
+	color: #FF6600;
 	padding: 2px 2px;
 	line-height: 22px;
 	width: 35px;
@@ -195,7 +203,7 @@
    <table width="100%" height="99%">
     <tr>
     <td width="1050" valign="top">
-     <table width="1050" height="99%" cellpadding='2' cellspacing='2' class="table-border" nowrap>
+     <table width="1050" height="99%" cellpadding='1' cellspacing='1' class="table-border" nowrap>
 	  <tr>
 		<td colspan="6" align="center" width="100%"  class="table-content">
 		  <table border='0' cellpadding='0' cellspacing='0' width="100%">
@@ -211,7 +219,7 @@
 		</td>
 	  </tr>
 	  <tr>
-		  <td width="50" class="table-content">
+		  <td width="80" class="table-content">
 		  &nbsp;&nbsp;餐别
 		  </td>
 		  <td width="1050" class="table-content">
@@ -239,7 +247,7 @@
         </tr>
 	  <#if breakfastList?exists>
 	    <tr>
-		  <td width="50" class="table-content">
+		  <td width="80" class="table-content">
 		  &nbsp;&nbsp;早餐<br>
 		  </td>
 		  <td width="1050" class="table-content">
@@ -253,7 +261,7 @@
 					<table>
 					<#list r1.items as item1>
 					<tr>
-					  <td align="left"  width="200">${item1.name}</td>
+					  <td align="left"  width="200"><span class="dietary_item">${item1.name}</span></td>
 					  <td align="right" width="100">
 					    <#if item1.name?exists>
 					      <input type="text" id="item_${item1.id}" name="myInput" value="${item1.quantity2}"
@@ -292,7 +300,7 @@
 					<table>
 					<#list r2.items as item2>
 					<tr>
-					  <td align="left"  width="200">${item2.name}</td>
+					  <td align="left"  width="200"><span class="dietary_item">${item2.name}</span></td>
 					  <td align="right" width="100">
 					    <#if item2.name?exists>
 					      <input type="text" id="item_${item2.id}" name="myInput" value="${item2.quantity2}"
@@ -325,9 +333,8 @@
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
 				<td width="150"></td>
-				<td align="left" width="130">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
+				<td align="left" width="300">&nbsp;</td>
+				<td align="right" width="30">&nbsp;</td>
 				<td align="right" width="100">
 				 ${momingTotal.heatEnergy}
                  <br>${momingTotalPercent.heatEnergy}%
@@ -369,7 +376,7 @@
 					<table>
 					<#list r3.items as item3>
 					<tr>
-					  <td align="left"  width="200">${item3.name}</td>
+					  <td align="left"  width="200"><span class="dietary_item">${item3.name}</span></td>
 					  <td align="right" width="100">
 					    <#if item3.name?exists>
 					      <input type="text" id="item_${item3.id}" name="myInput" value="${item3.quantity2}"
@@ -408,7 +415,7 @@
 					<table>
 					<#list r4.items as item4>
 					<tr>
-					  <td align="left"  width="200">${item4.name}</td>
+					  <td align="left"  width="200"><span class="dietary_item">${item4.name}</span></td>
 					  <td align="right" width="100">
 					    <#if item4.name?exists>
 					      <input type="text" id="item_${item4.id}" name="myInput" value="${item4.quantity2}"
@@ -441,9 +448,8 @@
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
 				<td width="150"></td>
-				<td align="left" width="130">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
+				<td align="left" width="300">&nbsp;</td>
+				<td align="right" width="30">&nbsp;</td>
 				<td align="right" width="100">
 				 ${noonTotal.heatEnergy}
                  <br>${noonTotalPercent.heatEnergy}%
@@ -485,7 +491,7 @@
 					<table>
 					<#list r5.items as item5>
 					<tr>
-					  <td align="left"  width="200">${item5.name}</td>
+					  <td align="left"  width="200"><span class="dietary_item">${item5.name}</span></td>
 					  <td align="right" width="100">
 					    <#if item5.name?exists>
 					      <input type="text" id="item_${item5.id}" name="myInput" value="${item5.quantity2}"
@@ -516,9 +522,8 @@
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
 				<td width="150"></td>
-				<td align="left" width="130">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
+				<td align="left" width="300">&nbsp;</td>
+				<td align="right" width="30">&nbsp;</td>
 				<td align="right" width="100">
 				 ${dietaryCount_dinner.heatEnergy}
                  <br>${dietaryCountPercent_dinner.heatEnergy}%
@@ -556,9 +561,8 @@
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
 				<td width="150"></td>
-				<td align="left" width="130">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
-				<td align="right" width="100">&nbsp;</td>
+				<td align="left" width="300">&nbsp;</td>
+				<td align="right" width="30">&nbsp;</td>
 				<td align="right" width="100">
 				${dietaryCountSum.heatEnergy}
                 <br>

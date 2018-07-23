@@ -46,9 +46,17 @@
 	height: 20px;
 	line-height: 20px;
 	text-align: center;
-	font: bold 13px 宋体;
-	color: #484848;
+	font: bold 16px 微软雅黑;
+	color: #FF6600;
 	cursor: pointer;
+}
+
+.dietary_item {
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	font: bold 15px 宋体;
+	color: #0099CC;
 }
 
 </style>
@@ -100,8 +108,8 @@
 </script>
 </head>
 
-<body>
-<div style="margin:0;"></div>  
+<body style="margin:5px;">
+<div style="margin:5px;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
   <div data-options="region:'north', split:false, border:false" style="height:45px"> 
     <div class="toolbar-backgroud">
@@ -151,7 +159,7 @@
   </div>
   <div data-options="region:'center',border:false,cache:true">
   <#if weekList?exists>
-    <table width="99%" height="99%" cellpadding='2' cellspacing='2' class="table-border" nowrap>
+    <table width="98%" height="98%" cellpadding='2' cellspacing='2' class="table-border" nowrap>
 	  <tr>
 	    <td colspan="6" align="center"  class="table-content">
 		   <span class="x_y_title">  ${year} 第 ${week} 周  帯  量  食  谱 </span>
@@ -202,7 +210,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -238,7 +246,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -274,7 +282,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -310,7 +318,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -346,7 +354,7 @@
 					<table>
 					<#list r1.items as item>
 					<tr>
-					  <td align="left" width="90%">${item.name}</td>
+					  <td align="left" width="90%"><span class="dietary_item">${item.name}</span></td>
 					  <td align="right" width="10%">
 					   <#if item.name?exists>
 					    <input type="text" id="item_${item.id}" name="myInput" value="${item.quantity2}"
@@ -612,7 +620,7 @@
    </#if>
    <br>&nbsp;
    <br>&nbsp;
-   <table width="99%" height="99%" border="0">
+   <table width="98%" height="98%" border="0">
    <tr>
 	<td width="50%">
 	    <iframe id="x1" name="x1" style="width:380px; height:380px" frameborder="0" ></iframe>
