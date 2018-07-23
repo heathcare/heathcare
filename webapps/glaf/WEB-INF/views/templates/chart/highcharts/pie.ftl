@@ -58,7 +58,17 @@
                 depth: 45,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.name}'
+                    //format: '{point.name}'
+					formatter:function(){ 
+                        return '<b>'+this.point.name+'</b>:'+this.point.percentage.toFixed(1)+"%"; 
+                    }, 
+					color: 'white',
+					style: {
+					 font: '12px 微软雅黑'
+					},
+                    connectorWidth:0, 
+					connectorPadding:0, 
+					distance:-30
                 }
             }
         },
