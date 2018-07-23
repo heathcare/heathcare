@@ -119,7 +119,7 @@
 				idField: 'id',
 				columns:[[
 				        {title:'序号', field:'startIndex', width:60, sortable:true},
-						{title:'班级', field:'gradeName', width:150, align:"left", sortable:true},
+						{title:'班级', field:'gradeName', width:120, align:"left", sortable:true},
 						{title:'姓名', field:'name', width:80, align:"center", sortable:true, formatter:formatterName},
 						{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center", sortable:true},
 						{title:'身高(厘米)', field:'height', width:90, align:"right", sortable:true},
@@ -127,8 +127,8 @@
 						{title:'体重(千克)', field:'weight', width:90, align:"right", sortable:true},
 						{title:'体重评价', field:'weightEvaluateHtml', width:120, align:"center", sortable:true},
 						{title:'综合评价', field:'bmiEvaluateHtml', width:120, align:"center", sortable:true},
-						{title:'出生日期', field:'birthday', width:98, align:"center", sortable:true},
-					    {title:'体检日期', field:'checkDate', width:98, align:"center", sortable:true},
+						{title:'出生日期', field:'birthday', width:105, align:"center", sortable:true},
+					    {title:'体检日期', field:'checkDate', width:105, align:"center", sortable:true},
 						{title:'月龄', field:'checkAgeOfMonth', width:70, align:"center", sortable:true},
 						{title:'功能键', field:'functionKey',width:100, formatter:formatterKeys}
 				]],
@@ -191,7 +191,7 @@
         	x=document.body.scrollLeft+event.clientX-event.offsetX-200;
         	y=document.body.scrollTop+event.clientY-event.offsetY-200;
         }
-        openWindow(link, self, x, y, 1115, 580);
+        openWindow(link, self, x, y, 1215, 580);
 	}
 
 	function formatterKeys(val, row){
@@ -651,7 +651,7 @@
     <div data-options="region:'center'">  
         <div class="easyui-layout" data-options="fit:true">  
           <div data-options="region:'center', split:true, border:true, fit:true" style="margin-top:-4px;">
-		   <div data-options="region:'north', split:false, border:true" style="height:62px" class="toolbar-backgroud"> 
+		   <div data-options="region:'north', split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
 		    <div style="margin-top:4px;">
 			<form id="iForm" name="iForm" method="post" action="">
 			<input type="hidden" id="personId" name="personId">

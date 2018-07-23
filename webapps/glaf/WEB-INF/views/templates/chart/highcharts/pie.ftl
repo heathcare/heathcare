@@ -62,9 +62,9 @@
 					formatter:function(){ 
                         return '<b>'+this.point.name+'</b>:'+this.point.percentage.toFixed(1)+"%"; 
                     }, 
-					color: 'white',
+					color: 'black',
 					style: {
-					 font: '12px 微软雅黑'
+					 font: '14px 微软雅黑'
 					},
                     connectorWidth:0, 
 					connectorPadding:0, 

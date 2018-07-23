@@ -687,7 +687,7 @@
     <form id="iForm" name="iForm" method="post" action="">
       <table valign="top">
        <tr valign="top">
-	    <td valign="top" width="52%">   
+	    <td valign="top" width="48%">   
 			<img src="${contextPath}/static/images/window.png">
 			&nbsp;<span class="x_content_title">实际用量表列表</span>
 			<#if audit == true>
@@ -720,7 +720,7 @@
 			   onclick="javascript:deleteSelections();">删除</a> 
 			</#if>
 		</td>
-		<td valign="middle" width="48%">
+		<td valign="middle" width="52%">
 		  &nbsp;<input type="checkbox" id="avgQuantity" name="avgQuantity" <#if avgQuantity == "on">checked</#if> style="font-size:14px;">均量（单位为克g）
 		  &nbsp;日期&nbsp;开始&nbsp;
 		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:100px"

@@ -7,7 +7,7 @@
 <style>
 
 .table-border { background-color:#3399cc;  font-family:"宋体"}
-.table-content { background-color:#ffffff; font-size: 12px; font-family:"宋体"}
+.table-content { background-color:#ffffff; font-size: 16px; font-family:"宋体"}
 .red { color:#ff0000;font-weight: bold;}
 .blue { color:#3333ff;font-weight: bold;}
 

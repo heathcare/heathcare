@@ -39,9 +39,9 @@
 				        {title:'选择',field: 'chk', width: 60, align: 'center', formatter: formatterKey},
 						</#if>
 				        {title:'序号', field:'startIndex', width:60, sortable:false},
-						{title:'名称',field:'name', width:200, align:"left"},
+						{title:'名称',field:'name', width:180, align:"left"},
 						{title:'餐点',field:'typeName', width:130, align:"center"},
-						{title:'日期',field:'dayOfWeekName', width:60, align:"center"},
+						{title:'日期',field:'dayOfWeekName', width:80, align:"center"},
 						{title:'热能(千卡)',field:'heatEnergy', width:90, align:"right", sortable:true},
 						{title:'蛋白质(克)',field:'protein', width:90, align:"right", sortable:true},
 						{title:'脂肪(克)',field:'fat', width:90, align:"right", sortable:true},

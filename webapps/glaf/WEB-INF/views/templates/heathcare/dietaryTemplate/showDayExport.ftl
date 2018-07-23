@@ -7,7 +7,7 @@
 <style>
 
 .table-border { background-color:#3399cc; height: 32px; font-family:"宋体"}
-.table-content { background-color:#ffffff; height: 32px;font-size: 12px; font-family:"宋体"}
+.table-content { background-color:#ffffff; height: 32px;font-size: 16px; font-family:"宋体"}
 
 .x_y_title {
 	text-transform: uppercase;
@@ -24,8 +24,9 @@
 	color: #666;
 	padding: 2px 2px;
 	line-height: 22px;
+	width: 35px;
 	height: 22px;
-	font-size: 13px;
+	font-size: 15px;
 	text-align: right;
 }
 
@@ -286,7 +287,7 @@
 					  <td align="right" width="100">
 					   <#if item1.name?exists>
 						<input type="text" id="item_${item1.id}" name="myInput" value="${item1.quantity2}"
-						       onchange="javascript:modifyItem('${item1.id}');" size="5" class="xz_input">
+						       onchange="javascript:modifyItem('${item1.id}');" size="3" class="xz_input">
 					   </#if>
 					  </td>
 					</tr>
@@ -328,7 +329,7 @@
 					  <td align="right" width="100">
 					   <#if item2.name?exists>
 						<input type="text" id="item_${item2.id}" name="myInput" value="${item2.quantity2}"
-						       onchange="javascript:modifyItem('${item2.id}');" size="5" class="xz_input">
+						       onchange="javascript:modifyItem('${item2.id}');" size="3" class="xz_input">
 					   </#if>
 					  </td>
 					</tr>
@@ -408,7 +409,7 @@
 					  <td align="right" width="100">
 					   <#if item3.name?exists>
 						<input type="text" id="item_${item3.id}" name="myInput" value="${item3.quantity2}"
-						       onchange="javascript:modifyItem('${item3.id}');" size="5" class="xz_input">
+						       onchange="javascript:modifyItem('${item3.id}');" size="3" class="xz_input">
 					   </#if>
 					  </td>
 					</tr>
@@ -450,7 +451,7 @@
 					  <td align="right" width="100">
 					   <#if item4.name?exists>
 						<input type="text" id="item_${item4.id}" name="myInput" value="${item4.quantity2}"
-						       onchange="javascript:modifyItem('${item4.id}');" size="5" class="xz_input">
+						       onchange="javascript:modifyItem('${item4.id}');" size="3" class="xz_input">
 					   </#if>
 					  </td>
 					</tr>
@@ -530,7 +531,7 @@
 					  <td align="right" width="100">
 					   <#if item5.name?exists>
 						<input type="text" id="item_${item5.id}" name="myInput" value="${item5.quantity2}"
-						       onchange="javascript:modifyItem('${item5.id}');" size="5" class="xz_input">
+						       onchange="javascript:modifyItem('${item5.id}');" size="3" class="xz_input">
 					   </#if>
 					  </td>
 					</tr>

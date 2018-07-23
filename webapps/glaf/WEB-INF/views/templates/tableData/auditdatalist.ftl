@@ -309,7 +309,7 @@
         <table>
          <tr>
 	       <td colspan="10">
-			<div class="toolbar-backgroud"  style="height:32px"> 
+			<div class="toolbar-backgroud"  style="height:42px"> 
 				<img src="${contextPath}/static/images/window.png">
 				&nbsp;<span class="x_content_title">${table.title}</span> 
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-audit'"

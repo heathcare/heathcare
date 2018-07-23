@@ -43,7 +43,7 @@
 
 <body> 
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north',split:true,border:true" style="height:38px"> 
+  <div data-options="region:'north',split:true,border:true" style="height:42px"> 
     <div class="toolbar-backgroud" > 
 		<span class="x_content_title">&nbsp;审核记录</span>
 		<#if dataModel.businessStatus == 9>

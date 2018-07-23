@@ -15,7 +15,7 @@
 
    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
-				width: x_width,
+				width: 1200,
 				height: x_height,
 				fit: false,
 				fitColumns: true,

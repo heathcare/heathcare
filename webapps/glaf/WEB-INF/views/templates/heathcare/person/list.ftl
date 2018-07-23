@@ -85,12 +85,12 @@
 				    {title:'序号', field:'startIndex', width:50, sortable:false},
 					{title:'姓名', field:'name', width:80},
 					{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center"},
-					{title:'身份证编号', field:'idCardNo', width:135},
+					{title:'身份证编号', field:'idCardNo', width:155},
 					{title:'籍贯', field:'birthPlace', width:120},
 					{title:'家庭住址', field:'homeAddress', width:280},
 					{title:'出生日期', field:'birthday', width:90, align:"center"},
 					{title:'入园日期', field:'joinDate', width:90, align:"center"},
-					{title:'功能键', field:'functionKey', width:150, formatter:formatterKeys}
+					{title:'功能键', field:'functionKey', width:180, formatter:formatterKeys}
 				]],
 				rownumbers: false,
 				pagination: true,

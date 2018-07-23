@@ -123,13 +123,13 @@
 						{title:'班级', field:'gradeName', width:120, align:"left", sortable:true},
 						{title:'姓名', field:'name', width:80, align:"center", sortable:true, formatter:formatterName},
 						{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center", sortable:true},
-						{title:'身高(厘米)&nbsp;&nbsp;', field:'height', width:90, align:"right", sortable:true},
-						{title:'&nbsp;身高评价', field:'heightEvaluateHtml', width:120, align:"center", sortable:true},
-						{title:'体重(千克)&nbsp;&nbsp;', field:'weight', width:90, align:"right", sortable:true},
-						{title:'&nbsp;体重评价', field:'weightEvaluateHtml', width:120, align:"center", sortable:true},
-						{title:'出生日期', field:'birthday', width:90, align:"center", sortable:true},
-					    {title:'体检日期', field:'checkDate', width:90, align:"center", sortable:true},
-						{title:'月龄&nbsp;', field:'checkAgeOfMonth', width:70, align:"center", sortable:true},
+						{title:'身高(厘米)', field:'height', width:90, align:"right", sortable:true},
+						{title:'身高评价', field:'heightEvaluateHtml', width:120, align:"center", sortable:true},
+						{title:'体重(千克)', field:'weight', width:90, align:"right", sortable:true},
+						{title:'体重评价', field:'weightEvaluateHtml', width:120, align:"center", sortable:true},
+						{title:'出生日期', field:'birthday', width:98, align:"center", sortable:true},
+					    {title:'体检日期', field:'checkDate', width:98, align:"center", sortable:true},
+						{title:'月龄', field:'checkAgeOfMonth', width:70, align:"center", sortable:true},
 						{title:'功能键', field:'functionKey',width:120, formatter:formatterKeys}
 				]],
 				rownumbers: false,
@@ -192,7 +192,7 @@
         	x=document.body.scrollLeft+event.clientX-event.offsetX-200;
         	y=document.body.scrollTop+event.clientY-event.offsetY-200;
         }
-        openWindow(link, self, x, y, 1115, 580);
+        openWindow(link, self, x, y, 1215, 580);
 	}
 
 	function formatterKeys(val, row){

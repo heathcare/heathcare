@@ -8,7 +8,7 @@
 
    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
-				width:1000,
+				width:1080,
 				height:480,
 				fit:true,
 				fitColumns: true,
@@ -26,9 +26,9 @@
 					{title:'代码',field:'code', width:120},
 					{title:'负责人',field:'principal', width:120},
 					{title:'电话',field:'telephone', width:120},
-					{title:'状态',field:'locked', width:120, formatter:formatterStatus},
-					{title:'创建人',field:'createBy', width:120},
-					{title:'创建日期',field:'createTime', width:120},
+					{title:'状态',field:'locked', width:80, formatter:formatterStatus},
+					{title:'创建人',field:'createBy', width:90},
+					{title:'创建日期',field:'createTime', width:90},
 					{field:'functionKey',title:'功能键',width:180, formatter:formatterKeys}
 				]],
 				rownumbers: false,

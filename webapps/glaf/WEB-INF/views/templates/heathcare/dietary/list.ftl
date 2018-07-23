@@ -37,7 +37,7 @@
 				columns:[[
 				        {title:'序号',field:'startIndex', width:60, sortable:false},
 				        {title:'选择',field: 'chk', width: 60, align: 'center', formatter: formatterKey},
-						{title:'名称',field:'name', width:200, align:"left"},
+						{title:'名称',field:'name', width:180, align:"left"},
 						{title:'餐点',field:'typeName', width:130, align:"center"},
 						{title:'年',field:'year', width:60, align:"center"},
 						{title:'月',field:'month', width:60, align:"center"},
