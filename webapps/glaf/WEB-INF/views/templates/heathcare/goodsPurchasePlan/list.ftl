@@ -573,10 +573,10 @@
 	</td>
 	<td valign="middle" width="38%">
 		  &nbsp;日期&nbsp;开始&nbsp;
-		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:100px"
+		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:120px"
 		         <#if startTime?exists> value="${startTime}"</#if>>
 		  &nbsp;结束&nbsp;
-		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:100px"
+		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:120px"
 		         <#if endTime?exists> value="${endTime}"</#if>>
 		  &nbsp;
 		  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"

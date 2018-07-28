@@ -249,18 +249,6 @@ public class Dietary implements Serializable, JSONable {
 	protected String purchaseFlag;
 
 	/**
-	 * 是否分享
-	 */
-	@Column(name = "SHAREFLAG_", length = 1)
-	protected String shareFlag;
-
-	/**
-	 * 是否验证
-	 */
-	@Column(name = "VERIFYFLAG_", length = 1)
-	protected String verifyFlag;
-
-	/**
 	 * 业务状态
 	 */
 	@Column(name = "BUSINESSSTATUS_")
@@ -480,10 +468,6 @@ public class Dietary implements Serializable, JSONable {
 		return semester;
 	}
 
-	public String getShareFlag() {
-		return shareFlag;
-	}
-
 	public int getSortNo() {
 		return this.sortNo;
 	}
@@ -524,10 +508,6 @@ public class Dietary implements Serializable, JSONable {
 			return DateUtils.getDateTime(this.updateTime);
 		}
 		return "";
-	}
-
-	public String getVerifyFlag() {
-		return this.verifyFlag;
 	}
 
 	public double getVitaminA() {
@@ -699,10 +679,6 @@ public class Dietary implements Serializable, JSONable {
 		this.semester = semester;
 	}
 
-	public void setShareFlag(String shareFlag) {
-		this.shareFlag = shareFlag;
-	}
-
 	public void setSortNo(int sortNo) {
 		this.sortNo = sortNo;
 	}
@@ -733,10 +709,6 @@ public class Dietary implements Serializable, JSONable {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
-	}
-
-	public void setVerifyFlag(String verifyFlag) {
-		this.verifyFlag = verifyFlag;
 	}
 
 	public void setVitaminA(double vitaminA) {

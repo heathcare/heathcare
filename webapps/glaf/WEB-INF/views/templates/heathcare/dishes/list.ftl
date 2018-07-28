@@ -41,14 +41,14 @@
 						{title:'热能(千卡)',field:'heatEnergy', width:90, align:"right", sortable:true},
 						{title:'蛋白质(克)',field:'protein', width:90, align:"right", sortable:true},
 						{title:'脂肪(克)',field:'fat', width:90, align:"right", sortable:true},
-						{title:'碳水化合物(克)',field:'carbohydrate', width:120, align:"right", sortable:true},
-						{title:'微生素A(μgRE)',field:'vitaminA', width:120, align:"right", sortable:true},
-						{title:'微生素B1(毫克)',field:'vitaminB1', width:120, align:"right", sortable:true},
-						{title:'微生素B2(毫克)',field:'vitaminB2', width:120, align:"right", sortable:true},
-						{title:'微生素C(毫克)',field:'vitaminC', width:120, align:"right", sortable:true},
-						{title:'胡萝卜素(微克)',field:'carotene', width:120, align:"right", sortable:true},
-						{title:'视黄醇(微克)',field:'retinol', width:90, align:"right", sortable:true},
-						{title:'尼克酸(毫克)',field:'nicotinicCid', width:90, align:"right", sortable:true},
+						{title:'碳水化合物(克)',field:'carbohydrate', width:140, align:"right", sortable:true},
+						{title:'微生素A(μgRE)',field:'vitaminA', width:140, align:"right", sortable:true},
+						{title:'微生素B1(毫克)',field:'vitaminB1', width:140, align:"right", sortable:true},
+						{title:'微生素B2(毫克)',field:'vitaminB2', width:140, align:"right", sortable:true},
+						{title:'微生素C(毫克)',field:'vitaminC', width:140, align:"right", sortable:true},
+						{title:'胡萝卜素(微克)',field:'carotene', width:140, align:"right", sortable:true},
+						{title:'视黄醇(微克)',field:'retinol', width:140, align:"right", sortable:true},
+						{title:'尼克酸(毫克)',field:'nicotinicCid', width:140, align:"right", sortable:true},
 						{title:'钙(毫克)',field:'calcium', width:90, align:"right", sortable:true},
 						{title:'铁(毫克)',field:'iron', width:90, align:"right", sortable:true},
 						{title:'锌(毫克)',field:'zinc', width:90, align:"right", sortable:true},
@@ -155,7 +155,7 @@
 			jQuery.ajax({
 				   type: "POST",
 				   url: '${contextPath}/heathcare/dishes/delete?id='+id,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -182,7 +182,7 @@
 			jQuery.ajax({
 				   type: "POST",
 				   url: '${contextPath}/heathcare/dishes/calculate?dishesId='+id,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -271,7 +271,7 @@
 			jQuery.ajax({
 				   type: "POST",
 				   url: '${contextPath}/heathcare/dishes/delete?ids='+ids,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },

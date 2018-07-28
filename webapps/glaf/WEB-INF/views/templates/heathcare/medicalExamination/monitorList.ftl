@@ -506,9 +506,9 @@
 <body>  
 <input type="hidden" id="nodeId" name="nodeId" value="" > 
 <div class="easyui-layout" data-options="fit:true">  
-    <div data-options="region:'west', split:true" style="width:180px;">
+    <div data-options="region:'west', split:true" style="width:188px;">
 	  <div class="easyui-layout" data-options="fit:true"> 
-	      <div data-options="region:'north', border:false" class="search-bar" style="margin:2px;height:30px">  
+	      <div data-options="region:'north', border:false" class="search-bar" style="margin:2px;height:28px">  
             <input id="keyword" name="keyword" type="text" placeholder="请输入..." class="x-small-text" style="width:100px;"> 
 			<input id="search-bt" type="button" value="查找" class="btnGrayMini" onclick="javascript:searchKeyWords();">
           </div>  

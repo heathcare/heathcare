@@ -573,7 +573,6 @@ public class DietaryTemplateController {
 			dietaryTemplate.setSortNo(RequestUtils.getInt(request, "sortNo"));
 			dietaryTemplate.setSysFlag(request.getParameter("sysFlag"));
 			dietaryTemplate.setEnableFlag(request.getParameter("enableFlag"));
-			dietaryTemplate.setVerifyFlag(request.getParameter("verifyFlag"));
 			dietaryTemplate.setCreateBy(actorId);
 			dietaryTemplate.setUpdateBy(actorId);
 
@@ -594,7 +593,6 @@ public class DietaryTemplateController {
 
 			if (loginContext.isSystemAdministrator()) {
 				dietaryTemplate.setSysFlag("Y");
-				dietaryTemplate.setShareFlag("Y");
 				dietaryTemplate.setInstanceFlag("N");
 			}
 			dietaryTemplateService.saveAs(dietaryTemplate);
@@ -646,7 +644,6 @@ public class DietaryTemplateController {
 			dietaryTemplate.setSortNo(RequestUtils.getInt(request, "sortNo"));
 			dietaryTemplate.setSuitNo(RequestUtils.getInt(request, "suitNo"));
 			dietaryTemplate.setEnableFlag(request.getParameter("enableFlag"));
-			dietaryTemplate.setVerifyFlag(request.getParameter("verifyFlag"));
 			dietaryTemplate.setCreateBy(actorId);
 			dietaryTemplate.setUpdateBy(actorId);
 
@@ -669,7 +666,6 @@ public class DietaryTemplateController {
 
 			if (loginContext.isSystemAdministrator()) {
 				dietaryTemplate.setSysFlag("Y");
-				dietaryTemplate.setShareFlag("Y");
 				dietaryTemplate.setInstanceFlag("N");
 			}
 

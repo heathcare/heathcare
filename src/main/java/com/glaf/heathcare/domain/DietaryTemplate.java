@@ -207,22 +207,10 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 	protected String instanceFlag;
 
 	/**
-	 * 是否分享
-	 */
-	@Column(name = "SHAREFLAG_", length = 1)
-	protected String shareFlag;
-
-	/**
 	 * 系统内置
 	 */
 	@Column(name = "SYSFLAG_", length = 1)
 	protected String sysFlag;
-
-	/**
-	 * 是否验证
-	 */
-	@Column(name = "VERIFYFLAG_", length = 1)
-	protected String verifyFlag;
 
 	/**
 	 * 业务状态
@@ -438,10 +426,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		return this.retinol;
 	}
 
-	public String getShareFlag() {
-		return shareFlag;
-	}
-
 	public int getSortNo() {
 		return this.sortNo;
 	}
@@ -475,10 +459,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 			return DateUtils.getDateTime(this.updateTime);
 		}
 		return "";
-	}
-
-	public String getVerifyFlag() {
-		return this.verifyFlag;
 	}
 
 	public double getVitaminA() {
@@ -626,10 +606,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 		this.retinol = retinol;
 	}
 
-	public void setShareFlag(String shareFlag) {
-		this.shareFlag = shareFlag;
-	}
-
 	public void setSortNo(int sortNo) {
 		this.sortNo = sortNo;
 	}
@@ -656,10 +632,6 @@ public class DietaryTemplate implements Serializable, JSONable, java.lang.Compar
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
-	}
-
-	public void setVerifyFlag(String verifyFlag) {
-		this.verifyFlag = verifyFlag;
 	}
 
 	public void setVitaminA(double vitaminA) {

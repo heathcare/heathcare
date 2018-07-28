@@ -70,9 +70,7 @@ public class DietaryTemplateQuery extends DataQuery {
 	protected List<Integer> suitNos;
 	protected String enableFlag;
 	protected String instanceFlag;
-	protected String shareFlag;
 	protected String sysFlag;
-	protected String verifyFlag;
 	protected String tenantCanSee;
 	protected Integer businessStatus;
 	protected Date createTimeGreaterThanOrEqual;
@@ -443,10 +441,6 @@ public class DietaryTemplateQuery extends DataQuery {
 				orderBy = "E.ENABLEFLAG_" + a_x;
 			}
 
-			if ("verifyFlag".equals(sortColumn)) {
-				orderBy = "E.VERIFYFLAG_" + a_x;
-			}
-
 			if ("createBy".equals(sortColumn)) {
 				orderBy = "E.CREATEBY_" + a_x;
 			}
@@ -483,10 +477,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		return retinolLessThanOrEqual;
 	}
 
-	public String getShareFlag() {
-		return shareFlag;
-	}
-
 	public Integer getSuitNo() {
 		return suitNo;
 	}
@@ -517,10 +507,6 @@ public class DietaryTemplateQuery extends DataQuery {
 
 	public Date getUpdateTimeLessThanOrEqual() {
 		return updateTimeLessThanOrEqual;
-	}
-
-	public String getVerifyFlag() {
-		return verifyFlag;
 	}
 
 	public Double getVitaminAGreaterThanOrEqual() {
@@ -634,7 +620,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		addColumn("sortNo", "SORTNO_");
 		addColumn("sysFlag", "SYSFLAG_");
 		addColumn("enableFlag", "ENABLEFLAG_");
-		addColumn("verifyFlag", "VERIFYFLAG_");
 		addColumn("createBy", "CREATEBY_");
 		addColumn("createTime", "CREATETIME_");
 		addColumn("updateBy", "UPDATEBY_");
@@ -857,10 +842,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.retinolLessThanOrEqual = retinolLessThanOrEqual;
 	}
 
-	public void setShareFlag(String shareFlag) {
-		this.shareFlag = shareFlag;
-	}
-
 	public void setSuitNo(Integer suitNo) {
 		this.suitNo = suitNo;
 	}
@@ -891,10 +872,6 @@ public class DietaryTemplateQuery extends DataQuery {
 
 	public void setUpdateTimeLessThanOrEqual(Date updateTimeLessThanOrEqual) {
 		this.updateTimeLessThanOrEqual = updateTimeLessThanOrEqual;
-	}
-
-	public void setVerifyFlag(String verifyFlag) {
-		this.verifyFlag = verifyFlag;
 	}
 
 	public void setVitaminAGreaterThanOrEqual(Double vitaminAGreaterThanOrEqual) {
@@ -961,14 +938,6 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.zincLessThanOrEqual = zincLessThanOrEqual;
 	}
 
-	public DietaryTemplateQuery shareFlag(String shareFlag) {
-		if (shareFlag == null) {
-			throw new RuntimeException("shareFlag is null");
-		}
-		this.shareFlag = shareFlag;
-		return this;
-	}
-
 	public DietaryTemplateQuery suitNo(Integer suitNo) {
 		if (suitNo == null) {
 			throw new RuntimeException("suitNo is null");
@@ -1022,14 +991,6 @@ public class DietaryTemplateQuery extends DataQuery {
 			throw new RuntimeException("updateTime is null");
 		}
 		this.updateTimeLessThanOrEqual = updateTimeLessThanOrEqual;
-		return this;
-	}
-
-	public DietaryTemplateQuery verifyFlag(String verifyFlag) {
-		if (verifyFlag == null) {
-			throw new RuntimeException("verifyFlag is null");
-		}
-		this.verifyFlag = verifyFlag;
 		return this;
 	}
 

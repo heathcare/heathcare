@@ -39,6 +39,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.Dictory;
 import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.core.config.ViewProperties;
+import com.glaf.core.identity.User;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.Paging;
 import com.glaf.core.util.ParamUtils;
@@ -121,11 +122,13 @@ public class EmployeeController {
 		List<Dictory> educations = dictoryService.getDictoryList("employee_education");
 		List<Dictory> senioritys = dictoryService.getDictoryList("employee_seniority");
 		List<Dictory> positions = dictoryService.getDictoryList("employee_position");
+		List<User> users = com.glaf.core.security.IdentityFactory.getUsers(loginContext.getTenantId());
 
 		request.setAttribute("nations", nations);
 		request.setAttribute("educations", educations);
 		request.setAttribute("senioritys", senioritys);
 		request.setAttribute("positions", positions);
+		request.setAttribute("users", users);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -297,6 +300,7 @@ public class EmployeeController {
 			}
 
 			employee.setName(request.getParameter("name"));
+			employee.setUserId(request.getParameter("userId"));
 			employee.setSex(request.getParameter("sex"));
 			employee.setBirthday(RequestUtils.getDate(request, "birthday"));
 			employee.setIdCardNo(request.getParameter("idCardNo"));

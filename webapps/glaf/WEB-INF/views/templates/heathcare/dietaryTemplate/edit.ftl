@@ -6,7 +6,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>编辑食谱模板</title>
 <#include "/inc/init_easyui_import.ftl"/>
+<script type="text/javascript" src="${contextPath}/static/scripts/global.js"></script>
 <script type="text/javascript">
+
+   function templateCate(){
+	    var link = '${contextPath}/heathcare/dietaryCategory';
+		var x=120;
+        var y=50;
+        if(is_ie) {
+        	x=document.body.scrollLeft+event.clientX-event.offsetX-200;
+        	y=document.body.scrollTop+event.clientY-event.offsetY-200;
+        }
+        openWindow(link, self, x, y, 1190, 650);
+   }
                 
    function saveData(){
 	    //alert("保存数据......");
@@ -100,7 +112,9 @@
 		  <script type="text/javascript">
 			   document.getElementById("suitNo").value="${dietaryTemplate.suitNo}";
 		  </script>
-	      <span class="k-invalid-msg" data-for="suitNo"></span>
+		  &nbsp;
+	      <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'" 
+	         onclick="javascript:templateCate();" >模板列表</a>
     </td>
     <td width="15%" align="left">日期&nbsp;&nbsp;</td>
     <td align="left">

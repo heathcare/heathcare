@@ -51,11 +51,7 @@
 			jdbcType="VARCHAR" />
 		<result property="instanceFlag" column="INSTANCEFLAG_"
 			jdbcType="VARCHAR" />
-		<result property="shareFlag" column="SHAREFLAG_"
-			jdbcType="VARCHAR" />
 		<result property="sysFlag" column="SYSFLAG_" jdbcType="VARCHAR" />
-		<result property="verifyFlag" column="VERIFYFLAG_"
-			jdbcType="VARCHAR" />
 		<result property="businessStatus" column="BUSINESSSTATUS_"
 			jdbcType="INTEGER" />
 		<result property="confirmBy" column="CONFIRMBY_"
@@ -161,12 +157,6 @@
 			</if>
 			<if test="instanceFlag != null">
 				,INSTANCEFLAG_
-			</if>
-			<if test="shareFlag != null">
-				,SHAREFLAG_
-			</if>
-			<if test="verifyFlag != null">
-				,VERIFYFLAG_
 			</if>
 			<if test="businessStatus != null">
 				,BUSINESSSTATUS_
@@ -277,12 +267,6 @@
 			<if test="instanceFlag != null">
 				,#{instanceFlag, jdbcType=VARCHAR}
 			</if>
-			<if test="shareFlag != null">
-				,#{shareFlag, jdbcType=VARCHAR}
-			</if>
-			<if test="verifyFlag != null">
-				,#{verifyFlag, jdbcType=VARCHAR}
-			</if>
 			<if test="businessStatus != null">
 				,#{businessStatus, jdbcType=INTEGER}
 			</if>
@@ -340,8 +324,6 @@
 		,SYSFLAG_
 		,ENABLEFLAG_
 		,INSTANCEFLAG_
-		,SHAREFLAG_
-		,VERIFYFLAG_
 		,BUSINESSSTATUS_
 		,CONFIRMBY_
 		,CONFIRMTIME_
@@ -386,8 +368,6 @@
 			,#{dietaryTemplate.sysFlag, jdbcType=VARCHAR}
 			,#{dietaryTemplate.enableFlag, jdbcType=VARCHAR}
 			,#{dietaryTemplate.instanceFlag, jdbcType=VARCHAR}
-			,#{dietaryTemplate.shareFlag, jdbcType=VARCHAR}
-			,#{dietaryTemplate.verifyFlag, jdbcType=VARCHAR}
 			,#{dietaryTemplate.businessStatus, jdbcType=INTEGER}
 			,#{dietaryTemplate.confirmBy, jdbcType=VARCHAR}
 			,#{dietaryTemplate.confirmTime, jdbcType=TIMESTAMP}
@@ -435,8 +415,6 @@
 			,SYSFLAG_
 			,ENABLEFLAG_
 			,INSTANCEFLAG_
-			,SHAREFLAG_
-			,VERIFYFLAG_
 			,BUSINESSSTATUS_
 			,CONFIRMBY_
 			,CONFIRMTIME_
@@ -480,8 +458,6 @@
 			,#{dietaryTemplate.sysFlag, jdbcType=VARCHAR}
 			,#{dietaryTemplate.enableFlag, jdbcType=VARCHAR}
 			,#{dietaryTemplate.instanceFlag, jdbcType=VARCHAR}
-			,#{dietaryTemplate.shareFlag, jdbcType=VARCHAR}
-			,#{dietaryTemplate.verifyFlag, jdbcType=VARCHAR}
 			,#{dietaryTemplate.businessStatus, jdbcType=INTEGER}
 			,#{dietaryTemplate.confirmBy, jdbcType=VARCHAR}
 			,#{dietaryTemplate.confirmTime, jdbcType=TIMESTAMP}
@@ -577,12 +553,6 @@
 			</if>
 			<if test="enableFlag != null">
 				ENABLEFLAG_ = #{enableFlag, jdbcType=VARCHAR},
-			</if>
-			<if test="shareFlag != null">
-				SHAREFLAG_ = #{shareFlag, jdbcType=VARCHAR},
-			</if>
-			<if test="verifyFlag != null">
-				VERIFYFLAG_ = #{verifyFlag, jdbcType=VARCHAR},
 			</if>
 			<if test="businessStatus != null">
 				BUSINESSSTATUS_ = #{businessStatus, jdbcType=INTEGER},
@@ -865,14 +835,6 @@
 
 			<if test="instanceFlag != null and instanceFlag != '' ">
 				and E.INSTANCEFLAG_ = #{instanceFlag}
-			</if>
-
-			<if test="shareFlag != null and shareFlag != '' ">
-				and E.SHAREFLAG_ = #{shareFlag}
-			</if>
-
-			<if test="verifyFlag != null and verifyFlag != '' ">
-				and E.VERIFYFLAG_ = #{verifyFlag}
 			</if>
 
 			<if test="businessStatus != null">

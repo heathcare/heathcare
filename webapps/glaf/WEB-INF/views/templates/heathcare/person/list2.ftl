@@ -23,7 +23,6 @@
 				    {title:'序号', field:'startIndex', width:60, sortable:false},
 					{title:'姓名', field:'name', width:90},
 					{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center"},
-					{title:'身份证编号', field:'idCardNo', width:120},
 					{title:'家庭住址', field:'homeAddress', width:350},
 					{title:'出生日期', field:'birthday', width:100, align:"center"},
 					{title:'入园日期', field:'joinDate', width:100, align:"center"}

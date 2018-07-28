@@ -126,12 +126,6 @@ public class DietaryTemplateJsonFactory {
 		if (jsonObject.containsKey("instanceFlag")) {
 			model.setInstanceFlag(jsonObject.getString("instanceFlag"));
 		}
-		if (jsonObject.containsKey("shareFlag")) {
-			model.setShareFlag(jsonObject.getString("shareFlag"));
-		}
-		if (jsonObject.containsKey("verifyFlag")) {
-			model.setVerifyFlag(jsonObject.getString("verifyFlag"));
-		}
 		if (jsonObject.containsKey("businessStatus")) {
 			model.setBusinessStatus(jsonObject.getInteger("businessStatus"));
 		}
@@ -211,12 +205,6 @@ public class DietaryTemplateJsonFactory {
 		}
 		if (model.getInstanceFlag() != null) {
 			jsonObject.put("instanceFlag", model.getInstanceFlag());
-		}
-		if (model.getShareFlag() != null) {
-			jsonObject.put("shareFlag", model.getShareFlag());
-		}
-		if (model.getVerifyFlag() != null) {
-			jsonObject.put("verifyFlag", model.getVerifyFlag());
 		}
 		jsonObject.put("businessStatus", model.getBusinessStatus());
 		if (model.getConfirmBy() != null) {
@@ -298,12 +286,6 @@ public class DietaryTemplateJsonFactory {
 		}
 		if (model.getInstanceFlag() != null) {
 			jsonObject.put("instanceFlag", model.getInstanceFlag());
-		}
-		if (model.getShareFlag() != null) {
-			jsonObject.put("shareFlag", model.getShareFlag());
-		}
-		if (model.getVerifyFlag() != null) {
-			jsonObject.put("verifyFlag", model.getVerifyFlag());
 		}
 		jsonObject.put("businessStatus", model.getBusinessStatus());
 		if (model.getConfirmBy() != null) {

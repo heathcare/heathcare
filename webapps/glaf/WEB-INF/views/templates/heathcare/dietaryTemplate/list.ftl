@@ -469,7 +469,7 @@
 						<span style="color:#0066ff;font-weight:bold;">${typeDict.name}</span>
 						</#if>
 						&nbsp;
-						<select id="typeId" name="typeId">
+						<!-- <select id="typeId" name="typeId">
 							<option value="">----请选择----</option>
 							<#list dictoryList as d>
 							<option value="${d.id}">${d.name}</option>
@@ -477,11 +477,11 @@
 						</select>
 						<script type="text/javascript">
 						   document.getElementById("typeId").value="${typeId}";
-						</script>
+						</script> -->
 					</td>
 					<td>
 					  &nbsp;类型&nbsp;
-					  <select id="sysFlag" name="sysFlag">
+					  <select id="sysFlag" name="sysFlag" onchange="javascript:searchData();">
 						<option value="">----请选择----</option> 
 						<option value="Y">系统内置</option>
 						<option value="N">我自己的</option>
@@ -492,7 +492,7 @@
 					</td>
 					<td>
 					  &nbsp;序号&nbsp;
-					  <select id="suitNo" name="suitNo">
+					  <select id="suitNo" name="suitNo" onchange="javascript:searchData();">
 						<option value="">----请选择----</option>
 						<#list categories as category>
 						<option value="${category.suitNo}">${category.name}</option>
@@ -504,7 +504,7 @@
 					</td>
 					<td>
 					  &nbsp;日期&nbsp;
-					  <select id="dayOfWeek" name="dayOfWeek">
+					  <select id="dayOfWeek" name="dayOfWeek" onchange="javascript:searchData();">
 						<option value="">----请选择----</option>
 						<option value="1">星期一</option>
 						<option value="2">星期二</option>

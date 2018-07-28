@@ -59,7 +59,7 @@ a:hover {
 	padding: 2px 2px;
 	line-height: 18px;
 	height: 18px;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .x-readonly {
@@ -85,7 +85,7 @@ a:hover {
 	border: 1px solid #d3d3d3;
 	color: #666;
 	padding: 2px 2px;
-	font-size: 15px;
+	font-size: 14px;
 }
 
 .select {
@@ -93,7 +93,7 @@ a:hover {
 	border: 1px solid #d3d3d3;
 	color: #666;
 	padding: 2px 2px;
-	font-size: 15px;
+	font-size: 14px;
 }
 
 .x_content_title {
@@ -161,9 +161,9 @@ a:hover {
 	border: 1px solid #d3d3d3;
 	color: #666;
 	padding: 2px 2px;
-	line-height: 18px;
-	height: 18px;
-	font-size: 15px;
+	line-height: 20px;
+	height: 20px;
+	font-size: 13px;
 }
 
 .x-fieldset {

@@ -239,13 +239,13 @@
 		<td width="20%" align="left">出生日期</td>
 		<td align="left">
 			<input id="birthday" name="birthday" type="text" 
-			       class="easyui-datebox x-text" style="width:100px;"
+			       class="easyui-datebox x-text" style="width:120px;"
 				   <#if person.birthday?if_exists>
 				   value="${person.birthday?string('yyyy-MM-dd')}"
 				   </#if>>
             &nbsp;&nbsp;入园日期&nbsp;
 			<input id="joinDate" name="joinDate" type="text" 
-			       class="easyui-datebox x-text" style="width:100px;"
+			       class="easyui-datebox x-text" style="width:120px;"
 				   <#if person.joinDate?if_exists>
 				   value="${person.joinDate?string('yyyy-MM-dd')}"
 				   </#if>>

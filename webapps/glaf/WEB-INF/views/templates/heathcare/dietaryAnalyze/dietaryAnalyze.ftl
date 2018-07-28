@@ -160,10 +160,10 @@ document.styleSheets.dynCom.addRule(".msocomtxt","z-index: 100");
  <tr height=34 style='mso-height-source:userset;height:25.2pt'>
   <td colspan=18 height=34 class=xl101 style='height:25.2pt'>
     &nbsp;日期&nbsp;开始&nbsp;
-	<input id="startDate" name="startDate" type="text" class="easyui-datebox x-text" style="width:100px; height:25px;"
+	<input id="startDate" name="startDate" type="text" class="easyui-datebox x-text" style="width:120px; height:28px;"
 		   <#if startDate?exists> value="${startDate_}"</#if>>
 	&nbsp;结束&nbsp;
-	<input id="endDate" name="endDate" type="text" class="easyui-datebox x-text" style="width:100px; height:25px;"
+	<input id="endDate" name="endDate" type="text" class="easyui-datebox x-text" style="width:120px; height:28px;"
 		   <#if endDate?exists> value="${endDate_}"</#if>>
 	&nbsp;
 	<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"

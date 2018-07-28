@@ -406,14 +406,8 @@ public class DietaryServiceImpl implements DietaryService {
 				dietary.setUpdateBy(loginContext.getActorId());
 				dietary.setTenantId(loginContext.getTenantId());
 				dietary.setDescription(dietaryTemplate.getDescription());
-				// dietary.setAgeGroup(dietaryTemplate.getAgeGroup());
-				// dietary.setEnableFlag(dietaryTemplate.getEnableFlag());
-				// dietary.setInstanceFlag(dietaryTemplate.getInstanceFlag());
 				dietary.setName(dietaryTemplate.getName());
-				dietary.setShareFlag(dietaryTemplate.getShareFlag());
-				// dietary.setSysFlag(dietaryTemplate.getSysFlag());
 				dietary.setTypeId(dietaryTemplate.getTypeId());
-				dietary.setVerifyFlag(dietaryTemplate.getVerifyFlag());
 				dietary.setTemplateId(dietaryTemplate.getId());
 
 				dietaryMapper.insertDietary(dietary);
@@ -424,7 +418,6 @@ public class DietaryServiceImpl implements DietaryService {
 					item.setCreateBy(loginContext.getActorId());
 					item.setTenantId(loginContext.getTenantId());
 					item.setDietaryId(dietary.getId());
-					// item.setFullDay(fullday);
 					item.setTemplateId(0);
 				}
 
@@ -497,14 +490,8 @@ public class DietaryServiceImpl implements DietaryService {
 						dietary.setUpdateBy(loginContext.getActorId());
 						dietary.setTenantId(loginContext.getTenantId());
 						dietary.setDescription(dietaryTemplate.getDescription());
-						// dietary.setAgeGroup(dietaryTemplate.getAgeGroup());
-						// dietary.setEnableFlag(dietaryTemplate.getEnableFlag());
-						// dietary.setInstanceFlag(dietaryTemplate.getInstanceFlag());
 						dietary.setName(dietaryTemplate.getName());
-						dietary.setShareFlag(dietaryTemplate.getShareFlag());
-						// dietary.setSysFlag(dietaryTemplate.getSysFlag());
 						dietary.setTypeId(dietaryTemplate.getTypeId());
-						dietary.setVerifyFlag(dietaryTemplate.getVerifyFlag());
 						dietary.setTemplateId(dietaryTemplate.getId());
 
 						dietary.setYear(year);

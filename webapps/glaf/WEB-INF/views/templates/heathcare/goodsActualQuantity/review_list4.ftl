@@ -219,10 +219,10 @@
 		</td>
 		<td valign="top" style="font-size:13px; line-height:20px;">
 		  &nbsp;开始&nbsp;
-		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="height:23px;width:100px"
+		  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="height:28px; width:120px"
 		         <#if startTime?exists> value="${startTime}"</#if>>
 		  &nbsp;结束&nbsp;
-		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="height:23px;width:100px"
+		  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="height:28px; width:120px"
 		         <#if endTime?exists> value="${endTime}"</#if>>
 		  &nbsp;
 		  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"

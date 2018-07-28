@@ -149,10 +149,10 @@
 		  </td>
 		  <td>
 			  &nbsp;日期&nbsp;开始&nbsp;
-			  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:100px;height:23px"
+			  <input id="startTime" name="startTime" type="text" class="easyui-datebox x-text" style="width:120px;height:28px"
 					 <#if startTime?exists> value="${startTime}"</#if>>
 			  &nbsp;结束&nbsp;
-			  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:100px;height:23px"
+			  <input id="endTime" name="endTime" type="text" class="easyui-datebox x-text" style="width:120px;height:28px"
 					 <#if endTime?exists> value="${endTime}"</#if>>
 			  &nbsp;
 			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"

@@ -6,8 +6,8 @@
 <#include "/inc/init_easyui_import.ftl"/>
 <style>
 
-.table-border { background-color:#0099CC; height: 32px; font-family:"宋体"}
-.table-content { background-color:#ffffff; height: 32px;font-size: 16px; font-family:"宋体"}
+.table-border { background-color:#0099CC; height: 32px; font-family:"微软雅黑"}
+.table-content { background-color:#ffffff; height: 32px;font-size: 16px; font-family:"微软雅黑"}
 
 .x_y_title {
 	text-transform: uppercase;
@@ -54,7 +54,7 @@
 	height: 20px;
 	line-height: 20px;
 	text-align: center;
-	font: bold 15px 宋体;
+	font: bold 15px 微软雅黑;
 	color: #0099CC;
 }
 

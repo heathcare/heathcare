@@ -43,8 +43,6 @@ public class DietaryQuery extends DataQuery {
 	protected Integer fullDay;
 	protected String purchaseFlag;
 	protected String purchaseFlagIsNull;
-	protected String shareFlag;
-	protected String verifyFlag;
 	protected String tenantCanSee;
 	protected String tableSuffix;
 	protected Integer businessStatus;
@@ -319,10 +317,6 @@ public class DietaryQuery extends DataQuery {
 				orderBy = "E.PURCHASEFLAG_" + a_x;
 			}
 
-			if ("verifyFlag".equals(sortColumn)) {
-				orderBy = "E.VERIFYFLAG_" + a_x;
-			}
-
 			if ("businessStatus".equals(sortColumn)) {
 				orderBy = "E.BUSINESSSTATUS_" + a_x;
 			}
@@ -371,10 +365,6 @@ public class DietaryQuery extends DataQuery {
 		return semester;
 	}
 
-	public String getShareFlag() {
-		return shareFlag;
-	}
-
 	public String getTableSuffix() {
 		return tableSuffix;
 	}
@@ -405,10 +395,6 @@ public class DietaryQuery extends DataQuery {
 
 	public List<Long> getTypeIds() {
 		return typeIds;
-	}
-
-	public String getVerifyFlag() {
-		return verifyFlag;
 	}
 
 	public Integer getWeek() {
@@ -454,7 +440,6 @@ public class DietaryQuery extends DataQuery {
 		addColumn("fullDay", "FULLDAY_");
 		addColumn("sortNo", "SORTNO_");
 		addColumn("purchaseFlag", "PURCHASEFLAG_");
-		addColumn("verifyFlag", "VERIFYFLAG_");
 		addColumn("businessStatus", "BUSINESSSTATUS_");
 		addColumn("confirmBy", "CONFIRMBY_");
 		addColumn("confirmTime", "CONFIRMTIME_");
@@ -580,10 +565,6 @@ public class DietaryQuery extends DataQuery {
 		this.semester = semester;
 	}
 
-	public void setShareFlag(String shareFlag) {
-		this.shareFlag = shareFlag;
-	}
-
 	public void setTableSuffix(String tableSuffix) {
 		this.tableSuffix = tableSuffix;
 	}
@@ -616,24 +597,12 @@ public class DietaryQuery extends DataQuery {
 		this.typeIds = typeIds;
 	}
 
-	public void setVerifyFlag(String verifyFlag) {
-		this.verifyFlag = verifyFlag;
-	}
-
 	public void setWeek(Integer week) {
 		this.week = week;
 	}
 
 	public void setYear(Integer year) {
 		this.year = year;
-	}
-
-	public DietaryQuery shareFlag(String shareFlag) {
-		if (shareFlag == null) {
-			throw new RuntimeException("shareFlag is null");
-		}
-		this.shareFlag = shareFlag;
-		return this;
 	}
 
 	public DietaryQuery tableSuffix(String tableSuffix) {
@@ -689,14 +658,6 @@ public class DietaryQuery extends DataQuery {
 			throw new RuntimeException("typeIds is empty ");
 		}
 		this.typeIds = typeIds;
-		return this;
-	}
-
-	public DietaryQuery verifyFlag(String verifyFlag) {
-		if (verifyFlag == null) {
-			throw new RuntimeException("verifyFlag is null");
-		}
-		this.verifyFlag = verifyFlag;
 		return this;
 	}
 

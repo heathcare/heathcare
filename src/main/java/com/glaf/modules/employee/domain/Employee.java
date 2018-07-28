@@ -57,6 +57,12 @@ public class Employee implements Serializable, JSONable {
 	protected String name;
 
 	/**
+	 * 用户账号
+	 */
+	@Column(name = "USERID_", length = 50)
+	protected String userId;
+
+	/**
 	 * 性别
 	 */
 	@Column(name = "SEX_", length = 1)
@@ -371,6 +377,10 @@ public class Employee implements Serializable, JSONable {
 		return "";
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -493,6 +503,10 @@ public class Employee implements Serializable, JSONable {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public JSONObject toJsonObject() {

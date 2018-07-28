@@ -91,7 +91,7 @@
 	<tr>
 		<td width="100%" align="left">
 		   请选择导出日期:
-		   &nbsp;<input id="date2" name="date2" type="text" class="easyui-datebox x-text" style="width:100px;height:23px">
+		   &nbsp;<input id="date2" name="date2" type="text" class="easyui-datebox x-text" style="width:120px;height:28px">
 		   &nbsp;<input type="button" value="每日膳费" class="btnGray" 
 		                onclick="javascript:exportXls2('TenantDailyGoodsActualQuantity2');">
 		</td>

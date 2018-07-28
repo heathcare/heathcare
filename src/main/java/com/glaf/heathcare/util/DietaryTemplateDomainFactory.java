@@ -71,8 +71,6 @@ public class DietaryTemplateDomainFactory {
 		columnMap.put("sysFlag", "SYSFLAG_");
 		columnMap.put("enableFlag", "ENABLEFLAG_");
 		columnMap.put("instanceFlag", "INSTANCEFLAG_");
-		columnMap.put("shareFlag", "SHAREFLAG_");
-		columnMap.put("verifyFlag", "VERIFYFLAG_");
 		columnMap.put("businessStatus", "BUSINESSSTATUS_");
 		columnMap.put("confirmBy", "CONFIRMBY_");
 		columnMap.put("confirmTime", "CONFIRMTIME_");
@@ -110,8 +108,6 @@ public class DietaryTemplateDomainFactory {
 		javaTypeMap.put("sysFlag", "String");
 		javaTypeMap.put("enableFlag", "String");
 		javaTypeMap.put("instanceFlag", "String");
-		javaTypeMap.put("shareFlag", "String");
-		javaTypeMap.put("verifyFlag", "String");
 		javaTypeMap.put("businessStatus", "Integer");
 		javaTypeMap.put("confirmBy", "String");
 		javaTypeMap.put("confirmTime", "Date");
@@ -318,20 +314,6 @@ public class DietaryTemplateDomainFactory {
 		instanceFlag.setJavaType("String");
 		instanceFlag.setLength(1);
 		tableDefinition.addColumn(instanceFlag);
-
-		ColumnDefinition shareFlag = new ColumnDefinition();
-		shareFlag.setName("shareFlag");
-		shareFlag.setColumnName("SHAREFLAG_");
-		shareFlag.setJavaType("String");
-		shareFlag.setLength(1);
-		tableDefinition.addColumn(shareFlag);
-
-		ColumnDefinition verifyFlag = new ColumnDefinition();
-		verifyFlag.setName("verifyFlag");
-		verifyFlag.setColumnName("VERIFYFLAG_");
-		verifyFlag.setJavaType("String");
-		verifyFlag.setLength(1);
-		tableDefinition.addColumn(verifyFlag);
 
 		ColumnDefinition businessStatus = new ColumnDefinition();
 		businessStatus.setName("businessStatus");

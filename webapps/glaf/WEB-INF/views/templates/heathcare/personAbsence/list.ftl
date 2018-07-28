@@ -92,7 +92,7 @@
 	  <td width="60%" align="right">
 	     日期&nbsp;
 		 <input id="absenceDate" name="absenceDate" type="text"  
-		        class="easyui-datebox x-text" style="width:100px;"
+		        class="easyui-datebox x-text" style="width:120px;"
 				data-options="onSelect:submitReq"
 			    <#if absenceDate?exists>
 				value="${absenceDate?string('yyyy-MM-dd')}"

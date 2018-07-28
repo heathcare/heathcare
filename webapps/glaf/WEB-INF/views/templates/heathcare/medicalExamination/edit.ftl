@@ -216,7 +216,7 @@
 				</select>
 			    <div id="eyeLeftRemarkDiv" style="display:none; margin-top:2px; ">
 				   <input id="eyeLeftRemark" name="eyeLeftRemark" type="text" 
-			              class="easyui-validatebox x-small-text" style="width:102px"
+			              class="easyui-validatebox x-small-text" style="width:90px"
 				          value="${medicalExamination.eyeLeftRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -249,7 +249,7 @@
 				</select>
 			    <div id="eyeRightRemarkDiv" style="display:none; margin-top:2px; ">
 				   <input id="eyeRightRemark" name="eyeRightRemark" type="text" 
-			              class="easyui-validatebox x-small-text" style="width:102px"
+			              class="easyui-validatebox x-small-text" style="width:90px"
 				          value="${medicalExamination.eyeRightRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -294,7 +294,7 @@
 				</select>
 				<div id="earLeftRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="earLeftRemark" name="earLeftRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.earLeftRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -323,7 +323,7 @@
 				</select>
 			   <div id="earRightRemarkDiv" style="display:none; margin-top:2px; ">
 				   <input id="earRightRemark" name="earRightRemark" type="text" 
-			              class="easyui-validatebox x-small-text" style="width:102px"
+			              class="easyui-validatebox x-small-text" style="width:90px"
 				          value="${medicalExamination.earRightRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -368,7 +368,7 @@
 				</select>
 				<div id="headRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="headRemark" name="headRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.headRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -397,7 +397,7 @@
 				</select>
 			    <div id="thoraxRemarkDiv" style="display:none; margin-top:2px; ">
 				   <input id="thoraxRemark" name="thoraxRemark" type="text" 
-			              class="easyui-validatebox x-small-text" style="width:102px"
+			              class="easyui-validatebox x-small-text" style="width:90px"
 				          value="${medicalExamination.thoraxRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -428,7 +428,7 @@
 				</select>
 				<div id="spineRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="spineRemark" name="spineRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.spineRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -457,7 +457,7 @@
 				</select>
 				<div id="pharyngealRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="pharyngealRemark" name="pharyngealRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.pharyngealRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -488,7 +488,7 @@
 				</select>
 				<div id="cardiopulmonaryRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="cardiopulmonaryRemark" name="cardiopulmonaryRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.cardiopulmonaryRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -517,7 +517,7 @@
 				</select>
 				<div id="hepatolienalRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="hepatolienalRemark" name="hepatolienalRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.hepatolienalRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -548,7 +548,7 @@
 				</select>
 				<div id="pudendumRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="pudendumRemark" name="pudendumRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.pudendumRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -577,7 +577,7 @@
 				</select>
 				<div id="skinRemarkDiv" style="display:none; margin-top:2px; ">
 					   <input id="skinRemark" name="skinRemark" type="text" 
-							  class="easyui-validatebox x-small-text" style="width:102px"
+							  class="easyui-validatebox x-small-text" style="width:90px"
 							  value="${medicalExamination.skinRemark}"/>
 				</div>
 				<script type="text/javascript">
@@ -683,7 +683,7 @@
 		<td width="12%" align="left">体检时间</td>
 		<td width="38%" align="left">
 			<input id="checkDate" name="checkDate" type="text" 
-			       class="easyui-datebox x-text" style="width:100px"
+			       class="easyui-datebox x-text" style="width:120px"
 			       <#if checkDate?exists>
 				   value="${checkDate ? string('yyyy-MM-dd')}"
 				   </#if>

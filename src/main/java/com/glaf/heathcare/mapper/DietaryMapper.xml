@@ -59,10 +59,6 @@
 		<result property="sortNo" column="SORTNO_" jdbcType="INTEGER" />
 		<result property="purchaseFlag" column="PURCHASEFLAG_"
 			jdbcType="VARCHAR" />
-		<result property="shareFlag" column="SHAREFLAG_"
-			jdbcType="VARCHAR" />
-		<result property="verifyFlag" column="VERIFYFLAG_"
-			jdbcType="VARCHAR" />
 		<result property="businessStatus" column="BUSINESSSTATUS_"
 			jdbcType="INTEGER" />
 		<result property="confirmBy" column="CONFIRMBY_"
@@ -186,12 +182,6 @@
 			</if>
 			<if test="purchaseFlag != null">
 				,PURCHASEFLAG_
-			</if>
-			<if test="shareFlag != null">
-				,SHAREFLAG_
-			</if>
-			<if test="verifyFlag != null">
-				,VERIFYFLAG_
 			</if>
 			<if test="businessStatus != null">
 				,BUSINESSSTATUS_
@@ -321,12 +311,6 @@
 			<if test="purchaseFlag != null">
 				,#{purchaseFlag, jdbcType=VARCHAR}
 			</if>
-			<if test="shareFlag != null">
-				,#{shareFlag, jdbcType=VARCHAR}
-			</if>
-			<if test="verifyFlag != null">
-				,#{verifyFlag, jdbcType=VARCHAR}
-			</if>
 			<if test="businessStatus != null">
 				,#{businessStatus, jdbcType=INTEGER}
 			</if>
@@ -390,8 +374,6 @@
 		,FULLDAY_
 		,SORTNO_
 		,PURCHASEFLAG_
-		,SHAREFLAG_
-		,VERIFYFLAG_
 		,BUSINESSSTATUS_
 		,CONFIRMBY_
 		,CONFIRMTIME_
@@ -461,10 +443,6 @@
 			jdbcType=INTEGER}
 			,#{dietary.purchaseFlag,
 			jdbcType=VARCHAR}
-			,#{dietary.shareFlag,
-			jdbcType=VARCHAR}
-			,#{dietary.verifyFlag,
-			jdbcType=VARCHAR}
 			,#{dietary.businessStatus,
 			jdbcType=INTEGER}
 			,#{dietary.confirmBy,
@@ -525,8 +503,6 @@
 			,FULLDAY_
 			,SORTNO_
 			,PURCHASEFLAG_
-			,SHAREFLAG_
-			,VERIFYFLAG_
 			,BUSINESSSTATUS_
 			,CONFIRMBY_
 			,CONFIRMTIME_
@@ -596,10 +572,6 @@
 			,#{dietary.sortNo,
 			jdbcType=INTEGER}
 			,#{dietary.purchaseFlag,
-			jdbcType=VARCHAR}
-			,#{dietary.shareFlag,
-			jdbcType=VARCHAR}
-			,#{dietary.verifyFlag,
 			jdbcType=VARCHAR}
 			,#{dietary.businessStatus,
 			jdbcType=INTEGER}
@@ -716,12 +688,6 @@
 			<if test="purchaseFlag != null">
 				PURCHASEFLAG_ = #{purchaseFlag, jdbcType=VARCHAR},
 			</if>
-			<if test="shareFlag != null">
-				SHAREFLAG_ = #{shareFlag, jdbcType=VARCHAR},
-			</if>
-			<if test="verifyFlag != null">
-				VERIFYFLAG_ = #{verifyFlag, jdbcType=VARCHAR},
-			</if>
 			<if test="businessStatus != null">
 				BUSINESSSTATUS_ = #{businessStatus, jdbcType=INTEGER},
 			</if>
@@ -788,14 +754,16 @@
 		where ID_ =
 		#{dietaryId}
 	</delete>
-	
-	
+
+
 	<delete id="deleteDietaryList"
 		parameterType="com.glaf.heathcare.query.DietaryQuery">
 		delete from
 		HEALTH_DIETARY${tableSuffix}
-		where TENANTID_ = #{tenantId, jdbcType=VARCHAR}
-		and FULLDAY_ = #{fullDay, jdbcType=INTEGER }
+		where TENANTID_ =
+		#{tenantId, jdbcType=VARCHAR}
+		and FULLDAY_ = #{fullDay,
+		jdbcType=INTEGER }
 	</delete>
 
 
@@ -810,13 +778,14 @@
 	<select id="getDietarySectionIds"
 		parameterType="com.glaf.heathcare.query.DietaryQuery"
 		resultType="com.glaf.heathcare.domain.Dietary">
-		select distinct SECTIONID_ as sectionId, FULLDAY_ as fullDay
+		select distinct SECTIONID_ as sectionId, FULLDAY_ as
+		fullDay
 		from HEALTH_DIETARY${tableSuffix}
 		where TENANTID_ = #{tenantId}
 		and YEAR_ = #{year}
 		and SEMESTER_ = #{semester}
 		and WEEK_ = #{week}
-		order by FULLDAY_ asc 
+		order by FULLDAY_ asc
 	</select>
 
 
@@ -956,14 +925,6 @@
 			<if
 				test="purchaseFlagIsNull != null and purchaseFlagIsNull != '' ">
 				and E.PURCHASEFLAG_ is null
-			</if>
-
-			<if test="shareFlag != null and shareFlag != '' ">
-				and E.SHAREFLAG_ = #{shareFlag}
-			</if>
-
-			<if test="verifyFlag != null and verifyFlag != '' ">
-				and E.VERIFYFLAG_ = #{verifyFlag}
 			</if>
 
 			<if test="businessStatus != null">

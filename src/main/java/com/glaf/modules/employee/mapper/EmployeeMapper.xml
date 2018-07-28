@@ -11,6 +11,7 @@
 		<result property="tenantId" column="TENANTID_"
 			jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="userId" column="USERID_" jdbcType="VARCHAR" />
 		<result property="sex" column="SEX_" jdbcType="VARCHAR" />
 		<result property="birthday" column="BIRTHDAY_"
 			jdbcType="TIMESTAMP" />
@@ -69,6 +70,9 @@
 			</if>
 			<if test="name != null">
 				,NAME_
+			</if>
+			<if test="userId != null">
+				,USERID_
 			</if>
 			<if test="sex != null">
 				,SEX_
@@ -156,6 +160,9 @@
 			<if test="name != null">
 				,#{name, jdbcType=VARCHAR}
 			</if>
+			<if test="userId != null">
+				,#{userId, jdbcType=VARCHAR}
+			</if>
 			<if test="sex != null">
 				,#{sex, jdbcType=VARCHAR}
 			</if>
@@ -240,6 +247,7 @@
 		ID_
 		,TENANTID_
 		,NAME_
+		,USERID_
 		,SEX_
 		,BIRTHDAY_
 		,IDCARDNO_
@@ -273,6 +281,7 @@
 			,#{employee.tenantId,
 			jdbcType=VARCHAR}
 			,#{employee.name, jdbcType=VARCHAR}
+			,#{employee.userId, jdbcType=VARCHAR}
 			,#{employee.sex,
 			jdbcType=VARCHAR}
 			,#{employee.birthday, jdbcType=TIMESTAMP}
@@ -321,6 +330,7 @@
 			ID_
 			,TENANTID_
 			,NAME_
+			,USERID_
 			,SEX_
 			,BIRTHDAY_
 			,IDCARDNO_
@@ -349,41 +359,61 @@
 			) values (
 			#{employee.id,
 			jdbcType=VARCHAR}
-			,#{employee.tenantId, jdbcType=VARCHAR}
-			,#{employee.name, jdbcType=VARCHAR}
-			,#{employee.sex, jdbcType=VARCHAR}
-			,#{employee.birthday, jdbcType=TIMESTAMP}
+			,#{employee.tenantId,
+			jdbcType=VARCHAR}
+			,#{employee.name,
+			jdbcType=VARCHAR}
+			,#{employee.userId, jdbcType=VARCHAR}
+			,#{employee.sex,
+			jdbcType=VARCHAR}
+			,#{employee.birthday,
+			jdbcType=TIMESTAMP}
 			,#{employee.idCardNo,
 			jdbcType=VARCHAR}
-			,#{employee.employeeID, jdbcType=VARCHAR}
-			,#{employee.mobile, jdbcType=VARCHAR}
+			,#{employee.employeeID,
+			jdbcType=VARCHAR}
+			,#{employee.mobile,
+			jdbcType=VARCHAR}
 			,#{employee.telephone,
 			jdbcType=VARCHAR}
-			,#{employee.nationality, jdbcType=VARCHAR}
-			,#{employee.nation, jdbcType=VARCHAR}
+			,#{employee.nationality,
+			jdbcType=VARCHAR}
+			,#{employee.nation,
+			jdbcType=VARCHAR}
 			,#{employee.birthPlace,
 			jdbcType=VARCHAR}
-			,#{employee.homeAddress, jdbcType=VARCHAR}
-			,#{employee.marryStatus, jdbcType=VARCHAR}
+			,#{employee.homeAddress,
+			jdbcType=VARCHAR}
+			,#{employee.marryStatus,
+			jdbcType=VARCHAR}
 			,#{employee.natureAccount,
 			jdbcType=VARCHAR}
-			,#{employee.natureType, jdbcType=VARCHAR}
-			,#{employee.education, jdbcType=VARCHAR}
+			,#{employee.natureType,
+			jdbcType=VARCHAR}
+			,#{employee.education,
+			jdbcType=VARCHAR}
 			,#{employee.seniority,
 			jdbcType=VARCHAR}
-			,#{employee.position, jdbcType=VARCHAR}
-			,#{employee.type, jdbcType=VARCHAR}
+			,#{employee.position,
+			jdbcType=VARCHAR}
+			,#{employee.type,
+			jdbcType=VARCHAR}
 			,#{employee.category,
 			jdbcType=VARCHAR}
-			,#{employee.joinDate, jdbcType=TIMESTAMP}
-			,#{employee.remark, jdbcType=VARCHAR}
+			,#{employee.joinDate,
+			jdbcType=TIMESTAMP}
+			,#{employee.remark,
+			jdbcType=VARCHAR}
 			,#{employee.createBy,
 			jdbcType=VARCHAR}
-			,#{employee.createTime, jdbcType=TIMESTAMP}
-			,#{employee.updateBy, jdbcType=VARCHAR}
+			,#{employee.createTime,
+			jdbcType=TIMESTAMP}
+			,#{employee.updateBy,
+			jdbcType=VARCHAR}
 			,#{employee.updateTime,
 			jdbcType=TIMESTAMP}
-			,#{employee.deleteFlag, jdbcType=INTEGER}
+			,#{employee.deleteFlag,
+			jdbcType=INTEGER}
 			)
 		</foreach>
 		SELECT * FROM dual
@@ -397,6 +427,9 @@
 		<trim prefix="" suffix="" suffixOverrides=",">
 			<if test="name != null">
 				NAME_ = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				USERID_ = #{userId, jdbcType=VARCHAR},
 			</if>
 			<if test="sex != null">
 				SEX_ = #{sex, jdbcType=VARCHAR},
