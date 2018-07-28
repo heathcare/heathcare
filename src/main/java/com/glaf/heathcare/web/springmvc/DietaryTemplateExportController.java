@@ -414,6 +414,7 @@ public class DietaryTemplateExportController {
 		logger.debug("params:" + params);
 		int suitNo = RequestUtils.getInt(request, "suitNo");
 		String sysFlag = request.getParameter("sysFlag");
+		long typeId = 0;
 		if (suitNo > 0) {
 			DietaryTemplateExportBean exportBean = new DietaryTemplateExportBean();
 			Map<String, Object> dataMap = exportBean.prepareData(loginContext, suitNo, sysFlag, params);
@@ -424,8 +425,14 @@ public class DietaryTemplateExportController {
 				request.setAttribute(key, value);
 				// logger.debug("key=" + key);
 			}
-			DietaryCategory dietaryCategory = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+			DietaryCategory dietaryCategory = null;
+			if (StringUtils.equals(sysFlag, "Y")) {
+				dietaryCategory = dietaryCategoryService.getSysDietaryCategory(suitNo);
+			} else {
+				dietaryCategory = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+			}
 			if (dietaryCategory != null) {
+				typeId = dietaryCategory.getTypeId();
 				request.setAttribute("dietaryCategory", dietaryCategory);
 			}
 		}
@@ -455,19 +462,24 @@ public class DietaryTemplateExportController {
 			}
 		}
 
-		DietaryTemplateCountExportBean exportBean = new DietaryTemplateCountExportBean();
-		try {
-			Map<String, Object> dataMap = exportBean.prepareData(loginContext, sysFlag, suitNo);
-			Set<Entry<String, Object>> entrySet = dataMap.entrySet();
-			for (Entry<String, Object> entry : entrySet) {
-				String key = entry.getKey();
-				Object value = entry.getValue();
-				request.setAttribute("cnt_" + key, value);
-				logger.debug("key:" + key);
+		request.removeAttribute("dietary_nutrient");
+		TenantConfig config = tenantConfigService.getTenantConfigByTenantId(loginContext.getTenantId());
+		if (loginContext.isSystemAdministrator() || (config != null && config.getTypeId() == typeId)) {
+			DietaryTemplateCountExportBean exportBean = new DietaryTemplateCountExportBean();
+			try {
+				Map<String, Object> dataMap = exportBean.prepareData(loginContext, sysFlag, suitNo);
+				Set<Entry<String, Object>> entrySet = dataMap.entrySet();
+				for (Entry<String, Object> entry : entrySet) {
+					String key = entry.getKey();
+					Object value = entry.getValue();
+					request.setAttribute("cnt_" + key, value);
+					logger.debug("key:" + key);
+				}
+				request.setAttribute("dietary_nutrient", true);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			logger.error(ex);
 		}
 
 		if (loginContext.isSystemAdministrator()) {

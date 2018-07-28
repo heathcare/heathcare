@@ -8,6 +8,7 @@
 
 .table-border { background-color:#0099CC; height: 32px; }
 .table-content { background-color:#ffffff; height: 32px; font-size: 16px; font-family:"微软雅黑"}
+.table-content2 { background-color:#ffffff; height: 32px; font-size: 14px; font-family:"微软雅黑"}
 
 .x_y_title {
 	text-transform: uppercase;
@@ -287,7 +288,7 @@
 		  </#list>
         </tr>
 	    <tr>
-		  <td width="3%" class="table-content">
+		  <td width="3%" class="table-content" align="center">
 		  早<br>餐
 		  </td>
 		  <#list weekList as wkdata>
@@ -322,7 +323,7 @@
         </tr>
 
 	    <tr>
-		  <td class="table-content">
+		  <td class="table-content" align="center">
 		  早<br>点
 		  </td>
           <#list weekList as wkdata>
@@ -357,7 +358,7 @@
         </tr>
 
 	    <tr>
-		  <td class="table-content">
+		  <td class="table-content" align="center">
 		   午<br>餐
 		  </td>
           <#list weekList as wkdata>
@@ -392,7 +393,7 @@
         </tr>
 
 	    <tr>
-		  <td class="table-content">
+		  <td class="table-content" align="center">
 		   午<br>点
 		  </td>
           <#list weekList as wkdata>
@@ -427,7 +428,7 @@
         </tr>
 
 	    <tr>
-		  <td class="table-content">
+		  <td class="table-content" align="center">
 		   晚<br>餐
 		  </td>
           <#list weekList as wkdata>
@@ -459,189 +460,186 @@
 			  </table>
 		  </td>
 		  </#list>
-       </tr>
+        </tr>
 	 </#if>
 
-	 <tr>
-		  <td class="table-content">
+     <#if dietary_nutrient == true>
+	    <tr>
+		  <td class="table-content2">
 		   <table border='0' cellpadding='0' cellspacing='0' width="100%" height="100%" class="table-border">
 		   <tr>
-			<td rowspan="5" class="table-content" height="60">
-			一周<br>
-			日均<br>
-		    营养<br>
-		    分析<br>
-			<br>
+			<td rowspan="5" class="table-content2" height="60"  align="center">
+			一<br>周<br>日<br>均<br>营<br>养<br>分<br>析<br>
 			</td>
 			<td height="60">
              <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border">
              <tr>
-				<td class="table-content" height="12" valign="top">营养</td>
+				<td class="table-content2" height="15" valign="top">营养</td>
              </tr>
              <tr>
-				<td class="table-content" height="12" valign="top">标准</td>
+				<td class="table-content2" height="15" valign="top">标准</td>
              </tr>
              <tr>
-				<td class="table-content" height="12" valign="top">实际</td>
+				<td class="table-content2" height="15" valign="top">实际</td>
              </tr>
              <tr>
-				<td class="table-content" height="12" valign="top">实给%</td>
+				<td class="table-content2" height="15" valign="top">实给</td>
              </tr>
 			 <tr>
-				<td class="table-content" height="12" valign="top">评价</td>
+				<td class="table-content2" height="15" valign="top">评价</td>
              </tr>
              </table>
 			</td>
 		   </tr>
 		   </table>
 		  </td>
-		  <td width="18%" class="table-content">
+		  <td width="18%" class="table-content2">
 			 <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border" align="center">
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">总热能(kcal)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">碳水热</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">脂肪热</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">总热能(kcal)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">碳水热</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">脂肪热</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_foodDRI.heatEnergy}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">50-65%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">20-35%</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_foodDRI.heatEnergy}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">50-65%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">20-35%</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekAgv.heatEnergy}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyCarbohydrate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyFat}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekAgv.heatEnergy}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyCarbohydrate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyFat}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyCarbohydratePercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyFatPercent}%</td>	
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyCarbohydratePercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyFatPercent}%</td>	
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyCarbohydrateEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.heatEnergyFatEvaluate}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyCarbohydrateEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.heatEnergyFatEvaluate}</td>
 			  </tr>
 			 </table>
 		  </td>
-		  <td width="18%" class="table-content">
+		  <td width="18%" class="table-content2">
 			 <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border" align="center">
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">蛋白质总量(g)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">动物类</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">动豆类</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">蛋白质总量(g)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">动物类</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">动豆类</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_foodDRI.protein}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">30%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">50%</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_foodDRI.protein}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">30%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">50%</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekAgv.protein}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.proteinAnimal}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.proteinAnimalBeans}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekAgv.protein}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.proteinAnimal}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.proteinAnimalBeans}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.proteinPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.proteinAnimalPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.proteinAnimalBeansPercent}%</td>	
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.proteinPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.proteinAnimalPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.proteinAnimalBeansPercent}%</td>	
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.proteinEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.proteinAnimalEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.proteinAnimalBeansEvaluate}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.proteinEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.proteinAnimalEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.proteinAnimalBeansEvaluate}</td>
 			  </tr>
 			 </table>
 		  </td>
-		  <td width="18%" class="table-content">
+		  <td width="18%" class="table-content2">
 			 <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border" align="center">
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">&nbsp;V-A(ug)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">V-B1(mg)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">V-B2(mg)</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">V-A(ug)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">V-B1(mg)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">V-B2(mg)</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_foodDRI.vitaminA}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_foodDRI.vitaminB1}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_foodDRI.vitaminB2}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_foodDRI.vitaminA}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_foodDRI.vitaminB1}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_foodDRI.vitaminB2}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekAgv.vitaminA}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekAgv.vitaminB1}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekAgv.vitaminB2}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekAgv.vitaminA}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekAgv.vitaminB1}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekAgv.vitaminB2}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.vitaminAPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.vitaminB1Percent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.vitaminB2Percent}%</td>	
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.vitaminAPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.vitaminB1Percent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.vitaminB2Percent}%</td>	
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.vitaminAEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.vitaminB1Evaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.vitaminB2Evaluate}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.vitaminAEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.vitaminB1Evaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.vitaminB2Evaluate}</td>
 			  </tr>
 			 </table>
 		  </td>
-		  <td width="18%" class="table-content">
+		  <td width="18%" class="table-content2">
 			 <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border" align="center">
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">&nbsp;V-C(mg)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">尼克酸(mg)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">钙(mg)</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">V-C(mg)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">尼克酸(mg)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">钙(mg)</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_foodDRI.vitaminC}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_foodDRI.nicotinicCid}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_foodDRI.calcium}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_foodDRI.vitaminC}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_foodDRI.nicotinicCid}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_foodDRI.calcium}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekAgv.vitaminC}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekAgv.nicotinicCid}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekAgv.calcium}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekAgv.vitaminC}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekAgv.nicotinicCid}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekAgv.calcium}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.vitaminCPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.nicotinicCidPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.calciumPercent}%</td>	
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.vitaminCPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.nicotinicCidPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.calciumPercent}%</td>	
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.vitaminCEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.nicotinicCidEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.calciumEvaluate}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.vitaminCEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.nicotinicCidEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.calciumEvaluate}</td>
 			  </tr>
 			 </table>
 		  </td>
-		  <td width="18%" class="table-content">
+		  <td width="18%" class="table-content2">
 			 <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border" align="center">
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">&nbsp;铁(mg)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">锌(mg)</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">磷(mg)</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">铁(mg)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">锌(mg)</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">磷(mg)</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_foodDRI.iron}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_foodDRI.zinc}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_foodDRI.phosphorus}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_foodDRI.iron}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_foodDRI.zinc}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_foodDRI.phosphorus}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekAgv.iron}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekAgv.zinc}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekAgv.phosphorus}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekAgv.iron}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekAgv.zinc}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekAgv.phosphorus}</td>
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.ironPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.zincPercent}%</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.phosphorusPercent}%</td>	
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.ironPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.zincPercent}%</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.phosphorusPercent}%</td>	
 			  </tr>
 			  <tr>
-				<td valign="top" height="12" width="40%" class="table-content" align="center">${cnt_weekRptModel.ironEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.zincEvaluate}</td>
-				<td valign="top" height="12" width="30%" class="table-content" align="center">${cnt_weekRptModel.phosphorusEvaluate}</td>
+				<td valign="top" height="15" width="40%" class="table-content2" align="center">${cnt_weekRptModel.ironEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.zincEvaluate}</td>
+				<td valign="top" height="15" width="30%" class="table-content2" align="center">${cnt_weekRptModel.phosphorusEvaluate}</td>
 			  </tr>
 			 </table>
 		  </td>
-       </tr>
-
+        </tr>
+        </#if>
      <!-- <tr>
 	    <td colspan="6" align="right"  class="table-content" height="15">
 		  &nbsp;

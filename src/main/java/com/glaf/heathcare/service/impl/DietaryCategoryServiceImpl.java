@@ -163,6 +163,21 @@ public class DietaryCategoryServiceImpl implements DietaryCategoryService {
 		return list;
 	}
 
+	public DietaryCategory getSysDietaryCategory(int suitNo) {
+		DietaryCategoryQuery query = new DietaryCategoryQuery();
+		query.sysFlag("Y");
+		query.createBy("admin");
+		List<DietaryCategory> list = this.list(query);
+		if (list != null && !list.isEmpty()) {
+			for (DietaryCategory cat : list) {
+				if (cat.getSuitNo() == suitNo) {
+					return cat;
+				}
+			}
+		}
+		return null;
+	}
+
 	public List<DietaryCategory> list(DietaryCategoryQuery query) {
 		List<DietaryCategory> list = dietaryCategoryMapper.getDietaryCategorys(query);
 		return list;

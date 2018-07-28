@@ -156,7 +156,6 @@ public class DietaryStatisticsController {
 				semaphore1.acquire();
 				DietaryStatisticsBean bean = new DietaryStatisticsBean();
 				bean.executeAll();
-				return ResponseUtils.responseJsonResult(true);
 			} catch (Exception ex) {
 				logger.error(ex);
 			} finally {
@@ -179,7 +178,7 @@ public class DietaryStatisticsController {
 			} finally {
 				semaphore1.release();
 			}
-
+			return ResponseUtils.responseJsonResult(true);
 		}
 		return ResponseUtils.responseJsonResult(false);
 	}
