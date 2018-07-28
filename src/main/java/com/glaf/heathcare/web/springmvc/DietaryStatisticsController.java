@@ -45,6 +45,7 @@ import com.glaf.core.util.Tools;
 import com.glaf.heathcare.SysConfig;
 import com.glaf.heathcare.bean.DayDietaryStatisticsBean;
 import com.glaf.heathcare.bean.DietaryStatisticsBean;
+import com.glaf.heathcare.bean.DietaryTemplateCountBean;
 import com.glaf.heathcare.domain.DietaryStatistics;
 import com.glaf.heathcare.query.DietaryStatisticsQuery;
 import com.glaf.heathcare.service.DietaryStatisticsService;
@@ -161,6 +162,24 @@ public class DietaryStatisticsController {
 			} finally {
 				semaphore1.release();
 			}
+
+			try {
+				semaphore1.acquire();
+				DietaryTemplateCountBean countBean = new DietaryTemplateCountBean();
+				for (int suitNo = 1; suitNo <= 80; suitNo++) {
+					try {
+						countBean.executeCountAll(loginContext, "Y", suitNo);
+						countBean.executeCountItems(loginContext, "Y", suitNo);
+					} catch (Exception ex) {
+						logger.error(ex);
+					}
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
+			} finally {
+				semaphore1.release();
+			}
+
 		}
 		return ResponseUtils.responseJsonResult(false);
 	}

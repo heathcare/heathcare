@@ -21,15 +21,11 @@ package com.glaf.heathcare.query;
 import java.util.*;
 import com.glaf.core.query.DataQuery;
 
-public class DietaryTemplateQuery extends DataQuery {
+public class DietaryTemplateCountQuery extends DataQuery {
 	private static final long serialVersionUID = 1L;
+	protected Long id;
 	protected List<Long> ids;
-	protected List<Long> templateIds;
-	protected String name;
-	protected String nameLike;
-	protected String descriptionLike;
-	protected Long typeId;
-	protected List<Long> typeIds;
+	protected List<String> tenantIds;
 	protected Double heatEnergyGreaterThanOrEqual;
 	protected Double heatEnergyLessThanOrEqual;
 	protected Double proteinGreaterThanOrEqual;
@@ -62,36 +58,30 @@ public class DietaryTemplateQuery extends DataQuery {
 	protected Double ironLessThanOrEqual;
 	protected Double zincGreaterThanOrEqual;
 	protected Double zincLessThanOrEqual;
+	protected Double iodineGreaterThanOrEqual;
+	protected Double iodineLessThanOrEqual;
+	protected Double phosphorusGreaterThanOrEqual;
+	protected Double phosphorusLessThanOrEqual;
+	protected String type;
+	protected Long nodeId;
+	protected List<Long> nodeIds;
+	protected Integer semester;
 	protected Integer year;
 	protected Integer month;
 	protected Integer day;
 	protected Integer dayOfWeek;
 	protected Integer week;
+	protected Integer fullDay;
 	protected Integer suitNo;
-	protected List<Integer> suitNos;
-	protected String enableFlag;
-	protected String instanceFlag;
-	protected String sysFlag;
-	protected String tenantCanSee;
-	protected Integer businessStatus;
 	protected Date createTimeGreaterThanOrEqual;
 	protected Date createTimeLessThanOrEqual;
-	protected Date updateTimeGreaterThanOrEqual;
-	protected Date updateTimeLessThanOrEqual;
+	protected String tableSuffix;
 
-	public DietaryTemplateQuery() {
+	public DietaryTemplateCountQuery() {
 
 	}
 
-	public DietaryTemplateQuery businessStatus(Integer businessStatus) {
-		if (businessStatus == null) {
-			throw new RuntimeException("businessStatus is null");
-		}
-		this.businessStatus = businessStatus;
-		return this;
-	}
-
-	public DietaryTemplateQuery calciumGreaterThanOrEqual(Double calciumGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery calciumGreaterThanOrEqual(Double calciumGreaterThanOrEqual) {
 		if (calciumGreaterThanOrEqual == null) {
 			throw new RuntimeException("calcium is null");
 		}
@@ -99,7 +89,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery calciumLessThanOrEqual(Double calciumLessThanOrEqual) {
+	public DietaryTemplateCountQuery calciumLessThanOrEqual(Double calciumLessThanOrEqual) {
 		if (calciumLessThanOrEqual == null) {
 			throw new RuntimeException("calcium is null");
 		}
@@ -107,7 +97,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery carbohydrateGreaterThanOrEqual(Double carbohydrateGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery carbohydrateGreaterThanOrEqual(Double carbohydrateGreaterThanOrEqual) {
 		if (carbohydrateGreaterThanOrEqual == null) {
 			throw new RuntimeException("carbohydrate is null");
 		}
@@ -115,7 +105,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery carbohydrateLessThanOrEqual(Double carbohydrateLessThanOrEqual) {
+	public DietaryTemplateCountQuery carbohydrateLessThanOrEqual(Double carbohydrateLessThanOrEqual) {
 		if (carbohydrateLessThanOrEqual == null) {
 			throw new RuntimeException("carbohydrate is null");
 		}
@@ -123,7 +113,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery caroteneGreaterThanOrEqual(Double caroteneGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery caroteneGreaterThanOrEqual(Double caroteneGreaterThanOrEqual) {
 		if (caroteneGreaterThanOrEqual == null) {
 			throw new RuntimeException("carotene is null");
 		}
@@ -131,7 +121,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery caroteneLessThanOrEqual(Double caroteneLessThanOrEqual) {
+	public DietaryTemplateCountQuery caroteneLessThanOrEqual(Double caroteneLessThanOrEqual) {
 		if (caroteneLessThanOrEqual == null) {
 			throw new RuntimeException("carotene is null");
 		}
@@ -139,7 +129,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery createTimeGreaterThanOrEqual(Date createTimeGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery createTimeGreaterThanOrEqual(Date createTimeGreaterThanOrEqual) {
 		if (createTimeGreaterThanOrEqual == null) {
 			throw new RuntimeException("createTime is null");
 		}
@@ -147,7 +137,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery createTimeLessThanOrEqual(Date createTimeLessThanOrEqual) {
+	public DietaryTemplateCountQuery createTimeLessThanOrEqual(Date createTimeLessThanOrEqual) {
 		if (createTimeLessThanOrEqual == null) {
 			throw new RuntimeException("createTime is null");
 		}
@@ -155,7 +145,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery day(Integer day) {
+	public DietaryTemplateCountQuery day(Integer day) {
 		if (day == null) {
 			throw new RuntimeException("day is null");
 		}
@@ -163,7 +153,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery dayOfWeek(Integer dayOfWeek) {
+	public DietaryTemplateCountQuery dayOfWeek(Integer dayOfWeek) {
 		if (dayOfWeek == null) {
 			throw new RuntimeException("dayOfWeek is null");
 		}
@@ -171,23 +161,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery descriptionLike(String descriptionLike) {
-		if (descriptionLike == null) {
-			throw new RuntimeException("description is null");
-		}
-		this.descriptionLike = descriptionLike;
-		return this;
-	}
-
-	public DietaryTemplateQuery enableFlag(String enableFlag) {
-		if (enableFlag == null) {
-			throw new RuntimeException("enableFlag is null");
-		}
-		this.enableFlag = enableFlag;
-		return this;
-	}
-
-	public DietaryTemplateQuery fatGreaterThanOrEqual(Double fatGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery fatGreaterThanOrEqual(Double fatGreaterThanOrEqual) {
 		if (fatGreaterThanOrEqual == null) {
 			throw new RuntimeException("fat is null");
 		}
@@ -195,7 +169,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery fatLessThanOrEqual(Double fatLessThanOrEqual) {
+	public DietaryTemplateCountQuery fatLessThanOrEqual(Double fatLessThanOrEqual) {
 		if (fatLessThanOrEqual == null) {
 			throw new RuntimeException("fat is null");
 		}
@@ -203,8 +177,12 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public Integer getBusinessStatus() {
-		return businessStatus;
+	public DietaryTemplateCountQuery fullDay(Integer fullDay) {
+		if (fullDay == null) {
+			throw new RuntimeException("fullDay is null");
+		}
+		this.fullDay = fullDay;
+		return this;
 	}
 
 	public Double getCalciumGreaterThanOrEqual() {
@@ -247,28 +225,16 @@ public class DietaryTemplateQuery extends DataQuery {
 		return dayOfWeek;
 	}
 
-	public String getDescriptionLike() {
-		if (descriptionLike != null && descriptionLike.trim().length() > 0) {
-			if (!descriptionLike.startsWith("%")) {
-				descriptionLike = "%" + descriptionLike;
-			}
-			if (!descriptionLike.endsWith("%")) {
-				descriptionLike = descriptionLike + "%";
-			}
-		}
-		return descriptionLike;
-	}
-
-	public String getEnableFlag() {
-		return enableFlag;
-	}
-
 	public Double getFatGreaterThanOrEqual() {
 		return fatGreaterThanOrEqual;
 	}
 
 	public Double getFatLessThanOrEqual() {
 		return fatLessThanOrEqual;
+	}
+
+	public Integer getFullDay() {
+		return fullDay;
 	}
 
 	public Double getHeatEnergyGreaterThanOrEqual() {
@@ -279,12 +245,20 @@ public class DietaryTemplateQuery extends DataQuery {
 		return heatEnergyLessThanOrEqual;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public List<Long> getIds() {
 		return ids;
 	}
 
-	public String getInstanceFlag() {
-		return instanceFlag;
+	public Double getIodineGreaterThanOrEqual() {
+		return iodineGreaterThanOrEqual;
+	}
+
+	public Double getIodineLessThanOrEqual() {
+		return iodineLessThanOrEqual;
 	}
 
 	public Double getIronGreaterThanOrEqual() {
@@ -299,28 +273,20 @@ public class DietaryTemplateQuery extends DataQuery {
 		return month;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public String getNameLike() {
-		if (nameLike != null && nameLike.trim().length() > 0) {
-			if (!nameLike.startsWith("%")) {
-				nameLike = "%" + nameLike;
-			}
-			if (!nameLike.endsWith("%")) {
-				nameLike = nameLike + "%";
-			}
-		}
-		return nameLike;
-	}
-
 	public Double getNicotinicCidGreaterThanOrEqual() {
 		return nicotinicCidGreaterThanOrEqual;
 	}
 
 	public Double getNicotinicCidLessThanOrEqual() {
 		return nicotinicCidLessThanOrEqual;
+	}
+
+	public Long getNodeId() {
+		return nodeId;
+	}
+
+	public List<Long> getNodeIds() {
+		return nodeIds;
 	}
 
 	public String getOrderBy() {
@@ -330,20 +296,8 @@ public class DietaryTemplateQuery extends DataQuery {
 				a_x = sortOrder;
 			}
 
-			if ("name".equals(sortColumn)) {
-				orderBy = "E.NAME_" + a_x;
-			}
-
-			if ("description".equals(sortColumn)) {
-				orderBy = "E.DESCRIPTION_" + a_x;
-			}
-
-			if ("type".equals(sortColumn)) {
-				orderBy = "E.TYPE_" + a_x;
-			}
-
-			if ("typeId".equals(sortColumn)) {
-				orderBy = "E.TYPEID_" + a_x;
+			if ("tenantId".equals(sortColumn)) {
+				orderBy = "E.TENANTID_" + a_x;
 			}
 
 			if ("heatEnergy".equals(sortColumn)) {
@@ -410,6 +364,14 @@ public class DietaryTemplateQuery extends DataQuery {
 				orderBy = "E.ZINC_" + a_x;
 			}
 
+			if ("iodine".equals(sortColumn)) {
+				orderBy = "E.IODINE_" + a_x;
+			}
+
+			if ("phosphorus".equals(sortColumn)) {
+				orderBy = "E.PHOSPHORUS_" + a_x;
+			}
+
 			if ("year".equals(sortColumn)) {
 				orderBy = "E.YEAR_" + a_x;
 			}
@@ -422,44 +384,32 @@ public class DietaryTemplateQuery extends DataQuery {
 				orderBy = "E.DAY_" + a_x;
 			}
 
+			if ("dayOfWeek".equals(sortColumn)) {
+				orderBy = "E.DAYOFWEEK_" + a_x;
+			}
+
 			if ("week".equals(sortColumn)) {
 				orderBy = "E.WEEK_" + a_x;
 			}
 
-			if ("birthday".equals(sortColumn)) {
-				orderBy = "E.BIRTHDAY_" + a_x;
-			}
-
-			if ("sortNo".equals(sortColumn)) {
-				orderBy = "E.SORTNO_" + a_x;
-			}
-
-			if ("sysFlag".equals(sortColumn)) {
-				orderBy = "E.SYSFLAG_" + a_x;
-			}
-
-			if ("enableFlag".equals(sortColumn)) {
-				orderBy = "E.ENABLEFLAG_" + a_x;
-			}
-
-			if ("createBy".equals(sortColumn)) {
-				orderBy = "E.CREATEBY_" + a_x;
+			if ("fullDay".equals(sortColumn)) {
+				orderBy = "E.FULLDAY_" + a_x;
 			}
 
 			if ("createTime".equals(sortColumn)) {
 				orderBy = "E.CREATETIME_" + a_x;
 			}
 
-			if ("updateBy".equals(sortColumn)) {
-				orderBy = "E.UPDATEBY_" + a_x;
-			}
-
-			if ("updateTime".equals(sortColumn)) {
-				orderBy = "E.UPDATETIME_" + a_x;
-			}
-
 		}
 		return orderBy;
+	}
+
+	public Double getPhosphorusGreaterThanOrEqual() {
+		return phosphorusGreaterThanOrEqual;
+	}
+
+	public Double getPhosphorusLessThanOrEqual() {
+		return phosphorusLessThanOrEqual;
 	}
 
 	public Double getProteinGreaterThanOrEqual() {
@@ -478,40 +428,27 @@ public class DietaryTemplateQuery extends DataQuery {
 		return retinolLessThanOrEqual;
 	}
 
+	public Integer getSemester() {
+		return semester;
+	}
+
 	public Integer getSuitNo() {
 		return suitNo;
 	}
 
-	public List<Integer> getSuitNos() {
-		return suitNos;
+	public String getTableSuffix() {
+		if (tableSuffix == null) {
+			tableSuffix = "";
+		}
+		return tableSuffix;
 	}
 
-	public String getSysFlag() {
-		return sysFlag;
+	public List<String> getTenantIds() {
+		return tenantIds;
 	}
 
-	public List<Long> getTemplateIds() {
-		return templateIds;
-	}
-
-	public String getTenantCanSee() {
-		return tenantCanSee;
-	}
-
-	public Long getTypeId() {
-		return typeId;
-	}
-
-	public List<Long> getTypeIds() {
-		return typeIds;
-	}
-
-	public Date getUpdateTimeGreaterThanOrEqual() {
-		return updateTimeGreaterThanOrEqual;
-	}
-
-	public Date getUpdateTimeLessThanOrEqual() {
-		return updateTimeLessThanOrEqual;
+	public String getType() {
+		return type;
 	}
 
 	public Double getVitaminAGreaterThanOrEqual() {
@@ -578,7 +515,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return zincLessThanOrEqual;
 	}
 
-	public DietaryTemplateQuery heatEnergyGreaterThanOrEqual(Double heatEnergyGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery heatEnergyGreaterThanOrEqual(Double heatEnergyGreaterThanOrEqual) {
 		if (heatEnergyGreaterThanOrEqual == null) {
 			throw new RuntimeException("heatEnergy is null");
 		}
@@ -586,7 +523,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery heatEnergyLessThanOrEqual(Double heatEnergyLessThanOrEqual) {
+	public DietaryTemplateCountQuery heatEnergyLessThanOrEqual(Double heatEnergyLessThanOrEqual) {
 		if (heatEnergyLessThanOrEqual == null) {
 			throw new RuntimeException("heatEnergy is null");
 		}
@@ -598,9 +535,7 @@ public class DietaryTemplateQuery extends DataQuery {
 	public void initQueryColumns() {
 		super.initQueryColumns();
 		addColumn("id", "ID_");
-		addColumn("name", "NAME_");
-		addColumn("description", "DESCRIPTION_");
-		addColumn("typeId", "TYPEID_");
+		addColumn("tenantId", "TENANTID_");
 		addColumn("heatEnergy", "HEATENERGY_");
 		addColumn("protein", "PROTEIN_");
 		addColumn("fat", "FAT_");
@@ -617,29 +552,34 @@ public class DietaryTemplateQuery extends DataQuery {
 		addColumn("calcium", "CALCIUM_");
 		addColumn("iron", "IRON_");
 		addColumn("zinc", "ZINC_");
+		addColumn("iodine", "IODINE_");
+		addColumn("phosphorus", "PHOSPHORUS_");
 		addColumn("year", "YEAR_");
 		addColumn("month", "MONTH_");
 		addColumn("day", "DAY_");
+		addColumn("dayOfWeek", "DAYOFWEEK_");
 		addColumn("week", "WEEK_");
-		addColumn("birthday", "BIRTHDAY_");
-		addColumn("sortNo", "SORTNO_");
-		addColumn("sysFlag", "SYSFLAG_");
-		addColumn("enableFlag", "ENABLEFLAG_");
-		addColumn("createBy", "CREATEBY_");
+		addColumn("fullDay", "FULLDAY_");
 		addColumn("createTime", "CREATETIME_");
-		addColumn("updateBy", "UPDATEBY_");
-		addColumn("updateTime", "UPDATETIME_");
 	}
 
-	public DietaryTemplateQuery instanceFlag(String instanceFlag) {
-		if (instanceFlag == null) {
-			throw new RuntimeException("instanceFlag is null");
+	public DietaryTemplateCountQuery iodineGreaterThanOrEqual(Double iodineGreaterThanOrEqual) {
+		if (iodineGreaterThanOrEqual == null) {
+			throw new RuntimeException("iodine is null");
 		}
-		this.instanceFlag = instanceFlag;
+		this.iodineGreaterThanOrEqual = iodineGreaterThanOrEqual;
 		return this;
 	}
 
-	public DietaryTemplateQuery ironGreaterThanOrEqual(Double ironGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery iodineLessThanOrEqual(Double iodineLessThanOrEqual) {
+		if (iodineLessThanOrEqual == null) {
+			throw new RuntimeException("iodine is null");
+		}
+		this.iodineLessThanOrEqual = iodineLessThanOrEqual;
+		return this;
+	}
+
+	public DietaryTemplateCountQuery ironGreaterThanOrEqual(Double ironGreaterThanOrEqual) {
 		if (ironGreaterThanOrEqual == null) {
 			throw new RuntimeException("iron is null");
 		}
@@ -647,7 +587,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery ironLessThanOrEqual(Double ironLessThanOrEqual) {
+	public DietaryTemplateCountQuery ironLessThanOrEqual(Double ironLessThanOrEqual) {
 		if (ironLessThanOrEqual == null) {
 			throw new RuntimeException("iron is null");
 		}
@@ -655,7 +595,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery month(Integer month) {
+	public DietaryTemplateCountQuery month(Integer month) {
 		if (month == null) {
 			throw new RuntimeException("month is null");
 		}
@@ -663,23 +603,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery name(String name) {
-		if (name == null) {
-			throw new RuntimeException("name is null");
-		}
-		this.name = name;
-		return this;
-	}
-
-	public DietaryTemplateQuery nameLike(String nameLike) {
-		if (nameLike == null) {
-			throw new RuntimeException("name is null");
-		}
-		this.nameLike = nameLike;
-		return this;
-	}
-
-	public DietaryTemplateQuery nicotinicCidGreaterThanOrEqual(Double nicotinicCidGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery nicotinicCidGreaterThanOrEqual(Double nicotinicCidGreaterThanOrEqual) {
 		if (nicotinicCidGreaterThanOrEqual == null) {
 			throw new RuntimeException("nicotinicCid is null");
 		}
@@ -687,7 +611,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery nicotinicCidLessThanOrEqual(Double nicotinicCidLessThanOrEqual) {
+	public DietaryTemplateCountQuery nicotinicCidLessThanOrEqual(Double nicotinicCidLessThanOrEqual) {
 		if (nicotinicCidLessThanOrEqual == null) {
 			throw new RuntimeException("nicotinicCid is null");
 		}
@@ -695,7 +619,55 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery proteinGreaterThanOrEqual(Double proteinGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery nodeId(Long nodeId) {
+		if (nodeId == null) {
+			throw new RuntimeException("nodeId is null");
+		}
+		this.nodeId = nodeId;
+		return this;
+	}
+
+	public DietaryTemplateCountQuery nodeIds(List<Long> nodeIds) {
+		if (nodeIds == null) {
+			throw new RuntimeException("nodeIds is empty ");
+		}
+		this.nodeIds = nodeIds;
+		return this;
+	}
+
+	public DietaryTemplateCountQuery parentId(Long parentId) {
+		if (parentId == null) {
+			throw new RuntimeException("parentId is null");
+		}
+		this.parentId = parentId;
+		return this;
+	}
+
+	public DietaryTemplateCountQuery parentIds(List<Long> parentIds) {
+		if (parentIds == null) {
+			throw new RuntimeException("parentIds is empty ");
+		}
+		this.parentIds = parentIds;
+		return this;
+	}
+
+	public DietaryTemplateCountQuery phosphorusGreaterThanOrEqual(Double phosphorusGreaterThanOrEqual) {
+		if (phosphorusGreaterThanOrEqual == null) {
+			throw new RuntimeException("phosphorus is null");
+		}
+		this.phosphorusGreaterThanOrEqual = phosphorusGreaterThanOrEqual;
+		return this;
+	}
+
+	public DietaryTemplateCountQuery phosphorusLessThanOrEqual(Double phosphorusLessThanOrEqual) {
+		if (phosphorusLessThanOrEqual == null) {
+			throw new RuntimeException("phosphorus is null");
+		}
+		this.phosphorusLessThanOrEqual = phosphorusLessThanOrEqual;
+		return this;
+	}
+
+	public DietaryTemplateCountQuery proteinGreaterThanOrEqual(Double proteinGreaterThanOrEqual) {
 		if (proteinGreaterThanOrEqual == null) {
 			throw new RuntimeException("protein is null");
 		}
@@ -703,7 +675,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery proteinLessThanOrEqual(Double proteinLessThanOrEqual) {
+	public DietaryTemplateCountQuery proteinLessThanOrEqual(Double proteinLessThanOrEqual) {
 		if (proteinLessThanOrEqual == null) {
 			throw new RuntimeException("protein is null");
 		}
@@ -711,7 +683,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery retinolGreaterThanOrEqual(Double retinolGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery retinolGreaterThanOrEqual(Double retinolGreaterThanOrEqual) {
 		if (retinolGreaterThanOrEqual == null) {
 			throw new RuntimeException("retinol is null");
 		}
@@ -719,7 +691,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery retinolLessThanOrEqual(Double retinolLessThanOrEqual) {
+	public DietaryTemplateCountQuery retinolLessThanOrEqual(Double retinolLessThanOrEqual) {
 		if (retinolLessThanOrEqual == null) {
 			throw new RuntimeException("retinol is null");
 		}
@@ -727,8 +699,12 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public void setBusinessStatus(Integer businessStatus) {
-		this.businessStatus = businessStatus;
+	public DietaryTemplateCountQuery semester(Integer semester) {
+		if (semester == null) {
+			throw new RuntimeException("semester is null");
+		}
+		this.semester = semester;
+		return this;
 	}
 
 	public void setCalciumGreaterThanOrEqual(Double calciumGreaterThanOrEqual) {
@@ -771,20 +747,16 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.dayOfWeek = dayOfWeek;
 	}
 
-	public void setDescriptionLike(String descriptionLike) {
-		this.descriptionLike = descriptionLike;
-	}
-
-	public void setEnableFlag(String enableFlag) {
-		this.enableFlag = enableFlag;
-	}
-
 	public void setFatGreaterThanOrEqual(Double fatGreaterThanOrEqual) {
 		this.fatGreaterThanOrEqual = fatGreaterThanOrEqual;
 	}
 
 	public void setFatLessThanOrEqual(Double fatLessThanOrEqual) {
 		this.fatLessThanOrEqual = fatLessThanOrEqual;
+	}
+
+	public void setFullDay(Integer fullDay) {
+		this.fullDay = fullDay;
 	}
 
 	public void setHeatEnergyGreaterThanOrEqual(Double heatEnergyGreaterThanOrEqual) {
@@ -795,12 +767,20 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.heatEnergyLessThanOrEqual = heatEnergyLessThanOrEqual;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public void setIds(List<Long> ids) {
 		this.ids = ids;
 	}
 
-	public void setInstanceFlag(String instanceFlag) {
-		this.instanceFlag = instanceFlag;
+	public void setIodineGreaterThanOrEqual(Double iodineGreaterThanOrEqual) {
+		this.iodineGreaterThanOrEqual = iodineGreaterThanOrEqual;
+	}
+
+	public void setIodineLessThanOrEqual(Double iodineLessThanOrEqual) {
+		this.iodineLessThanOrEqual = iodineLessThanOrEqual;
 	}
 
 	public void setIronGreaterThanOrEqual(Double ironGreaterThanOrEqual) {
@@ -815,20 +795,28 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.month = month;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setNameLike(String nameLike) {
-		this.nameLike = nameLike;
-	}
-
 	public void setNicotinicCidGreaterThanOrEqual(Double nicotinicCidGreaterThanOrEqual) {
 		this.nicotinicCidGreaterThanOrEqual = nicotinicCidGreaterThanOrEqual;
 	}
 
 	public void setNicotinicCidLessThanOrEqual(Double nicotinicCidLessThanOrEqual) {
 		this.nicotinicCidLessThanOrEqual = nicotinicCidLessThanOrEqual;
+	}
+
+	public void setNodeId(Long nodeId) {
+		this.nodeId = nodeId;
+	}
+
+	public void setNodeIds(List<Long> nodeIds) {
+		this.nodeIds = nodeIds;
+	}
+
+	public void setPhosphorusGreaterThanOrEqual(Double phosphorusGreaterThanOrEqual) {
+		this.phosphorusGreaterThanOrEqual = phosphorusGreaterThanOrEqual;
+	}
+
+	public void setPhosphorusLessThanOrEqual(Double phosphorusLessThanOrEqual) {
+		this.phosphorusLessThanOrEqual = phosphorusLessThanOrEqual;
 	}
 
 	public void setProteinGreaterThanOrEqual(Double proteinGreaterThanOrEqual) {
@@ -847,40 +835,24 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.retinolLessThanOrEqual = retinolLessThanOrEqual;
 	}
 
+	public void setSemester(Integer semester) {
+		this.semester = semester;
+	}
+
 	public void setSuitNo(Integer suitNo) {
 		this.suitNo = suitNo;
 	}
 
-	public void setSuitNos(List<Integer> suitNos) {
-		this.suitNos = suitNos;
+	public void setTableSuffix(String tableSuffix) {
+		this.tableSuffix = tableSuffix;
 	}
 
-	public void setSysFlag(String sysFlag) {
-		this.sysFlag = sysFlag;
+	public void setTenantIds(List<String> tenantIds) {
+		this.tenantIds = tenantIds;
 	}
 
-	public void setTemplateIds(List<Long> templateIds) {
-		this.templateIds = templateIds;
-	}
-
-	public void setTenantCanSee(String tenantCanSee) {
-		this.tenantCanSee = tenantCanSee;
-	}
-
-	public void setTypeId(Long typeId) {
-		this.typeId = typeId;
-	}
-
-	public void setTypeIds(List<Long> typeIds) {
-		this.typeIds = typeIds;
-	}
-
-	public void setUpdateTimeGreaterThanOrEqual(Date updateTimeGreaterThanOrEqual) {
-		this.updateTimeGreaterThanOrEqual = updateTimeGreaterThanOrEqual;
-	}
-
-	public void setUpdateTimeLessThanOrEqual(Date updateTimeLessThanOrEqual) {
-		this.updateTimeLessThanOrEqual = updateTimeLessThanOrEqual;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public void setVitaminAGreaterThanOrEqual(Double vitaminAGreaterThanOrEqual) {
@@ -947,7 +919,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		this.zincLessThanOrEqual = zincLessThanOrEqual;
 	}
 
-	public DietaryTemplateQuery suitNo(Integer suitNo) {
+	public DietaryTemplateCountQuery suitNo(Integer suitNo) {
 		if (suitNo == null) {
 			throw new RuntimeException("suitNo is null");
 		}
@@ -955,63 +927,23 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery suitNos(List<Integer> suitNos) {
-		if (suitNos == null) {
-			throw new RuntimeException("suitNos is empty ");
+	public DietaryTemplateCountQuery tenantIds(List<String> tenantIds) {
+		if (tenantIds == null) {
+			throw new RuntimeException("tenantIds is empty ");
 		}
-		this.suitNos = suitNos;
+		this.tenantIds = tenantIds;
 		return this;
 	}
 
-	public DietaryTemplateQuery sysFlag(String sysFlag) {
-		if (sysFlag == null) {
-			throw new RuntimeException("sysFlag is null");
+	public DietaryTemplateCountQuery type(String type) {
+		if (type == null) {
+			throw new RuntimeException("type is null");
 		}
-		this.sysFlag = sysFlag;
+		this.type = type;
 		return this;
 	}
 
-	public DietaryTemplateQuery templateIds(List<Long> templateIds) {
-		if (templateIds == null) {
-			throw new RuntimeException("templateIds is empty ");
-		}
-		this.templateIds = templateIds;
-		return this;
-	}
-
-	public DietaryTemplateQuery typeId(Long typeId) {
-		if (typeId == null) {
-			throw new RuntimeException("typeId is null");
-		}
-		this.typeId = typeId;
-		return this;
-	}
-
-	public DietaryTemplateQuery typeIds(List<Long> typeIds) {
-		if (typeIds == null) {
-			throw new RuntimeException("typeIds is empty ");
-		}
-		this.typeIds = typeIds;
-		return this;
-	}
-
-	public DietaryTemplateQuery updateTimeGreaterThanOrEqual(Date updateTimeGreaterThanOrEqual) {
-		if (updateTimeGreaterThanOrEqual == null) {
-			throw new RuntimeException("updateTime is null");
-		}
-		this.updateTimeGreaterThanOrEqual = updateTimeGreaterThanOrEqual;
-		return this;
-	}
-
-	public DietaryTemplateQuery updateTimeLessThanOrEqual(Date updateTimeLessThanOrEqual) {
-		if (updateTimeLessThanOrEqual == null) {
-			throw new RuntimeException("updateTime is null");
-		}
-		this.updateTimeLessThanOrEqual = updateTimeLessThanOrEqual;
-		return this;
-	}
-
-	public DietaryTemplateQuery vitaminAGreaterThanOrEqual(Double vitaminAGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminAGreaterThanOrEqual(Double vitaminAGreaterThanOrEqual) {
 		if (vitaminAGreaterThanOrEqual == null) {
 			throw new RuntimeException("vitaminA is null");
 		}
@@ -1019,7 +951,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminALessThanOrEqual(Double vitaminALessThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminALessThanOrEqual(Double vitaminALessThanOrEqual) {
 		if (vitaminALessThanOrEqual == null) {
 			throw new RuntimeException("vitaminA is null");
 		}
@@ -1027,7 +959,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB12GreaterThanOrEqual(Double vitaminB12GreaterThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB12GreaterThanOrEqual(Double vitaminB12GreaterThanOrEqual) {
 		if (vitaminB12GreaterThanOrEqual == null) {
 			throw new RuntimeException("vitaminB12 is null");
 		}
@@ -1035,7 +967,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB12LessThanOrEqual(Double vitaminB12LessThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB12LessThanOrEqual(Double vitaminB12LessThanOrEqual) {
 		if (vitaminB12LessThanOrEqual == null) {
 			throw new RuntimeException("vitaminB12 is null");
 		}
@@ -1043,7 +975,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB1GreaterThanOrEqual(Double vitaminB1GreaterThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB1GreaterThanOrEqual(Double vitaminB1GreaterThanOrEqual) {
 		if (vitaminB1GreaterThanOrEqual == null) {
 			throw new RuntimeException("vitaminB1 is null");
 		}
@@ -1051,7 +983,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB1LessThanOrEqual(Double vitaminB1LessThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB1LessThanOrEqual(Double vitaminB1LessThanOrEqual) {
 		if (vitaminB1LessThanOrEqual == null) {
 			throw new RuntimeException("vitaminB1 is null");
 		}
@@ -1059,7 +991,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB2GreaterThanOrEqual(Double vitaminB2GreaterThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB2GreaterThanOrEqual(Double vitaminB2GreaterThanOrEqual) {
 		if (vitaminB2GreaterThanOrEqual == null) {
 			throw new RuntimeException("vitaminB2 is null");
 		}
@@ -1067,7 +999,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB2LessThanOrEqual(Double vitaminB2LessThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB2LessThanOrEqual(Double vitaminB2LessThanOrEqual) {
 		if (vitaminB2LessThanOrEqual == null) {
 			throw new RuntimeException("vitaminB2 is null");
 		}
@@ -1075,7 +1007,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB6GreaterThanOrEqual(Double vitaminB6GreaterThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB6GreaterThanOrEqual(Double vitaminB6GreaterThanOrEqual) {
 		if (vitaminB6GreaterThanOrEqual == null) {
 			throw new RuntimeException("vitaminB6 is null");
 		}
@@ -1083,7 +1015,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminB6LessThanOrEqual(Double vitaminB6LessThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminB6LessThanOrEqual(Double vitaminB6LessThanOrEqual) {
 		if (vitaminB6LessThanOrEqual == null) {
 			throw new RuntimeException("vitaminB6 is null");
 		}
@@ -1091,7 +1023,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminCGreaterThanOrEqual(Double vitaminCGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminCGreaterThanOrEqual(Double vitaminCGreaterThanOrEqual) {
 		if (vitaminCGreaterThanOrEqual == null) {
 			throw new RuntimeException("vitaminC is null");
 		}
@@ -1099,7 +1031,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery vitaminCLessThanOrEqual(Double vitaminCLessThanOrEqual) {
+	public DietaryTemplateCountQuery vitaminCLessThanOrEqual(Double vitaminCLessThanOrEqual) {
 		if (vitaminCLessThanOrEqual == null) {
 			throw new RuntimeException("vitaminC is null");
 		}
@@ -1107,7 +1039,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery week(Integer week) {
+	public DietaryTemplateCountQuery week(Integer week) {
 		if (week == null) {
 			throw new RuntimeException("week is null");
 		}
@@ -1115,7 +1047,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery year(Integer year) {
+	public DietaryTemplateCountQuery year(Integer year) {
 		if (year == null) {
 			throw new RuntimeException("year is null");
 		}
@@ -1123,7 +1055,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery zincGreaterThanOrEqual(Double zincGreaterThanOrEqual) {
+	public DietaryTemplateCountQuery zincGreaterThanOrEqual(Double zincGreaterThanOrEqual) {
 		if (zincGreaterThanOrEqual == null) {
 			throw new RuntimeException("zinc is null");
 		}
@@ -1131,7 +1063,7 @@ public class DietaryTemplateQuery extends DataQuery {
 		return this;
 	}
 
-	public DietaryTemplateQuery zincLessThanOrEqual(Double zincLessThanOrEqual) {
+	public DietaryTemplateCountQuery zincLessThanOrEqual(Double zincLessThanOrEqual) {
 		if (zincLessThanOrEqual == null) {
 			throw new RuntimeException("zinc is null");
 		}

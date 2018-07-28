@@ -60,8 +60,11 @@ import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
+
 import com.glaf.heathcare.bean.DayDietaryTemplateExportBean;
 import com.glaf.heathcare.bean.DietaryStatisticsBean;
+import com.glaf.heathcare.bean.DietaryTemplateCountBean;
+import com.glaf.heathcare.bean.DietaryTemplateCountExportBean;
 import com.glaf.heathcare.bean.DietaryTemplateExportBean;
 import com.glaf.heathcare.domain.DietaryCategory;
 import com.glaf.heathcare.service.DietaryCategoryService;
@@ -421,6 +424,50 @@ public class DietaryTemplateExportController {
 				request.setAttribute(key, value);
 				// logger.debug("key=" + key);
 			}
+			DietaryCategory dietaryCategory = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+			if (dietaryCategory != null) {
+				request.setAttribute("dietaryCategory", dietaryCategory);
+			}
+		}
+
+		if (StringUtils.equals(sysFlag, "Y") && loginContext.isSystemAdministrator()) {
+			DietaryTemplateCountBean countBean = new DietaryTemplateCountBean();
+			try {
+				countBean.executeCountAll(loginContext, sysFlag, suitNo);
+				countBean.executeCountItems(loginContext, sysFlag, suitNo);
+			} catch (Exception ex) {
+				logger.error(ex);
+			}
+		}
+
+		/**
+		 * 角色HealthPhysician和TenantAdmin可以执行汇总
+		 */
+		if (loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("TenantAdmin")) {
+			if (StringUtils.equals(sysFlag, "N")) {
+				DietaryTemplateCountBean countBean = new DietaryTemplateCountBean();
+				try {
+					countBean.executeCountAll(loginContext, sysFlag, suitNo);
+					countBean.executeCountItems(loginContext, sysFlag, suitNo);
+				} catch (Exception ex) {
+					logger.error(ex);
+				}
+			}
+		}
+
+		DietaryTemplateCountExportBean exportBean = new DietaryTemplateCountExportBean();
+		try {
+			Map<String, Object> dataMap = exportBean.prepareData(loginContext, sysFlag, suitNo);
+			Set<Entry<String, Object>> entrySet = dataMap.entrySet();
+			for (Entry<String, Object> entry : entrySet) {
+				String key = entry.getKey();
+				Object value = entry.getValue();
+				request.setAttribute("cnt_" + key, value);
+				logger.debug("key:" + key);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex);
 		}
 
 		if (loginContext.isSystemAdministrator()) {

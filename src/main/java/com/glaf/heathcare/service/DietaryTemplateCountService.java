@@ -21,12 +21,14 @@ package com.glaf.heathcare.service;
 import java.util.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.glaf.core.security.LoginContext;
 import com.glaf.heathcare.domain.*;
 import com.glaf.heathcare.query.*;
 
 @Transactional(readOnly = true)
-public interface DietaryCategoryService {
+public interface DietaryTemplateCountService {
+
+	@Transactional
+	void bulkInsert(String tenantId, List<DietaryTemplateCount> list);
 
 	/**
 	 * 根据主键删除记录
@@ -34,50 +36,35 @@ public interface DietaryCategoryService {
 	 * @return
 	 */
 	@Transactional
-	void deleteById(long id);
-
-	/**
-	 * 根据主键删除多条记录
-	 * 
-	 * @return
-	 */
-	@Transactional
-	void deleteByIds(List<Long> ids);
-
-	List<DietaryCategory> getDietaryCategories(LoginContext loginContext, boolean incluseSys);
-	
-	
-	DietaryCategory getDietaryCategory(LoginContext loginContext, int suitNo);
+	void deleteById(String tenantId, long id);
 
 	/**
 	 * 根据主键获取一条记录
 	 * 
 	 * @return
 	 */
-	DietaryCategory getDietaryCategory(long id);
+	DietaryTemplateCount getDietaryTemplateCount(String tenantId, long id);
 
 	/**
 	 * 根据查询参数获取记录总数
 	 * 
 	 * @return
 	 */
-	int getDietaryCategoryCountByQueryCriteria(DietaryCategoryQuery query);
+	int getDietaryTemplateCountCountByQueryCriteria(DietaryTemplateCountQuery query);
 
 	/**
 	 * 根据查询参数获取一页的数据
 	 * 
 	 * @return
 	 */
-	List<DietaryCategory> getDietaryCategorysByQueryCriteria(int start, int pageSize, DietaryCategoryQuery query);
-
-	List<DietaryCategory> getSysDietaryCategories();
+	List<DietaryTemplateCount> getDietaryTemplateCountsByQueryCriteria(int start, int pageSize, DietaryTemplateCountQuery query);
 
 	/**
 	 * 根据查询参数获取记录列表
 	 * 
 	 * @return
 	 */
-	List<DietaryCategory> list(DietaryCategoryQuery query);
+	List<DietaryTemplateCount> list(DietaryTemplateCountQuery query);
 
 	/**
 	 * 保存一条记录
@@ -85,6 +72,11 @@ public interface DietaryCategoryService {
 	 * @return
 	 */
 	@Transactional
-	void save(DietaryCategory dietaryCategory);
+	void save(DietaryTemplateCount dietaryTemplateCount);
 
+	@Transactional
+	void saveAll(String tenantId, int suitNo, String type, List<DietaryTemplateCount> list);
+
+	@Transactional
+	void saveDay(String tenantId, int suitNo, String type, List<DietaryTemplateCount> list);
 }

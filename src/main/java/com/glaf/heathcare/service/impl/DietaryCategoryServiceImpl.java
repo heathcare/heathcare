@@ -98,6 +98,35 @@ public class DietaryCategoryServiceImpl implements DietaryCategoryService {
 		return categories;
 	}
 
+	public DietaryCategory getDietaryCategory(LoginContext loginContext, int suitNo) {
+		if (loginContext.isSystemAdministrator() && suitNo < 1000) {
+			DietaryCategoryQuery query = new DietaryCategoryQuery();
+			query.sysFlag("Y");
+			query.createBy("admin");
+			List<DietaryCategory> list = this.list(query);
+			if (list != null && !list.isEmpty()) {
+				for (DietaryCategory cat : list) {
+					if (cat.getSuitNo() == suitNo) {
+						return cat;
+					}
+				}
+			}
+		} else {
+			DietaryCategoryQuery query = new DietaryCategoryQuery();
+			query.sysFlag("N");
+			query.tenantId(loginContext.getTenantId());
+			List<DietaryCategory> list = this.list(query);
+			if (list != null && !list.isEmpty()) {
+				for (DietaryCategory cat : list) {
+					if (cat.getSuitNo() == suitNo) {
+						return cat;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	public DietaryCategory getDietaryCategory(long id) {
 		if (id == 0) {
 			return null;
