@@ -350,7 +350,11 @@ public class DietaryTemplateCountExportBean {
 				double d5 = m.getPhosphorus() / foodDRI.getPhosphorus();
 				m.setPhosphorusPercent(Math.round(d5 * 100));
 				if (d5 > foodDRIPercent.getPhosphorus()) {
-					m.setPhosphorusEvaluate("OK!");
+					if (d5 > 1.50) {
+						m.setPhosphorusEvaluate("高!");
+					} else {
+						m.setPhosphorusEvaluate("OK!");
+					}
 				} else {
 					m.setPhosphorusEvaluate("<span class='red'>少!</span>");
 				}

@@ -185,6 +185,23 @@
         window.open(link);
 	}
 
+	function showList(){
+		var sysFlag = jQuery("#sysFlag").val();
+        var suitNo = jQuery("#suitNo").val();
+		if(suitNo == ""){
+            alert('请选择模板序号！');
+			return;
+		}
+        var link="${contextPath}/heathcare/dietaryTemplate?q=1";
+		if(sysFlag != ""){
+			link = link + "&sysFlag=" + sysFlag;
+		}
+		if(suitNo != ""){
+			link = link  + "&suitNo="+suitNo;
+		}
+		window.open(link);
+	}
+
 </script>
 </head>
 <body style="margin:5px;"> 
@@ -222,6 +239,9 @@
 			<td width="45%" >
 			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-ok'" 
 	             onclick="javascript:doSubmit();" >确定</a>
+			  &nbsp;
+			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'" 
+	             onclick="javascript:showList();" >调整</a>
 			  &nbsp;
 			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 	             onclick="javascript:doExport();" >导出</a>
