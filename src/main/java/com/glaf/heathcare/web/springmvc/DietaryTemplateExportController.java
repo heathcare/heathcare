@@ -463,23 +463,21 @@ public class DietaryTemplateExportController {
 		}
 
 		request.removeAttribute("dietary_nutrient");
-		TenantConfig config = tenantConfigService.getTenantConfigByTenantId(loginContext.getTenantId());
-		if (loginContext.isSystemAdministrator() || (config != null && config.getTypeId() == typeId)) {
-			DietaryTemplateCountExportBean exportBean = new DietaryTemplateCountExportBean();
-			try {
-				Map<String, Object> dataMap = exportBean.prepareData(loginContext, sysFlag, suitNo);
-				Set<Entry<String, Object>> entrySet = dataMap.entrySet();
-				for (Entry<String, Object> entry : entrySet) {
-					String key = entry.getKey();
-					Object value = entry.getValue();
-					request.setAttribute("cnt_" + key, value);
-					logger.debug("key:" + key);
-				}
-				request.setAttribute("dietary_nutrient", true);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				logger.error(ex);
+
+		DietaryTemplateCountExportBean exportBean = new DietaryTemplateCountExportBean();
+		try {
+			Map<String, Object> dataMap = exportBean.prepareData(loginContext, sysFlag, suitNo, typeId);
+			Set<Entry<String, Object>> entrySet = dataMap.entrySet();
+			for (Entry<String, Object> entry : entrySet) {
+				String key = entry.getKey();
+				Object value = entry.getValue();
+				request.setAttribute("cnt_" + key, value);
+				logger.debug("key:" + key);
 			}
+			request.setAttribute("dietary_nutrient", true);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error(ex);
 		}
 
 		if (loginContext.isSystemAdministrator()) {

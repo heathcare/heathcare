@@ -28,9 +28,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.glaf.base.modules.sys.model.TenantConfig;
-import com.glaf.base.modules.sys.service.TenantConfigService;
-
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.security.LoginContext;
 
@@ -56,8 +53,6 @@ import com.glaf.heathcare.service.FoodDRIService;
 
 public class DietaryTemplateCountExportBean {
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
-
-	protected TenantConfigService tenantConfigService;
 
 	protected DietaryTemplateCountService dietaryCountService;
 
@@ -142,13 +137,6 @@ public class DietaryTemplateCountExportBean {
 			}
 		}
 		return total;
-	}
-
-	public TenantConfigService getTenantConfigService() {
-		if (tenantConfigService == null) {
-			tenantConfigService = ContextFactory.getBean("tenantConfigService");
-		}
-		return tenantConfigService;
 	}
 
 	protected void populate(DietaryDayRptModel m, DietaryTemplateCount c, FoodDRI foodDRI,
@@ -380,35 +368,8 @@ public class DietaryTemplateCountExportBean {
 		}
 	}
 
-	public Map<String, Object> prepareData(LoginContext loginContext, String sysFlag, int suitNo) {
+	public Map<String, Object> prepareData(LoginContext loginContext, String sysFlag, int suitNo, long typeIdX) {
 		Map<String, Object> context = new HashMap<String, Object>();
-
-		long typeIdX = 0;
-
-		if (loginContext.getTenantId() != null) {
-			TenantConfig config = getTenantConfigService().getTenantConfigByTenantId(loginContext.getTenantId());
-
-			if (config != null) {
-				typeIdX = config.getTypeId();
-				context.put("tenantConfig", config);
-
-				if (StringUtils.isNotEmpty(config.getBreakfastTime())) {
-					context.put("breakfastTime", config.getBreakfastTime());
-				}
-				if (StringUtils.isNotEmpty(config.getBreakfastMidTime())) {
-					context.put("breakfastMidTime", config.getBreakfastMidTime());
-				}
-				if (StringUtils.isNotEmpty(config.getLunchTime())) {
-					context.put("lunchTime", config.getLunchTime());
-				}
-				if (StringUtils.isNotEmpty(config.getSnackTime())) {
-					context.put("snackTime", config.getSnackTime());
-				}
-				if (StringUtils.isNotEmpty(config.getDinnerTime())) {
-					context.put("dinnerTime", config.getDinnerTime());
-				}
-			}
-		}
 
 		FoodDRI foodDRI = null;
 		FoodDRIPercent foodDRIPercent = null;
@@ -1096,10 +1057,6 @@ public class DietaryTemplateCountExportBean {
 
 	public void setFoodDRIService(FoodDRIService foodDRIService) {
 		this.foodDRIService = foodDRIService;
-	}
-
-	public void setTenantConfigService(TenantConfigService tenantConfigService) {
-		this.tenantConfigService = tenantConfigService;
 	}
 
 }

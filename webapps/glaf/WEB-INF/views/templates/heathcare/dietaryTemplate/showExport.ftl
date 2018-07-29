@@ -187,13 +187,12 @@
 
 </script>
 </head>
-<body style="margin:5px;">
-<div style="margin-left:5px;"></div>  
+<body style="margin:5px;"> 
 <div class="easyui-layout" data-options="fit:true">  
   <div data-options="region:'north', split:false, border:false" style="height:48px"> 
     <div class="toolbar-backgroud">
 	  <form id="iForm" name="iForm" method="post">
-	   <table width="98%" align="left">
+	   <table width="99%" align="left">
 		<tbody>
 		 <tr>
 		    <td width="8%" align="left">
@@ -251,10 +250,10 @@
   </div>
   <div data-options="region:'center',border:false,cache:true">
   <#if weekList?exists>
-    <table width="98%" height="98%" cellpadding='1' cellspacing='2' class="table-border" nowrap>
+    <table width="99%" height="98%" cellpadding='1' cellspacing='2' class="table-border" nowrap>
 	  <tr>
 	    <td colspan="8" align="center"  class="table-content">
-		   <table border='0' cellpadding='0' cellspacing='0'  width="98%">
+		   <table border='0' cellpadding='0' cellspacing='0'  width="99%">
 		    <tr>
 		     <td width="70%" align="center">
 		       <span class="x_y_title">  第 ${suitNo} 套  帯  量  食  谱  模  板 </span>
@@ -267,7 +266,7 @@
 		</td>
 	  </tr>
 	  <tr>
-		  <td width="3%" class="table-content"  align="center" >
+		  <td width="4%" class="table-content"  align="center" >
 		     餐<br>别
 		  </td>
 		  <#list weekList as wkdata>
@@ -288,7 +287,7 @@
 		  </#list>
         </tr>
 	    <tr>
-		  <td width="3%" class="table-content" align="center">
+		  <td width="4%" class="table-content" align="center">
 		  早<br>餐
 		  </td>
 		  <#list weekList as wkdata>
@@ -468,13 +467,13 @@
 		  <td class="table-content2">
 		   <table border='0' cellpadding='0' cellspacing='0' width="100%" height="100%" class="table-border">
 		   <tr>
-			<td rowspan="5" class="table-content2" height="60"  align="center">
+			<td rowspan="5" class="table-content2" height="60" style="width:60px;" align="center">
 			一<br>周<br>日<br>均<br>营<br>养<br>分<br>析<br>
 			</td>
 			<td height="60">
              <table border='0' cellpadding='0' cellspacing='1' width="100%" height="100%" class="table-border">
              <tr>
-				<td class="table-content2" height="15" valign="top">营养</td>
+				<td class="table-content2" height="15" style="width:60px;" valign="top">营养</td>
              </tr>
              <tr>
 				<td class="table-content2" height="15" valign="top">标准</td>
