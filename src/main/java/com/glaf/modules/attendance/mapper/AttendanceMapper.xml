@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.glaf.modules.attendance.mapper.AttendanceMapper">
+
+	<resultMap id="attendanceResultMap"
+		type="com.glaf.modules.attendance.domain.Attendance">
+		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="gradeId" column="GRADEID_" jdbcType="VARCHAR" />
+		<result property="personId" column="PERSONID_"
+			jdbcType="VARCHAR" />
+		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="status1" column="STATUS1_" jdbcType="INTEGER" />
+		<result property="status2" column="STATUS2_" jdbcType="INTEGER" />
+		<result property="status3" column="STATUS3_" jdbcType="INTEGER" />
+		<result property="status4" column="STATUS4_" jdbcType="INTEGER" />
+		<result property="status5" column="STATUS5_" jdbcType="INTEGER" />
+		<result property="status6" column="STATUS6_" jdbcType="INTEGER" />
+		<result property="status7" column="STATUS7_" jdbcType="INTEGER" />
+		<result property="status8" column="STATUS8_" jdbcType="INTEGER" />
+		<result property="status9" column="STATUS9_" jdbcType="INTEGER" />
+		<result property="status10" column="STATUS10_"
+			jdbcType="INTEGER" />
+		<result property="status11" column="STATUS11_"
+			jdbcType="INTEGER" />
+		<result property="status12" column="STATUS12_"
+			jdbcType="INTEGER" />
+		<result property="status13" column="STATUS13_"
+			jdbcType="INTEGER" />
+		<result property="status14" column="STATUS14_"
+			jdbcType="INTEGER" />
+		<result property="status15" column="STATUS15_"
+			jdbcType="INTEGER" />
+		<result property="status16" column="STATUS16_"
+			jdbcType="INTEGER" />
+		<result property="status17" column="STATUS17_"
+			jdbcType="INTEGER" />
+		<result property="status18" column="STATUS18_"
+			jdbcType="INTEGER" />
+		<result property="status19" column="STATUS19_"
+			jdbcType="INTEGER" />
+		<result property="status20" column="STATUS20_"
+			jdbcType="INTEGER" />
+		<result property="status21" column="STATUS21_"
+			jdbcType="INTEGER" />
+		<result property="status22" column="STATUS22_"
+			jdbcType="INTEGER" />
+		<result property="status23" column="STATUS23_"
+			jdbcType="INTEGER" />
+		<result property="status24" column="STATUS24_"
+			jdbcType="INTEGER" />
+		<result property="status25" column="STATUS25_"
+			jdbcType="INTEGER" />
+		<result property="status26" column="STATUS26_"
+			jdbcType="INTEGER" />
+		<result property="status27" column="STATUS27_"
+			jdbcType="INTEGER" />
+		<result property="status28" column="STATUS28_"
+			jdbcType="INTEGER" />
+		<result property="status29" column="STATUS29_"
+			jdbcType="INTEGER" />
+		<result property="status30" column="STATUS30_"
+			jdbcType="INTEGER" />
+		<result property="status31" column="STATUS31_"
+			jdbcType="INTEGER" />
+		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR_" jdbcType="INTEGER" />
+		<result property="month" column="MONTH_" jdbcType="INTEGER" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<insert id="insertAttendance"
+		parameterType="com.glaf.modules.attendance.domain.Attendance">
+		insert into T_ATTENDANCE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="gradeId != null">
+				,GRADEID_
+			</if>
+			<if test="personId != null">
+				,PERSONID_
+			</if>
+			<if test="name != null">
+				,NAME_
+			</if>
+			<if test="status1 != null">
+				,STATUS1_
+			</if>
+			<if test="status2 != null">
+				,STATUS2_
+			</if>
+			<if test="status3 != null">
+				,STATUS3_
+			</if>
+			<if test="status4 != null">
+				,STATUS4_
+			</if>
+			<if test="status5 != null">
+				,STATUS5_
+			</if>
+			<if test="status6 != null">
+				,STATUS6_
+			</if>
+			<if test="status7 != null">
+				,STATUS7_
+			</if>
+			<if test="status8 != null">
+				,STATUS8_
+			</if>
+			<if test="status9 != null">
+				,STATUS9_
+			</if>
+			<if test="status10 != null">
+				,STATUS10_
+			</if>
+			<if test="status11 != null">
+				,STATUS11_
+			</if>
+			<if test="status12 != null">
+				,STATUS12_
+			</if>
+			<if test="status13 != null">
+				,STATUS13_
+			</if>
+			<if test="status14 != null">
+				,STATUS14_
+			</if>
+			<if test="status15 != null">
+				,STATUS15_
+			</if>
+			<if test="status16 != null">
+				,STATUS16_
+			</if>
+			<if test="status17 != null">
+				,STATUS17_
+			</if>
+			<if test="status18 != null">
+				,STATUS18_
+			</if>
+			<if test="status19 != null">
+				,STATUS19_
+			</if>
+			<if test="status20 != null">
+				,STATUS20_
+			</if>
+			<if test="status21 != null">
+				,STATUS21_
+			</if>
+			<if test="status22 != null">
+				,STATUS22_
+			</if>
+			<if test="status23 != null">
+				,STATUS23_
+			</if>
+			<if test="status24 != null">
+				,STATUS24_
+			</if>
+			<if test="status25 != null">
+				,STATUS25_
+			</if>
+			<if test="status26 != null">
+				,STATUS26_
+			</if>
+			<if test="status27 != null">
+				,STATUS27_
+			</if>
+			<if test="status28 != null">
+				,STATUS28_
+			</if>
+			<if test="status29 != null">
+				,STATUS29_
+			</if>
+			<if test="status30 != null">
+				,STATUS30_
+			</if>
+			<if test="status31 != null">
+				,STATUS31_
+			</if>
+			<if test="type != null">
+				,TYPE_
+			</if>
+			<if test="year != null">
+				,YEAR_
+			</if>
+			<if test="month != null">
+				,MONTH_
+			</if>
+			<if test="createBy != null">
+				,CREATEBY_
+			</if>
+			<if test="createTime != null">
+				,CREATETIME_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}
+
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="gradeId != null">
+				,#{gradeId, jdbcType=VARCHAR}
+			</if>
+			<if test="personId != null">
+				,#{personId, jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				,#{name, jdbcType=VARCHAR}
+			</if>
+			<if test="status1 != null">
+				,#{status1, jdbcType=INTEGER}
+			</if>
+			<if test="status2 != null">
+				,#{status2, jdbcType=INTEGER}
+			</if>
+			<if test="status3 != null">
+				,#{status3, jdbcType=INTEGER}
+			</if>
+			<if test="status4 != null">
+				,#{status4, jdbcType=INTEGER}
+			</if>
+			<if test="status5 != null">
+				,#{status5, jdbcType=INTEGER}
+			</if>
+			<if test="status6 != null">
+				,#{status6, jdbcType=INTEGER}
+			</if>
+			<if test="status7 != null">
+				,#{status7, jdbcType=INTEGER}
+			</if>
+			<if test="status8 != null">
+				,#{status8, jdbcType=INTEGER}
+			</if>
+			<if test="status9 != null">
+				,#{status9, jdbcType=INTEGER}
+			</if>
+			<if test="status10 != null">
+				,#{status10, jdbcType=INTEGER}
+			</if>
+			<if test="status11 != null">
+				,#{status11, jdbcType=INTEGER}
+			</if>
+			<if test="status12 != null">
+				,#{status12, jdbcType=INTEGER}
+			</if>
+			<if test="status13 != null">
+				,#{status13, jdbcType=INTEGER}
+			</if>
+			<if test="status14 != null">
+				,#{status14, jdbcType=INTEGER}
+			</if>
+			<if test="status15 != null">
+				,#{status15, jdbcType=INTEGER}
+			</if>
+			<if test="status16 != null">
+				,#{status16, jdbcType=INTEGER}
+			</if>
+			<if test="status17 != null">
+				,#{status17, jdbcType=INTEGER}
+			</if>
+			<if test="status18 != null">
+				,#{status18, jdbcType=INTEGER}
+			</if>
+			<if test="status19 != null">
+				,#{status19, jdbcType=INTEGER}
+			</if>
+			<if test="status20 != null">
+				,#{status20, jdbcType=INTEGER}
+			</if>
+			<if test="status21 != null">
+				,#{status21, jdbcType=INTEGER}
+			</if>
+			<if test="status22 != null">
+				,#{status22, jdbcType=INTEGER}
+			</if>
+			<if test="status23 != null">
+				,#{status23, jdbcType=INTEGER}
+			</if>
+			<if test="status24 != null">
+				,#{status24, jdbcType=INTEGER}
+			</if>
+			<if test="status25 != null">
+				,#{status25, jdbcType=INTEGER}
+			</if>
+			<if test="status26 != null">
+				,#{status26, jdbcType=INTEGER}
+			</if>
+			<if test="status27 != null">
+				,#{status27, jdbcType=INTEGER}
+			</if>
+			<if test="status28 != null">
+				,#{status28, jdbcType=INTEGER}
+			</if>
+			<if test="status29 != null">
+				,#{status29, jdbcType=INTEGER}
+			</if>
+			<if test="status30 != null">
+				,#{status30, jdbcType=INTEGER}
+			</if>
+			<if test="status31 != null">
+				,#{status31, jdbcType=INTEGER}
+			</if>
+			<if test="type != null">
+				,#{type, jdbcType=VARCHAR}
+			</if>
+			<if test="year != null">
+				,#{year, jdbcType=INTEGER}
+			</if>
+			<if test="month != null">
+				,#{month, jdbcType=INTEGER}
+			</if>
+			<if test="createBy != null">
+				,#{createBy, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				,#{createTime, jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertAttendance" parameterType="java.util.List">
+		insert into T_ATTENDANCE (
+		ID_
+		,TENANTID_
+		,GRADEID_
+		,PERSONID_
+		,NAME_
+		,STATUS1_
+		,STATUS2_
+		,STATUS3_
+		,STATUS4_
+		,STATUS5_
+		,STATUS6_
+		,STATUS7_
+		,STATUS8_
+		,STATUS9_
+		,STATUS10_
+		,STATUS11_
+		,STATUS12_
+		,STATUS13_
+		,STATUS14_
+		,STATUS15_
+		,STATUS16_
+		,STATUS17_
+		,STATUS18_
+		,STATUS19_
+		,STATUS20_
+		,STATUS21_
+		,STATUS22_
+		,STATUS23_
+		,STATUS24_
+		,STATUS25_
+		,STATUS26_
+		,STATUS27_
+		,STATUS28_
+		,STATUS29_
+		,STATUS30_
+		,STATUS31_
+		,TYPE_
+		,YEAR_
+		,MONTH_
+		,CREATEBY_
+		,CREATETIME_
+		) values
+		<foreach collection="list" item="attendance" index="index"
+			separator=",">
+			(
+			#{attendance.id, jdbcType=VARCHAR}
+			,#{attendance.tenantId,
+			jdbcType=VARCHAR}
+			,#{attendance.gradeId, jdbcType=VARCHAR}
+			,#{attendance.personId, jdbcType=VARCHAR}
+			,#{attendance.name,
+			jdbcType=VARCHAR}
+			,#{attendance.status1, jdbcType=INTEGER}
+			,#{attendance.status2, jdbcType=INTEGER}
+			,#{attendance.status3,
+			jdbcType=INTEGER}
+			,#{attendance.status4, jdbcType=INTEGER}
+			,#{attendance.status5, jdbcType=INTEGER}
+			,#{attendance.status6,
+			jdbcType=INTEGER}
+			,#{attendance.status7, jdbcType=INTEGER}
+			,#{attendance.status8, jdbcType=INTEGER}
+			,#{attendance.status9,
+			jdbcType=INTEGER}
+			,#{attendance.status10, jdbcType=INTEGER}
+			,#{attendance.status11, jdbcType=INTEGER}
+			,#{attendance.status12,
+			jdbcType=INTEGER}
+			,#{attendance.status13, jdbcType=INTEGER}
+			,#{attendance.status14, jdbcType=INTEGER}
+			,#{attendance.status15,
+			jdbcType=INTEGER}
+			,#{attendance.status16, jdbcType=INTEGER}
+			,#{attendance.status17, jdbcType=INTEGER}
+			,#{attendance.status18,
+			jdbcType=INTEGER}
+			,#{attendance.status19, jdbcType=INTEGER}
+			,#{attendance.status20, jdbcType=INTEGER}
+			,#{attendance.status21,
+			jdbcType=INTEGER}
+			,#{attendance.status22, jdbcType=INTEGER}
+			,#{attendance.status23, jdbcType=INTEGER}
+			,#{attendance.status24,
+			jdbcType=INTEGER}
+			,#{attendance.status25, jdbcType=INTEGER}
+			,#{attendance.status26, jdbcType=INTEGER}
+			,#{attendance.status27,
+			jdbcType=INTEGER}
+			,#{attendance.status28, jdbcType=INTEGER}
+			,#{attendance.status29, jdbcType=INTEGER}
+			,#{attendance.status30,
+			jdbcType=INTEGER}
+			,#{attendance.status31, jdbcType=INTEGER}
+			,#{attendance.type, jdbcType=VARCHAR}
+			,#{attendance.year,
+			jdbcType=INTEGER}
+			,#{attendance.month, jdbcType=INTEGER}
+			,#{attendance.createBy, jdbcType=VARCHAR}
+			,#{attendance.createTime,
+			jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertAttendance_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="attendance" index="index">
+			insert into
+			T_ATTENDANCE (
+			ID_
+			,TENANTID_
+			,GRADEID_
+			,PERSONID_
+			,NAME_
+			,STATUS1_
+			,STATUS2_
+			,STATUS3_
+			,STATUS4_
+			,STATUS5_
+			,STATUS6_
+			,STATUS7_
+			,STATUS8_
+			,STATUS9_
+			,STATUS10_
+			,STATUS11_
+			,STATUS12_
+			,STATUS13_
+			,STATUS14_
+			,STATUS15_
+			,STATUS16_
+			,STATUS17_
+			,STATUS18_
+			,STATUS19_
+			,STATUS20_
+			,STATUS21_
+			,STATUS22_
+			,STATUS23_
+			,STATUS24_
+			,STATUS25_
+			,STATUS26_
+			,STATUS27_
+			,STATUS28_
+			,STATUS29_
+			,STATUS30_
+			,STATUS31_
+			,TYPE_
+			,YEAR_
+			,MONTH_
+			,CREATEBY_
+			,CREATETIME_
+			) values (
+			#{attendance.id,
+			jdbcType=VARCHAR}
+			,#{attendance.tenantId, jdbcType=VARCHAR}
+			,#{attendance.gradeId, jdbcType=VARCHAR}
+			,#{attendance.personId,
+			jdbcType=VARCHAR}
+			,#{attendance.name, jdbcType=VARCHAR}
+			,#{attendance.status1, jdbcType=INTEGER}
+			,#{attendance.status2,
+			jdbcType=INTEGER}
+			,#{attendance.status3, jdbcType=INTEGER}
+			,#{attendance.status4, jdbcType=INTEGER}
+			,#{attendance.status5,
+			jdbcType=INTEGER}
+			,#{attendance.status6, jdbcType=INTEGER}
+			,#{attendance.status7, jdbcType=INTEGER}
+			,#{attendance.status8,
+			jdbcType=INTEGER}
+			,#{attendance.status9, jdbcType=INTEGER}
+			,#{attendance.status10, jdbcType=INTEGER}
+			,#{attendance.status11,
+			jdbcType=INTEGER}
+			,#{attendance.status12, jdbcType=INTEGER}
+			,#{attendance.status13, jdbcType=INTEGER}
+			,#{attendance.status14,
+			jdbcType=INTEGER}
+			,#{attendance.status15, jdbcType=INTEGER}
+			,#{attendance.status16, jdbcType=INTEGER}
+			,#{attendance.status17,
+			jdbcType=INTEGER}
+			,#{attendance.status18, jdbcType=INTEGER}
+			,#{attendance.status19, jdbcType=INTEGER}
+			,#{attendance.status20,
+			jdbcType=INTEGER}
+			,#{attendance.status21, jdbcType=INTEGER}
+			,#{attendance.status22, jdbcType=INTEGER}
+			,#{attendance.status23,
+			jdbcType=INTEGER}
+			,#{attendance.status24, jdbcType=INTEGER}
+			,#{attendance.status25, jdbcType=INTEGER}
+			,#{attendance.status26,
+			jdbcType=INTEGER}
+			,#{attendance.status27, jdbcType=INTEGER}
+			,#{attendance.status28, jdbcType=INTEGER}
+			,#{attendance.status29,
+			jdbcType=INTEGER}
+			,#{attendance.status30, jdbcType=INTEGER}
+			,#{attendance.status31, jdbcType=INTEGER}
+			,#{attendance.type,
+			jdbcType=VARCHAR}
+			,#{attendance.year, jdbcType=INTEGER}
+			,#{attendance.month, jdbcType=INTEGER}
+			,#{attendance.createBy,
+			jdbcType=VARCHAR}
+			,#{attendance.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateAttendance"
+		parameterType="com.glaf.modules.attendance.domain.Attendance">
+		update T_ATTENDANCE
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="status1 != null">
+				STATUS1_ = #{status1, jdbcType=INTEGER},
+			</if>
+			<if test="status2 != null">
+				STATUS2_ = #{status2, jdbcType=INTEGER},
+			</if>
+			<if test="status3 != null">
+				STATUS3_ = #{status3, jdbcType=INTEGER},
+			</if>
+			<if test="status4 != null">
+				STATUS4_ = #{status4, jdbcType=INTEGER},
+			</if>
+			<if test="status5 != null">
+				STATUS5_ = #{status5, jdbcType=INTEGER},
+			</if>
+			<if test="status6 != null">
+				STATUS6_ = #{status6, jdbcType=INTEGER},
+			</if>
+			<if test="status7 != null">
+				STATUS7_ = #{status7, jdbcType=INTEGER},
+			</if>
+			<if test="status8 != null">
+				STATUS8_ = #{status8, jdbcType=INTEGER},
+			</if>
+			<if test="status9 != null">
+				STATUS9_ = #{status9, jdbcType=INTEGER},
+			</if>
+			<if test="status10 != null">
+				STATUS10_ = #{status10, jdbcType=INTEGER},
+			</if>
+			<if test="status11 != null">
+				STATUS11_ = #{status11, jdbcType=INTEGER},
+			</if>
+			<if test="status12 != null">
+				STATUS12_ = #{status12, jdbcType=INTEGER},
+			</if>
+			<if test="status13 != null">
+				STATUS13_ = #{status13, jdbcType=INTEGER},
+			</if>
+			<if test="status14 != null">
+				STATUS14_ = #{status14, jdbcType=INTEGER},
+			</if>
+			<if test="status15 != null">
+				STATUS15_ = #{status15, jdbcType=INTEGER},
+			</if>
+			<if test="status16 != null">
+				STATUS16_ = #{status16, jdbcType=INTEGER},
+			</if>
+			<if test="status17 != null">
+				STATUS17_ = #{status17, jdbcType=INTEGER},
+			</if>
+			<if test="status18 != null">
+				STATUS18_ = #{status18, jdbcType=INTEGER},
+			</if>
+			<if test="status19 != null">
+				STATUS19_ = #{status19, jdbcType=INTEGER},
+			</if>
+			<if test="status20 != null">
+				STATUS20_ = #{status20, jdbcType=INTEGER},
+			</if>
+			<if test="status21 != null">
+				STATUS21_ = #{status21, jdbcType=INTEGER},
+			</if>
+			<if test="status22 != null">
+				STATUS22_ = #{status22, jdbcType=INTEGER},
+			</if>
+			<if test="status23 != null">
+				STATUS23_ = #{status23, jdbcType=INTEGER},
+			</if>
+			<if test="status24 != null">
+				STATUS24_ = #{status24, jdbcType=INTEGER},
+			</if>
+			<if test="status25 != null">
+				STATUS25_ = #{status25, jdbcType=INTEGER},
+			</if>
+			<if test="status26 != null">
+				STATUS26_ = #{status26, jdbcType=INTEGER},
+			</if>
+			<if test="status27 != null">
+				STATUS27_ = #{status27, jdbcType=INTEGER},
+			</if>
+			<if test="status28 != null">
+				STATUS28_ = #{status28, jdbcType=INTEGER},
+			</if>
+			<if test="status29 != null">
+				STATUS29_ = #{status29, jdbcType=INTEGER},
+			</if>
+			<if test="status30 != null">
+				STATUS30_ = #{status30, jdbcType=INTEGER},
+			</if>
+			<if test="status31 != null">
+				STATUS31_ = #{status31, jdbcType=INTEGER},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=VARCHAR}
+
+	</update>
+
+
+	<delete id="deleteAttendanceById" parameterType="string">
+		delete from
+		T_ATTENDANCE
+		where ID_ = #{id}
+	</delete>
+	
+	
+	<delete id="deleteAttendances" parameterType="com.glaf.modules.attendance.query.AttendanceQuery">
+		delete from
+		T_ATTENDANCE
+		where TENANTID_ = #{tenantId}
+		and YEAR_ = #{year}
+		and MONTH_ = #{month}
+	</delete>
+
+
+	<select id="getAttendanceById" parameterType="string"
+		resultMap="attendanceResultMap">
+		select * from T_ATTENDANCE where ID_ = #{id}
+	</select>
+
+
+	<select id="getAttendances"
+		parameterType="com.glaf.modules.attendance.query.AttendanceQuery"
+		resultMap="attendanceResultMap">
+		select distinct E.*
+		<include refid="selectAttendancesSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.YEAR_ desc, E.MONTH_ asc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getAttendanceCount"
+		parameterType="com.glaf.modules.attendance.query.AttendanceQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectAttendancesSql" />
+	</select>
+
+
+	<sql id="selectAttendancesSql">
+
+		from T_ATTENDANCE E
+
+		<where>
+			1 = 1
+			
+			<if test="tenantId != null and tenantId != '' ">
+				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="tenantIds != null and tenantIds.size() &gt; 0">
+				and E.TENANTID_ IN
+				<foreach item="x_tenantId" index="index"
+					collection="tenantIds" open="(" separator="," close=")">
+					#{x_tenantId}
+				</foreach>
+			</if>
+
+			<if test="type != null and type != '' ">
+				and E.TYPE_ = #{type}
+			</if>
+
+			<if test="types != null and types.size() &gt; 0">
+				and E.TYPE_ IN
+				<foreach item="x_type" index="index" collection="types"
+					open="(" separator="," close=")">
+					#{x_type}
+				</foreach>
+			</if>
+
+			<if test="year != null">
+				and E.YEAR_ = #{year}
+			</if>
+
+			<if test="yearGreaterThanOrEqual != null">
+				and E.YEAR_ &gt;= #{yearGreaterThanOrEqual}
+			</if>
+
+			<if test="yearLessThanOrEqual != null">
+				and E.YEAR_ &lt;= #{yearLessThanOrEqual}
+			</if>
+
+			<if test="years != null and years.size() &gt; 0">
+				and E.YEAR_ IN
+				<foreach item="x_year" index="index" collection="years"
+					open="(" separator="," close=")">
+					#{x_year}
+				</foreach>
+			</if>
+
+			<if test="month != null">
+				and E.MONTH_ = #{month}
+			</if>
+
+			<if test="monthGreaterThanOrEqual != null">
+				and E.MONTH_ &gt;= #{monthGreaterThanOrEqual}
+			</if>
+
+			<if test="monthLessThanOrEqual != null">
+				and E.MONTH_ &lt;= #{monthLessThanOrEqual}
+			</if>
+
+			<if test="months != null and months.size() &gt; 0">
+				and E.MONTH_ IN
+				<foreach item="x_month" index="index" collection="months"
+					open="(" separator="," close=")">
+					#{x_month}
+				</foreach>
+			</if>
+
+			<if test="createBy != null and createBy != '' ">
+				and E.CREATEBY_ = #{createBy}
+			</if>
+
+			<if test="createTimeGreaterThanOrEqual != null">
+				and E.CREATETIME_ &gt;= #{createTimeGreaterThanOrEqual}
+			</if>
+
+			<if test="createTimeLessThanOrEqual != null">
+				and E.CREATETIME_ &lt;= #{createTimeLessThanOrEqual}
+			</if>
+
+		</where>
+	</sql>
+
+</mapper>
