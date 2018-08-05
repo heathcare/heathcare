@@ -62,7 +62,7 @@ public class AttendanceCalendarServiceImpl implements AttendanceCalendarService 
 	public void bulkInsert(List<AttendanceCalendar> list) {
 		for (AttendanceCalendar attendanceCalendar : list) {
 			if (StringUtils.isEmpty(attendanceCalendar.getId())) {
-				attendanceCalendar.setId(idGenerator.getNextId("T_ATTENDANCE_CALENDAR"));
+				attendanceCalendar.setId(UUID32.getUUID());
 			}
 		}
 
@@ -111,12 +111,19 @@ public class AttendanceCalendarServiceImpl implements AttendanceCalendarService 
 		}
 	}
 
-	public AttendanceCalendar getAttendanceCalendar(String id) {
-		if (id == null) {
+	public AttendanceCalendar getAttendanceCalendar(String tenantId, int year, int month) {
+		if (tenantId == null) {
 			return null;
 		}
-		AttendanceCalendar attendanceCalendar = attendanceCalendarMapper.getAttendanceCalendarById(id);
-		return attendanceCalendar;
+		AttendanceCalendarQuery query = new AttendanceCalendarQuery();
+		query.tenantId(tenantId);
+		query.year(year);
+		query.month(month);
+		List<AttendanceCalendar> rows = attendanceCalendarMapper.getAttendanceCalendars(query);
+		if (rows != null && !rows.isEmpty()) {
+			return rows.get(0);
+		}
+		return null;
 	}
 
 	/**
@@ -155,6 +162,10 @@ public class AttendanceCalendarServiceImpl implements AttendanceCalendarService 
 
 		attendanceCalendar.setId(UUID32.getUUID());
 		attendanceCalendar.setCreateTime(new java.util.Date());
+		attendanceCalendar.setYear(year);
+		attendanceCalendar.setMonth(month);
+		attendanceCalendar.setTenantId(tenantId);
+
 		attendanceCalendarMapper.insertAttendanceCalendar(attendanceCalendar);
 	}
 

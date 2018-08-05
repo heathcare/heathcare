@@ -20,6 +20,8 @@ package com.glaf.heathcare.mapper;
 
 import java.util.List;
 import org.springframework.stereotype.Component;
+
+import com.glaf.core.base.BaseItem;
 import com.glaf.heathcare.domain.*;
 import com.glaf.heathcare.query.*;
 
@@ -45,6 +47,8 @@ public interface GradeInfoMapper {
 	int getGradeInfoCount(GradeInfoQuery query);
 
 	List<GradeInfo> getGradeInfos(GradeInfoQuery query);
+
+	List<BaseItem> getGradeNames(String tenantId);
 
 	void insertGradeInfo(GradeInfo model);
 

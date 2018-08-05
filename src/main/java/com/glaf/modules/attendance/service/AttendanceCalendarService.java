@@ -74,7 +74,7 @@ public interface AttendanceCalendarService {
 	 * 
 	 * @return
 	 */
-	AttendanceCalendar getAttendanceCalendar(String id);
+	AttendanceCalendar getAttendanceCalendar(String tenantId, int year, int month);
 
 	/**
 	 * 保存一条记录
@@ -82,6 +82,6 @@ public interface AttendanceCalendarService {
 	 * @return
 	 */
 	@Transactional
-	void save(String tenantId, int year, int month, AttendanceCalendar calendar);
+	void save(String tenantId, int year, int month, AttendanceCalendar model);
 
 }

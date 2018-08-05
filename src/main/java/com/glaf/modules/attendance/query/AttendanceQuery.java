@@ -23,6 +23,7 @@ import com.glaf.core.query.DataQuery;
 
 public class AttendanceQuery extends DataQuery {
 	private static final long serialVersionUID = 1L;
+	protected String gradeId;
 	protected String type;
 	protected List<String> types;
 	protected Integer year;
@@ -40,28 +41,32 @@ public class AttendanceQuery extends DataQuery {
 
 	}
 
-	public String getType() {
-		return type;
+	public AttendanceQuery createTimeGreaterThanOrEqual(Date createTimeGreaterThanOrEqual) {
+		if (createTimeGreaterThanOrEqual == null) {
+			throw new RuntimeException("createTime is null");
+		}
+		this.createTimeGreaterThanOrEqual = createTimeGreaterThanOrEqual;
+		return this;
 	}
 
-	public List<String> getTypes() {
-		return types;
+	public AttendanceQuery createTimeLessThanOrEqual(Date createTimeLessThanOrEqual) {
+		if (createTimeLessThanOrEqual == null) {
+			throw new RuntimeException("createTime is null");
+		}
+		this.createTimeLessThanOrEqual = createTimeLessThanOrEqual;
+		return this;
 	}
 
-	public Integer getYear() {
-		return year;
+	public Date getCreateTimeGreaterThanOrEqual() {
+		return createTimeGreaterThanOrEqual;
 	}
 
-	public Integer getYearGreaterThanOrEqual() {
-		return yearGreaterThanOrEqual;
+	public Date getCreateTimeLessThanOrEqual() {
+		return createTimeLessThanOrEqual;
 	}
 
-	public Integer getYearLessThanOrEqual() {
-		return yearLessThanOrEqual;
-	}
-
-	public List<Integer> getYears() {
-		return years;
+	public String getGradeId() {
+		return gradeId;
 	}
 
 	public Integer getMonth() {
@@ -78,158 +83,6 @@ public class AttendanceQuery extends DataQuery {
 
 	public List<Integer> getMonths() {
 		return months;
-	}
-
-	public Date getCreateTimeGreaterThanOrEqual() {
-		return createTimeGreaterThanOrEqual;
-	}
-
-	public Date getCreateTimeLessThanOrEqual() {
-		return createTimeLessThanOrEqual;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public void setTypes(List<String> types) {
-		this.types = types;
-	}
-
-	public void setYear(Integer year) {
-		this.year = year;
-	}
-
-	public void setYearGreaterThanOrEqual(Integer yearGreaterThanOrEqual) {
-		this.yearGreaterThanOrEqual = yearGreaterThanOrEqual;
-	}
-
-	public void setYearLessThanOrEqual(Integer yearLessThanOrEqual) {
-		this.yearLessThanOrEqual = yearLessThanOrEqual;
-	}
-
-	public void setYears(List<Integer> years) {
-		this.years = years;
-	}
-
-	public void setMonth(Integer month) {
-		this.month = month;
-	}
-
-	public void setMonthGreaterThanOrEqual(Integer monthGreaterThanOrEqual) {
-		this.monthGreaterThanOrEqual = monthGreaterThanOrEqual;
-	}
-
-	public void setMonthLessThanOrEqual(Integer monthLessThanOrEqual) {
-		this.monthLessThanOrEqual = monthLessThanOrEqual;
-	}
-
-	public void setMonths(List<Integer> months) {
-		this.months = months;
-	}
-
-	public void setCreateTimeGreaterThanOrEqual(Date createTimeGreaterThanOrEqual) {
-		this.createTimeGreaterThanOrEqual = createTimeGreaterThanOrEqual;
-	}
-
-	public void setCreateTimeLessThanOrEqual(Date createTimeLessThanOrEqual) {
-		this.createTimeLessThanOrEqual = createTimeLessThanOrEqual;
-	}
-
-	public AttendanceQuery type(String type) {
-		if (type == null) {
-			throw new RuntimeException("type is null");
-		}
-		this.type = type;
-		return this;
-	}
-
-	public AttendanceQuery types(List<String> types) {
-		if (types == null) {
-			throw new RuntimeException("types is empty ");
-		}
-		this.types = types;
-		return this;
-	}
-
-	public AttendanceQuery year(Integer year) {
-		if (year == null) {
-			throw new RuntimeException("year is null");
-		}
-		this.year = year;
-		return this;
-	}
-
-	public AttendanceQuery yearGreaterThanOrEqual(Integer yearGreaterThanOrEqual) {
-		if (yearGreaterThanOrEqual == null) {
-			throw new RuntimeException("year is null");
-		}
-		this.yearGreaterThanOrEqual = yearGreaterThanOrEqual;
-		return this;
-	}
-
-	public AttendanceQuery yearLessThanOrEqual(Integer yearLessThanOrEqual) {
-		if (yearLessThanOrEqual == null) {
-			throw new RuntimeException("year is null");
-		}
-		this.yearLessThanOrEqual = yearLessThanOrEqual;
-		return this;
-	}
-
-	public AttendanceQuery years(List<Integer> years) {
-		if (years == null) {
-			throw new RuntimeException("years is empty ");
-		}
-		this.years = years;
-		return this;
-	}
-
-	public AttendanceQuery month(Integer month) {
-		if (month == null) {
-			throw new RuntimeException("month is null");
-		}
-		this.month = month;
-		return this;
-	}
-
-	public AttendanceQuery monthGreaterThanOrEqual(Integer monthGreaterThanOrEqual) {
-		if (monthGreaterThanOrEqual == null) {
-			throw new RuntimeException("month is null");
-		}
-		this.monthGreaterThanOrEqual = monthGreaterThanOrEqual;
-		return this;
-	}
-
-	public AttendanceQuery monthLessThanOrEqual(Integer monthLessThanOrEqual) {
-		if (monthLessThanOrEqual == null) {
-			throw new RuntimeException("month is null");
-		}
-		this.monthLessThanOrEqual = monthLessThanOrEqual;
-		return this;
-	}
-
-	public AttendanceQuery months(List<Integer> months) {
-		if (months == null) {
-			throw new RuntimeException("months is empty ");
-		}
-		this.months = months;
-		return this;
-	}
-
-	public AttendanceQuery createTimeGreaterThanOrEqual(Date createTimeGreaterThanOrEqual) {
-		if (createTimeGreaterThanOrEqual == null) {
-			throw new RuntimeException("createTime is null");
-		}
-		this.createTimeGreaterThanOrEqual = createTimeGreaterThanOrEqual;
-		return this;
-	}
-
-	public AttendanceQuery createTimeLessThanOrEqual(Date createTimeLessThanOrEqual) {
-		if (createTimeLessThanOrEqual == null) {
-			throw new RuntimeException("createTime is null");
-		}
-		this.createTimeLessThanOrEqual = createTimeLessThanOrEqual;
-		return this;
 	}
 
 	public String getOrderBy() {
@@ -279,6 +132,38 @@ public class AttendanceQuery extends DataQuery {
 		return orderBy;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public List<String> getTypes() {
+		return types;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public Integer getYearGreaterThanOrEqual() {
+		return yearGreaterThanOrEqual;
+	}
+
+	public Integer getYearLessThanOrEqual() {
+		return yearLessThanOrEqual;
+	}
+
+	public List<Integer> getYears() {
+		return years;
+	}
+
+	public AttendanceQuery gradeId(String gradeId) {
+		if (gradeId == null) {
+			throw new RuntimeException("gradeId is null");
+		}
+		this.gradeId = gradeId;
+		return this;
+	}
+
 	@Override
 	public void initQueryColumns() {
 		super.initQueryColumns();
@@ -292,6 +177,138 @@ public class AttendanceQuery extends DataQuery {
 		addColumn("month", "MONTH_");
 		addColumn("createBy", "CREATEBY_");
 		addColumn("createTime", "CREATETIME_");
+	}
+
+	public AttendanceQuery month(Integer month) {
+		if (month == null) {
+			throw new RuntimeException("month is null");
+		}
+		this.month = month;
+		return this;
+	}
+
+	public AttendanceQuery monthGreaterThanOrEqual(Integer monthGreaterThanOrEqual) {
+		if (monthGreaterThanOrEqual == null) {
+			throw new RuntimeException("month is null");
+		}
+		this.monthGreaterThanOrEqual = monthGreaterThanOrEqual;
+		return this;
+	}
+
+	public AttendanceQuery monthLessThanOrEqual(Integer monthLessThanOrEqual) {
+		if (monthLessThanOrEqual == null) {
+			throw new RuntimeException("month is null");
+		}
+		this.monthLessThanOrEqual = monthLessThanOrEqual;
+		return this;
+	}
+
+	public AttendanceQuery months(List<Integer> months) {
+		if (months == null) {
+			throw new RuntimeException("months is empty ");
+		}
+		this.months = months;
+		return this;
+	}
+
+	public void setCreateTimeGreaterThanOrEqual(Date createTimeGreaterThanOrEqual) {
+		this.createTimeGreaterThanOrEqual = createTimeGreaterThanOrEqual;
+	}
+
+	public void setCreateTimeLessThanOrEqual(Date createTimeLessThanOrEqual) {
+		this.createTimeLessThanOrEqual = createTimeLessThanOrEqual;
+	}
+
+	public void setGradeId(String gradeId) {
+		this.gradeId = gradeId;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+
+	public void setMonthGreaterThanOrEqual(Integer monthGreaterThanOrEqual) {
+		this.monthGreaterThanOrEqual = monthGreaterThanOrEqual;
+	}
+
+	public void setMonthLessThanOrEqual(Integer monthLessThanOrEqual) {
+		this.monthLessThanOrEqual = monthLessThanOrEqual;
+	}
+
+	public void setMonths(List<Integer> months) {
+		this.months = months;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setTypes(List<String> types) {
+		this.types = types;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public void setYearGreaterThanOrEqual(Integer yearGreaterThanOrEqual) {
+		this.yearGreaterThanOrEqual = yearGreaterThanOrEqual;
+	}
+
+	public void setYearLessThanOrEqual(Integer yearLessThanOrEqual) {
+		this.yearLessThanOrEqual = yearLessThanOrEqual;
+	}
+
+	public void setYears(List<Integer> years) {
+		this.years = years;
+	}
+
+	public AttendanceQuery type(String type) {
+		if (type == null) {
+			throw new RuntimeException("type is null");
+		}
+		this.type = type;
+		return this;
+	}
+
+	public AttendanceQuery types(List<String> types) {
+		if (types == null) {
+			throw new RuntimeException("types is empty ");
+		}
+		this.types = types;
+		return this;
+	}
+
+	public AttendanceQuery year(Integer year) {
+		if (year == null) {
+			throw new RuntimeException("year is null");
+		}
+		this.year = year;
+		return this;
+	}
+
+	public AttendanceQuery yearGreaterThanOrEqual(Integer yearGreaterThanOrEqual) {
+		if (yearGreaterThanOrEqual == null) {
+			throw new RuntimeException("year is null");
+		}
+		this.yearGreaterThanOrEqual = yearGreaterThanOrEqual;
+		return this;
+	}
+
+	public AttendanceQuery yearLessThanOrEqual(Integer yearLessThanOrEqual) {
+		if (yearLessThanOrEqual == null) {
+			throw new RuntimeException("year is null");
+		}
+		this.yearLessThanOrEqual = yearLessThanOrEqual;
+		return this;
+	}
+
+	public AttendanceQuery years(List<Integer> years) {
+		if (years == null) {
+			throw new RuntimeException("years is empty ");
+		}
+		this.years = years;
+		return this;
 	}
 
 }

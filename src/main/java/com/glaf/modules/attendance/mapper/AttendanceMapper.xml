@@ -663,6 +663,7 @@
 		delete from
 		T_ATTENDANCE
 		where TENANTID_ = #{tenantId}
+		and GRADEID_ = #{gradeId}
 		and YEAR_ = #{year}
 		and MONTH_ = #{month}
 	</delete>

@@ -34,6 +34,7 @@ import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.util.DBUtils;
+import com.glaf.core.util.UUID32;
 import com.glaf.modules.attendance.domain.Attendance;
 import com.glaf.modules.attendance.mapper.AttendanceMapper;
 import com.glaf.modules.attendance.query.AttendanceQuery;
@@ -61,7 +62,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	public void bulkInsert(List<Attendance> list) {
 		for (Attendance attendance : list) {
 			if (StringUtils.isEmpty(attendance.getId())) {
-				attendance.setId(idGenerator.getNextId("T_ATTENDANCE"));
+				attendance.setId(UUID32.getUUID());
 			}
 		}
 
@@ -149,14 +150,23 @@ public class AttendanceServiceImpl implements AttendanceService {
 	 * @return
 	 */
 	@Transactional
-	public void saveAll(String tenantId, int year, int month, List<Attendance> attendances) {
+	public void saveAll(String tenantId, String gradeId, int year, int month, List<Attendance> attendances) {
 		AttendanceQuery query = new AttendanceQuery();
 		query.tenantId(tenantId);
+		query.gradeId(gradeId);
 		query.year(year);
 		query.month(month);
 		attendanceMapper.deleteAttendances(query);
 
-		this.bulkInsert(attendances);
+		if (attendances != null && !attendances.isEmpty()) {
+			for (Attendance attendance : attendances) {
+				attendance.setTenantId(tenantId);
+				attendance.setYear(year);
+				attendance.setMonth(month);
+				attendance.setGradeId(gradeId);
+			}
+			this.bulkInsert(attendances);
+		}
 	}
 
 	@javax.annotation.Resource

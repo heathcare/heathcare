@@ -21,7 +21,6 @@ package com.glaf.modules.attendance.web.springmvc;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,9 +33,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.glaf.core.config.ViewProperties;
+import com.glaf.core.config.Environment;
+import com.glaf.core.factory.EntityServiceFactory;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.Paging;
 import com.glaf.core.util.ParamUtils;
@@ -47,6 +48,7 @@ import com.glaf.core.util.Tools;
 import com.glaf.modules.attendance.domain.Attendance;
 import com.glaf.modules.attendance.query.AttendanceQuery;
 import com.glaf.modules.attendance.service.AttendanceService;
+import com.glaf.modules.attendance.util.AttendanceJsonFactory;
 
 /**
  * 
@@ -65,53 +67,6 @@ public class AttendanceController {
 
 	}
 
-	@ResponseBody
-	@RequestMapping("/delete")
-	public byte[] delete(HttpServletRequest request, ModelMap modelMap) {
-		LoginContext loginContext = RequestUtils.getLoginContext(request);
-		String id = RequestUtils.getString(request, "id");
-		String ids = request.getParameter("ids");
-		if (StringUtils.isNotEmpty(ids)) {
-			StringTokenizer token = new StringTokenizer(ids, ",");
-			while (token.hasMoreTokens()) {
-				String x = token.nextToken();
-				if (StringUtils.isNotEmpty(x)) {
-					Attendance attendance = attendanceService.getAttendance(String.valueOf(x));
-					if (attendance != null && (StringUtils.equals(attendance.getCreateBy(), loginContext.getActorId())
-							|| loginContext.isSystemAdministrator())) {
-
-					}
-				}
-			}
-			return ResponseUtils.responseResult(true);
-		} else if (id != null) {
-			Attendance attendance = attendanceService.getAttendance(String.valueOf(id));
-			if (attendance != null && (StringUtils.equals(attendance.getCreateBy(), loginContext.getActorId())
-					|| loginContext.isSystemAdministrator())) {
-
-				return ResponseUtils.responseResult(true);
-			}
-		}
-		return ResponseUtils.responseResult(false);
-	}
-
-	@RequestMapping("/edit")
-	public ModelAndView edit(HttpServletRequest request, ModelMap modelMap) {
-		RequestUtils.setRequestParameterToAttribute(request);
-
-		String view = request.getParameter("view");
-		if (StringUtils.isNotEmpty(view)) {
-			return new ModelAndView(view, modelMap);
-		}
-
-		String x_view = ViewProperties.getString("attendance.edit");
-		if (StringUtils.isNotEmpty(x_view)) {
-			return new ModelAndView(x_view, modelMap);
-		}
-
-		return new ModelAndView("/attendance/attendance/edit", modelMap);
-	}
-
 	@RequestMapping("/json")
 	@ResponseBody
 	public byte[] json(HttpServletRequest request, ModelMap modelMap) throws IOException {
@@ -124,9 +79,13 @@ public class AttendanceController {
 		query.setLoginContext(loginContext);
 
 		if (!loginContext.isSystemAdministrator()) {
-			String actorId = loginContext.getActorId();
-			query.createBy(actorId);
+			query.tenantId(loginContext.getTenantId());
 		}
+
+		int year = RequestUtils.getInt(request, "year");
+		int month = RequestUtils.getInt(request, "month");
+		query.year(year);
+		query.month(month);
 
 		int start = 0;
 		int limit = 10;
@@ -194,6 +153,12 @@ public class AttendanceController {
 	public ModelAndView list(HttpServletRequest request, ModelMap modelMap) {
 		RequestUtils.setRequestParameterToAttribute(request);
 
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+
+		List<Object> rows = EntityServiceFactory.getInstance().getList(Environment.DEFAULT_SYSTEM_NAME, "getGradeNames",
+				loginContext.getTenantId());
+		request.setAttribute("rows", rows);
+
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
 			return new ModelAndView(view, modelMap);
@@ -202,29 +167,24 @@ public class AttendanceController {
 		return new ModelAndView("/attendance/attendance/list", modelMap);
 	}
 
-	@RequestMapping("/query")
-	public ModelAndView query(HttpServletRequest request, ModelMap modelMap) {
-		RequestUtils.setRequestParameterToAttribute(request);
-		String view = request.getParameter("view");
-		if (StringUtils.isNotEmpty(view)) {
-			return new ModelAndView(view, modelMap);
-		}
-		String x_view = ViewProperties.getString("attendance.query");
-		if (StringUtils.isNotEmpty(x_view)) {
-			return new ModelAndView(x_view, modelMap);
-		}
-		return new ModelAndView("/attendance/attendance/query", modelMap);
-	}
-
 	@ResponseBody
 	@RequestMapping("/saveAttendance")
 	public byte[] saveAttendance(HttpServletRequest request) {
-		try {
-
-			return ResponseUtils.responseJsonResult(true);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			logger.error(ex);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		int year = RequestUtils.getInt(request, "year");
+		int month = RequestUtils.getInt(request, "month");
+		String gradeId = request.getParameter("gradeId");
+		String json = request.getParameter("json");
+		if (year > 0 && month > 0 && StringUtils.isNotEmpty(gradeId) && StringUtils.isNotEmpty(json)) {
+			try {
+				JSONArray array = JSON.parseArray(json);
+				List<Attendance> list = AttendanceJsonFactory.arrayToList(array);
+				attendanceService.saveAll(loginContext.getTenantId(), gradeId, year, month, list);
+				return ResponseUtils.responseJsonResult(true);
+			} catch (Exception ex) {
+				//ex.printStackTrace();
+				logger.error(ex);
+			}
 		}
 		return ResponseUtils.responseJsonResult(false);
 	}

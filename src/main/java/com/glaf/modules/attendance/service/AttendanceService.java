@@ -81,6 +81,6 @@ public interface AttendanceService {
 	 * @return
 	 */
 	@Transactional
-	void saveAll(String tenantId, int year, int month, List<Attendance> attendances);
+	void saveAll(String tenantId, String gradeId, int year, int month, List<Attendance> attendances);
 
 }

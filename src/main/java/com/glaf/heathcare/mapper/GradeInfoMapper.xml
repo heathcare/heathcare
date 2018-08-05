@@ -339,7 +339,14 @@
 		resultMap="gradeInfoResultMap">
 		select * from HEALTH_GRADE_INFO where ID_ = #{id}
 	</select>
-
+	
+	
+	<select id="getGradeNames" parameterType="string"
+		resultType="com.glaf.core.base.BaseItem">
+		select ID_ as id,  NAME_ as name from HEALTH_GRADE_INFO 
+		where TENANTID_ = #{tenantId}
+	</select>
+	
 
 	<select id="getGradeInfos"
 		parameterType="com.glaf.heathcare.query.GradeInfoQuery"

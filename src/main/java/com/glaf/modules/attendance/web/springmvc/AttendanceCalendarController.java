@@ -21,7 +21,6 @@ package com.glaf.modules.attendance.web.springmvc;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -48,6 +48,7 @@ import com.glaf.core.util.Tools;
 import com.glaf.modules.attendance.domain.AttendanceCalendar;
 import com.glaf.modules.attendance.query.AttendanceCalendarQuery;
 import com.glaf.modules.attendance.service.AttendanceCalendarService;
+import com.glaf.modules.attendance.util.AttendanceCalendarJsonFactory;
 
 /**
  * 
@@ -66,45 +67,16 @@ public class AttendanceCalendarController {
 
 	}
 
-	@ResponseBody
-	@RequestMapping("/delete")
-	public byte[] delete(HttpServletRequest request, ModelMap modelMap) {
-		LoginContext loginContext = RequestUtils.getLoginContext(request);
-		String id = RequestUtils.getString(request, "id");
-		String ids = request.getParameter("ids");
-		if (StringUtils.isNotEmpty(ids)) {
-			StringTokenizer token = new StringTokenizer(ids, ",");
-			while (token.hasMoreTokens()) {
-				String x = token.nextToken();
-				if (StringUtils.isNotEmpty(x)) {
-					AttendanceCalendar attendanceCalendar = attendanceCalendarService
-							.getAttendanceCalendar(String.valueOf(x));
-					if (attendanceCalendar != null
-							&& (StringUtils.equals(attendanceCalendar.getCreateBy(), loginContext.getActorId())
-									|| loginContext.isSystemAdministrator())) {
-
-					}
-				}
-			}
-			return ResponseUtils.responseResult(true);
-		} else if (id != null) {
-			AttendanceCalendar attendanceCalendar = attendanceCalendarService.getAttendanceCalendar(String.valueOf(id));
-			if (attendanceCalendar != null
-					&& (StringUtils.equals(attendanceCalendar.getCreateBy(), loginContext.getActorId())
-							|| loginContext.isSystemAdministrator())) {
-
-				return ResponseUtils.responseResult(true);
-			}
-		}
-		return ResponseUtils.responseResult(false);
-	}
-
 	@RequestMapping("/edit")
 	public ModelAndView edit(HttpServletRequest request, ModelMap modelMap) {
 		RequestUtils.setRequestParameterToAttribute(request);
 
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		int year = RequestUtils.getInt(request, "year");
+		int month = RequestUtils.getInt(request, "month");
+
 		AttendanceCalendar attendanceCalendar = attendanceCalendarService
-				.getAttendanceCalendar(request.getParameter("id"));
+				.getAttendanceCalendar(loginContext.getTenantId(), year, month);
 		if (attendanceCalendar != null) {
 			request.setAttribute("attendanceCalendar", attendanceCalendar);
 		}
@@ -134,8 +106,7 @@ public class AttendanceCalendarController {
 		query.setLoginContext(loginContext);
 
 		if (!loginContext.isSystemAdministrator()) {
-			String actorId = loginContext.getActorId();
-			query.createBy(actorId);
+			query.tenantId(loginContext.getTenantId());
 		}
 
 		int start = 0;
@@ -213,29 +184,26 @@ public class AttendanceCalendarController {
 		return new ModelAndView("/attendance/calendar/list", modelMap);
 	}
 
-	@RequestMapping("/query")
-	public ModelAndView query(HttpServletRequest request, ModelMap modelMap) {
-		RequestUtils.setRequestParameterToAttribute(request);
-		String view = request.getParameter("view");
-		if (StringUtils.isNotEmpty(view)) {
-			return new ModelAndView(view, modelMap);
-		}
-		String x_view = ViewProperties.getString("attendance_calendar.query");
-		if (StringUtils.isNotEmpty(x_view)) {
-			return new ModelAndView(x_view, modelMap);
-		}
-		return new ModelAndView("/attendance/calendar/query", modelMap);
-	}
-
 	@ResponseBody
 	@RequestMapping("/save")
 	public byte[] save(HttpServletRequest request) {
-		try {
-
-			return ResponseUtils.responseJsonResult(true);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			logger.error(ex);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		int year = RequestUtils.getInt(request, "year");
+		int month = RequestUtils.getInt(request, "month");
+		String json = request.getParameter("json");
+		if (year > 0 && month > 0 && StringUtils.isNotEmpty(json)) {
+			try {
+				JSONObject jsonObject = JSON.parseObject(json);
+				AttendanceCalendar model = AttendanceCalendarJsonFactory.jsonToObject(jsonObject);
+				model.setTenantId(loginContext.getTenantId());
+				model.setYear(year);
+				model.setMonth(month);
+				attendanceCalendarService.save(loginContext.getTenantId(), year, month, model);
+				return ResponseUtils.responseJsonResult(true);
+			} catch (Exception ex) {
+				// ex.printStackTrace();
+				logger.error(ex);
+			}
 		}
 		return ResponseUtils.responseJsonResult(false);
 	}
