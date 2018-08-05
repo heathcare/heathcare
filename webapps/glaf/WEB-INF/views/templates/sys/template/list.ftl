@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>数据导出</title>
+<title>模板管理</title>
 <#include "/inc/init_easyui_import.ftl"/>
 <script type="text/javascript">
    var contextPath="${request.contextPath}";
@@ -16,16 +16,17 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${request.contextPath}/matrix/dataExport/json',
+				url: '${request.contextPath}/sys/template/json',
 				remoteSort: false,
 				singleSelect: true,
-				idField: 'id',
+				idField: 'templateId',
 				columns:[[
 				        {title:'序号', field:'startIndex', width:80, sortable:false},
+						{title:'名称', field:'name', width:120},
 						{title:'标题', field:'title', width:380},
 						{title:'创建人', field:'createBy', width:90},
-						{title:'创建时间', field:'createTime', width:90},
-					    {title:'是否有效', field:'active', width:90, formatter:formatterActive},
+						{title:'创建时间', field:'createDate', width:120},
+					    {title:'是否有效', field:'locked', width:90, formatter:formatterActive},
 						{title:'功能键', field:'functionKey', width:180, formatter:formatterKeys}
 				]],
 				rownumbers: false,
@@ -40,7 +41,7 @@
 
 	function formatterActive(val, row){
         var str = "";
-		if(val == "Y"){
+		if(val == 0){
              str = "<font color='green'>有效</font>";
 		} else {
              str = "<font color='red'>无效</font>";
@@ -50,31 +51,13 @@
 
 
 	function formatterKeys(val, row){
-		var str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:syncList(\""+row.id+"\");'>查询项</a>&nbsp;<a href='javascript:exportXls(\""+row.id+"\");'>导出</a>";
+		var str = "<a href='javascript:editRow(\""+row.templateId+"\");'>修改</a>";
 	    return str;
 	}
 
-	 
-    function syncList(expId){
-	    var link = '${request.contextPath}/matrix/dataExportItem?expId='+expId;
-	    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "同步项",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['980px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		}); 
-	}
-
  
-	function editRow(id){
-	    var link="${request.contextPath}/matrix/dataExport/edit?id="+id;
+	function editRow(templateId){
+	    var link="${request.contextPath}/sys/template/edit?templateId="+templateId;
 	    jQuery.layer({
 			type: 2,
 			maxmin: true,
@@ -91,7 +74,7 @@
 	}
 
 	function addNew(){
-	    var link="${request.contextPath}/matrix/dataExport/edit";
+	    var link="${request.contextPath}/sys/template/edit";
 	    jQuery.layer({
 			type: 2,
 			maxmin: true,
@@ -108,7 +91,7 @@
 	}
 
 	function onRowClick(rowIndex, row){
-	    var link = '${request.contextPath}/matrix/dataExport/edit?id='+row.id;
+	    var link = '${request.contextPath}/sys/template/edit?templateId='+row.templateId;
 	    jQuery.layer({
 			type: 2,
 			maxmin: true,
@@ -125,7 +108,7 @@
 	}
 
 	function searchWin(){
-	    jQuery('#dlg').dialog('open').dialog('setTitle','数据导出查询');
+	    jQuery('#dlg').dialog('open').dialog('setTitle','模板管理查询');
 	    //jQuery('#searchForm').form('clear');
 	}
 
@@ -144,7 +127,7 @@
 	    }
 	    var selected = jQuery('#mydatagrid').datagrid('getSelected');
 	    if (selected ){
-		  var link = '${request.contextPath}/matrix/dataExport/edit?id='+selected.id;
+		  var link = '${request.contextPath}/sys/template/edit?templateId='+selected.templateId;
 		  jQuery.layer({
 			type: 2,
 			maxmin: true,
@@ -169,7 +152,7 @@
 		}
 		var selected = jQuery('#mydatagrid').datagrid('getSelected');
 		if (selected ){
-		    var link = '${request.contextPath}/matrix/dataExport/edit?id='+selected.id;
+		    var link = '${request.contextPath}/sys/template/edit?templateId='+selected.templateId;
 			jQuery.layer({
 				type: 2,
 				maxmin: true,
@@ -197,7 +180,7 @@
 		    var str = ids.join(',');
 			jQuery.ajax({
 				   type: "POST",
-				   url: '${request.contextPath}/matrix/dataExport/delete?ids='+str,
+				   url: '${request.contextPath}/sys/template/delete?ids='+str,
 				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
@@ -217,23 +200,6 @@
 		}
 	}
 
-	function exportXls0(){
-	    var rows = jQuery('#mydatagrid').datagrid('getSelections');
-	    if(rows == null || rows.length !=1){
-		    alert("请选择其中一条记录。");
-		    return;
-	    }
-	    var selected = jQuery('#mydatagrid').datagrid('getSelected');
-	    if (selected){
-		    var link = '${request.contextPath}/matrix/dataExport/exportXls?expId='+selected.id;
-		    window.open(link);		
-	    }
-	}
-
-	function exportXls(expId){
-		var link = '${request.contextPath}/matrix/dataExport/exportXls?expId='+expId;
-		window.open(link);
-	}
 
 	function reloadGrid(){
 	    jQuery('#mydatagrid').datagrid('reload');
@@ -278,7 +244,7 @@
         var params = jQuery("#searchForm").formSerialize();
         jQuery.ajax({
                     type: "POST",
-                    url: '${request.contextPath}/matrix/dataExport/json',
+                    url: '${request.contextPath}/sys/template/json',
                     dataType: 'json',
                     data: params,
                     error: function(data){
@@ -299,18 +265,17 @@
    <div data-options="region:'north', split:false, border:true" style="height:42px;" class="toolbar-backgroud"> 
     <div style="margin-top:4px;"> 
 		<img src="${request.contextPath}/static/images/window.png">
-		&nbsp;<span class="x_content_title">数据导出列表</span>
+		&nbsp;<span class="x_content_title">模板管理列表</span>
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
 		   onclick="javascript:addNew();">新增</a>  
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
 		   onclick="javascript:editSelected();">修改</a>
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
-		   onclick="javascript:exportXls0();">导出Excel</a>
    </div> 
   </div> 
   <div data-options="region:'center',border:true">
 	 <table id="mydatagrid"></table>
   </div>  
-</div>
+ </div>
+</div> 
 </body>
 </html>
