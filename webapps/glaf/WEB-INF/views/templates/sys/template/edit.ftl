@@ -16,6 +16,10 @@
         document.iForm.submit();
 	}
 
+	function down(templateId){
+		window.open('${request.contextPath}/sys/template/download?templateId='+templateId);
+	}
+
 </script>
 </head>
 
@@ -66,6 +70,10 @@
 		<td width="15%" align="left">模板文件</td>
 		<td align="left">
 		    <input type="file" id="file" name="file" size="50" class="input-file">
+			<#if template.data?exists>
+			 &nbsp;&nbsp;<img src="${request.contextPath}/static/images/download.png" style="cursor:pointer;"
+			                     onclick="javascript:down('${template.templateId}');">
+			</#if>
 		</td>
 	</tr>
 
