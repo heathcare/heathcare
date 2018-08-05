@@ -15,7 +15,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/gradeInfo/json',
+				url: '${contextPath}/heathcare/gradeInfo/jsonAll',
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',

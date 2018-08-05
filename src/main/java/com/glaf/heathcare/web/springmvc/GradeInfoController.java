@@ -267,6 +267,101 @@ public class GradeInfoController {
 		GradeInfoQuery query = new GradeInfoQuery();
 		Tools.populate(query, params);
 		query.deleteFlag(0);
+		query.locked(0);
+		query.setActorId(loginContext.getActorId());
+		query.setLoginContext(loginContext);
+
+		if (!loginContext.isSystemAdministrator()) {
+			logger.debug("perms:" + loginContext.getPermissions());
+			query.tenantId(loginContext.getTenantId());
+			if (!(loginContext.hasPermission("HealthPhysician", "or")
+					|| loginContext.hasPermission("TenantAdmin", "or"))) {
+				logger.debug("gradeIds:" + loginContext.getGradeIds());
+				query.gradeIds(loginContext.getGradeIds());
+			}
+		}
+
+		int start = 0;
+		int limit = 10;
+		String orderName = null;
+		String order = null;
+
+		int pageNo = ParamUtils.getInt(params, "page");
+		limit = ParamUtils.getInt(params, "rows");
+		start = (pageNo - 1) * limit;
+		orderName = ParamUtils.getString(params, "sortName");
+		order = ParamUtils.getString(params, "sortOrder");
+
+		if (start < 0) {
+			start = 0;
+		}
+
+		if (limit <= 0) {
+			limit = Paging.DEFAULT_PAGE_SIZE;
+		}
+
+		JSONObject result = new JSONObject();
+		int total = gradeInfoService.getGradeInfoCountByQueryCriteria(query);
+		if (total > 0) {
+			result.put("total", total);
+			result.put("totalCount", total);
+			result.put("totalRecords", total);
+			result.put("start", start);
+			result.put("startIndex", start);
+			result.put("limit", limit);
+			result.put("pageSize", limit);
+
+			if (StringUtils.isNotEmpty(orderName)) {
+				query.setSortOrder(orderName);
+				if (StringUtils.equals(order, "desc")) {
+					query.setSortOrder(" desc ");
+				}
+			}
+
+			List<GradeInfo> list = gradeInfoService.getGradeInfosByQueryCriteria(start, limit, query);
+
+			if (list != null && !list.isEmpty()) {
+				JSONArray rowsJSON = new JSONArray();
+
+				result.put("rows", rowsJSON);
+
+				List<Dictory> dictoryList = dictoryService.getDictoryList(5001L);// 4501是班级分类编号
+				Map<String, String> nameMap = new HashMap<String, String>();
+				if (dictoryList != null && !dictoryList.isEmpty()) {
+					for (Dictory dict : dictoryList) {
+						nameMap.put(dict.getValue(), dict.getName());
+					}
+				}
+
+				for (GradeInfo gradeInfo : list) {
+					JSONObject rowJSON = gradeInfo.toJsonObject();
+					rowJSON.put("id", gradeInfo.getId());
+					rowJSON.put("rowId", gradeInfo.getId());
+					rowJSON.put("gradeInfoId", gradeInfo.getId());
+					rowJSON.put("startIndex", ++start);
+					if (nameMap.get(String.valueOf(gradeInfo.getLevel())) != null) {
+						rowJSON.put("classTypeName", nameMap.get(String.valueOf(gradeInfo.getLevel())));
+					}
+					rowsJSON.add(rowJSON);
+				}
+
+			}
+		} else {
+			JSONArray rowsJSON = new JSONArray();
+			result.put("rows", rowsJSON);
+			result.put("total", total);
+		}
+		return result.toJSONString().getBytes("UTF-8");
+	}
+
+	@RequestMapping("/jsonAll")
+	@ResponseBody
+	public byte[] jsonAll(HttpServletRequest request, ModelMap modelMap) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		GradeInfoQuery query = new GradeInfoQuery();
+		Tools.populate(query, params);
+		query.deleteFlag(0);
 		query.setActorId(loginContext.getActorId());
 		query.setLoginContext(loginContext);
 
