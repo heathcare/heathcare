@@ -228,8 +228,14 @@ public class DataExportController {
 						bos.flush();
 						baos.flush();
 						byte[] data = baos.toByteArray();
-						ResponseUtils.download(request, response, data,
-								"export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls");
+
+						if (StringUtils.endsWithIgnoreCase(tpl.getDataFile(), ".xlsx")) {
+							ResponseUtils.download(request, response, data,
+									"export" + DateUtils.getNowYearMonthDayHHmmss() + ".xlsx");
+						} else {
+							ResponseUtils.download(request, response, data,
+									"export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls");
+						}
 					}
 				}
 			}

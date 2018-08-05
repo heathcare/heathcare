@@ -77,14 +77,13 @@ public class DataExportBean {
 		List<DataExportItem> items = dataExport.getItems();
 		SysParams.putInternalParams(parameter);
 
+		int totalSize = 0;
+		Object value = null;
+		String idValue = null;
 		Database srcDatabase = null;
 		Connection srcConn = null;
 		PreparedStatement srcPsmt = null;
 		ResultSet srcRs = null;
-
-		int totalSize = 0;
-		Object value = null;
-		String idValue = null;
 		StringBuilder keyBuffer = new StringBuilder();
 		List<Map<String, Object>> sourceResultList = null;
 
