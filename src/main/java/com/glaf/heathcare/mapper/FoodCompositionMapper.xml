@@ -849,6 +849,10 @@
 				and ( E.NAME_ like #{nameLike} or E.ALIAS_ like
 				#{nameLike} )
 			</if>
+			
+			<if test="namePinyinLike != null and namePinyinLike != '' ">
+				and ( E.NAME_ like #{namePinyinLike} or E.NAMEPINYIN_ like #{namePinyinLike} )
+			</if>
 
 			<if test="code != null and code != '' ">
 				and E.CODE_ = #{code}

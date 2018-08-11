@@ -15,7 +15,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/foodComposition/jsonAll?wordLike_enc=${wordLike_enc}&nodeId=${nodeId}',
+				url: '${contextPath}/heathcare/foodComposition/jsonAll?wordLike_enc=${wordLike_enc}&nodeId=${nodeId}&namePinyinLike=${namePinyinLike}',
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -292,6 +292,12 @@
         document.iForm.submit();
 	}
 
+	function searchXY(nameLike){
+		var nodeId = document.getElementById("nodeId").value;
+        var link = "${contextPath}/heathcare/foodComposition/jsonAll?nodeId="+nodeId+"&namePinyinLike="+nameLike;
+		loadGridData(link);
+	}
+
 	function genJS(){
 		if(confirm("原来的JS将会被替换，确定重新生成吗？")){
 		    var link = "${contextPath}/heathcare/foodComposition/genJS";
@@ -347,7 +353,7 @@
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:46px" class="toolbar-backgroud"> 
+   <div data-options="region:'north', split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 		<table>
 			<tr>
@@ -386,6 +392,15 @@
 					</form>
 				 </td>
 			 </tr>
+			 <tr>
+				<td colspan="2">
+				    <input type="hidden" id="namePinyinLike" name="namePinyinLike" value="${namePinyinLike}">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<#list charList as item>
+					&nbsp;<span style="cursor: pointer;" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
+					</#list>
+				</td>
+			</tr>
 		 </table>
    </div> 
   </div> 

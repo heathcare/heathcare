@@ -42,6 +42,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TreePermissionService;
+import com.glaf.base.modules.sys.util.PinyinUtils;
 import com.glaf.core.config.SystemProperties;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
@@ -269,6 +270,11 @@ public class FoodCompositionController {
 			query.setNameLike(RequestUtils.decodeString(wordLike));
 		}
 
+		String namePinyinLike = request.getParameter("namePinyinLike");
+		if (StringUtils.isNotEmpty(namePinyinLike)) {
+			query.setNamePinyinLike(namePinyinLike);
+		}
+
 		int start = 0;
 		int limit = 10;
 		String orderName = null;
@@ -383,6 +389,11 @@ public class FoodCompositionController {
 		String wordLike = request.getParameter("wordLike_enc");
 		if (StringUtils.isNotEmpty(wordLike)) {
 			query.setNameLike(RequestUtils.decodeString(wordLike));
+		}
+
+		String namePinyinLike = request.getParameter("namePinyinLike");
+		if (StringUtils.isNotEmpty(namePinyinLike)) {
+			query.setNamePinyinLike(namePinyinLike);
 		}
 
 		int start = 0;
@@ -540,6 +551,11 @@ public class FoodCompositionController {
 			query.setNameLike(RequestUtils.decodeString(wordLike));
 		}
 
+		String namePinyinLike = request.getParameter("namePinyinLike");
+		if (StringUtils.isNotEmpty(namePinyinLike)) {
+			query.setNamePinyinLike(namePinyinLike);
+		}
+
 		int start = 0;
 		int limit = 10;
 		String orderName = null;
@@ -644,6 +660,12 @@ public class FoodCompositionController {
 			}
 			request.setAttribute("foodCategories", foodCategories);
 		}
+		
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		request.removeAttribute("heathcare_write_perm");
 
@@ -689,6 +711,12 @@ public class FoodCompositionController {
 			}
 			request.setAttribute("foodCategories", foodCategories);
 		}
+		
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		request.removeAttribute("heathcare_write_perm");
 
@@ -783,6 +811,7 @@ public class FoodCompositionController {
 			foodComposition.setNodeId(nodeId);
 			foodComposition.setTreeId(request.getParameter("treeId"));
 			foodComposition.setName(request.getParameter("name"));
+			foodComposition.setNamePinyin(PinyinUtils.converterToFirstSpell(foodComposition.getName(), true));
 			foodComposition.setAlias(request.getParameter("alias"));
 			foodComposition.setCode(request.getParameter("code"));
 			foodComposition.setDiscriminator(request.getParameter("discriminator"));

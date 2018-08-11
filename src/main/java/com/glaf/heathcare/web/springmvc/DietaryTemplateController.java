@@ -591,6 +591,12 @@ public class DietaryTemplateController {
 				&& StringUtils.equals(sysFlag, "N")) {
 			request.setAttribute("canChangeDishes", true);
 		}
+		
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -992,6 +998,12 @@ public class DietaryTemplateController {
 
 		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", categories);
+		
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String x_view = ViewProperties.getString("dietaryTemplate.showAddDishes");
 		if (StringUtils.isNotEmpty(x_view)) {
@@ -1027,6 +1039,12 @@ public class DietaryTemplateController {
 
 		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", categories);
+		
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String x_view = ViewProperties.getString("dietaryTemplate.showChangeDishes");
 		if (StringUtils.isNotEmpty(x_view)) {

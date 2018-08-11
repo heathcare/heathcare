@@ -30,7 +30,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/dishes/json?nodeId=${nodeId}&nameLike_enc=${nameLike_enc}&sysFlag=${sysFlag}',
+				url: '${contextPath}/heathcare/dishes/json?nodeId=${nodeId}&nameLike_enc=${nameLike_enc}&sysFlag=${sysFlag}&namePinyinLike=${namePinyinLike}',
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -362,8 +362,18 @@
 		var nodeId = document.getElementById("nodeId").value;
 		var sysFlag = document.getElementById("sysFlag").value;
         var nameLike = document.getElementById("nameLike").value;
-        var link = "${contextPath}/heathcare/dishes?nodeId="+nodeId+"&nameLike="+nameLike+"&sysFlag="+sysFlag;
-		window.location.href=link;
+        var link = "${contextPath}/heathcare/dishes/json?nodeId="+nodeId+"&nameLike="+nameLike+"&sysFlag="+sysFlag;
+		//window.location.href=link;
+		loadGridData(link);
+	}
+
+	function searchXY(namePinyinLike){
+        var nodeId = document.getElementById("nodeId").value;
+		var sysFlag = document.getElementById("sysFlag").value;
+        var nameLike = document.getElementById("nameLike").value;
+        var link = "${contextPath}/heathcare/dishes/json?nodeId="+nodeId+"&nameLike="+nameLike+"&sysFlag="+sysFlag+"&namePinyinLike="+namePinyinLike;
+		//window.location.href=link;
+		loadGridData(link);
 	}
 
 	function loadGridData(url){
@@ -385,7 +395,7 @@
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north',split:false, border:true" style="height:48px" class="toolbar-backgroud"> 
+   <div data-options="region:'north',split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 	  <table width="100%" align="left">
 		<tbody>
@@ -426,9 +436,17 @@
 			  </script>
 			  &nbsp;
               <input id="nameLike" name="nameLike" type="text" class="x-searchtext"  
-					 style="width:295px;" value="${nameLike}">
+					 style="width:185px;" value="${nameLike}">
 			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'" 
 	             onclick="javascript:doSearch();" >查找</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			    &nbsp;&nbsp;&nbsp;&nbsp;
+				<#list charList as item>
+				&nbsp;<span style="cursor: pointer;" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
+				</#list>
 			</td>
 		</tr>
 	   </tbody>

@@ -27,6 +27,7 @@ public class DishesQuery extends DataQuery {
 	protected Long nodeId;
 	protected List<Long> nodeIds;
 	protected String nameLike;
+	protected String namePinyinLike;
 	protected String sysFlag;
 	protected String type;
 	protected String verifyFlag;
@@ -71,6 +72,18 @@ public class DishesQuery extends DataQuery {
 			}
 		}
 		return nameLike;
+	}
+
+	public String getNamePinyinLike() {
+		if (namePinyinLike != null && namePinyinLike.trim().length() > 0) {
+			if (!namePinyinLike.startsWith("%")) {
+				namePinyinLike = "%" + namePinyinLike;
+			}
+			if (!namePinyinLike.endsWith("%")) {
+				namePinyinLike = namePinyinLike + "%";
+			}
+		}
+		return namePinyinLike;
 	}
 
 	public Long getNodeId() {
@@ -272,6 +285,14 @@ public class DishesQuery extends DataQuery {
 		return this;
 	}
 
+	public DishesQuery namePinyinLike(String namePinyinLike) {
+		if (namePinyinLike == null) {
+			throw new RuntimeException("namePinyin is null");
+		}
+		this.namePinyinLike = namePinyinLike;
+		return this;
+	}
+
 	public DishesQuery nodeId(Long nodeId) {
 		if (nodeId == null) {
 			throw new RuntimeException("nodeId is null");
@@ -298,6 +319,10 @@ public class DishesQuery extends DataQuery {
 
 	public void setNameLike(String nameLike) {
 		this.nameLike = nameLike;
+	}
+
+	public void setNamePinyinLike(String namePinyinLike) {
+		this.namePinyinLike = namePinyinLike;
 	}
 
 	public void setNodeId(Long nodeId) {

@@ -63,6 +63,12 @@ public class Dishes implements Serializable, JSONable {
 	protected String name;
 
 	/**
+	 * 名称拼音
+	 */
+	@Column(name = "NAMEPINYIN_", length = 200)
+	protected String namePinyin;
+
+	/**
 	 * 描述
 	 */
 	@Column(name = "DESCRIPTION_", length = 4000)
@@ -334,6 +340,10 @@ public class Dishes implements Serializable, JSONable {
 		return this.name;
 	}
 
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
 	public double getNicotinicCid() {
 		if (nicotinicCid > 0) {
 			nicotinicCid = Math.round(nicotinicCid * 1000D) / 1000D;
@@ -512,6 +522,10 @@ public class Dishes implements Serializable, JSONable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 
 	public void setNicotinicCid(double nicotinicCid) {

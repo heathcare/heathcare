@@ -40,6 +40,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.service.SysTreeService;
+import com.glaf.base.modules.sys.util.PinyinUtils;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.ParamUtils;
@@ -233,6 +234,11 @@ public class DishesController {
 			query.setNameLike(RequestUtils.decodeString(nameLike));
 		}
 
+		String namePinyinLike = request.getParameter("namePinyinLike");
+		if (StringUtils.isNotEmpty(namePinyinLike)) {
+			query.setNamePinyinLike(namePinyinLike);
+		}
+
 		int start = 0;
 		int limit = 10;
 		String orderName = null;
@@ -322,6 +328,12 @@ public class DishesController {
 		}
 		request.setAttribute("sysFlag", sysFlag);
 
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
+
 		List<SysTree> trees = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", trees);
 
@@ -406,6 +418,7 @@ public class DishesController {
 			dishes.setNodeId(RequestUtils.getLong(request, "nodeId"));
 			dishes.setType(request.getParameter("type"));
 			dishes.setName(request.getParameter("name"));
+			dishes.setNamePinyin(PinyinUtils.converterToFirstSpell(dishes.getName(), true));
 			dishes.setDescription(request.getParameter("description"));
 			dishes.setCreateBy(actorId);
 			dishes.setUpdateBy(actorId);

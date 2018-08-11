@@ -1378,6 +1378,12 @@ public class DietaryController {
 		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", categories);
 
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
+
 		String x_view = ViewProperties.getString("dietary.showAddDishes");
 		if (StringUtils.isNotEmpty(x_view)) {
 			return new ModelAndView(x_view, modelMap);
@@ -1512,6 +1518,12 @@ public class DietaryController {
 
 		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", categories);
+
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String x_view = ViewProperties.getString("dietary.showChangeDishes");
 		if (StringUtils.isNotEmpty(x_view)) {

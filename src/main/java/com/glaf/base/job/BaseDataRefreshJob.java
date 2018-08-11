@@ -83,6 +83,14 @@ public class BaseDataRefreshJob extends BaseJob {
 				logger.error("更新食物成分数据错误！");
 			}
 
+			try {
+				logger.info("------------update dishes pinyin---------------");
+				PinyinUtils.processDishes();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error("更新菜肴数据错误！");
+			}
+
 		}
 		lastExecuteTime.set(System.currentTimeMillis());
 	}

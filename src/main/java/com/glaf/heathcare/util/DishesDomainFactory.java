@@ -44,6 +44,7 @@ public class DishesDomainFactory {
 		columnMap.put("tenantId", "TENANTID_");
 		columnMap.put("nodeId", "NODEID_");
 		columnMap.put("name", "NAME_");
+		columnMap.put("namePinyin", "NAMEPINYIN_");
 		columnMap.put("description", "DESCRIPTION_");
 		columnMap.put("heatEnergy", "HEATENERGY_");
 		columnMap.put("protein", "PROTEIN_");
@@ -76,6 +77,7 @@ public class DishesDomainFactory {
 		javaTypeMap.put("tenantId", "String");
 		javaTypeMap.put("nodeId", "Long");
 		javaTypeMap.put("name", "String");
+		javaTypeMap.put("namePinyin", "String");
 		javaTypeMap.put("description", "String");
 		javaTypeMap.put("heatEnergy", "Double");
 		javaTypeMap.put("protein", "Double");
@@ -148,6 +150,13 @@ public class DishesDomainFactory {
 		name.setJavaType("String");
 		name.setLength(200);
 		tableDefinition.addColumn(name);
+
+		ColumnDefinition namePinyin = new ColumnDefinition();
+		namePinyin.setName("namePinyin");
+		namePinyin.setColumnName("NAMEPINYIN_");
+		namePinyin.setJavaType("String");
+		namePinyin.setLength(200);
+		tableDefinition.addColumn(namePinyin);
 
 		ColumnDefinition description = new ColumnDefinition();
 		description.setName("description");

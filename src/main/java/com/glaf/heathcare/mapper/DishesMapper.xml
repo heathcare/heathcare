@@ -11,6 +11,8 @@
 			jdbcType="VARCHAR" />
 		<result property="nodeId" column="NODEID_" jdbcType="BIGINT" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="namePinyin" column="NAMEPINYIN_"
+			jdbcType="VARCHAR" />
 		<result property="description" column="DESCRIPTION_"
 			jdbcType="VARCHAR" />
 		<result property="heatEnergy" column="HEATENERGY_"
@@ -71,6 +73,9 @@
 			</if>
 			<if test="name != null">
 				,NAME_
+			</if>
+			<if test="namePinyin != null">
+				,NAMEPINYIN_
 			</if>
 			<if test="description != null">
 				,DESCRIPTION_
@@ -167,6 +172,9 @@
 			<if test="name != null">
 				,#{name, jdbcType=VARCHAR}
 			</if>
+			<if test="namePinyin != null">
+				,#{namePinyin, jdbcType=VARCHAR}
+			</if>
 			<if test="description != null">
 				,#{description, jdbcType=VARCHAR}
 			</if>
@@ -258,6 +266,7 @@
 		,TENANTID_
 		,NODEID_
 		,NAME_
+		,NAMEPINYIN_
 		,DESCRIPTION_
 		,HEATENERGY_
 		,PROTEIN_
@@ -295,23 +304,29 @@
 			,#{dishes.nodeId, jdbcType=BIGINT}
 			,#{dishes.name,
 			jdbcType=VARCHAR}
+			,#{dishes.namePinyin, jdbcType=VARCHAR}
 			,#{dishes.description, jdbcType=VARCHAR}
-			,#{dishes.heatEnergy, jdbcType=DOUBLE}
+			,#{dishes.heatEnergy,
+			jdbcType=DOUBLE}
 			,#{dishes.protein,
 			jdbcType=DOUBLE}
-			,#{dishes.fat, jdbcType=DOUBLE}
+			,#{dishes.fat,
+			jdbcType=DOUBLE}
 			,#{dishes.carbohydrate, jdbcType=DOUBLE}
 			,#{dishes.vitaminA,
 			jdbcType=DOUBLE}
-			,#{dishes.vitaminB1, jdbcType=DOUBLE}
+			,#{dishes.vitaminB1,
+			jdbcType=DOUBLE}
 			,#{dishes.vitaminB2, jdbcType=DOUBLE}
 			,#{dishes.vitaminB6,
 			jdbcType=DOUBLE}
-			,#{dishes.vitaminB12, jdbcType=DOUBLE}
+			,#{dishes.vitaminB12,
+			jdbcType=DOUBLE}
 			,#{dishes.vitaminC, jdbcType=DOUBLE}
 			,#{dishes.carotene,
 			jdbcType=DOUBLE}
-			,#{dishes.retinol, jdbcType=DOUBLE}
+			,#{dishes.retinol,
+			jdbcType=DOUBLE}
 			,#{dishes.nicotinicCid, jdbcType=DOUBLE}
 			,#{dishes.calcium,
 			jdbcType=DOUBLE}
@@ -346,6 +361,7 @@
 			,TENANTID_
 			,NODEID_
 			,NAME_
+			,NAMEPINYIN_
 			,DESCRIPTION_
 			,HEATENERGY_
 			,PROTEIN_
@@ -376,30 +392,38 @@
 			) values (
 			#{dishes.id, jdbcType=BIGINT}
 			,#{dishes.tenantId, jdbcType=VARCHAR}
-			,#{dishes.nodeId, jdbcType=BIGINT}
+			,#{dishes.nodeId,
+			jdbcType=BIGINT}
 			,#{dishes.name, jdbcType=VARCHAR}
-			,#{dishes.description, jdbcType=VARCHAR}
+			,#{dishes.namePinyin, jdbcType=VARCHAR}
+			,#{dishes.description,
+			jdbcType=VARCHAR}
 			,#{dishes.heatEnergy,
 			jdbcType=DOUBLE}
 			,#{dishes.protein, jdbcType=DOUBLE}
 			,#{dishes.fat,
 			jdbcType=DOUBLE}
 			,#{dishes.carbohydrate, jdbcType=DOUBLE}
-			,#{dishes.vitaminA, jdbcType=DOUBLE}
+			,#{dishes.vitaminA,
+			jdbcType=DOUBLE}
 			,#{dishes.vitaminB1,
 			jdbcType=DOUBLE}
 			,#{dishes.vitaminB2, jdbcType=DOUBLE}
-			,#{dishes.vitaminB6, jdbcType=DOUBLE}
+			,#{dishes.vitaminB6,
+			jdbcType=DOUBLE}
 			,#{dishes.vitaminB12,
 			jdbcType=DOUBLE}
 			,#{dishes.vitaminC, jdbcType=DOUBLE}
-			,#{dishes.carotene, jdbcType=DOUBLE}
+			,#{dishes.carotene,
+			jdbcType=DOUBLE}
 			,#{dishes.retinol,
 			jdbcType=DOUBLE}
 			,#{dishes.nicotinicCid, jdbcType=DOUBLE}
-			,#{dishes.calcium, jdbcType=DOUBLE}
+			,#{dishes.calcium,
+			jdbcType=DOUBLE}
 			,#{dishes.iron, jdbcType=DOUBLE}
-			,#{dishes.zinc, jdbcType=DOUBLE}
+			,#{dishes.zinc,
+			jdbcType=DOUBLE}
 			,#{dishes.iodine, jdbcType=DOUBLE}
 			,#{dishes.phosphorus, jdbcType=DOUBLE}
 			,#{dishes.sortNo,
@@ -429,6 +453,9 @@
 			</if>
 			<if test="name != null">
 				NAME_ = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="namePinyin != null">
+				NAMEPINYIN_ = #{namePinyin, jdbcType=VARCHAR},
 			</if>
 			<if test="description != null">
 				DESCRIPTION_ = #{description, jdbcType=VARCHAR},
@@ -578,6 +605,11 @@
 
 			<if test="nameLike != null and nameLike != '' ">
 				and E.NAME_ like #{nameLike}
+			</if>
+
+			<if test="namePinyinLike != null and namePinyinLike != '' ">
+				and ( E.NAME_ like #{namePinyinLike} or E.NAMEPINYIN_
+				like #{namePinyinLike} )
 			</if>
 
 			<if test="sysFlag != null and sysFlag != '' ">
