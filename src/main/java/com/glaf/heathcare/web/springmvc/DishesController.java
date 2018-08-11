@@ -240,7 +240,7 @@ public class DishesController {
 		}
 
 		int start = 0;
-		int limit = 10;
+		int limit = 100;
 		String orderName = null;
 		String order = null;
 

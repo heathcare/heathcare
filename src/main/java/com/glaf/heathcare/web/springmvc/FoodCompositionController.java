@@ -276,7 +276,7 @@ public class FoodCompositionController {
 		}
 
 		int start = 0;
-		int limit = 10;
+		int limit = 100;
 		String orderName = null;
 		String order = null;
 
@@ -291,7 +291,7 @@ public class FoodCompositionController {
 		}
 
 		if (limit <= 0) {
-			limit = Paging.DEFAULT_PAGE_SIZE;
+			limit = 100;
 		}
 
 		JSONObject result = new JSONObject();
@@ -397,7 +397,7 @@ public class FoodCompositionController {
 		}
 
 		int start = 0;
-		int limit = 10;
+		int limit = 100;
 		String orderName = null;
 		String order = null;
 
@@ -412,7 +412,7 @@ public class FoodCompositionController {
 		}
 
 		if (limit <= 0) {
-			limit = Paging.DEFAULT_PAGE_SIZE;
+			limit = 100;
 		}
 
 		JSONObject result = new JSONObject();
@@ -660,7 +660,7 @@ public class FoodCompositionController {
 			}
 			request.setAttribute("foodCategories", foodCategories);
 		}
-		
+
 		List<String> charList = new ArrayList<String>();
 		for (int i = 65; i < 91; i++) {
 			charList.add("" + (char) i);
@@ -711,7 +711,7 @@ public class FoodCompositionController {
 			}
 			request.setAttribute("foodCategories", foodCategories);
 		}
-		
+
 		List<String> charList = new ArrayList<String>();
 		for (int i = 65; i < 91; i++) {
 			charList.add("" + (char) i);
