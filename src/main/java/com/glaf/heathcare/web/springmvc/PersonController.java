@@ -19,6 +19,7 @@
 package com.glaf.heathcare.web.springmvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -328,12 +329,19 @@ public class PersonController {
 		query.setActorId(loginContext.getActorId());
 		query.setLoginContext(loginContext);
 		query.deleteFlag(0);
+		query.tenantId(loginContext.getTenantId());
 
-		if (!loginContext.isSystemAdministrator()) {
-			query.tenantId(loginContext.getTenantId());
-			if (!loginContext.hasPermission("TenantAdmin", "or")) {
-				query.gradeIds(loginContext.getGradeIds());
+		if (loginContext.getRoles().contains("TenantAdmin") || loginContext.getRoles().contains("HealthPhysician")) {
+			List<GradeInfo> grades = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
+			if (grades != null && !grades.isEmpty()) {
+				List<String> gradeIds = new ArrayList<String>();
+				for (GradeInfo grade : grades) {
+					gradeIds.add(grade.getId());
+				}
+				query.gradeIds(gradeIds);
 			}
+		} else {
+			query.gradeIds(loginContext.getGradeIds());
 		}
 
 		String nameLike = request.getParameter("nameLike_enc");
