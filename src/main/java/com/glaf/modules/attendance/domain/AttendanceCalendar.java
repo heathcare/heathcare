@@ -51,7 +51,7 @@ public class AttendanceCalendar implements Serializable, JSONable {
 	protected String tenantId;
 
 	/**
-	 * 1日出勤状态
+	 * 1日出勤状态（0-上班、 1-休息）
 	 */
 	@Column(name = "STATUS1_")
 	protected int status1;

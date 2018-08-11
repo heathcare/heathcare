@@ -142,7 +142,7 @@
 			jQuery.ajax({
 				   type: "POST",
 				   url: '${contextPath}/heathcare/gradeInfo/delete?id='+id,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -400,7 +400,7 @@
 			jQuery.ajax({
 				   type: "POST",
 				   url: '${contextPath}/heathcare/gradeInfo/delete?ids='+str,
-				   dataType:  'json',
+				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
 				   },
@@ -449,7 +449,7 @@
 	    jQuery.ajax({
 			type: "POST",
 			url:  url,
-			dataType:  'json',
+			dataType: 'json',
 			error: function(data){
 				alert('服务器处理错误！');
 			},
@@ -505,6 +505,29 @@
 	    }
 	}
 
+	function upgrade(){
+		if(confirm("升班后不能自动降级，确定升班吗？")){
+			jQuery.ajax({
+				   type: "POST",
+				   url: '${contextPath}/heathcare/gradeAdjust/upgrade',
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					        jQuery('#mydatagrid').datagrid('reload');
+					   } 
+				   }
+			 });
+		}
+	}
+
 </script>
 </head>
 <body style="margin:1px;">  
@@ -522,6 +545,10 @@
 		   onclick="javascript:editSelected();">修改</a>  
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 		   onclick="javascript:deleteSelections();">删除</a> 
+		<#if grade_upgrade == true>
+          <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sort-asc'"
+		   onclick="javascript:upgrade();">升班</a> 
+		</#if>
 		</#if>
 
 		<#if privilege_admin == true && gradeAdminPrivilege == true>

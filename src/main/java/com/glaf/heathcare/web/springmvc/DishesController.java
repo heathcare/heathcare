@@ -205,6 +205,10 @@ public class DishesController {
 
 		String sysFlag = request.getParameter("sysFlag");
 
+		if (StringUtils.isEmpty(sysFlag)) {
+			sysFlag = "Y";
+		}
+
 		if (StringUtils.equals(sysFlag, "N")) {
 			if (loginContext.isSystemAdministrator()) {
 				query.createBy(loginContext.getActorId());

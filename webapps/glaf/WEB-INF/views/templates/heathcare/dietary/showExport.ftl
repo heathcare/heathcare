@@ -190,6 +190,65 @@
         window.open(link);
 	}
 
+
+	function addDishes(id){
+		var link = '${contextPath}/heathcare/dietary/showAddDishes?oDietaryId='+id;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "增加菜肴",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['1280px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});
+	}
+
+	function changeDishes(id){
+		var link = '${contextPath}/heathcare/dietary/showChangeDishes?oDietaryId='+id;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "更换菜肴",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['1280px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});
+	}
+
+	function removeDishes(id){
+	   if(confirm("数据删除后不能恢复，确定删除吗？")){
+		  var link = '${contextPath}/heathcare/dietary/delete?id='+id;
+	      jQuery.ajax({
+				   type: "POST",
+				   url: link,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					       window.location.reload();
+					   }
+				   }
+			 });
+	   }
+	}
+
 </script>
 </head>
 <body style="margin:5px;">
@@ -296,6 +355,17 @@
 			  <tr>
 				<td valign="top" width="40%">
 				    <span class="dietary_title" onclick="javascript:editItems('${r1.dietary.id}');">${r1.name}</span>
+					<#if canChangeDishes == true && r1.name?exists>
+				      <br>
+					  <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				                 onclick="javascript:addDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				                 onclick="javascript:removeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/arrow_switch.png" title="点击更换菜肴"
+				                 onclick="javascript:changeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				    </#if>
 				</td>
 				<td valign="top" width="60%">
 					<table>
@@ -332,6 +402,17 @@
 			  <tr>
 				<td valign="top" width="40%">
 				    <span class="dietary_title" onclick="javascript:editItems('${r1.dietary.id}');">${r1.name}</span>
+					<#if canChangeDishes == true && r1.name?exists>
+				      <br>
+					  <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				                 onclick="javascript:addDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				                 onclick="javascript:removeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/arrow_switch.png" title="点击更换菜肴"
+				                 onclick="javascript:changeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				    </#if>
 				</td>
 				<td valign="top" width="60%">
 					<table>
@@ -368,6 +449,17 @@
 			  <tr>
 				<td valign="top" width="40%">
 				    <span class="dietary_title" onclick="javascript:editItems('${r1.dietary.id}');">${r1.name}</span>
+					<#if canChangeDishes == true && r1.name?exists>
+				      <br>
+					  <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				                 onclick="javascript:addDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				                 onclick="javascript:removeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/arrow_switch.png" title="点击更换菜肴"
+				                 onclick="javascript:changeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				    </#if>
 				</td>
 				<td valign="top" width="60%">
 					<table>
@@ -404,6 +496,17 @@
 			  <tr>
 				<td valign="top" width="40%">
 				    <span class="dietary_title" onclick="javascript:editItems('${r1.dietary.id}');">${r1.name}</span>
+					<#if canChangeDishes == true && r1.name?exists>
+				      <br>
+					  <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				                 onclick="javascript:addDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				                 onclick="javascript:removeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/arrow_switch.png" title="点击更换菜肴"
+				                 onclick="javascript:changeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				    </#if>
 				</td>
 				<td valign="top" width="60%">
 					<table>
@@ -440,6 +543,17 @@
 			  <tr>
 				<td valign="top" width="40%">
 				    <span class="dietary_title" onclick="javascript:editItems('${r1.dietary.id}');">${r1.name}</span>
+					<#if canChangeDishes == true && r1.name?exists>
+				      <br>
+					  <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				                 onclick="javascript:addDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				                 onclick="javascript:removeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+					  &nbsp;
+					  <span><img src="${contextPath}/static/images/arrow_switch.png" title="点击更换菜肴"
+				                 onclick="javascript:changeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				    </#if>
 				</td>
 				<td valign="top" width="60%">
 					<table>

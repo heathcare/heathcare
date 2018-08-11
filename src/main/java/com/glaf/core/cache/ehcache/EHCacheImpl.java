@@ -65,6 +65,7 @@ public class EHCacheImpl implements Cache {
 			String region = iterator.next();
 			try {
 				getCache(region).removeAll();
+				cacheConcurrentMap.remove(region);
 			} catch (Exception ex) {
 			}
 		}
@@ -73,6 +74,9 @@ public class EHCacheImpl implements Cache {
 	public void clear(String region) {
 		try {
 			getCache(region).removeAll();
+			cacheConcurrentMap.remove(region);
+			logger.debug("------------------------" + region + " clear --------------------");
+			logger.debug("------------------------------------------------------------------");
 		} catch (ClassCastException e) {
 			throw new CacheException(e);
 		} catch (IllegalStateException e) {

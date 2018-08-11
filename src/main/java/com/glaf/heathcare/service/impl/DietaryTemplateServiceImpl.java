@@ -38,27 +38,36 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
 import com.glaf.base.modules.sys.model.Dictory;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
+
 import com.glaf.core.cache.CacheFactory;
 import com.glaf.core.config.SystemConfig;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
 import com.glaf.core.jdbc.DBConnectionFactory;
+import com.glaf.core.security.Authentication;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DBUtils;
+
+import com.glaf.heathcare.domain.DietaryCategory;
 import com.glaf.heathcare.domain.DietaryItem;
 import com.glaf.heathcare.domain.DietaryTemplate;
+import com.glaf.heathcare.domain.Dishes;
+import com.glaf.heathcare.domain.DishesItem;
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.mapper.DietaryItemMapper;
 import com.glaf.heathcare.mapper.DietaryTemplateMapper;
 import com.glaf.heathcare.query.DietaryItemQuery;
 import com.glaf.heathcare.query.DietaryTemplateQuery;
 import com.glaf.heathcare.query.FoodCompositionQuery;
+import com.glaf.heathcare.service.DietaryCategoryService;
 import com.glaf.heathcare.service.DietaryItemService;
 import com.glaf.heathcare.service.DietaryTemplateService;
+import com.glaf.heathcare.service.DishesService;
 import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.util.DietaryTemplateJsonFactory;
 
@@ -81,14 +90,146 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 
 	protected DietaryTemplateMapper dietaryTemplateMapper;
 
-	protected FoodCompositionService foodCompositionService;
+	protected DietaryCategoryService dietaryCategoryService;
+
+	protected DishesService dishesService;
 
 	protected DictoryService dictoryService;
+
+	protected FoodCompositionService foodCompositionService;
 
 	protected TenantConfigService tenantConfigService;
 
 	public DietaryTemplateServiceImpl() {
 
+	}
+
+	/**
+	 * 增加菜肴到食谱模板
+	 * 
+	 * @param templateId
+	 * @param dishesId
+	 */
+	@Transactional
+	public void addDishes(String tenantId, long templateId, long dishesId) {
+		Dishes dishes = dishesService.getDishes(dishesId);
+		DietaryTemplate dietaryTemplate = this.getDietaryTemplate(templateId);
+		if (dietaryTemplate != null && dishes != null && dishes.getItems() != null && !dishes.getItems().isEmpty()) {
+			dietaryTemplate.setId(idGenerator.nextId("HEALTH_DIETARY_TEMPLATE"));
+			dietaryTemplate.setName(dishes.getName());
+			dietaryTemplate.setDescription(dishes.getDescription());
+			long typeId = 0;
+			int fullday = 0;
+			if (dietaryTemplate.getItems() != null && !dietaryTemplate.getItems().isEmpty()) {
+				typeId = dietaryTemplate.getItems().get(0).getTypeId();
+				fullday = dietaryTemplate.getItems().get(0).getFullDay();
+			}
+			logger.debug("fullday:" + fullday);
+			List<DietaryItem> items = new ArrayList<DietaryItem>();
+			for (DishesItem item : dishes.getItems()) {
+				DietaryItem model = new DietaryItem();
+				model.setId(idGenerator.nextId("HEALTH_DIETARY_ITEM"));
+				model.setTemplateId(dietaryTemplate.getId());
+				model.setCreateBy(Authentication.getAuthenticatedActorId());
+				model.setCreateTime(new Date());
+				model.setDescription(item.getDescription());
+				model.setFoodId(item.getFoodId());
+				model.setFoodName(item.getName());
+				model.setName(item.getName());
+				model.setFullDay(fullday);
+				model.setQuantity(item.getQuantity());
+				model.setTypeId(typeId);
+				model.setUnit("g");
+				model.setLastModified(System.currentTimeMillis());
+				items.add(model);
+				dietaryItemMapper.insertDietaryItem(model);
+			}
+
+			List<Long> foodIds = new ArrayList<Long>();
+			for (DietaryItem item : items) {
+				if (!foodIds.contains(item.getFoodId())) {
+					foodIds.add(item.getFoodId());
+				}
+			}
+
+			FoodCompositionQuery query3 = new FoodCompositionQuery();
+			query3.setFoodIds(foodIds);
+			List<FoodComposition> foods = foodCompositionService.list(query3);// 获取食物成分
+			Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
+			for (FoodComposition food : foods) {
+				foodMap.put(food.getId(), food);
+			}
+
+			dietaryTemplate.setHeatEnergy(0);
+			dietaryTemplate.setProtein(0);
+			dietaryTemplate.setFat(0);
+			dietaryTemplate.setCarbohydrate(0);
+			dietaryTemplate.setVitaminA(0);
+			dietaryTemplate.setVitaminB1(0);
+			dietaryTemplate.setVitaminB2(0);
+			dietaryTemplate.setVitaminB6(0);
+			dietaryTemplate.setVitaminB12(0);
+			dietaryTemplate.setVitaminC(0);
+			dietaryTemplate.setCarotene(0);
+			dietaryTemplate.setRetinol(0);
+			dietaryTemplate.setNicotinicCid(0);
+			dietaryTemplate.setCalcium(0);
+			dietaryTemplate.setIron(0);
+			dietaryTemplate.setZinc(0);
+			dietaryTemplate.setIodine(0);
+			dietaryTemplate.setPhosphorus(0);
+
+			for (DietaryItem item : items) {
+				FoodComposition food = foodMap.get(item.getFoodId());
+				/**
+				 * 调味品不计入营养成分
+				 */
+				if (food.getNodeId() == 4419) {
+					continue;
+				}
+				double quantity = item.getQuantity();
+				// double radical = food.getRadical();
+				double realQuantity = 0;
+				// if (radical < 100 && radical > 0) {
+				/**
+				 * 计算每一份的实际量
+				 */
+				// realQuantity = quantity * (radical / 100);
+				// } else {
+				realQuantity = quantity;
+				// }
+				double factor = realQuantity / 100;// 转换成100g为标准
+				dietaryTemplate.setHeatEnergy(dietaryTemplate.getHeatEnergy() + food.getHeatEnergy() * factor);// 累加计算
+				dietaryTemplate.setProtein(dietaryTemplate.getProtein() + food.getProtein() * factor);// 累加计算
+				dietaryTemplate.setFat(dietaryTemplate.getFat() + food.getFat() * factor);// 累加计算
+				dietaryTemplate.setCarbohydrate(dietaryTemplate.getCarbohydrate() + food.getCarbohydrate() * factor);// 累加计算
+				dietaryTemplate.setVitaminA(dietaryTemplate.getVitaminA() + food.getVitaminA() * factor);// 累加计算
+				dietaryTemplate.setVitaminB1(dietaryTemplate.getVitaminB1() + food.getVitaminB1() * factor);// 累加计算
+				dietaryTemplate.setVitaminB2(dietaryTemplate.getVitaminB2() + food.getVitaminB2() * factor);// 累加计算
+				dietaryTemplate.setVitaminB6(dietaryTemplate.getVitaminB6() + food.getVitaminB6() * factor);// 累加计算
+				dietaryTemplate.setVitaminB12(dietaryTemplate.getVitaminB12() + food.getVitaminB12() * factor);// 累加计算
+				dietaryTemplate.setVitaminC(dietaryTemplate.getVitaminC() + food.getVitaminC() * factor);// 累加计算
+				dietaryTemplate.setCarotene(dietaryTemplate.getCarotene() + food.getCarotene() * factor);// 累加计算
+				dietaryTemplate.setRetinol(dietaryTemplate.getRetinol() + food.getRetinol() * factor);// 累加计算
+				dietaryTemplate.setNicotinicCid(dietaryTemplate.getNicotinicCid() + food.getNicotinicCid() * factor);// 累加计算
+				dietaryTemplate.setCalcium(dietaryTemplate.getCalcium() + food.getCalcium() * factor);// 累加计算
+				dietaryTemplate.setIron(dietaryTemplate.getIron() + food.getIron() * factor);// 累加计算
+				dietaryTemplate.setZinc(dietaryTemplate.getZinc() + food.getZinc() * factor);// 累加计算
+				dietaryTemplate.setIodine(dietaryTemplate.getIodine() + food.getIodine() * factor);// 累加计算
+				dietaryTemplate.setPhosphorus(dietaryTemplate.getPhosphorus() + food.getPhosphorus() * factor);// 累加计算
+			}
+
+			dietaryTemplate.setCreateTime(new Date());
+			dietaryTemplate.setEnableFlag("Y");
+			dietaryTemplate.setTenantId(tenantId);
+			dietaryTemplate.setSortNo(dietaryTemplate.getSortNo() + 1);// 向后排
+			if (StringUtils.isNotEmpty(tenantId)) {
+				dietaryTemplate.setSysFlag("N");
+			}
+			dietaryTemplateMapper.insertDietaryTemplate(dietaryTemplate);
+
+			CacheFactory.clear("dietary_template");
+		}
 	}
 
 	@Transactional
@@ -195,6 +336,125 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 	}
 
 	/**
+	 * 用菜肴替换模板中的食谱
+	 * 
+	 * @param templateId
+	 * @param dishesId
+	 */
+	@Transactional
+	public void changeDishes(long templateId, long dishesId) {
+		Dishes dishes = dishesService.getDishes(dishesId);
+		if (dishes != null && dishes.getItems() != null && !dishes.getItems().isEmpty()) {
+			DietaryItemQuery query = new DietaryItemQuery();
+			query.templateId(templateId);
+			dietaryItemMapper.deleteDietaryItemsByTemplateId(query);
+			DietaryTemplate dietaryTemplate = this.getDietaryTemplate(templateId);
+			dietaryTemplate.setName(dishes.getName());
+			dietaryTemplate.setDescription(dishes.getDescription());
+			long typeId = 0;
+			if (dietaryTemplate.getItems() != null && !dietaryTemplate.getItems().isEmpty()) {
+				typeId = dietaryTemplate.getItems().get(0).getTypeId();
+			}
+			List<DietaryItem> items = new ArrayList<DietaryItem>();
+			for (DishesItem item : dishes.getItems()) {
+				DietaryItem model = new DietaryItem();
+				model.setId(idGenerator.nextId("HEALTH_DIETARY_ITEM"));
+				model.setCreateBy(Authentication.getAuthenticatedActorId());
+				model.setCreateTime(new Date());
+				model.setDescription(item.getDescription());
+				model.setFoodId(item.getFoodId());
+				model.setFoodName(item.getName());
+				model.setName(item.getName());
+				model.setQuantity(item.getQuantity());
+				model.setTypeId(typeId);
+				model.setTemplateId(templateId);
+				model.setTenantId(dietaryTemplate.getTenantId());
+				model.setUnit("g");
+				items.add(model);
+				dietaryItemMapper.insertDietaryItem(model);
+			}
+			List<Long> foodIds = new ArrayList<Long>();
+			for (DietaryItem item : items) {
+				if (!foodIds.contains(item.getFoodId())) {
+					foodIds.add(item.getFoodId());
+				}
+			}
+
+			FoodCompositionQuery query3 = new FoodCompositionQuery();
+			query3.setFoodIds(foodIds);
+			List<FoodComposition> foods = foodCompositionService.list(query3);// 获取食物成分
+			Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
+			for (FoodComposition food : foods) {
+				foodMap.put(food.getId(), food);
+			}
+
+			dietaryTemplate.setHeatEnergy(0);
+			dietaryTemplate.setProtein(0);
+			dietaryTemplate.setFat(0);
+			dietaryTemplate.setCarbohydrate(0);
+			dietaryTemplate.setVitaminA(0);
+			dietaryTemplate.setVitaminB1(0);
+			dietaryTemplate.setVitaminB2(0);
+			dietaryTemplate.setVitaminB6(0);
+			dietaryTemplate.setVitaminB12(0);
+			dietaryTemplate.setVitaminC(0);
+			dietaryTemplate.setCarotene(0);
+			dietaryTemplate.setRetinol(0);
+			dietaryTemplate.setNicotinicCid(0);
+			dietaryTemplate.setCalcium(0);
+			dietaryTemplate.setIron(0);
+			dietaryTemplate.setZinc(0);
+			dietaryTemplate.setIodine(0);
+			dietaryTemplate.setPhosphorus(0);
+
+			for (DietaryItem item : items) {
+				FoodComposition food = foodMap.get(item.getFoodId());
+				/**
+				 * 调味品不计入营养成分
+				 */
+				if (food.getNodeId() == 4419) {
+					continue;
+				}
+				double quantity = item.getQuantity();
+				// double radical = food.getRadical();
+				double realQuantity = 0;
+				// if (radical < 100 && radical > 0) {
+				/**
+				 * 计算每一份的实际量
+				 */
+				// realQuantity = quantity * (radical / 100);
+				// } else {
+				realQuantity = quantity;
+				// }
+				double factor = realQuantity / 100;// 转换成100g为标准
+				dietaryTemplate.setHeatEnergy(dietaryTemplate.getHeatEnergy() + food.getHeatEnergy() * factor);// 累加计算
+				dietaryTemplate.setProtein(dietaryTemplate.getProtein() + food.getProtein() * factor);// 累加计算
+				dietaryTemplate.setFat(dietaryTemplate.getFat() + food.getFat() * factor);// 累加计算
+				dietaryTemplate.setCarbohydrate(dietaryTemplate.getCarbohydrate() + food.getCarbohydrate() * factor);// 累加计算
+				dietaryTemplate.setVitaminA(dietaryTemplate.getVitaminA() + food.getVitaminA() * factor);// 累加计算
+				dietaryTemplate.setVitaminB1(dietaryTemplate.getVitaminB1() + food.getVitaminB1() * factor);// 累加计算
+				dietaryTemplate.setVitaminB2(dietaryTemplate.getVitaminB2() + food.getVitaminB2() * factor);// 累加计算
+				dietaryTemplate.setVitaminB6(dietaryTemplate.getVitaminB6() + food.getVitaminB6() * factor);// 累加计算
+				dietaryTemplate.setVitaminB12(dietaryTemplate.getVitaminB12() + food.getVitaminB12() * factor);// 累加计算
+				dietaryTemplate.setVitaminC(dietaryTemplate.getVitaminC() + food.getVitaminC() * factor);// 累加计算
+				dietaryTemplate.setCarotene(dietaryTemplate.getCarotene() + food.getCarotene() * factor);// 累加计算
+				dietaryTemplate.setRetinol(dietaryTemplate.getRetinol() + food.getRetinol() * factor);// 累加计算
+				dietaryTemplate.setNicotinicCid(dietaryTemplate.getNicotinicCid() + food.getNicotinicCid() * factor);// 累加计算
+				dietaryTemplate.setCalcium(dietaryTemplate.getCalcium() + food.getCalcium() * factor);// 累加计算
+				dietaryTemplate.setIron(dietaryTemplate.getIron() + food.getIron() * factor);// 累加计算
+				dietaryTemplate.setZinc(dietaryTemplate.getZinc() + food.getZinc() * factor);// 累加计算
+				dietaryTemplate.setIodine(dietaryTemplate.getIodine() + food.getIodine() * factor);// 累加计算
+				dietaryTemplate.setPhosphorus(dietaryTemplate.getPhosphorus() + food.getPhosphorus() * factor);// 累加计算
+			}
+
+			CacheFactory.clear("dietary_template");
+			dietaryTemplate.setUpdateTime(new Date());
+			dietaryTemplateMapper.updateDietaryTemplate(dietaryTemplate);
+
+		}
+	}
+
+	/**
 	 * 复制食谱模板
 	 * 
 	 * @param loginContext
@@ -224,6 +484,25 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 			int total = this.count(query);
 			logger.debug("total->" + total);
 			if (total == 0) {
+
+				DietaryCategory category = null;
+				if (suitNo < 1000) {
+					category = dietaryCategoryService.getSysDietaryCategory(suitNo);
+				} else {
+					category = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+				}
+				if (category != null) {
+					category.setId(0);
+					category.setCreateBy(loginContext.getActorId());
+					if (!loginContext.isSystemAdministrator()) {
+						category.setTenantId(loginContext.getTenantId());
+						category.setSysFlag("N");
+					}
+					category.setSuitNo(targetSuitNo);
+					dietaryCategoryService.save(category);
+					logger.debug("targetSuitNo:" + targetSuitNo);
+				}
+
 				List<Long> templateIds = new ArrayList<Long>();
 				for (DietaryTemplate dietaryTemplate : list) {
 					templateIds.add(dietaryTemplate.getId());
@@ -695,6 +974,11 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 		this.dictoryService = dictoryService;
 	}
 
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.dietaryCategoryService")
+	public void setDietaryCategoryService(DietaryCategoryService dietaryCategoryService) {
+		this.dietaryCategoryService = dietaryCategoryService;
+	}
+
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.DietaryItemMapper")
 	public void setDietaryItemMapper(DietaryItemMapper dietaryItemMapper) {
 		this.dietaryItemMapper = dietaryItemMapper;
@@ -708,6 +992,11 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.DietaryTemplateMapper")
 	public void setDietaryTemplateMapper(DietaryTemplateMapper dietaryTemplateMapper) {
 		this.dietaryTemplateMapper = dietaryTemplateMapper;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.dishesService")
+	public void setDishesService(DishesService dishesService) {
+		this.dishesService = dishesService;
 	}
 
 	@javax.annotation.Resource

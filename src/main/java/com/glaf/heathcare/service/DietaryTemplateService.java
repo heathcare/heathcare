@@ -41,6 +41,25 @@ public interface DietaryTemplateService {
 	void calculate(long templateId);
 
 	/**
+	 * 增加菜肴到食谱模板
+	 * 
+	 * @param tenantId
+	 * @param templateId
+	 * @param dishesId
+	 */
+	@Transactional
+	void addDishes(String tenantId, long templateId, long dishesId);
+
+	/**
+	 * 用菜肴替换模板中的食谱
+	 * 
+	 * @param templateId
+	 * @param dishesId
+	 */
+	@Transactional
+	void changeDishes(long templateId, long dishesId);
+
+	/**
 	 * 复制食谱模板
 	 * 
 	 * @param loginContext

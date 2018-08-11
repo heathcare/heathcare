@@ -44,8 +44,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.Dictory;
+import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.DictoryService;
+import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.base.utils.ContextUtil;
 import com.glaf.core.base.BaseItem;
@@ -113,6 +115,8 @@ public class DietaryController {
 	protected GoodsPurchasePlanService goodsPurchasePlanService;
 
 	protected PersonInfoService personInfoService;
+
+	protected SysTreeService sysTreeService;
 
 	protected TenantConfigService tenantConfigService;
 
@@ -208,6 +212,25 @@ public class DietaryController {
 					ex.printStackTrace();
 					logger.error(ex);
 				}
+			}
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/addDishes")
+	public byte[] addDishes(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug("params:" + params);
+		long dietaryId = RequestUtils.getLong(request, "oDietaryId");
+		long dishesId = RequestUtils.getLong(request, "dishesId");
+		if (dietaryId > 0 && dishesId > 0) {
+			Dietary dietary = dietaryService.getDietary(loginContext.getTenantId(), dietaryId);
+			if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietary.getTenantId(), loginContext.getTenantId())) {
+				dietaryService.addDishes(dietary.getTenantId(), dietaryId, dishesId);
+				return ResponseUtils.responseResult(true);
 			}
 		}
 		return ResponseUtils.responseResult(false);
@@ -563,6 +586,25 @@ public class DietaryController {
 				}
 			} else {
 				return ResponseUtils.responseJsonResult(false, "任务处理中，请稍等！");
+			}
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/changeDishes")
+	public byte[] changeDishes(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug("params:" + params);
+		long dietaryId = RequestUtils.getLong(request, "oDietaryId");
+		long dishesId = RequestUtils.getLong(request, "dishesId");
+		if (dietaryId > 0 && dishesId > 0) {
+			Dietary dietary = dietaryService.getDietary(loginContext.getTenantId(), dietaryId);
+			if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietary.getTenantId(), loginContext.getTenantId())) {
+				dietaryService.changeDishes(loginContext.getTenantId(), dietaryId, dishesId);
+				return ResponseUtils.responseResult(true);
 			}
 		}
 		return ResponseUtils.responseResult(false);
@@ -1302,8 +1344,46 @@ public class DietaryController {
 	}
 
 	@javax.annotation.Resource
+	public void setSysTreeService(SysTreeService sysTreeService) {
+		this.sysTreeService = sysTreeService;
+	}
+
+	@javax.annotation.Resource
 	public void setTenantConfigService(TenantConfigService tenantConfigService) {
 		this.tenantConfigService = tenantConfigService;
+	}
+
+	/**
+	 * 显示增加菜肴页面
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 */
+	@RequestMapping("/showAddDishes")
+	public ModelAndView showAddDishes(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		long oDietaryId = RequestUtils.getLong(request, "oDietaryId");
+		request.setAttribute("canChangeDishes", false);
+		Dietary dietary = dietaryService.getDietary(loginContext.getTenantId(), oDietaryId);
+		if (dietary != null) {
+			request.setAttribute("dietary", dietary);
+			if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietary.getTenantId(), loginContext.getTenantId())) {
+				request.setAttribute("canChangeDishes", true);
+			}
+		}
+
+		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
+		request.setAttribute("categories", categories);
+
+		String x_view = ViewProperties.getString("dietary.showAddDishes");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/dietary/showAddDishes", modelMap);
 	}
 
 	@RequestMapping("/showAdjust")
@@ -1408,6 +1488,39 @@ public class DietaryController {
 		return new ModelAndView("/heathcare/dietary/showAdjust", modelMap);
 	}
 
+	/**
+	 * 显示更换菜肴页面
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 */
+	@RequestMapping("/showChangeDishes")
+	public ModelAndView showChangeDishes(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		long oDietaryId = RequestUtils.getLong(request, "oDietaryId");
+		request.setAttribute("canChangeDishes", false);
+		Dietary dietary = dietaryService.getDietary(loginContext.getTenantId(), oDietaryId);
+		if (dietary != null) {
+			request.setAttribute("dietary", dietary);
+			if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietary.getTenantId(), loginContext.getTenantId())) {
+				request.setAttribute("canChangeDishes", true);
+			}
+		}
+
+		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
+		request.setAttribute("categories", categories);
+
+		String x_view = ViewProperties.getString("dietary.showChangeDishes");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/dietary/showChangeDishes", modelMap);
+	}
+
 	@RequestMapping("/showPlanParam")
 	public ModelAndView showPlanParam(HttpServletRequest request, ModelMap modelMap) {
 		RequestUtils.setRequestParameterToAttribute(request);
@@ -1499,7 +1612,7 @@ public class DietaryController {
 		return ResponseUtils.responseJsonResult(false);
 	}
 
-	///heathcare/dietary/weekJson?year=2018&week=13
+	/// heathcare/dietary/weekJson?year=2018&week=13
 	@ResponseBody
 	@RequestMapping("/weekJson")
 	public byte[] weekJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -1521,5 +1634,4 @@ public class DietaryController {
 
 		return "[]".getBytes();
 	}
-
 }

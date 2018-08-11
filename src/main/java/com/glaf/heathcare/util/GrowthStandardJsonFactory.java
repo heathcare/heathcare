@@ -22,7 +22,6 @@ import com.alibaba.fastjson.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import com.glaf.core.util.DateUtils;
 import com.glaf.heathcare.domain.*;
 
 /**
@@ -116,12 +115,6 @@ public class GrowthStandardJsonFactory {
 		if (jsonObject.containsKey("type")) {
 			model.setType(jsonObject.getString("type"));
 		}
-		if (jsonObject.containsKey("createBy")) {
-			model.setCreateBy(jsonObject.getString("createBy"));
-		}
-		if (jsonObject.containsKey("createTime")) {
-			model.setCreateTime(jsonObject.getDate("createTime"));
-		}
 
 		return model;
 	}
@@ -173,14 +166,6 @@ public class GrowthStandardJsonFactory {
 		if (model.getType() != null) {
 			jsonObject.put("type", model.getType());
 		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getCreateTime() != null) {
-			jsonObject.put("createTime", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_date", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_datetime", DateUtils.getDateTime(model.getCreateTime()));
-		}
 		return jsonObject;
 	}
 
@@ -219,14 +204,6 @@ public class GrowthStandardJsonFactory {
 		}
 		if (model.getType() != null) {
 			jsonObject.put("type", model.getType());
-		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getCreateTime() != null) {
-			jsonObject.put("createTime", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_date", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_datetime", DateUtils.getDateTime(model.getCreateTime()));
 		}
 		return jsonObject;
 	}

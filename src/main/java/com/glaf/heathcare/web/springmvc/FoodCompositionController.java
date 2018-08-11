@@ -42,9 +42,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TreePermissionService;
-
+import com.glaf.core.config.SystemProperties;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
+import com.glaf.core.util.FileUtils;
 import com.glaf.core.util.Paging;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
@@ -139,6 +140,76 @@ public class FoodCompositionController {
 		}
 
 		return new ModelAndView("/heathcare/foodComposition/edit", modelMap);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genJS")
+	public byte[] genJS(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				FoodCompositionQuery query = new FoodCompositionQuery();
+				query.locked(0);
+				List<FoodComposition> list = foodCompositionService.list(query);
+				if (list != null && !list.isEmpty()) {
+					JSONArray array = new JSONArray();
+					if (list != null && !list.isEmpty()) {
+						for (FoodComposition model : list) {
+							JSONObject jsonObject = model.toJsonObject();
+							jsonObject.remove("tenantId");
+							jsonObject.remove("createBy");
+							jsonObject.remove("createTime");
+							jsonObject.remove("updateBy");
+							jsonObject.remove("updateTime");
+							array.add(jsonObject);
+						}
+					}
+					String filename = SystemProperties.getAppPath() + "/static/generate/js/foodComposition.js";
+					StringBuilder buff = new StringBuilder();
+					buff.append(" var foods = ").append(array.toJSONString()).append("; ");
+					FileUtils.save(filename, buff.toString().getBytes("UTF-8"));
+					return ResponseUtils.responseJsonResult(true);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genJSON")
+	public byte[] genJSON(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				FoodCompositionQuery query = new FoodCompositionQuery();
+				query.locked(0);
+				List<FoodComposition> list = foodCompositionService.list(query);
+				if (list != null && !list.isEmpty()) {
+					JSONArray array = new JSONArray();
+					if (list != null && !list.isEmpty()) {
+						for (FoodComposition model : list) {
+							JSONObject jsonObject = model.toJsonObject();
+							jsonObject.remove("tenantId");
+							jsonObject.remove("createBy");
+							jsonObject.remove("createTime");
+							jsonObject.remove("updateBy");
+							jsonObject.remove("updateTime");
+							array.add(jsonObject);
+						}
+					}
+					String filename = SystemProperties.getAppPath() + "/static/generate/json/foodComposition.json";
+					FileUtils.save(filename, array.toJSONString().getBytes("UTF-8"));
+					return ResponseUtils.responseJsonResult(true);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
 	}
 
 	@RequestMapping("/goodslist")
@@ -672,15 +743,19 @@ public class FoodCompositionController {
 					// 新增时名称也不能重复。
 					return ResponseUtils.responseJsonResult(false, tmp.getName() + "已经存在了。");
 				}
-				if (!StringUtils.equals(tmp.getCreateBy(), actorId)) {
-					return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+				if (!loginContext.isSystemAdministrator()) {
+					if (!StringUtils.equals(tmp.getCreateBy(), actorId)) {
+						return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+					}
 				}
 			}
 
-			if (StringUtils.isEmpty(loginContext.getTenantId()) && loginContext.getRoles().contains("Keyboarder")) {
-				List<Long> nodeIds = treePermissionService.getNodeIds(loginContext.getActorId(), "rw");
-				if (!nodeIds.contains(nodeId)) {
-					return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+			if (!loginContext.isSystemAdministrator()) {
+				if (StringUtils.isEmpty(loginContext.getTenantId()) && loginContext.getRoles().contains("Keyboarder")) {
+					List<Long> nodeIds = treePermissionService.getNodeIds(loginContext.getActorId(), "rw");
+					if (!nodeIds.contains(nodeId)) {
+						return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+					}
 				}
 			}
 
@@ -696,9 +771,11 @@ public class FoodCompositionController {
 					foodComposition.setTenantId(loginContext.getTenantId());
 				}
 			} else {
-				if (!(loginContext.isSystemAdministrator() || loginContext.getRoles().contains("Keyboarder"))) {
-					if (!StringUtils.equals(foodComposition.getCreateBy(), actorId)) {
-						return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+				if (!loginContext.isSystemAdministrator()) {
+					if (!(loginContext.getRoles().contains("Keyboarder"))) {
+						if (!StringUtils.equals(foodComposition.getCreateBy(), actorId)) {
+							return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+						}
 					}
 				}
 			}

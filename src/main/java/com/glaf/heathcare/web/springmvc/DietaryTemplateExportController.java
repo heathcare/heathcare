@@ -53,9 +53,7 @@ import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
 
-import com.glaf.core.config.Environment;
 import com.glaf.core.config.ViewProperties;
-import com.glaf.core.jdbc.QueryHelper;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.RequestUtils;
@@ -109,41 +107,30 @@ public class DietaryTemplateExportController {
 
 		int suitNo = RequestUtils.getInt(request, "suitNo");
 		String sysFlag = request.getParameter("sysFlag");
-		int targetSuitNo = 0;
 
-		StringBuilder sqlBuffer = new StringBuilder();
-		sqlBuffer.append(" select max(SUITNO_) from HEALTH_DIETARY_TEMPLATE where 1=1 ");
-		if (loginContext.isSystemAdministrator()) {
-			sysFlag = "Y";
-			sqlBuffer.append(" and SYSFLAG_ = 'Y' ");
-		} else {
-			// sysFlag = "N";
-			sqlBuffer.append(" and TENANTID_ = '").append(loginContext.getTenantId()).append("' ");
-		}
-
-		QueryHelper helper = new QueryHelper();
-		targetSuitNo = helper.getInt(Environment.DEFAULT_SYSTEM_NAME, sqlBuffer.toString(), params);
-		targetSuitNo = targetSuitNo + 1;
 		boolean result = false;
 		if (suitNo > 0) {
 			try {
+				int targetSuitNo = dietaryCategoryService.getMaxSuitNo(loginContext);
 				dietaryTemplateService.copyTemplates(loginContext, suitNo, sysFlag, targetSuitNo);
+
+				DietaryTemplateExportBean exportBean = new DietaryTemplateExportBean();
+				Map<String, Object> dataMap = exportBean.prepareData(loginContext, targetSuitNo, sysFlag, params);
+				Set<Entry<String, Object>> entrySet = dataMap.entrySet();
+				for (Entry<String, Object> entry : entrySet) {
+					String key = entry.getKey();
+					Object value = entry.getValue();
+					request.setAttribute(key, value);
+					// logger.debug("key=" + key);
+				}
 				result = true;
+				request.setAttribute("suitNo", targetSuitNo);
 			} catch (Exception ex) {
 				logger.error(ex);
 				result = false;
 			}
 			if (result) {
 				sysFlag = "N";
-			}
-			DietaryTemplateExportBean exportBean = new DietaryTemplateExportBean();
-			Map<String, Object> dataMap = exportBean.prepareData(loginContext, targetSuitNo, sysFlag, params);
-			Set<Entry<String, Object>> entrySet = dataMap.entrySet();
-			for (Entry<String, Object> entry : entrySet) {
-				String key = entry.getKey();
-				Object value = entry.getValue();
-				request.setAttribute(key, value);
-				// logger.debug("key=" + key);
 			}
 		}
 
@@ -160,10 +147,9 @@ public class DietaryTemplateExportController {
 			}
 		}
 
-		request.setAttribute("suitNo", targetSuitNo);
 		if (result) {
 			request.setAttribute("sysFlag", "N");
-			request.setAttribute("copy_msg", suitNo + "模板已经复制到第" + targetSuitNo + "套");
+			request.setAttribute("copy_msg", "模板已经复制成功。");
 		} else {
 			request.setAttribute("copy_msg", "复制失败，请稍候再试。");
 		}
@@ -352,6 +338,12 @@ public class DietaryTemplateExportController {
 		String sysFlag = request.getParameter("sysFlag");
 		if (suitNo > 0 && dayOfWeek > 0) {
 			DayDietaryTemplateExportBean exportBean = new DayDietaryTemplateExportBean();
+			if (typeId == 0) {
+				DietaryCategory category = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+				if (category != null) {
+					typeId = category.getTypeId();
+				}
+			}
 			Map<String, Object> dataMap = exportBean.prepareData(loginContext, suitNo, dayOfWeek, typeId, sysFlag,
 					params);
 			Set<Entry<String, Object>> entrySet = dataMap.entrySet();
@@ -391,6 +383,15 @@ public class DietaryTemplateExportController {
 				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
 				request.setAttribute("categories", categories);
 			}
+		}
+
+		request.setAttribute("canChangeDishes", false);
+
+		if (loginContext.isSystemAdministrator() && StringUtils.equals(sysFlag, "Y")) {
+			request.setAttribute("canChangeDishes", true);
+		} else if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+				&& StringUtils.equals(sysFlag, "N")) {
+			request.setAttribute("canChangeDishes", true);
 		}
 
 		String view = request.getParameter("view");
@@ -433,7 +434,9 @@ public class DietaryTemplateExportController {
 			}
 			if (dietaryCategory != null) {
 				typeId = dietaryCategory.getTypeId();
+				sysFlag = dietaryCategory.getSysFlag();
 				request.setAttribute("dietaryCategory", dietaryCategory);
+				request.setAttribute("dietary_template_subject", dietaryCategory.getName());
 			}
 		}
 
@@ -466,17 +469,21 @@ public class DietaryTemplateExportController {
 
 		DietaryTemplateCountExportBean exportBean = new DietaryTemplateCountExportBean();
 		try {
+			boolean dietary_nutrient = false;
 			Map<String, Object> dataMap = exportBean.prepareData(loginContext, sysFlag, suitNo, typeId);
 			Set<Entry<String, Object>> entrySet = dataMap.entrySet();
 			for (Entry<String, Object> entry : entrySet) {
 				String key = entry.getKey();
 				Object value = entry.getValue();
 				request.setAttribute("cnt_" + key, value);
-				logger.debug("key:" + key);
+				//logger.debug("key:" + key);
 			}
-			request.setAttribute("dietary_nutrient", true);
+			if (!dataMap.isEmpty()) {
+				dietary_nutrient = true;
+			}
+			request.setAttribute("dietary_nutrient", dietary_nutrient);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 			logger.error(ex);
 		}
 
@@ -517,6 +524,15 @@ public class DietaryTemplateExportController {
 				} catch (Exception ex) {
 				}
 			}
+		}
+
+		request.setAttribute("canChangeDishes", false);
+
+		if (loginContext.isSystemAdministrator() && StringUtils.equals(sysFlag, "Y")) {
+			request.setAttribute("canChangeDishes", true);
+		} else if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+				&& StringUtils.equals(sysFlag, "N")) {
+			request.setAttribute("canChangeDishes", true);
 		}
 
 		String view = request.getParameter("view");

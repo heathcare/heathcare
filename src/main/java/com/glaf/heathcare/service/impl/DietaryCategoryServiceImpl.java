@@ -156,6 +156,29 @@ public class DietaryCategoryServiceImpl implements DietaryCategoryService {
 		return rows;
 	}
 
+	public int getMaxSuitNo(LoginContext loginContext) {
+		int suitNo = 1001;
+		if (StringUtils.isNotEmpty(loginContext.getTenantId())) {
+			Integer x = dietaryCategoryMapper.getTenantMaxSuitNo(loginContext.getTenantId());
+			if (x != null) {
+				suitNo = x.intValue();
+				suitNo = suitNo + 1;
+			} else {
+				suitNo = 1001;
+			}
+		} else {
+			Integer x = dietaryCategoryMapper.getSysMaxSuitNo("Y");
+			if (x != null) {
+				suitNo = x.intValue();
+				suitNo = suitNo + 1;
+			}
+		}
+		if (suitNo == 0) {
+			suitNo = 1001;
+		}
+		return suitNo;
+	}
+
 	public List<DietaryCategory> getSysDietaryCategories() {
 		DietaryCategoryQuery query = new DietaryCategoryQuery();
 		query.sysFlag("Y");
@@ -186,7 +209,7 @@ public class DietaryCategoryServiceImpl implements DietaryCategoryService {
 	@Transactional
 	public void save(DietaryCategory dietaryCategory) {
 		if (dietaryCategory.getId() == 0) {
-			dietaryCategory.setId(idGenerator.nextId("HEALTH_DIETARY_CATEGORY"));
+			dietaryCategory.setId(idGenerator.nextId());
 			dietaryCategory.setCreateTime(new Date());
 			int suitNo = 1001;
 			if (StringUtils.isNotEmpty(dietaryCategory.getTenantId())) {

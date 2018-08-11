@@ -41,7 +41,7 @@ public class CaffeineCache implements com.glaf.core.cache.Cache {
 
 	protected int cacheSize = 50000;
 
-	protected int expireMinutes = 10;
+	protected int expireMinutes = 5;
 
 	public CaffeineCache() {
 
@@ -63,6 +63,9 @@ public class CaffeineCache implements com.glaf.core.cache.Cache {
 	public void clear(String region) {
 		getCache(region).invalidateAll();
 		getCache(region).cleanUp();
+		cacheConcurrentMap.remove(region);
+		logger.debug("------------------------" + region + " clear --------------------");
+		logger.debug("------------------------------------------------------------------");
 	}
 
 	public Object get(String key) {

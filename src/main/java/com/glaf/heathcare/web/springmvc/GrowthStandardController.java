@@ -46,7 +46,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-
+import com.glaf.core.config.SystemProperties;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.FileUtils;
@@ -153,6 +153,76 @@ public class GrowthStandardController {
 		}
 
 		return new ModelAndView("/heathcare/growthStandard/edit", modelMap);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genJS")
+	public byte[] genJS(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				GrowthStandardQuery query = new GrowthStandardQuery();
+				query.locked(0);
+				List<GrowthStandard> list = growthStandardService.list(query);
+				if (list != null && !list.isEmpty()) {
+					JSONArray array = new JSONArray();
+					if (list != null && !list.isEmpty()) {
+						for (GrowthStandard model : list) {
+							JSONObject jsonObject = model.toJsonObject();
+							jsonObject.remove("tenantId");
+							jsonObject.remove("createBy");
+							jsonObject.remove("createTime");
+							jsonObject.remove("updateBy");
+							jsonObject.remove("updateTime");
+							array.add(jsonObject);
+						}
+					}
+					String filename = SystemProperties.getAppPath() + "/static/generate/js/growthStandard.js";
+					StringBuilder buff = new StringBuilder();
+					buff.append(" var foods = ").append(array.toJSONString()).append("; ");
+					FileUtils.save(filename, buff.toString().getBytes("UTF-8"));
+					return ResponseUtils.responseJsonResult(true);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genJSON")
+	public byte[] genJSON(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				GrowthStandardQuery query = new GrowthStandardQuery();
+				query.locked(0);
+				List<GrowthStandard> list = growthStandardService.list(query);
+				if (list != null && !list.isEmpty()) {
+					JSONArray array = new JSONArray();
+					if (list != null && !list.isEmpty()) {
+						for (GrowthStandard model : list) {
+							JSONObject jsonObject = model.toJsonObject();
+							jsonObject.remove("tenantId");
+							jsonObject.remove("createBy");
+							jsonObject.remove("createTime");
+							jsonObject.remove("updateBy");
+							jsonObject.remove("updateTime");
+							array.add(jsonObject);
+						}
+					}
+					String filename = SystemProperties.getAppPath() + "/static/generate/json/growthStandard.json";
+					FileUtils.save(filename, array.toJSONString().getBytes("UTF-8"));
+					return ResponseUtils.responseJsonResult(true);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
 	}
 
 	@ResponseBody

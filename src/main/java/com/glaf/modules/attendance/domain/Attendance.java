@@ -69,7 +69,7 @@ public class Attendance implements Serializable, JSONable {
 	protected String name;
 
 	/**
-	 * 1日出勤情况
+	 * 1日出勤情况 （0-正常出勤、 1-迟到、2-请病假、3-请事假、4-其他假）
 	 */
 	@Column(name = "STATUS1_")
 	protected int status1;

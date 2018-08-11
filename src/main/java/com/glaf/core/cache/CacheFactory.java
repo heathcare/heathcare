@@ -84,10 +84,7 @@ public class CacheFactory {
 			cache = cacheMap.get(provider);
 		}
 		if (cache == null) {
-			if (StringUtils.equals(provider, "cacheonix")) {
-				String cacheClass = "com.glaf.core.cache.cacheonix.CacheonixCache";
-				cache = (Cache) ReflectUtils.instantiate(cacheClass);
-			} else if (StringUtils.equals(provider, "caffeine")) {
+			if (StringUtils.equals(provider, "caffeine")) {
 				String cacheClass = "com.glaf.core.cache.caffeine.CaffeineCache";
 				cache = (Cache) ReflectUtils.instantiate(cacheClass);
 			} else if (StringUtils.equals(provider, "ehcache")) {

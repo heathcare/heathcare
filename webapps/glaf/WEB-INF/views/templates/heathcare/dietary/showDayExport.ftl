@@ -137,6 +137,64 @@
         window.open(link);
 	}
 
+	function addDishes(id){
+		var link = '${contextPath}/heathcare/dietary/showAddDishes?oDietaryId='+id;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "增加菜肴",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['1280px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});
+	}
+
+	function changeDishes(id){
+		var link = '${contextPath}/heathcare/dietary/showChangeDishes?oDietaryId='+id;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "更换菜肴",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['1280px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});
+	}
+
+	function removeDishes(id){
+	   if(confirm("数据删除后不能恢复，确定删除吗？")){
+		  var link = '${contextPath}/heathcare/dietary/delete?id='+id;
+	      jQuery.ajax({
+				   type: "POST",
+				   url: link,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					       window.location.reload();
+					   }
+				   }
+			 });
+	   }
+	}
+
 </script>
 </head>
 <body style="margin-left:5px;">
@@ -225,8 +283,8 @@
 		  <td width="1050" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0'   >
 			  <tr>
-				<td  width="150">&nbsp;食谱&nbsp;</td>
-				<td  width="300">
+				<td width="150">&nbsp;食谱&nbsp;</td>
+				<td width="300">
 					<table>
 					<tr>
 					  <td align="left"  width="200">&nbsp;食物&nbsp;</td>
@@ -254,10 +312,21 @@
 			<table border='0' cellpadding='0' cellspacing='0'   >
 			  <#list breakfastList as r1>
 			  <tr>
-				<td  width="150">
+				<td width="150">
 				   <span class="dietary_title" onclick="javascript:editItems('${r1.dietary.id}');">${r1.name}</span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r1.dietary.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
-				<td  width="300">
+				<td width="300">
 					<table>
 					<#list r1.items as item1>
 					<tr>
@@ -293,10 +362,21 @@
 			<table border='0' cellpadding='0' cellspacing='0'  >
 			  <#list breakfastMidList as r2>
 			  <tr>
-				<td  width="150">
-				    <span class="dietary_title" onclick="javascript:editItems('${r2.dietary.id}');">${r2.name}</span>
+				<td width="150">
+				   <span class="dietary_title" onclick="javascript:editItems('${r2.dietary.id}');">${r2.name}</span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r2.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r2.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r2.dietary.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
-				<td  width="300">
+				<td width="300">
 					<table>
 					<#list r2.items as item2>
 					<tr>
@@ -369,10 +449,21 @@
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <#list lunchList as r3>
 			  <tr>
-				<td  width="150">
-				    <span class="dietary_title" onclick="javascript:editItems('${r3.dietary.id}');">${r3.name}</span>
+				<td width="150">
+				   <span class="dietary_title" onclick="javascript:editItems('${r3.dietary.id}');">${r3.name}</span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r3.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r3.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r3.dietary.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
-				<td  width="300">
+				<td width="300">
 					<table>
 					<#list r3.items as item3>
 					<tr>
@@ -408,10 +499,21 @@
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <#list snackList as r4>
 			  <tr>
-				<td  width="150">
-				    <span class="dietary_title" onclick="javascript:editItems('${r4.dietary.id}');">${r4.name}</span>
+				<td width="150">
+				   <span class="dietary_title" onclick="javascript:editItems('${r4.dietary.id}');">${r4.name}</span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r4.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r4.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r4.dietary.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
-				<td  width="300">
+				<td width="300">
 					<table>
 					<#list r4.items as item4>
 					<tr>
@@ -484,10 +586,21 @@
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <#list dinnerList as r5>
 			  <tr>
-				<td  width="150">
-				    <span class="dietary_title" onclick="javascript:editItems('${r5.dietary.id}');">${r5.name}</span>
+				<td width="150">
+				   <span class="dietary_title" onclick="javascript:editItems('${r5.dietary.id}');">${r5.name}</span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r5.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r5.dietary.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r5.dietary.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
-				<td  width="300">
+				<td width="300">
 					<table>
 					<#list r5.items as item5>
 					<tr>

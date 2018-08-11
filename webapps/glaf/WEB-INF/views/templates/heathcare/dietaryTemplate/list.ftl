@@ -23,7 +23,7 @@
 
    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
-				width:1850,
+				width:2150,
 				height:x_height,
 				fit:false,
 				fitColumns: true,
@@ -35,11 +35,11 @@
 				singleSelect: true,
 				idField: 'id',
 				columns:[[
-				        <#if sysFlag?exists && typeId?exists && suitNo?exists && dayOfWeek?exists>
+				        <#if sysFlag?exists && suitNo?exists && dayOfWeek?exists>
 				        {title:'选择',field: 'chk', width: 60, align: 'center', formatter: formatterKey},
 						</#if>
 				        {title:'序号', field:'startIndex', width:60, sortable:false},
-						{title:'名称',field:'name', width:180, align:"left"},
+						{title:'菜肴名称',field:'name', width:180, align:"left"},
 						{title:'餐点',field:'typeName', width:130, align:"center"},
 						{title:'日期',field:'dayOfWeekName', width:80, align:"center"},
 						{title:'热能(千卡)',field:'heatEnergy', width:90, align:"right", sortable:true},
@@ -58,7 +58,7 @@
 						{title:'锌(毫克)',field:'zinc', width:90, align:"right", sortable:true},
 						{title:'碘(毫克)',field:'iodine', width:90, align:"right", sortable:true},
 						{title:'磷(毫克)',field:'phosphorus', width:90, align:"right", sortable:true},
-						{title:'功能键',field:'funkey', width:150, align:"center", formatter: formatterKeys}
+						{title:'功能键',field:'funkey', width:200, align:"center", formatter: formatterKeys}
 				]],
 				rownumbers: false,
 				pagination: true,
@@ -83,7 +83,7 @@
 	}
 
    function formatterKeys(val, row){
-		var str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>&nbsp;<a href='javascript:foodDetail(\""+row.id+"\");'>构成项</a>";
+		var str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>&nbsp;<#if canChangeDishes == true><a href='javascript:changeDishes(\""+row.id+"\");'>更换</a>&nbsp;</#if><a href='javascript:foodDetail(\""+row.id+"\");'>构成项</a>";
 	    return str;
 	}
 	
@@ -156,6 +156,25 @@
             iframe: {src: link}
 		});
 	}
+
+    <#if canChangeDishes == true>
+	function changeDishes(id){
+		var link = '${contextPath}/heathcare/dietaryTemplate/showChangeDishes?oTemplateId='+id;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "更换菜肴",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['1280px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});
+	}
+	</#if>
 
 	function deleteRow(id){
 		if(confirm("数据删除后不能恢复，确定删除吗？")){
@@ -375,7 +394,23 @@
 	}
 
     function exportWin(){
-        var link = '${contextPath}/heathcare/dietaryTemplateExport/showExport';
+        var link = '${contextPath}/heathcare/dietaryTemplateExport/showExport?q=1';
+		var sysFlag = jQuery("#sysFlag").val();
+		if(sysFlag != ""){
+			link = link + "&sysFlag="+sysFlag;
+		}
+		var suitNo = jQuery("#suitNo").val();
+		if(suitNo != ""){
+			link = link + "&suitNo="+suitNo;
+		}
+		var dayOfWeek = jQuery("#dayOfWeek").val();
+		if(dayOfWeek != ""){
+			link = link + "&dayOfWeek="+dayOfWeek;
+		}
+		var typeId = jQuery("#typeId").val();
+		if(typeId != ""){
+			link = link + "&typeId="+typeId;
+		}
         var x=20;
         var y=20;
         if(is_ie) {
@@ -386,7 +421,23 @@
     }
 
 	function showDayExport(){
-        var link = '${contextPath}/heathcare/dietaryTemplateExport/showDayExport';
+        var link = '${contextPath}/heathcare/dietaryTemplateExport/showDayExport?q=1';
+		var sysFlag = jQuery("#sysFlag").val();
+		if(sysFlag != ""){
+			link = link + "&sysFlag="+sysFlag;
+		}
+		var suitNo = jQuery("#suitNo").val();
+		if(suitNo != ""){
+			link = link + "&suitNo="+suitNo;
+		}
+		var dayOfWeek = jQuery("#dayOfWeek").val();
+		if(dayOfWeek != ""){
+			link = link + "&dayOfWeek="+dayOfWeek;
+		}
+		var typeId = jQuery("#typeId").val();
+		if(typeId != ""){
+			link = link + "&typeId="+typeId;
+		}
         var x=20;
         var y=20;
         if(is_ie) {
@@ -433,6 +484,7 @@
    <div data-options="region:'north',split:false, border:true" style="height:78px" class="toolbar-backgroud"> 
     <div style="margin:4px;">
 		<form id="iForm" name="iForm" method="post" action="">
+			<input type="hidden" id="typeId" name="typeId" value="${typeId}">
 			<input type="hidden" id="elementId" name="elementId" value="${elementId}">
 			<input type="hidden" id="elementName" name="elementName" value="${elementName}">
 			<input type="hidden" id="selected" name="selected" value="${selected}">
@@ -451,7 +503,7 @@
 						   onclick="javascript:calSelected();">计算</a>
 						<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'"
 						   onclick="javascript:editDetail();">构成项</a> 
-						<#if sysFlag?exists && typeId?exists && suitNo?exists && dayOfWeek?exists>
+						<#if sysFlag?exists && suitNo?exists && dayOfWeek?exists>
 						<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sort'"
 						   onclick="javascript:sortSelections();">排序</a>
 						<button type="button" id="checkButton111" class="btn btnGrayMini" style="width: 60px" 

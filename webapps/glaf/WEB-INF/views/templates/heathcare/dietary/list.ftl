@@ -85,7 +85,7 @@
 		if(row.purchaseFlag == "Y"){
 			return "<a href='javascript:details(\""+row.id+"\");'><img src='${contextPath}/static/images/statistics.png' border='0'>构成项</a>";
 		}
-		var str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>&nbsp;<a href='javascript:calRow(\""+row.id+"\");'>计算</a>&nbsp;<a href='javascript:details(\""+row.id+"\");'><img src='${contextPath}/static/images/statistics.png' border='0'>组成</a>";
+		var str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>&nbsp;<a href='javascript:changeDishes(\""+row.id+"\");'>替换</a>&nbsp;<a href='javascript:details(\""+row.id+"\");'><img src='${contextPath}/static/images/statistics.png' border='0'>组成</a>";
 	    return str;
 	}
 
@@ -96,24 +96,23 @@
 		return "未处理";
 	}
  
+ 	function changeDishes(id){
+		var link = '${contextPath}/heathcare/dietary/showChangeDishes?oDietaryId='+id;
+		layer.open({
+		  type: 2,
+          maxmin: true,
+		  shadeClose: true,
+		  title: "更换菜肴",
+		  area: ['1280px', (jQuery(window).height() - 50) +'px'],
+		  shade: 0.8,
+		  fixed: false, //不固定
+		  shadeClose: true,
+		  content: [link, 'no']
+		});
+	}
+
    function details(dietaryId){
 	    var link = '${contextPath}/heathcare/dietaryItem/datalist?dietaryId='+dietaryId;
-		/*
-		jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "食物构成列表",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['820px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-		*/
-
 		layer.open({
 		  type: 2,
           maxmin: true,
@@ -125,26 +124,10 @@
 		  shadeClose: true,
 		  content: [link, 'no']
 		});
-	
 	}
 
 	function addNew(){
 	    var link="${contextPath}/heathcare/dietary/edit";
-		/*
-		jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "新增记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-		*/
 		layer.open({
 		  type: 2,
           maxmin: true,
@@ -167,27 +150,12 @@
 
 
 	function onMyRowClick(rowIndex, row){
-	    var link = '${contextPath}/heathcare/dietary/edit?id='+row.id;
-		/*
-	    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "编辑记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-		*/
+	    var link = '${contextPath}/heathcare/dietaryItem/datalist?dietaryId='+row.id;
 		layer.open({
 		  type: 2,
           maxmin: true,
 		  shadeClose: true,
-		  title: "编辑记录",
+		  title: "食物构成列表",
 		  area: ['820px', (jQuery(window).height() - 50) +'px'],
 		  shade: 0.8,
 		  fixed: false, //不固定
@@ -198,21 +166,6 @@
 
    function editRow(id){
 	    var link = '${contextPath}/heathcare/dietary/edit?id='+id;
-		/*
-	    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "编辑记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-		*/
 		layer.open({
 		  type: 2,
           maxmin: true,
@@ -274,21 +227,6 @@
 
 	function onRowClick(rowIndex, row){
 	    var link = '${contextPath}/heathcare/dietary/edit?id='+row.id;
-		/*
-	    jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "编辑记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-		*/
 		layer.open({
 		  type: 2,
           maxmin: true,
@@ -323,21 +261,6 @@
 	    var selected = jQuery('#mydatagrid').datagrid('getSelected');
 	    if (selected ){
 		  var link = '${contextPath}/heathcare/dietary/edit?id='+selected.id;
-		  /*
-		  jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "编辑记录",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['680px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		  });
-		  */
 		  layer.open({
 			  type: 2,
 			  maxmin: true,
@@ -361,21 +284,6 @@
 		var selected = jQuery('#mydatagrid').datagrid('getSelected');
 		if (selected ){
 		    var link='${contextPath}/heathcare/dietary/edit?readonly=true&id='+selected.id;
-			/*
-		    jQuery.layer({
-				type: 2,
-				maxmin: true,
-				shadeClose: true,
-				title: "编辑记录",
-				closeBtn: [0, true],
-				shade: [0.8, '#000'],
-				border: [10, 0.3, '#000'],
-				offset: ['20px',''],
-				fadeIn: 100,
-				area: ['680px', (jQuery(window).height() - 50) +'px'],
-				iframe: {src: link}
-		    });
-			*/
 			layer.open({
 			  type: 2,
 			  maxmin: true,
@@ -657,7 +565,7 @@
 				   onclick="javascript:makePlan();">制定食谱</a> -->
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_check'"
 				   onclick="javascript:exportWin();">批量添加</a>
-				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-calendar'"
 				   onclick="javascript:showExport();">一周食谱</a>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-list'"
 				   onclick="javascript:showDayExport();">每日食谱</a>

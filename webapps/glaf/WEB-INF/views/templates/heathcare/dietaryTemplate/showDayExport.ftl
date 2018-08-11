@@ -117,10 +117,68 @@
 				shade: [0.8, '#000'],
 				border: [10, 0.3, '#000'],
 				offset: ['20px',''],
-				fadeIn: 100,
+				fadeIn: 80,
 				area: ['880px', (jQuery(window).height() - 50) +'px'],
 				iframe: {src: link}
 		});
+	}
+
+	function addDishes(id){
+		var link = '${contextPath}/heathcare/dietaryTemplate/showAddDishes?oTemplateId='+id;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "增加菜肴",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['1280px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});
+	}
+
+	function changeDishes(id){
+		var link = '${contextPath}/heathcare/dietaryTemplate/showChangeDishes?oTemplateId='+id;
+	    jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "更换菜肴",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['1280px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		});
+	}
+
+	function removeDishes(id){
+	   if(confirm("数据删除后不能恢复，确定删除吗？")){
+		  var link = '${contextPath}/heathcare/dietaryTemplate/delete?id='+id;
+	      jQuery.ajax({
+				   type: "POST",
+				   url: link,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					       window.location.reload();
+					   }
+				   }
+			 });
+	   }
 	}
  
  	function exportNutrition(){
@@ -154,7 +212,7 @@
   <div data-options="region:'north', split:false, border:false" style="height:48px"> 
     <div class="toolbar-backgroud">
 	  <form id="iForm" name="iForm" method="post">
-	   <table width="100%" align="left">
+	   <table width="98%" align="left">
 		<tbody>
 		 <tr>
 		    <td width="15%" align="left">
@@ -229,11 +287,11 @@
    <#if dayRptModel?exists>
    <table width="100%" height="99%">
     <tr>
-    <td width="1080" valign="top">
-     <table width="1080" height="98%" cellpadding='1' cellspacing='1' class="table-border" nowrap>
+    <td width="1230" valign="top">
+     <table width="1190" height="98%"  cellpadding='1' cellspacing='1' class="table-border" nowrap>
 	  <tr>
-		<td colspan="6" align="center" width="100%"  class="table-content">
-		  <table border='0' cellpadding='0' cellspacing='0' width="100%">
+		<td colspan="10" align="center" width="80%"  class="table-content">
+		  <table border='0' cellpadding='0' cellspacing='0' width="80%">
 		   <tr>
 		     <td width="70%" align="center">
 		       <span class="x_y_title">  帯  量  食  谱  模  板 </span>
@@ -246,10 +304,10 @@
 		</td>
 	  </tr>
 	  <tr>
-		  <td width="80" class="table-content">
-		  &nbsp;餐别&nbsp;
+		  <td style="width:60px;" class="table-content">
+		   餐别 
 		  </td>
-		  <td width="1080" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0'   >
 			  <tr>
 				<td  width="180">&nbsp;食谱&nbsp;</td>
@@ -257,16 +315,18 @@
 					<table>
 					<tr>
 					  <td align="left"  width="200">&nbsp;食物&nbsp;</td>
-					  <td align="right" width="100">&nbsp;重量&nbsp;</td>
+					  <td align="right" width="50">用量</td>
 					</tr>
 					</table>
 				</td>
-				<td align="right" width="30">&nbsp;&nbsp;</td>
-				<td align="right" width="100">&nbsp;热能(kcal)&nbsp;</td>
-				<td align="right" width="100">&nbsp;碳水化合物(g)&nbsp;</td>
+				<td align="right" width="80">&nbsp;热能(kcal)&nbsp;</td>
+				<td align="right" width="120">&nbsp;碳水化合物(g)&nbsp;</td>
 				<td align="right" width="100">&nbsp;蛋白质(g)&nbsp;</td>
-				<td align="right" width="100">&nbsp;脂肪(g)&nbsp;</td>
-				<td align="right" width="100">&nbsp;钙(mg)&nbsp;</td>
+				<td align="right" width="80">&nbsp;脂肪(g)&nbsp;</td>
+				<td align="right" width="80">&nbsp;V-C(mg)&nbsp;</td>
+				<td align="right" width="80">&nbsp;钙(mg)&nbsp;</td>
+				<td align="right" width="80">&nbsp;铁(mg)&nbsp;</td>
+				<td align="right" width="80">&nbsp;锌(mg)&nbsp;</td>
 			  </tr>
 
 			</table>
@@ -274,25 +334,37 @@
         </tr>
 	  <#if breakfastList?exists>
 	    <tr>
-		  <td width="80" class="table-content">
-		  &nbsp;早餐&nbsp;<br>
+		  <td style="width:60px;" class="table-content">
+		  早餐
 		  </td>
-		  <td width="1080" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0'   >
 			  <#list breakfastList as r1>
 			  <tr>
 				<td  width="180">
 				   <span class="dietary_title" 
 					       onclick="javascript:editItems('${r1.dietaryTemplate.id}');">${r1.name}</span>&nbsp;
-				   <span><img src="${contextPath}/static/images/static.gif" 
+				   <br>
+				   <span><img src="${contextPath}/static/images/static.gif" title="点击查看菜肴构成"
 				        onclick="javascript:editItems('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
 				<td  width="250">
 					<table>
 					<#list r1.items as item1>
 					<tr>
 					  <td align="left"  width="200"><span class="dietary_item">${item1.name}</span></td>
-					  <td align="right" width="100">
+					  <td align="right" width="50">
 					   <#if item1.name?exists>
 						<input type="text" id="item_${item1.id}" name="myInput" value="${item1.quantity2}"
 						       onchange="javascript:modifyItem('${item1.id}');" size="3" class="xz_input">
@@ -302,12 +374,14 @@
 					</#list>
 					</table>
 				</td>
-				<td align="right" width="30">&nbsp;&nbsp;</td>
-				<td align="right" width="100">${r1.heatEnergy}</td>
-				<td align="right" width="100">${r1.carbohydrate}</td>
+				<td align="right" width="80">${r1.heatEnergy}</td>
+				<td align="right" width="120">${r1.carbohydrate}</td>
 				<td align="right" width="100">${r1.protein}</td>
-				<td align="right" width="100">${r1.fat}</td>
-				<td align="right" width="100">${r1.calcium}</td>
+				<td align="right" width="80">${r1.fat}</td>
+				<td align="right" width="80">${r1.vitaminC}</td>
+				<td align="right" width="80">${r1.calcium}</td>
+				<td align="right" width="80">${r1.iron}</td>
+				<td align="right" width="80">${r1.zinc}</td>
 			  </tr>
 			  </#list>
 			</table>
@@ -316,25 +390,37 @@
 	  </#if>
 	  <#if breakfastMidList?exists>
 	    <tr>
-		  <td class="table-content">
-		  &nbsp;早点&nbsp;
+		  <td class="table-content" style="width:60px;">
+		  早点
 		  </td>
-		  <td width="1080" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0'  >
 			  <#list breakfastMidList as r2>
 			  <tr>
 				<td  width="180">
                    <span class="dietary_title" 
 					       onclick="javascript:editItems('${r2.dietaryTemplate.id}');">${r2.name}</span>&nbsp;
-				   <span><img src="${contextPath}/static/images/static.gif" 
+				   <br>
+				   <span><img src="${contextPath}/static/images/static.gif" title="点击查看菜肴构成" 
 				        onclick="javascript:editItems('${r2.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r2.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
 				<td  width="250">
 					<table>
 					<#list r2.items as item2>
 					<tr>
 					  <td align="left"  width="200"><span class="dietary_item">${item2.name}</span></td>
-					  <td align="right" width="100">
+					  <td align="right" width="50">
 					   <#if item2.name?exists>
 						<input type="text" id="item_${item2.id}" name="myInput" value="${item2.quantity2}"
 						       onchange="javascript:modifyItem('${item2.id}');" size="3" class="xz_input">
@@ -344,12 +430,15 @@
 					</#list>
 					</table>
 				</td>
-				<td align="right" width="30">&nbsp;&nbsp;</td>
-				<td align="right" width="100">${r2.heatEnergy}</td>
-				<td align="right" width="100">${r2.carbohydrate}</td>
+				
+				<td align="right" width="80">${r2.heatEnergy}</td>
+				<td align="right" width="120">${r2.carbohydrate}</td>
 				<td align="right" width="100">${r2.protein}</td>
-				<td align="right" width="100">${r2.fat}</td>
-				<td align="right" width="100">${r2.calcium}</td>
+				<td align="right" width="80">${r2.fat}</td>
+				<td align="right" width="80">${r2.vitaminC}</td>
+				<td align="right" width="80">${r2.calcium}</td>
+				<td align="right" width="80">${r2.iron}</td>
+				<td align="right" width="80">${r2.zinc}</td>
 			  </tr>
 			  </#list>
 			</table>
@@ -358,21 +447,20 @@
 	  </#if>
 	  <#if momingTotal?exists>
 	  <tr>
-		  <td class="table-content">
-		   &nbsp;小计&nbsp;<br>
-           &nbsp;占比&nbsp;<br>
+		  <td class="table-content" style="width:60px;">
+		   小计<br>
+           占比<br>
 		  </td>
-		  <td width="1080" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
-				<td width="180"></td>
-				<td align="left" width="250">&nbsp;</td>
-				<td align="right" width="30">&nbsp;</td>
-				<td align="right" width="100">
+				<td width="200">&nbsp;</td>
+				<td align="left" width="280">&nbsp;</td>
+				<td align="right" width="80">
 				 ${momingTotal.heatEnergy}
                  <br>${momingTotalPercent.heatEnergy}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="120">
 				${momingTotal.carbohydrate}
                 <br>${momingTotalPercent.carbohydrate}%
 				</td>
@@ -380,13 +468,25 @@
 				${momingTotal.protein}
 				<br>${momingTotalPercent.protein}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
 				${momingTotal.fat}
 				<br>${momingTotalPercent.fat}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
+				${momingTotal.vitaminC}
+				<br>${momingTotalPercent.vitaminC}%
+				</td>
+				<td align="right" width="80">
 				${momingTotal.calcium}
 				<br>${momingTotalPercent.calcium}%
+				</td>
+				<td align="right" width="80">
+				${momingTotal.iron}
+				<br>${momingTotalPercent.iron}%
+				</td>
+				<td align="right" width="80">
+				${momingTotal.zinc}
+				<br>${momingTotalPercent.zinc}%
 				</td>
 			   </tr>
 			  </table>
@@ -395,25 +495,37 @@
 	  </#if>
 	  <#if lunchList?exists>
 	    <tr>
-		  <td class="table-content">
-		   &nbsp;午餐&nbsp;<br>
+		  <td class="table-content" style="width:60px;">
+		   午餐<br>
 		  </td>
-		  <td width="1050" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <#list lunchList as r3>
 			  <tr>
 				<td  width="180"> 
                    <span class="dietary_title" 
 					       onclick="javascript:editItems('${r3.dietaryTemplate.id}');">${r3.name}</span>&nbsp;
-				   <span><img src="${contextPath}/static/images/static.gif" 
+				   <br>
+				   <span><img src="${contextPath}/static/images/static.gif" title="点击查看菜肴构成" 
 				        onclick="javascript:editItems('${r3.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r3.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
 				<td  width="250">
 					<table>
 					<#list r3.items as item3>
 					<tr>
 					  <td align="left"  width="200"><span class="dietary_item">${item3.name}</span></td>
-					  <td align="right" width="100">
+					  <td align="right" width="50">
 					   <#if item3.name?exists>
 						<input type="text" id="item_${item3.id}" name="myInput" value="${item3.quantity2}"
 						       onchange="javascript:modifyItem('${item3.id}');" size="3" class="xz_input">
@@ -423,12 +535,14 @@
 					</#list>
 					</table>
 				</td>
-				<td align="right" width="30">&nbsp;&nbsp;</td>
-				<td align="right" width="100">${r3.heatEnergy}</td>
-				<td align="right" width="100">${r3.carbohydrate}</td>
+				<td align="right" width="80">${r3.heatEnergy}</td>
+				<td align="right" width="120">${r3.carbohydrate}</td>
 				<td align="right" width="100">${r3.protein}</td>
-				<td align="right" width="100">${r3.fat}</td>
-				<td align="right" width="100">${r3.calcium}</td>
+				<td align="right" width="80">${r3.fat}</td>
+				<td align="right" width="80">${r3.vitaminC}</td>
+				<td align="right" width="80">${r3.calcium}</td>
+				<td align="right" width="80">${r3.iron}</td>
+				<td align="right" width="80">${r3.zinc}</td>
 			  </tr>
 			  </#list>
 			</table>
@@ -437,25 +551,37 @@
 	  </#if>
 	  <#if snackList?exists>
 	    <tr>
-		  <td class="table-content">
-		   &nbsp;午点&nbsp;<br>
+		  <td class="table-content" style="width:60px;">
+		   午点<br>
 		  </td>
-		  <td width="1050" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <#list snackList as r4>
 			  <tr>
 				<td  width="180">
                    <span class="dietary_title" 
 					       onclick="javascript:editItems('${r4.dietaryTemplate.id}');">${r4.name}</span>&nbsp;
-				   <span><img src="${contextPath}/static/images/static.gif" 
+				   <br>
+				   <span><img src="${contextPath}/static/images/static.gif" title="点击查看菜肴构成" 
 				        onclick="javascript:editItems('${r4.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r4.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
 				<td  width="250">
 					<table>
 					<#list r4.items as item4>
 					<tr>
 					  <td align="left"  width="200"><span class="dietary_item">${item4.name}</span></td>
-					  <td align="right" width="100">
+					  <td align="right" width="50">
 					   <#if item4.name?exists>
 						<input type="text" id="item_${item4.id}" name="myInput" value="${item4.quantity2}"
 						       onchange="javascript:modifyItem('${item4.id}');" size="3" class="xz_input">
@@ -465,12 +591,15 @@
 					</#list>
 					</table>
 				</td>
-				<td align="right" width="30">&nbsp;&nbsp;</td>
-				<td align="right" width="100">${r4.heatEnergy}</td>
-				<td align="right" width="100">${r4.carbohydrate}</td>
+				
+				<td align="right" width="80">${r4.heatEnergy}</td>
+				<td align="right" width="120">${r4.carbohydrate}</td>
 				<td align="right" width="100">${r4.protein}</td>
-				<td align="right" width="100">${r4.fat}</td>
-				<td align="right" width="100">${r4.calcium}</td>
+				<td align="right" width="80">${r4.fat}</td>
+				<td align="right" width="80">${r4.vitaminC}</td>
+				<td align="right" width="80">${r4.calcium}</td>
+				<td align="right" width="80">${r4.iron}</td>
+				<td align="right" width="80">${r4.zinc}</td>
 			  </tr>
 			  </#list>
 			</table>
@@ -479,21 +608,20 @@
 	  </#if>
       <#if noonTotal?exists>
 	  <tr>
-		  <td class="table-content">
-		   &nbsp;小计&nbsp;<br>
-           &nbsp;占比&nbsp;<br>
+		  <td class="table-content" style="width:60px;">
+		   小计<br>
+           占比<br>
 		  </td>
-		  <td width="1050" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
-				<td width="180"></td>
-				<td align="left" width="250">&nbsp;</td>
-				<td align="right" width="30">&nbsp;</td>
-				<td align="right" width="100">
+				<td width="200">&nbsp;</td>
+				<td align="left" width="280">&nbsp;</td>
+				<td align="right" width="80">
 				 ${noonTotal.heatEnergy}
                  <br>${noonTotalPercent.heatEnergy}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="120">
 				${noonTotal.carbohydrate}
                 <br>${noonTotalPercent.carbohydrate}%
 				</td>
@@ -501,13 +629,25 @@
 				${noonTotal.protein}
 				<br>${noonTotalPercent.protein}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
 				${noonTotal.fat}
 				<br>${noonTotalPercent.fat}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
+				${noonTotal.vitaminC}
+				<br>${noonTotalPercent.vitaminC}%
+				</td>
+				<td align="right" width="80">
 				${noonTotal.calcium}
 				<br>${noonTotalPercent.calcium}%
+				</td>
+				<td align="right" width="80">
+				${noonTotal.iron}
+				<br>${noonTotalPercent.iron}%
+				</td>
+				<td align="right" width="80">
+				${noonTotal.zinc}
+				<br>${noonTotalPercent.zinc}%
 				</td>
 			  </tr>
 			</table>
@@ -516,25 +656,37 @@
       </#if>
 	  <#if dinnerList?exists>
 	    <tr>
-		  <td class="table-content">
-		   &nbsp;晚餐&nbsp;<br>
+		  <td class="table-content" style="width:60px;">
+		   晚餐<br>
 		  </td>
-		  <td width="1050" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <#list dinnerList as r5>
 			  <tr>
 				<td  width="180">
                    <span class="dietary_title" 
 					       onclick="javascript:editItems('${r5.dietaryTemplate.id}');">${r5.name}</span>&nbsp;
-				   <span><img src="${contextPath}/static/images/static.gif" 
+				   <br>
+				   <span><img src="${contextPath}/static/images/static.gif" title="点击查看菜肴构成" 
 				        onclick="javascript:editItems('${r5.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   <#if canChangeDishes == true>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/add2.png" title="点击增加菜肴"
+				              onclick="javascript:addDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/remove.png" title="点击删除菜肴"
+				              onclick="javascript:removeDishes('${r1.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   &nbsp;
+				   <span><img src="${contextPath}/static/images/arrow_switch.png"  title="点击更换菜肴"
+				              onclick="javascript:changeDishes('${r5.dietaryTemplate.id}');" style="cursor:pointer;"></span>
+				   </#if>
 				</td>
 				<td  width="250">
 					<table>
 					<#list r5.items as item5>
 					<tr>
 					  <td align="left"  width="200"><span class="dietary_item">${item5.name}</span></td>
-					  <td align="right" width="100">
+					  <td align="right" width="50">
 					   <#if item5.name?exists>
 						<input type="text" id="item_${item5.id}" name="myInput" value="${item5.quantity2}"
 						       onchange="javascript:modifyItem('${item5.id}');" size="3" class="xz_input">
@@ -544,33 +696,35 @@
 					</#list>
 					</table>
 				</td>
-				<td align="right" width="30">&nbsp;&nbsp;</td>
-				<td align="right" width="100">${r5.heatEnergy}</td>
-				<td align="right" width="100">${r5.carbohydrate}</td>
+				
+				<td align="right" width="80">${r5.heatEnergy}</td>
+				<td align="right" width="120">${r5.carbohydrate}</td>
 				<td align="right" width="100">${r5.protein}</td>
-				<td align="right" width="100">${r5.fat}</td>
-				<td align="right" width="100">${r5.calcium}</td>
+				<td align="right" width="80">${r5.fat}</td>
+				<td align="right" width="80">${r5.vitaminC}</td>
+				<td align="right" width="80">${r5.calcium}</td>
+				<td align="right" width="80">${r5.iron}</td>
+				<td align="right" width="80">${r5.zinc}</td>
 			  </tr>
 			  </#list>
 			</table>
 		  </td>
        </tr>
 	   <tr>
-		  <td class="table-content">
-		   &nbsp;小计&nbsp;<br>
-           &nbsp;占比&nbsp;<br>
+		  <td class="table-content" style="width:60px;">
+		   小计<br>
+           占比<br>
 		  </td>
-		  <td width="1050" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
-				<td width="180"></td>
-				<td align="left" width="250">&nbsp;</td>
-				<td align="right" width="30">&nbsp;</td>
-				<td align="right" width="100">
+				<td width="200">&nbsp;</td>
+				<td align="left" width="280">&nbsp;</td>
+				<td align="right" width="80">
 				 ${dietaryCount_dinner.heatEnergy}
                  <br>${dietaryCountPercent_dinner.heatEnergy}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="120">
 				${dietaryCount_dinner.carbohydrate}
                 <br>${dietaryCountPercent_dinner.carbohydrate}%
 				</td>
@@ -578,13 +732,25 @@
 				${dietaryCount_dinner.protein}
 				<br>${dietaryCountPercent_dinner.protein}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
 				${dietaryCount_dinner.fat}
 				<br>${dietaryCountPercent_dinner.fat}%
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
+				${dietaryCount_dinner.vitaminC}
+				<br>${dietaryCountPercent_dinner.vitaminC}%
+				</td>
+				<td align="right" width="80">
 				${dietaryCount_dinner.calcium}
 				<br>${dietaryCountPercent_dinner.calcium}%
+				</td>
+				<td align="right" width="80">
+				${dietaryCount_dinner.iron}
+				<br>${dietaryCountPercent_dinner.iron}%
+				</td>
+				<td align="right" width="80">
+				${dietaryCount_dinner.zinc}
+				<br>${dietaryCountPercent_dinner.zinc}%
 				</td>
 			  </tr>
 			</table>
@@ -593,19 +759,18 @@
 	 </#if>
 
 	  <tr>
-		  <td class="table-content">
-		   &nbsp;合计&nbsp;<br>
-		   &nbsp;标准&nbsp;<br>
-		   &nbsp;占比&nbsp;<br>
-		   &nbsp;评价&nbsp;<br>
+		  <td class="table-content" style="width:60px;">
+		   合计<br>
+		   标准<br>
+		   占比<br>
+		   评价<br>
 		  </td>
-		  <td width="1050" class="table-content">
+		  <td width="1130" class="table-content">
 			<table border='0' cellpadding='0' cellspacing='0' >
 			  <tr>
-				<td width="180"></td>
-				<td align="left" width="250">&nbsp;</td>
-				<td align="right" width="30">&nbsp;</td>
-				<td align="right" width="100">
+				<td width="200">&nbsp;</td>
+				<td align="left" width="280">&nbsp;</td>
+				<td align="right" width="80">
 				${dietaryCountSum.heatEnergy}
                 <br>
 				${foodDRI.heatEnergy}
@@ -614,7 +779,7 @@
 				<br>
 				${dayRptModel.heatEnergyEvaluate}
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="120">
 				${dietaryCountSum.carbohydrate}
 				<br>
 				${foodDRI.carbohydrate}
@@ -632,7 +797,7 @@
 				<br>
 				${dayRptModel.proteinEvaluate}
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
 				${dietaryCountSum.fat}
 				<br>
 				${foodDRI.fat}
@@ -641,7 +806,16 @@
 				<br>
 				${dayRptModel.fatEvaluate}
 				</td>
-				<td align="right" width="100">
+				<td align="right" width="80">
+				${dietaryCountSum.vitaminC}
+				<br>
+				${foodDRI.vitaminC}
+				<br>
+				${dayRptModel.vitaminCPercent}%
+				<br>
+				${dayRptModel.vitaminCEvaluate}
+				</td>
+				<td align="right" width="80">
 				${dietaryCountSum.calcium}
 				<br>
 				${foodDRI.calcium}
@@ -650,14 +824,32 @@
 				<br>
 				${dayRptModel.calciumEvaluate}
 				</td>
+				<td align="right" width="80">
+				${dietaryCountSum.iron}
+				<br>
+				${foodDRI.iron}
+				<br>
+				${dayRptModel.ironPercent}%
+				<br>
+				${dayRptModel.ironEvaluate}
+				</td>
+				<td align="right" width="80">
+				${dietaryCountSum.zinc}
+				<br>
+				${foodDRI.zinc}
+				<br>
+				${dayRptModel.zincPercent}%
+				<br>
+				${dayRptModel.zincEvaluate}
+				</td>
 			  </tr>
 			</table>
 		  </td>
        </tr>
     </table>
     </td>
-	<td height="98%" width="100%">
-	 <table height="100%" width="100%">
+	<td height="98%" width="80%">
+	 <table height="80%" width="80%">
 	  <tbody>
 	   <tr height="45%">
 		<td>

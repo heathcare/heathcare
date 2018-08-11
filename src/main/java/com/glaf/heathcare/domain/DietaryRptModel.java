@@ -62,6 +62,14 @@ public class DietaryRptModel implements java.io.Serializable {
 
 	protected String fatEvaluate;// 脂肪评价
 
+	protected double vitaminC;// V-C实际值
+
+	protected double vitaminCStandard;// V-C标准值
+
+	protected double vitaminCPercent;// V-C百分比
+
+	protected String vitaminCEvaluate;// V-C评价
+
 	protected double calcium;// 钙实际值
 
 	protected double calciumStandard;// 钙标准值
@@ -69,6 +77,22 @@ public class DietaryRptModel implements java.io.Serializable {
 	protected double calciumPercent;// 钙百分比
 
 	protected String calciumEvaluate;// 钙评价
+
+	protected double iron;// 铁实际值
+
+	protected double ironStandard;// 铁标准值
+
+	protected double ironPercent;// 铁百分比
+
+	protected String ironEvaluate;// 铁评价
+
+	protected double zinc;// 锌实际值
+
+	protected double zincStandard;// 锌标准值
+
+	protected double zincPercent;// 锌百分比
+
+	protected String zincEvaluate;// 锌评价
 
 	protected List<DietaryItem> items = new ArrayList<DietaryItem>();
 
@@ -148,6 +172,22 @@ public class DietaryRptModel implements java.io.Serializable {
 		return heatEnergyStandard;
 	}
 
+	public double getIron() {
+		return iron;
+	}
+
+	public String getIronEvaluate() {
+		return ironEvaluate;
+	}
+
+	public double getIronPercent() {
+		return ironPercent;
+	}
+
+	public double getIronStandard() {
+		return ironStandard;
+	}
+
 	public List<DietaryItem> getItems() {
 		if (items != null && !items.isEmpty()) {
 			Collections.sort(items);
@@ -173,6 +213,38 @@ public class DietaryRptModel implements java.io.Serializable {
 
 	public double getProteinStandard() {
 		return proteinStandard;
+	}
+
+	public double getVitaminC() {
+		return vitaminC;
+	}
+
+	public String getVitaminCEvaluate() {
+		return vitaminCEvaluate;
+	}
+
+	public double getVitaminCPercent() {
+		return vitaminCPercent;
+	}
+
+	public double getVitaminCStandard() {
+		return vitaminCStandard;
+	}
+
+	public double getZinc() {
+		return zinc;
+	}
+
+	public String getZincEvaluate() {
+		return zincEvaluate;
+	}
+
+	public double getZincPercent() {
+		return zincPercent;
+	}
+
+	public double getZincStandard() {
+		return zincStandard;
 	}
 
 	public void setCalcium(double calcium) {
@@ -247,6 +319,22 @@ public class DietaryRptModel implements java.io.Serializable {
 		this.heatEnergyStandard = heatEnergyStandard;
 	}
 
+	public void setIron(double iron) {
+		this.iron = iron;
+	}
+
+	public void setIronEvaluate(String ironEvaluate) {
+		this.ironEvaluate = ironEvaluate;
+	}
+
+	public void setIronPercent(double ironPercent) {
+		this.ironPercent = ironPercent;
+	}
+
+	public void setIronStandard(double ironStandard) {
+		this.ironStandard = ironStandard;
+	}
+
 	public void setItems(List<DietaryItem> items) {
 		this.items = items;
 	}
@@ -269,6 +357,38 @@ public class DietaryRptModel implements java.io.Serializable {
 
 	public void setProteinStandard(double proteinStandard) {
 		this.proteinStandard = proteinStandard;
+	}
+
+	public void setVitaminC(double vitaminC) {
+		this.vitaminC = vitaminC;
+	}
+
+	public void setVitaminCEvaluate(String vitaminCEvaluate) {
+		this.vitaminCEvaluate = vitaminCEvaluate;
+	}
+
+	public void setVitaminCPercent(double vitaminCPercent) {
+		this.vitaminCPercent = vitaminCPercent;
+	}
+
+	public void setVitaminCStandard(double vitaminCStandard) {
+		this.vitaminCStandard = vitaminCStandard;
+	}
+
+	public void setZinc(double zinc) {
+		this.zinc = zinc;
+	}
+
+	public void setZincEvaluate(String zincEvaluate) {
+		this.zincEvaluate = zincEvaluate;
+	}
+
+	public void setZincPercent(double zincPercent) {
+		this.zincPercent = zincPercent;
+	}
+
+	public void setZincStandard(double zincStandard) {
+		this.zincStandard = zincStandard;
 	}
 
 }

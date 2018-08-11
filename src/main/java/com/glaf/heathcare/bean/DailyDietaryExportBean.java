@@ -41,6 +41,7 @@ import com.glaf.heathcare.service.DietaryService;
 import com.glaf.heathcare.service.FoodCompositionService;
 import com.glaf.heathcare.service.FoodDRIPercentService;
 import com.glaf.heathcare.service.FoodDRIService;
+import com.glaf.heathcare.util.NutritionEvaluateUtils;
 
 public class DailyDietaryExportBean {
 
@@ -127,49 +128,6 @@ public class DailyDietaryExportBean {
 			tenantConfigService = ContextFactory.getBean("tenantConfigService");
 		}
 		return tenantConfigService;
-	}
-
-	protected void populate(DietaryDayRptModel m, DietaryCount c, FoodDRI foodDRI, FoodDRIPercent foodDRIPercent) {
-		m.setCalcium(c.getCalcium());
-		m.setHeatEnergy(c.getHeatEnergy());
-		m.setProtein(c.getProtein());
-		if (foodDRI != null && foodDRIPercent != null) {
-			double d1 = c.getCalcium() / foodDRI.getCalcium();
-			if (d1 > foodDRIPercent.getCalcium()) {
-				m.setCalciumEvaluate("OK!");
-			} else {
-				m.setCalciumEvaluate("<span class='red'>少!</span>");
-			}
-
-			double d2 = c.getHeatEnergy() / foodDRI.getHeatEnergy();
-			if (d2 > foodDRIPercent.getHeatEnergy()) {
-				m.setHeatEnergyEvaluate("OK!");
-			} else {
-				m.setHeatEnergyEvaluate("<span class='red'>低!</span>");
-			}
-
-			double d3 = c.getProtein() / foodDRI.getProtein();
-			if (d3 > foodDRIPercent.getProtein()) {
-				m.setProteinEvaluate("OK!");
-			} else {
-				m.setProteinEvaluate("<span class='red'>少!</span>");
-			}
-
-			double d4 = c.getFat() / foodDRI.getFat();
-			if (d4 > foodDRIPercent.getFat()) {
-				m.setFatEvaluate("OK!");
-			} else {
-				m.setFatEvaluate("<span class='red'>少!</span>");
-			}
-
-			double d5 = c.getCarbohydrate() / foodDRI.getCarbohydrate();
-			if (d5 > foodDRIPercent.getCarbohydrate()) {
-				m.setCarbohydrateEvaluate("OK!");
-			} else {
-				m.setCarbohydrateEvaluate("<span class='red'>少!</span>");
-			}
-
-		}
 	}
 
 	protected void populate(DietaryDayRptModel m, FoodDRI foodDRI) {
@@ -629,7 +587,7 @@ public class DailyDietaryExportBean {
 				dietaryCountSum.setProtein(proteinTotal);
 				dietaryCountSum.setHeatEnergy(heatEnergyTotal);
 
-				this.populate(dayRptModel, dietaryCountSum, foodDRI, foodDRIPercent);
+				NutritionEvaluateUtils.evaluate(dayRptModel, dietaryCountSum, foodDRI, foodDRIPercent);
 
 				context.put("dayRptModel", dayRptModel);
 				context.put("dietaryCountSum", dietaryCountSum);

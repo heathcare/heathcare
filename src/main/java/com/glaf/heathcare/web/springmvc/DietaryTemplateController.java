@@ -41,12 +41,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.district.domain.District;
 import com.glaf.base.district.service.DistrictService;
 import com.glaf.base.modules.sys.model.Dictory;
+import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
 import com.glaf.core.base.ColumnModel;
 import com.glaf.core.base.TableModel;
+import com.glaf.core.cache.CacheFactory;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.factory.DataServiceFactory;
 import com.glaf.core.security.LoginContext;
@@ -147,6 +149,54 @@ public class DietaryTemplateController {
 			DietaryTemplateBean bean = new DietaryTemplateBean();
 			bean.calculateAll(StringTools.splitToLong(objectIds));
 			return ResponseUtils.responseResult(true);
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/addDishes")
+	public byte[] addDishes(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug("params:" + params);
+		long templateId = RequestUtils.getLong(request, "oTemplateId");
+		long dishesId = RequestUtils.getLong(request, "dishesId");
+		if (templateId > 0 && dishesId > 0) {
+			DietaryTemplate dietaryTemplate = dietaryTemplateService.getDietaryTemplate(templateId);
+			if (loginContext.isSystemAdministrator() && StringUtils.equals(dietaryTemplate.getSysFlag(), "Y")) {
+				dietaryTemplateService.addDishes(null, templateId, dishesId);
+				CacheFactory.clear("dietary_template");
+				return ResponseUtils.responseResult(true);
+			} else if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietaryTemplate.getTenantId(), loginContext.getTenantId())) {
+				dietaryTemplateService.addDishes(dietaryTemplate.getTenantId(), templateId, dishesId);
+				CacheFactory.clear("dietary_template");
+				return ResponseUtils.responseResult(true);
+			}
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/changeDishes")
+	public byte[] changeDishes(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug("params:" + params);
+		long templateId = RequestUtils.getLong(request, "oTemplateId");
+		long dishesId = RequestUtils.getLong(request, "dishesId");
+		if (templateId > 0 && dishesId > 0) {
+			DietaryTemplate dietaryTemplate = dietaryTemplateService.getDietaryTemplate(templateId);
+			if (loginContext.isSystemAdministrator() && StringUtils.equals(dietaryTemplate.getSysFlag(), "Y")) {
+				dietaryTemplateService.changeDishes(templateId, dishesId);
+				CacheFactory.clear("dietary_template");
+				return ResponseUtils.responseResult(true);
+			} else if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietaryTemplate.getTenantId(), loginContext.getTenantId())) {
+				dietaryTemplateService.changeDishes(templateId, dishesId);
+				CacheFactory.clear("dietary_template");
+				return ResponseUtils.responseResult(true);
+			}
 		}
 		return ResponseUtils.responseResult(false);
 	}
@@ -489,8 +539,17 @@ public class DietaryTemplateController {
 			}
 		}
 
+		int suitNo = RequestUtils.getInt(request, "suitNo");
+		long typeId = RequestUtils.getLong(request, "typeId");
+
 		if (StringUtils.isNotEmpty(request.getParameter("typeId"))) {
-			request.setAttribute("typeId", request.getParameter("typeId"));
+			request.setAttribute("typeId", typeId);
+		} else {
+			DietaryCategory category = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+			if (category != null) {
+				typeId = category.getTypeId();
+				request.setAttribute("typeId", typeId);
+			}
 		}
 
 		String wordLike = request.getParameter("wordLike");
@@ -522,6 +581,15 @@ public class DietaryTemplateController {
 				List<DietaryCategory> categories = dietaryCategoryService.getDietaryCategories(loginContext, false);
 				request.setAttribute("categories", categories);
 			}
+		}
+
+		request.setAttribute("canChangeDishes", false);
+
+		if (loginContext.isSystemAdministrator() && StringUtils.equals(sysFlag, "Y")) {
+			request.setAttribute("canChangeDishes", true);
+		} else if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+				&& StringUtils.equals(sysFlag, "N")) {
+			request.setAttribute("canChangeDishes", true);
 		}
 
 		String view = request.getParameter("view");
@@ -672,34 +740,6 @@ public class DietaryTemplateController {
 			this.dietaryTemplateService.save(dietaryTemplate);
 
 			return ResponseUtils.responseJsonResult(true);
-		} catch (Exception ex) {
-			logger.error(ex);
-		}
-		return ResponseUtils.responseJsonResult(false);
-	}
-
-	@ResponseBody
-	@RequestMapping("/updateDietaryTemplateName")
-	public byte[] updateDietaryTemplateName(HttpServletRequest request) {
-		LoginContext loginContext = RequestUtils.getLoginContext(request);
-		String actorId = loginContext.getActorId();
-		long dietaryTemplateId = RequestUtils.getLong(request, "dietaryTemplateId");
-		DietaryTemplate dietaryTemplate = null;
-		try {
-			if (dietaryTemplateId > 0) {
-				dietaryTemplate = dietaryTemplateService.getDietaryTemplate(dietaryTemplateId);
-			}
-			if (dietaryTemplate != null) {
-				if (!loginContext.isSystemAdministrator()) {
-					if (!StringUtils.equals(dietaryTemplate.getCreateBy(), actorId)) {
-						return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
-					}
-				}
-				dietaryTemplate.setName(request.getParameter("dietaryName"));
-				dietaryTemplate.setUpdateBy(actorId);
-				this.dietaryTemplateService.save(dietaryTemplate);
-				return ResponseUtils.responseJsonResult(true);
-			}
 		} catch (Exception ex) {
 			logger.error(ex);
 		}
@@ -927,6 +967,76 @@ public class DietaryTemplateController {
 	}
 
 	/**
+	 * 显示增加菜肴页面
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 */
+	@RequestMapping("/showAddDishes")
+	public ModelAndView showAddDishes(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		long oTemplateId = RequestUtils.getLong(request, "oTemplateId");
+		request.setAttribute("canChangeDishes", false);
+		DietaryTemplate dietaryTemplate = dietaryTemplateService.getDietaryTemplate(oTemplateId);
+		if (dietaryTemplate != null) {
+			request.setAttribute("dietaryTemplate", dietaryTemplate);
+			if (loginContext.isSystemAdministrator() && StringUtils.equals(dietaryTemplate.getSysFlag(), "Y")) {
+				request.setAttribute("canChangeDishes", true);
+			} else if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietaryTemplate.getTenantId(), loginContext.getTenantId())) {
+				request.setAttribute("canChangeDishes", true);
+			}
+		}
+
+		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
+		request.setAttribute("categories", categories);
+
+		String x_view = ViewProperties.getString("dietaryTemplate.showAddDishes");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/dietaryTemplate/showAddDishes", modelMap);
+	}
+
+	/**
+	 * 显示更换菜肴页面
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 */
+	@RequestMapping("/showChangeDishes")
+	public ModelAndView showChangeDishes(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		long oTemplateId = RequestUtils.getLong(request, "oTemplateId");
+		request.setAttribute("canChangeDishes", false);
+		DietaryTemplate dietaryTemplate = dietaryTemplateService.getDietaryTemplate(oTemplateId);
+		if (dietaryTemplate != null) {
+			request.setAttribute("dietaryTemplate", dietaryTemplate);
+			if (loginContext.isSystemAdministrator() && StringUtils.equals(dietaryTemplate.getSysFlag(), "Y")) {
+				request.setAttribute("canChangeDishes", true);
+			} else if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))
+					&& StringUtils.equals(dietaryTemplate.getTenantId(), loginContext.getTenantId())) {
+				request.setAttribute("canChangeDishes", true);
+			}
+		}
+
+		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
+		request.setAttribute("categories", categories);
+
+		String x_view = ViewProperties.getString("dietaryTemplate.showChangeDishes");
+		if (StringUtils.isNotEmpty(x_view)) {
+			return new ModelAndView(x_view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/dietaryTemplate/showChangeDishes", modelMap);
+	}
+
+	/**
 	 * 显示排序页面
 	 * 
 	 * @param request
@@ -951,6 +1061,34 @@ public class DietaryTemplateController {
 		}
 
 		return new ModelAndView("/heathcare/dietaryTemplate/showSort", modelMap);
+	}
+
+	@ResponseBody
+	@RequestMapping("/updateDietaryTemplateName")
+	public byte[] updateDietaryTemplateName(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		String actorId = loginContext.getActorId();
+		long dietaryTemplateId = RequestUtils.getLong(request, "dietaryTemplateId");
+		DietaryTemplate dietaryTemplate = null;
+		try {
+			if (dietaryTemplateId > 0) {
+				dietaryTemplate = dietaryTemplateService.getDietaryTemplate(dietaryTemplateId);
+			}
+			if (dietaryTemplate != null) {
+				if (!loginContext.isSystemAdministrator()) {
+					if (!StringUtils.equals(dietaryTemplate.getCreateBy(), actorId)) {
+						return ResponseUtils.responseJsonResult(false, "您没有修改该数据的权限。");
+					}
+				}
+				dietaryTemplate.setName(request.getParameter("dietaryName"));
+				dietaryTemplate.setUpdateBy(actorId);
+				this.dietaryTemplateService.save(dietaryTemplate);
+				return ResponseUtils.responseJsonResult(true);
+			}
+		} catch (Exception ex) {
+			logger.error(ex);
+		}
+		return ResponseUtils.responseJsonResult(false);
 	}
 
 }

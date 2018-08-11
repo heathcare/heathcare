@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.glaf.heathcare.mapper.GradeAdjustMapper">
+
+	<resultMap id="gradeAdjustResultMap"
+		type="com.glaf.heathcare.domain.GradeAdjust">
+		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="gradeId" column="GRADEID_" jdbcType="VARCHAR" />
+		<result property="source" column="SOURCE_" jdbcType="VARCHAR" />
+		<result property="target" column="TARGET_" jdbcType="VARCHAR" />
+		<result property="year" column="YEAR_" jdbcType="INTEGER" />
+		<result property="level" column="LEVEL_" jdbcType="INTEGER" />
+		<result property="version" column="VERSION_" jdbcType="INTEGER" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<insert id="insertGradeAdjust"
+		parameterType="com.glaf.heathcare.domain.GradeAdjust">
+		insert into HEALTH_GRADE_ADJUST
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="gradeId != null">
+				,GRADEID_
+			</if>
+			<if test="source != null">
+				,SOURCE_
+			</if>
+			<if test="target != null">
+				,TARGET_
+			</if>
+			<if test="year != null">
+				,YEAR_
+			</if>
+			<if test="level != null">
+				,LEVEL_
+			</if>
+			<if test="version != null">
+				,VERSION_
+			</if>
+			<if test="createBy != null">
+				,CREATEBY_
+			</if>
+			<if test="createTime != null">
+				,CREATETIME_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}
+
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="gradeId != null">
+				,#{gradeId, jdbcType=VARCHAR}
+			</if>
+			<if test="source != null">
+				,#{source, jdbcType=VARCHAR}
+			</if>
+			<if test="target != null">
+				,#{target, jdbcType=VARCHAR}
+			</if>
+			<if test="year != null">
+				,#{year, jdbcType=INTEGER}
+			</if>
+			<if test="level != null">
+				,#{level, jdbcType=INTEGER}
+			</if>
+			<if test="version != null">
+				,#{version, jdbcType=INTEGER}
+			</if>
+			<if test="createBy != null">
+				,#{createBy, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				,#{createTime, jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertGradeAdjust"
+		parameterType="java.util.List">
+		insert into HEALTH_GRADE_ADJUST (
+		ID_
+		,TENANTID_
+		,GRADEID_
+		,SOURCE_
+		,TARGET_
+		,YEAR_
+		,LEVEL_
+		,VERSION_
+		,CREATEBY_
+		,CREATETIME_
+		) values
+		<foreach collection="list" item="gradeAdjust" index="index"
+			separator=",">
+			(
+			#{gradeAdjust.id, jdbcType=VARCHAR}
+			,#{gradeAdjust.tenantId, jdbcType=VARCHAR}
+			,#{gradeAdjust.gradeId,
+			jdbcType=VARCHAR}
+			,#{gradeAdjust.source, jdbcType=VARCHAR}
+			,#{gradeAdjust.target, jdbcType=VARCHAR}
+			,#{gradeAdjust.year,
+			jdbcType=INTEGER}
+			,#{gradeAdjust.level, jdbcType=INTEGER}
+			,#{gradeAdjust.version, jdbcType=INTEGER}
+			,#{gradeAdjust.createBy,
+			jdbcType=VARCHAR}
+			,#{gradeAdjust.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertGradeAdjust_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="gradeAdjust" index="index">
+			insert
+			into HEALTH_GRADE_ADJUST (
+			ID_
+			,TENANTID_
+			,GRADEID_
+			,SOURCE_
+			,TARGET_
+			,YEAR_
+			,LEVEL_
+			,VERSION_
+			,CREATEBY_
+			,CREATETIME_
+			) values (
+			#{gradeAdjust.id, jdbcType=VARCHAR}
+			,#{gradeAdjust.tenantId,
+			jdbcType=VARCHAR}
+			,#{gradeAdjust.gradeId, jdbcType=VARCHAR}
+			,#{gradeAdjust.source, jdbcType=VARCHAR}
+			,#{gradeAdjust.target,
+			jdbcType=VARCHAR}
+			,#{gradeAdjust.year, jdbcType=INTEGER}
+			,#{gradeAdjust.level, jdbcType=INTEGER}
+			,#{gradeAdjust.version,
+			jdbcType=INTEGER}
+			,#{gradeAdjust.createBy, jdbcType=VARCHAR}
+			,#{gradeAdjust.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateGradeAdjust"
+		parameterType="com.glaf.heathcare.domain.GradeAdjust">
+		update HEALTH_GRADE_ADJUST
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="source != null">
+				SOURCE_ = #{source, jdbcType=VARCHAR},
+			</if>
+			<if test="target != null">
+				TARGET_ = #{target, jdbcType=VARCHAR},
+			</if>
+			<if test="year != null">
+				YEAR_ = #{year, jdbcType=INTEGER},
+			</if>
+			<if test="level != null">
+				LEVEL_ = #{level, jdbcType=INTEGER},
+			</if>
+			<if test="version != null">
+				VERSION_ = #{version, jdbcType=INTEGER},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=VARCHAR}
+
+	</update>
+
+
+	<delete id="deleteGradeAdjustById" parameterType="string">
+		delete from
+		HEALTH_GRADE_ADJUST
+		where ID_ = #{id}
+	</delete>
+
+
+	<select id="getGradeAdjustById" parameterType="string"
+		resultMap="gradeAdjustResultMap">
+		select * from HEALTH_GRADE_ADJUST where ID_ = #{id}
+	</select>
+
+
+	<select id="getGradeAdjustsByTenantId" parameterType="string"
+		resultMap="gradeAdjustResultMap">
+		select * from HEALTH_GRADE_ADJUST where TENANTID_ = #{tenantId} 
+		order by VERSION_ asc 
+	</select>
+
+
+	<select id="getGradeAdjusts"
+		parameterType="com.glaf.heathcare.query.GradeAdjustQuery"
+		resultMap="gradeAdjustResultMap">
+		select distinct E.*
+		<include refid="selectGradeAdjustsSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.ID_ desc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getGradeAdjustCount"
+		parameterType="com.glaf.heathcare.query.GradeAdjustQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectGradeAdjustsSql" />
+	</select>
+
+
+	<sql id="selectGradeAdjustsSql">
+
+		from HEALTH_GRADE_ADJUST E
+
+		<where>
+			1 = 1
+
+			<if test="tenantId != null and tenantId != '' ">
+				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="tenantIds != null and tenantIds.size() &gt; 0">
+				and E.TENANTID_ IN
+				<foreach item="x_tenantId" index="index"
+					collection="tenantIds" open="(" separator="," close=")">
+					#{x_tenantId}
+				</foreach>
+			</if>
+
+			<if test="gradeId != null and gradeId != '' ">
+				and E.GRADEID_ = #{gradeId}
+			</if>
+
+			<if test="gradeIds != null and gradeIds.size() &gt; 0">
+				and E.GRADEID_ IN
+				<foreach item="x_gradeId" index="index"
+					collection="gradeIds" open="(" separator="," close=")">
+					#{x_gradeId}
+				</foreach>
+			</if>
+
+			<if test="sourceLike != null and sourceLike != '' ">
+				and E.SOURCE_ like #{sourceLike}
+			</if>
+
+			<if test="targetLike != null and targetLike != '' ">
+				and E.TARGET_ like #{targetLike}
+			</if>
+
+			<if test="year != null">
+				and E.YEAR_ = #{year}
+			</if>
+
+			<if test="yearGreaterThanOrEqual != null">
+				and E.YEAR_ &gt;= #{yearGreaterThanOrEqual}
+			</if>
+
+			<if test="yearLessThanOrEqual != null">
+				and E.YEAR_ &lt;= #{yearLessThanOrEqual}
+			</if>
+
+			<if test="level != null">
+				and E.LEVEL_ = #{level}
+			</if>
+
+			<if test="levelGreaterThanOrEqual != null">
+				and E.LEVEL_ &gt;= #{levelGreaterThanOrEqual}
+			</if>
+
+			<if test="levelLessThanOrEqual != null">
+				and E.LEVEL_ &lt;= #{levelLessThanOrEqual}
+			</if>
+
+			<if test="createBy != null and createBy != '' ">
+				and E.CREATEBY_ = #{createBy}
+			</if>
+
+			<if test="createTimeGreaterThanOrEqual != null">
+				and E.CREATETIME_ &gt;= #{createTimeGreaterThanOrEqual}
+			</if>
+
+			<if test="createTimeLessThanOrEqual != null">
+				and E.CREATETIME_ &lt;= #{createTimeLessThanOrEqual}
+			</if>
+
+		</where>
+	</sql>
+
+</mapper>

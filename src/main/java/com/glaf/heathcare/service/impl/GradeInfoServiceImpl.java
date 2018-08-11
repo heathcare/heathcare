@@ -45,6 +45,7 @@ import com.glaf.core.config.SystemConfig;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
 import com.glaf.core.jdbc.DBConnectionFactory;
+import com.glaf.core.security.Authentication;
 import com.glaf.core.service.ITableDataService;
 import com.glaf.core.service.ITablePageService;
 import com.glaf.core.util.DBUtils;
@@ -300,6 +301,8 @@ public class GradeInfoServiceImpl implements GradeInfoService {
 			gradeInfo.setCreateTime(new Date());
 			gradeInfoMapper.insertGradeInfo(gradeInfo);
 		} else {
+			gradeInfo.setUpdateBy(Authentication.getAuthenticatedActorId());
+			gradeInfo.setUpdateTime(new Date());
 			gradeInfoMapper.updateGradeInfo(gradeInfo);
 		}
 	}

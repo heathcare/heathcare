@@ -42,6 +42,25 @@ public interface DietaryService {
 	 */
 	@Transactional
 	void adjust(String tenantId, Map<String, Date> dateMap);
+	
+	/**
+	 * 增加菜肴到食谱中
+	 * 
+	 * @param tenantId
+	 * @param dietaryId
+	 * @param dishesId
+	 */
+	@Transactional
+	void addDishes(String tenantId, long dietaryId, long dishesId);
+
+	/**
+	 * 用菜肴替换食谱中的菜肴
+	 * 
+	 * @param dietaryId
+	 * @param dishesId
+	 */
+	@Transactional
+	void changeDishes(String tenantId, long dietaryId, long dishesId);
 
 	@Transactional
 	void batchPurchase(String tenantId, Collection<Long> ids, String purchaseFlag, List<GoodsPurchasePlan> list);

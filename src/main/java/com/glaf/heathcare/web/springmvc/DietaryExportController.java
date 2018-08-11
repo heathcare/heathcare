@@ -406,6 +406,14 @@ public class DietaryExportController {
 						statsHistoryService.save(his);
 					}
 
+				} catch (Exception ex) {
+					// ex.printStackTrace();
+					logger.error(ex);
+				} finally {
+					concurrentMap.remove("day_html_" + loginContext.getActorId());
+				}
+
+				try {
 					DailyDietaryExportBean exportBean = new DailyDietaryExportBean();
 					TenantConfig tenantConfig = tenantConfigService
 							.getTenantConfigByTenantId(loginContext.getTenantId());
@@ -421,10 +429,14 @@ public class DietaryExportController {
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 					logger.error(ex);
-				} finally {
-					concurrentMap.remove("day_html_" + loginContext.getActorId());
 				}
 			}
+		}
+
+		request.setAttribute("canChangeDishes", false);
+
+		if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))) {
+			request.setAttribute("canChangeDishes", true);
 		}
 
 		calendar.setTime(new Date());
@@ -565,6 +577,14 @@ public class DietaryExportController {
 						statsHistoryService.save(his);
 					}
 
+				} catch (Exception ex) {
+					// ex.printStackTrace();
+					logger.error(ex);
+				} finally {
+					concurrentMap.remove("html_" + loginContext.getActorId());
+				}
+
+				try {
 					if (year > 0 && week > 0) {
 						if (loginContext.getRoles().contains("HealthPhysician")
 								|| loginContext.getRoles().contains("TenantAdmin")) {
@@ -591,10 +611,14 @@ public class DietaryExportController {
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 					logger.error(ex);
-				} finally {
-					concurrentMap.remove("html_" + loginContext.getActorId());
 				}
 			}
+		}
+
+		request.setAttribute("canChangeDishes", false);
+
+		if ((loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician"))) {
+			request.setAttribute("canChangeDishes", true);
 		}
 
 		String view = request.getParameter("view");

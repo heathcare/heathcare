@@ -69,6 +69,8 @@ public interface DietaryCategoryService {
 	 */
 	List<DietaryCategory> getDietaryCategorysByQueryCriteria(int start, int pageSize, DietaryCategoryQuery query);
 
+	int getMaxSuitNo(LoginContext loginContext);
+
 	List<DietaryCategory> getSysDietaryCategories();
 
 	DietaryCategory getSysDietaryCategory(int suitNo);
