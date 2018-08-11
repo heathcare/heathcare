@@ -227,5 +227,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/objenesis.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/aliyun-java-sdk-core.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/aliyun-java-sdk-dysmsapi.jar"/>
+	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/rabbitmq-client.jar"/>
 	<classpathentry kind="output" path="webapps/glaf/WEB-INF/classes"/>
 </classpath>
