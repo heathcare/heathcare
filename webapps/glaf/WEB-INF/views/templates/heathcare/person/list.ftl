@@ -83,12 +83,12 @@
 				idField: 'id',
 				columns:[[
 				    {title:'序号', field:'startIndex', width:50, sortable:false},
-					{title:'姓名', field:'name', width:80},
-					{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center"},
-					{title:'籍贯', field:'birthPlace', width:100},
-					{title:'家庭住址', field:'homeAddress', width:280},
-					{title:'出生日期', field:'birthday', width:90, align:"center"},
-					{title:'入园日期', field:'joinDate', width:90, align:"center"},
+					{title:'姓名', field:'name', width:80, sortable:true},
+					{title:'性别', field:'sex', width:60, sortable:true, formatter:formatterSex, align:"center"},
+					{title:'籍贯', field:'birthPlace', width:100, sortable:true},
+					{title:'家庭住址', field:'homeAddress', width:280, sortable:true},
+					{title:'出生日期', field:'birthday', width:90, align:"center", sortable:true},
+					{title:'入园日期', field:'joinDate', width:90, align:"center", sortable:true},
 					{title:'功能键', field:'functionKey', width:190, formatter:formatterKeys}
 				]],
 				rownumbers: false,

@@ -37,7 +37,7 @@
 				columns:[[
 				        {title:'序号',field:'startIndex', width:60, sortable:false},
 				        {title:'选择',field: 'chk', width: 60, align: 'center', formatter: formatterKey},
-						{title:'名称',field:'name', width:180, align:"left"},	
+						{title:'名称',field:'name', width:180, align:"left", sortable:true},	
 						{title:'热能(千卡)',field:'heatEnergy', width:90, align:"right", sortable:true},
 						{title:'蛋白质(克)',field:'protein', width:90, align:"right", sortable:true},
 						{title:'脂肪(克)',field:'fat', width:90, align:"right", sortable:true},
@@ -57,7 +57,7 @@
 				rownumbers: false,
 				pagination: true,
 				pageSize: 100,
-				pageList: [10,15,20,25,30,40,50,100,200,500],
+				pageList: [10,15,20,25,30,40,50,100,200,500,1000],
 				pagePosition: 'bottom',
 				onDblClickRow: onMyRowClick 
 			});

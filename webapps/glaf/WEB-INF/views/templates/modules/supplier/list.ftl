@@ -23,14 +23,14 @@
 				idField: 'id',
 				columns:[[
 				        {title:'序号', field:'startIndex', width:60, sortable:false},
-						{title:'供应商名称', field:'name', width:220},
-						{title:'供应商简称', field:'shortName', width:120},
-						{title:'供应商代码', field:'code', width:120},
-						{title:'性质', field:'property', width:100, formatter:formatterProperty},
-						{title:'负责人', field:'principal', width:90},
-						{title:'电话', field:'telephone', width:90},
-						{title:'创建人', field:'createBy', width:90},
-						{title:'创建日期', field:'createTime', width:90},
+						{title:'供应商名称', field:'name', width:220, sortable:true},
+						{title:'供应商简称', field:'shortName', width:120, sortable:true},
+						{title:'供应商代码', field:'code', width:120, sortable:true},
+						{title:'性质', field:'property', width:100, sortable:true, formatter:formatterProperty},
+						{title:'负责人', field:'principal', width:90, sortable:true},
+						{title:'电话', field:'telephone', width:90, sortable:true},
+						{title:'创建人', field:'createBy', width:90, sortable:true},
+						{title:'创建日期', field:'createTime', width:90, sortable:true},
 						{title:'是否有效', field:'locked', width:90, formatter:formatterStatus},
 						{title:'功能键', field:'functionKey', width:160, formatter:formatterKeys}
 				]],
@@ -340,7 +340,7 @@
 	    </td>
 		<td>
 		  名称&nbsp;<input id="keywordLike" name="keywordLike" type="text" 
-			       class="easyui-validatebox  x-searchtext" style="width:250px;"
+			       class="easyui-validatebox  x-searchtext" style="width:200px;"
 				   value="${keywordLike}">
 		</td>
 		<td>

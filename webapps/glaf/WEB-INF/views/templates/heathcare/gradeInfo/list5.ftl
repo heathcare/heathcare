@@ -21,9 +21,9 @@
 				idField: 'id',
 				columns:[[
 				    {title:'序号', field:'startIndex', width:80, sortable:false},
-					{title:'年份',field:'year', width:120},
-					{title:'名称',field:'name', width:120},
-					{title:'代码',field:'code', width:120},
+					{title:'年份',field:'year', width:120, sortable:true},
+					{title:'名称',field:'name', width:120, sortable:true},
+					{title:'代码',field:'code', width:120, sortable:true},
 					{title:'负责人',field:'principal', width:120},
 					{title:'电话',field:'telephone', width:120},
 					{title:'创建人',field:'createBy', width:120},

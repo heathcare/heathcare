@@ -21,11 +21,11 @@
 				idField: 'id',
 				columns:[[
 				    {title:'序号', field:'startIndex', width:60, sortable:false},
-					{title:'姓名', field:'name', width:90},
-					{title:'性别', field:'sex', width:60, formatter:formatterSex, align:"center"},
-					{title:'家庭住址', field:'homeAddress', width:350},
-					{title:'出生日期', field:'birthday', width:100, align:"center"},
-					{title:'入园日期', field:'joinDate', width:100, align:"center"}
+					{title:'姓名', field:'name', width:90, sortable:true},
+					{title:'性别', field:'sex', width:60, sortable:true, formatter:formatterSex, align:"center"},
+					{title:'家庭住址', field:'homeAddress', width:350, sortable:true},
+					{title:'出生日期', field:'birthday', width:100, align:"center", sortable:true},
+					{title:'入园日期', field:'joinDate', width:100, align:"center", sortable:true}
 				]],
 				rownumbers: false,
 				pagination: true,
