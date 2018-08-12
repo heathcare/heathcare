@@ -146,6 +146,64 @@ public class PinyinUtils {
 		}
 	}
 
+	public static void processEmployee() {
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DBConnectionFactory.getConnection();
+			conn.setAutoCommit(false);
+			TableDefinition tableDefinition = new TableDefinition();
+			tableDefinition.setTableName("T_EMPLOYEE");
+
+			ColumnDefinition idColumn = new ColumnDefinition();
+			idColumn.setColumnName("ID_");
+			idColumn.setJavaType("String");
+			idColumn.setLength(50);
+			tableDefinition.setIdColumn(idColumn);
+
+			ColumnDefinition short_hypyColumn = new ColumnDefinition();
+			short_hypyColumn.setColumnName("NAMEPINYIN_");
+			short_hypyColumn.setJavaType("String");
+			short_hypyColumn.setLength(50);
+			tableDefinition.addColumn(short_hypyColumn);
+
+			DBUtils.alterTable(conn, tableDefinition);
+			conn.commit();
+
+			Map<String, String> dataMap = new HashMap<String, String>();
+			String sql = " select ID_, NAME_ from T_EMPLOYEE ";
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				dataMap.put(rs.getString(1), rs.getString(2));
+			}
+			JdbcUtils.close(rs);
+			JdbcUtils.close(psmt);
+
+			conn.setAutoCommit(false);
+
+			psmt = conn.prepareStatement(" update T_EMPLOYEE set NAMEPINYIN_ = ? where ID_ = ? ");
+			Set<Entry<String, String>> entrySet = dataMap.entrySet();
+			for (Entry<String, String> entry : entrySet) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				psmt.setString(1, converterToFirstSpell(value, true));
+				psmt.setString(2, key);
+				psmt.executeUpdate();
+			}
+			conn.commit();
+
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			logger.error(ex);
+		} finally {
+			JdbcUtils.close(rs);
+			JdbcUtils.close(psmt);
+			JdbcUtils.close(conn);
+		}
+	}
+
 	public static void processFoodComposition() {
 		Connection conn = null;
 		PreparedStatement psmt = null;

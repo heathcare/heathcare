@@ -19,6 +19,7 @@
 package com.glaf.modules.employee.web.springmvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -36,12 +37,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
 import com.glaf.base.modules.sys.model.Dictory;
 import com.glaf.base.modules.sys.service.DictoryService;
+
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.identity.User;
 import com.glaf.core.security.LoginContext;
-import com.glaf.core.util.Paging;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
@@ -167,8 +169,13 @@ public class EmployeeController {
 			query.setNameLike(nameLike);
 		}
 
+		String namePinyinLike = request.getParameter("namePinyinLike");
+		if (StringUtils.isNotEmpty(namePinyinLike)) {
+			query.setNamePinyinLike(namePinyinLike);
+		}
+
 		int start = 0;
-		int limit = 10;
+		int limit = 50;
 		String orderName = null;
 		String order = null;
 
@@ -183,7 +190,7 @@ public class EmployeeController {
 		}
 
 		if (limit <= 0) {
-			limit = Paging.DEFAULT_PAGE_SIZE;
+			limit = 50;
 		}
 
 		JSONObject result = new JSONObject();
@@ -248,6 +255,12 @@ public class EmployeeController {
 		request.setAttribute("educations", educations);
 		request.setAttribute("senioritys", senioritys);
 		request.setAttribute("positions", positions);
+
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {

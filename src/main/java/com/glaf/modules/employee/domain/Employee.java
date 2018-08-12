@@ -57,6 +57,12 @@ public class Employee implements Serializable, JSONable {
 	protected String name;
 
 	/**
+	 * 名称拼音
+	 */
+	@Column(name = "NAMEPINYIN_", length = 200)
+	protected String namePinyin;
+
+	/**
 	 * 用户账号
 	 */
 	@Column(name = "USERID_", length = 50)
@@ -318,6 +324,10 @@ public class Employee implements Serializable, JSONable {
 		return this.name;
 	}
 
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
 	public String getNation() {
 		return this.nation;
 	}
@@ -451,6 +461,10 @@ public class Employee implements Serializable, JSONable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 
 	public void setNation(String nation) {

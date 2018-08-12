@@ -53,6 +53,9 @@ public class EmployeeJsonFactory {
 		if (jsonObject.containsKey("name")) {
 			model.setName(jsonObject.getString("name"));
 		}
+		if (jsonObject.containsKey("namePinyin")) {
+			model.setNamePinyin(jsonObject.getString("namePinyin"));
+		}
 		if (jsonObject.containsKey("userId")) {
 			model.setUserId(jsonObject.getString("userId"));
 		}
@@ -157,6 +160,9 @@ public class EmployeeJsonFactory {
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
 		}
+		if (model.getNamePinyin() != null) {
+			jsonObject.put("namePinyin", model.getNamePinyin());
+		}
 		if (model.getUserId() != null) {
 			jsonObject.put("userId", model.getUserId());
 		}
@@ -254,6 +260,9 @@ public class EmployeeJsonFactory {
 		}
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
+		}
+		if (model.getNamePinyin() != null) {
+			jsonObject.put("namePinyin", model.getNamePinyin());
 		}
 		if (model.getUserId() != null) {
 			jsonObject.put("userId", model.getUserId());

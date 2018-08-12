@@ -11,6 +11,8 @@
 		<result property="tenantId" column="TENANTID_"
 			jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="namePinyin" column="NAMEPINYIN_"
+			jdbcType="VARCHAR" />
 		<result property="userId" column="USERID_" jdbcType="VARCHAR" />
 		<result property="sex" column="SEX_" jdbcType="VARCHAR" />
 		<result property="birthday" column="BIRTHDAY_"
@@ -70,6 +72,9 @@
 			</if>
 			<if test="name != null">
 				,NAME_
+			</if>
+			<if test="namePinyin != null">
+				,NAMEPINYIN_
 			</if>
 			<if test="userId != null">
 				,USERID_
@@ -160,6 +165,9 @@
 			<if test="name != null">
 				,#{name, jdbcType=VARCHAR}
 			</if>
+			<if test="namePinyin != null">
+				,#{namePinyin, jdbcType=VARCHAR}
+			</if>
 			<if test="userId != null">
 				,#{userId, jdbcType=VARCHAR}
 			</if>
@@ -247,6 +255,7 @@
 		ID_
 		,TENANTID_
 		,NAME_
+		,NAMEPINYIN_
 		,USERID_
 		,SEX_
 		,BIRTHDAY_
@@ -281,6 +290,7 @@
 			,#{employee.tenantId,
 			jdbcType=VARCHAR}
 			,#{employee.name, jdbcType=VARCHAR}
+			,#{employee.namePinyin, jdbcType=VARCHAR}
 			,#{employee.userId, jdbcType=VARCHAR}
 			,#{employee.sex,
 			jdbcType=VARCHAR}
@@ -330,6 +340,7 @@
 			ID_
 			,TENANTID_
 			,NAME_
+			,NAMEPINYIN_
 			,USERID_
 			,SEX_
 			,BIRTHDAY_
@@ -363,6 +374,7 @@
 			jdbcType=VARCHAR}
 			,#{employee.name,
 			jdbcType=VARCHAR}
+			,#{employee.namePinyin, jdbcType=VARCHAR}
 			,#{employee.userId, jdbcType=VARCHAR}
 			,#{employee.sex,
 			jdbcType=VARCHAR}
@@ -427,6 +439,9 @@
 		<trim prefix="" suffix="" suffixOverrides=",">
 			<if test="name != null">
 				NAME_ = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="namePinyin != null">
+				NAMEPINYIN_ = #{namePinyin, jdbcType=VARCHAR},
 			</if>
 			<if test="userId != null">
 				USERID_ = #{userId, jdbcType=VARCHAR},
@@ -557,6 +572,11 @@
 
 			<if test="nameLike != null and nameLike != '' ">
 				and E.NAME_ like #{nameLike}
+			</if>
+			
+			<if test="namePinyinLike != null and namePinyinLike != '' ">
+				and ( E.NAME_ like #{namePinyinLike} or E.NAMEPINYIN_
+				like #{namePinyinLike} )
 			</if>
 
 			<if test="sex != null and sex != '' ">

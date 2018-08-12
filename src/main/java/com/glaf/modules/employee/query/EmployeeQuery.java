@@ -24,6 +24,7 @@ import com.glaf.core.query.DataQuery;
 public class EmployeeQuery extends DataQuery {
 	private static final long serialVersionUID = 1L;
 	protected String nameLike;
+	protected String namePinyinLike;
 	protected String sex;
 	protected String mobileLike;
 	protected String nation;
@@ -131,6 +132,15 @@ public class EmployeeQuery extends DataQuery {
 			}
 		}
 		return nameLike;
+	}
+
+	public String getNamePinyinLike() {
+		if (namePinyinLike != null && namePinyinLike.trim().length() > 0) {
+			if (!namePinyinLike.endsWith("%")) {
+				namePinyinLike = namePinyinLike + "%";
+			}
+		}
+		return namePinyinLike;
 	}
 
 	public String getNation() {
@@ -341,6 +351,14 @@ public class EmployeeQuery extends DataQuery {
 		return this;
 	}
 
+	public EmployeeQuery namePinyinLike(String namePinyinLike) {
+		if (namePinyinLike == null) {
+			throw new RuntimeException("namePinyinLike is null");
+		}
+		this.namePinyinLike = namePinyinLike;
+		return this;
+	}
+
 	public EmployeeQuery nation(String nation) {
 		if (nation == null) {
 			throw new RuntimeException("nation is null");
@@ -395,6 +413,10 @@ public class EmployeeQuery extends DataQuery {
 
 	public void setNameLike(String nameLike) {
 		this.nameLike = nameLike;
+	}
+
+	public void setNamePinyinLike(String namePinyinLike) {
+		this.namePinyinLike = namePinyinLike;
 	}
 
 	public void setNation(String nation) {

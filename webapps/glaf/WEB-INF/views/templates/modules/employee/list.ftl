@@ -8,7 +8,7 @@
 <script type="text/javascript">
 
 	function getLink(){
-		var link_ = "${contextPath}/employee/json?nameLike_enc=${nameLike_enc}"; 
+		var link_ = "${contextPath}/employee/json?nameLike_enc=${nameLike_enc}&namePinyinLike=${namePinyinLike}"; 
 		return link_;
 	}
 
@@ -318,6 +318,11 @@
        document.iForm.submit();
 	}
 	
+	function searchXY(namePinyinLike){
+        var link = "${contextPath}/employee/json?namePinyinLike="+namePinyinLike;
+		//window.location.href=link;
+		loadGridData(link);
+	}
 </script>
 </head>
 <body>  
@@ -328,7 +333,7 @@
     <div data-options="region:'center'">  
         <div class="easyui-layout" data-options="fit:true, border:true">  
           <div data-options="region:'center', split:true, border:true, fit:true">
-		   <div data-options="region:'north', split:true, border:true" style="height:48px" class="toolbar-backgroud"> 
+		   <div data-options="region:'north', split:true, border:true" style="height:68px" class="toolbar-backgroud"> 
 		    <div>
 			<form id="iForm" name="iForm" method="post" action="">
 			<table>
@@ -354,6 +359,14 @@
 	                        onclick="javascript:searchData();">查找</button>
 				</td>
 			 </tr>
+			 <tr>
+				<td colspan="3">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<#list charList as item>
+					<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;&nbsp;
+					</#list>
+				</td>
+		     </tr>
 			</table>
 			</form>
 			</div> 

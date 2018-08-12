@@ -46,6 +46,7 @@ public class EmployeeDomainFactory {
 		columnMap.put("tenantId", "TENANTID_");
 		columnMap.put("userId", "USERID_");
 		columnMap.put("name", "NAME_");
+		columnMap.put("namePinyin", "NAMEPINYIN_");
 		columnMap.put("sex", "SEX_");
 		columnMap.put("birthday", "BIRTHDAY_");
 		columnMap.put("idCardNo", "IDCARDNO_");
@@ -75,6 +76,7 @@ public class EmployeeDomainFactory {
 		javaTypeMap.put("id", "String");
 		javaTypeMap.put("tenantId", "String");
 		javaTypeMap.put("name", "String");
+		javaTypeMap.put("namePinyin", "String");
 		javaTypeMap.put("userId", "String");
 		javaTypeMap.put("sex", "String");
 		javaTypeMap.put("birthday", "Date");
@@ -141,6 +143,13 @@ public class EmployeeDomainFactory {
 		name.setJavaType("String");
 		name.setLength(100);
 		tableDefinition.addColumn(name);
+		
+		ColumnDefinition namePinyin = new ColumnDefinition();
+		namePinyin.setName("namePinyin");
+		namePinyin.setColumnName("NAMEPINYIN_");
+		namePinyin.setJavaType("String");
+		namePinyin.setLength(50);
+		tableDefinition.addColumn(namePinyin);
 
 		ColumnDefinition userId = new ColumnDefinition();
 		userId.setName("userId");

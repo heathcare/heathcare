@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.glaf.core.id.*;
+import com.glaf.base.modules.sys.util.PinyinUtils;
 import com.glaf.core.dao.*;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.util.*;
@@ -63,6 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				employee.setId(UUID32.getUUID());
 				employee.setCreateTime(new Date());
 				employee.setDeleteFlag(0);
+				employee.setNamePinyin(PinyinUtils.converterToFirstSpell(employee.getName(), true));
 			}
 		}
 
@@ -150,8 +152,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employee.setId(UUID32.getUUID());
 			employee.setCreateTime(new Date());
 			employee.setDeleteFlag(0);
+			employee.setNamePinyin(PinyinUtils.converterToFirstSpell(employee.getName(), true));
 			employeeMapper.insertEmployee(employee);
 		} else {
+			employee.setNamePinyin(PinyinUtils.converterToFirstSpell(employee.getName(), true));
 			employeeMapper.updateEmployee(employee);
 		}
 	}
