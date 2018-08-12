@@ -28,6 +28,7 @@ public class PersonQuery extends DataQuery {
 	protected Collection<String> gradeIds;
 	protected String name;
 	protected String nameLike;
+	protected String namePinyinLike;
 	protected String idCardNo;
 	protected String idCardNoLike;
 	protected String patriarch;
@@ -242,6 +243,15 @@ public class PersonQuery extends DataQuery {
 			}
 		}
 		return nameLike;
+	}
+
+	public String getNamePinyinLike() {
+		if (namePinyinLike != null && namePinyinLike.trim().length() > 0) {
+			if (!namePinyinLike.endsWith("%")) {
+				namePinyinLike = namePinyinLike + "%";
+			}
+		}
+		return namePinyinLike;
 	}
 
 	public String getOrderBy() {
@@ -509,6 +519,14 @@ public class PersonQuery extends DataQuery {
 		return this;
 	}
 
+	public PersonQuery namePinyinLike(String namePinyinLike) {
+		if (namePinyinLike == null) {
+			throw new RuntimeException("namePinyin is null");
+		}
+		this.namePinyinLike = namePinyinLike;
+		return this;
+	}
+
 	public PersonQuery patriarch(String patriarch) {
 		if (patriarch == null) {
 			throw new RuntimeException("patriarch is null");
@@ -623,6 +641,10 @@ public class PersonQuery extends DataQuery {
 
 	public void setNameLike(String nameLike) {
 		this.nameLike = nameLike;
+	}
+
+	public void setNamePinyinLike(String namePinyinLike) {
+		this.namePinyinLike = namePinyinLike;
 	}
 
 	public void setPatriarch(String patriarch) {

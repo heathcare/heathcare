@@ -62,8 +62,14 @@ public class Person implements Serializable, JSONable {
 	/**
 	 * 姓名
 	 */
-	@Column(name = "NAME_", length = 100)
+	@Column(name = "NAME_", length = 50)
 	protected String name;
+
+	/**
+	 * 名称拼音
+	 */
+	@Column(name = "NAMEPINYIN_", length = 50)
+	protected String namePinyin;
 
 	/**
 	 * 身份证编号
@@ -922,6 +928,14 @@ public class Person implements Serializable, JSONable {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 
 	public void setStudentCode(String studentCode) {

@@ -148,14 +148,14 @@ public class DishesDomainFactory {
 		name.setName("name");
 		name.setColumnName("NAME_");
 		name.setJavaType("String");
-		name.setLength(200);
+		name.setLength(50);
 		tableDefinition.addColumn(name);
 
 		ColumnDefinition namePinyin = new ColumnDefinition();
 		namePinyin.setName("namePinyin");
 		namePinyin.setColumnName("NAMEPINYIN_");
 		namePinyin.setJavaType("String");
-		namePinyin.setLength(200);
+		namePinyin.setLength(50);
 		tableDefinition.addColumn(namePinyin);
 
 		ColumnDefinition description = new ColumnDefinition();

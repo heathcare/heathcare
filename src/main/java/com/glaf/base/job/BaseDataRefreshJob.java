@@ -90,6 +90,14 @@ public class BaseDataRefreshJob extends BaseJob {
 				ex.printStackTrace();
 				logger.error("更新菜肴数据错误！");
 			}
+			
+			try {
+				logger.info("------------update person pinyin---------------");
+				PinyinUtils.processPerson();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error("更新Person数据错误！");
+			}
 
 		}
 		lastExecuteTime.set(System.currentTimeMillis());

@@ -33,6 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.glaf.base.modules.sys.util.PinyinUtils;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
 import com.glaf.core.security.Authentication;
@@ -181,6 +182,7 @@ public class PersonServiceImpl implements PersonService {
 			Person model = personMapper.getPersonById(person.getId());
 			if (model != null) {
 				person.setUpdateTime(new Date());
+				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
 				personMapper.updatePerson(person);
 			} else {
 				person.setCreateTime(new Date());
@@ -189,6 +191,7 @@ public class PersonServiceImpl implements PersonService {
 				} else {
 					person.setId(UUID32.getUUID());
 				}
+				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
 				personMapper.insertPerson(person);
 			}
 		} else {
@@ -199,9 +202,11 @@ public class PersonServiceImpl implements PersonService {
 					person.setId(UUID32.getUUID());
 				}
 				person.setCreateTime(new Date());
+				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
 				personMapper.insertPerson(person);
 			} else {
 				person.setUpdateTime(new Date());
+				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
 				personMapper.updatePerson(person);
 			}
 		}

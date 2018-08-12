@@ -445,7 +445,7 @@
 			<td colspan="2">
 			    &nbsp;&nbsp;&nbsp;&nbsp;
 				<#list charList as item>
-				&nbsp;<span style="cursor: pointer;" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
+				&nbsp;<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
 				</#list>
 			</td>
 		</tr>

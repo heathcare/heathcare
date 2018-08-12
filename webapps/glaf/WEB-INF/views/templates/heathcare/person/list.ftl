@@ -59,7 +59,7 @@
 
 
 	function getLink(){
-		var link_ = "${contextPath}/heathcare/person/json?nameLike_enc=${nameLike_enc}";
+		var link_ = "${contextPath}/heathcare/person/json?nameLike_enc=${nameLike_enc}&namePinyinLike=${namePinyinLike}";
         if(jQuery("#nodeId").val() != ""){
             link_ = link_ + "&gradeId="+jQuery("#nodeId").val();
 	    } else {
@@ -513,6 +513,13 @@
        document.iForm.submit();
 	}
 	
+	function searchXY(namePinyinLike){
+        var nameLike = document.getElementById("nameLike").value;
+        var link = "${contextPath}/heathcare/person/json?nameLike="+nameLike+"&namePinyinLike="+namePinyinLike;
+		//window.location.href=link;
+		loadGridData(link);
+	}
+
 </script>
 </head>
 <body>  
@@ -535,7 +542,7 @@
     <div data-options="region:'center'">  
         <div class="easyui-layout" data-options="fit:true, border:true">  
           <div data-options="region:'center', split:true, border:true, fit:true">
-		   <div data-options="region:'north', split:true, border:true" style="height:48px" class="toolbar-backgroud"> 
+		   <div data-options="region:'north', split:true, border:true" style="height:68px" class="toolbar-backgroud"> 
 		    <div>
 			<form id="iForm" name="iForm" method="post" action="">
 			<table>
@@ -563,6 +570,14 @@
 	                        onclick="javascript:searchData();">查找</button>
 				</td>
 			 </tr>
+			 <tr>
+				<td colspan="3">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<#list charList as item>
+					<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;&nbsp;
+					</#list>
+				</td>
+		     </tr>
 			</table>
 			</form>
 			</div> 

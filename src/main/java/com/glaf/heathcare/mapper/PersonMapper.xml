@@ -11,6 +11,8 @@
 			jdbcType="VARCHAR" />
 		<result property="gradeId" column="GRADEID_" jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="namePinyin" column="NAMEPINYIN_"
+			jdbcType="VARCHAR" />
 		<result property="idCardNo" column="IDCARDNO_"
 			jdbcType="VARCHAR" />
 		<result property="studentCode" column="STUDENTCODE_"
@@ -114,6 +116,9 @@
 			</if>
 			<if test="name != null">
 				,NAME_
+			</if>
+			<if test="namePinyin != null">
+				,NAMEPINYIN_
 			</if>
 			<if test="idCardNo != null">
 				,IDCARDNO_
@@ -282,6 +287,9 @@
 			<if test="name != null">
 				,#{name, jdbcType=VARCHAR}
 			</if>
+			<if test="namePinyin != null">
+				,#{namePinyin, jdbcType=VARCHAR}
+			</if>
 			<if test="idCardNo != null">
 				,#{idCardNo, jdbcType=VARCHAR}
 			</if>
@@ -445,6 +453,7 @@
 		,TENANTID_
 		,GRADEID_
 		,NAME_
+		,NAMEPINYIN_
 		,IDCARDNO_
 		,STUDENTCODE_
 		,BLOODTYPE_
@@ -506,54 +515,67 @@
 			,#{person.gradeId, jdbcType=VARCHAR}
 			,#{person.name,
 			jdbcType=VARCHAR}
+			,#{person.namePinyin, jdbcType=VARCHAR}
 			,#{person.idCardNo, jdbcType=VARCHAR}
-			,#{person.studentCode, jdbcType=VARCHAR}
+			,#{person.studentCode,
+			jdbcType=VARCHAR}
 			,#{person.bloodType,
 			jdbcType=VARCHAR}
 			,#{person.nationality,
 			jdbcType=VARCHAR}
-			,#{person.nation, jdbcType=VARCHAR}
+			,#{person.nation,
+			jdbcType=VARCHAR}
 			,#{person.birthPlace,
 			jdbcType=VARCHAR}
 			,#{person.natureAccount,
 			jdbcType=VARCHAR}
-			,#{person.natureType, jdbcType=VARCHAR}
+			,#{person.natureType,
+			jdbcType=VARCHAR}
 			,#{person.oneChild,
 			jdbcType=VARCHAR}
 			,#{person.disability,
 			jdbcType=VARCHAR}
-			,#{person.guardian, jdbcType=VARCHAR}
+			,#{person.guardian,
+			jdbcType=VARCHAR}
 			,#{person.guardianCardType,
 			jdbcType=VARCHAR}
 			,#{person.guardianNo,
 			jdbcType=VARCHAR}
-			,#{person.patriarch, jdbcType=VARCHAR}
+			,#{person.patriarch,
+			jdbcType=VARCHAR}
 			,#{person.telephone,
 			jdbcType=VARCHAR}
 			,#{person.province,
 			jdbcType=VARCHAR}
-			,#{person.provinceId, jdbcType=BIGINT}
+			,#{person.provinceId,
+			jdbcType=BIGINT}
 			,#{person.city,
 			jdbcType=VARCHAR}
-			,#{person.cityId, jdbcType=BIGINT}
+			,#{person.cityId,
+			jdbcType=BIGINT}
 			,#{person.area,
 			jdbcType=VARCHAR}
-			,#{person.areaId, jdbcType=BIGINT}
+			,#{person.areaId,
+			jdbcType=BIGINT}
 			,#{person.town,
 			jdbcType=VARCHAR}
-			,#{person.townId, jdbcType=BIGINT}
+			,#{person.townId,
+			jdbcType=BIGINT}
 			,#{person.homeAddress, jdbcType=VARCHAR}
 			,#{person.birthAddress,
 			jdbcType=VARCHAR}
-			,#{person.sex, jdbcType=VARCHAR}
+			,#{person.sex,
+			jdbcType=VARCHAR}
 			,#{person.joinDate,
 			jdbcType=TIMESTAMP}
 			,#{person.healthCondition, jdbcType=VARCHAR}
-			,#{person.allergy, jdbcType=VARCHAR}
+			,#{person.allergy,
+			jdbcType=VARCHAR}
 			,#{person.feedingHistory,
 			jdbcType=VARCHAR}
 			,#{person.previousHistory, jdbcType=VARCHAR}
-			,#{person.foodAllergy, jdbcType=VARCHAR}
+			,#{person.foodAllergy,
+			jdbcType=VARCHAR}
 			,#{person.medicineAllergy,
 			jdbcType=VARCHAR}
 			,#{person.height, jdbcType=DOUBLE}
@@ -561,7 +583,8 @@
 			jdbcType=DOUBLE}
 			,#{person.father,
 			jdbcType=VARCHAR}
-			,#{person.fatherCompany, jdbcType=VARCHAR}
+			,#{person.fatherCompany,
+			jdbcType=VARCHAR}
 			,#{person.fatherTelephone,
 			jdbcType=VARCHAR}
 			,#{person.fatherWardship, jdbcType=VARCHAR}
@@ -571,7 +594,8 @@
 			jdbcType=VARCHAR}
 			,#{person.motherTelephone,
 			jdbcType=VARCHAR}
-			,#{person.motherWardship, jdbcType=VARCHAR}
+			,#{person.motherWardship,
+			jdbcType=VARCHAR}
 			,#{person.birthday,
 			jdbcType=TIMESTAMP}
 			,#{person.year, jdbcType=INTEGER}
@@ -600,6 +624,7 @@
 			,TENANTID_
 			,GRADEID_
 			,NAME_
+			,NAMEPINYIN_
 			,IDCARDNO_
 			,STUDENTCODE_
 			,BLOODTYPE_
@@ -661,7 +686,9 @@
 			jdbcType=VARCHAR}
 			,#{person.name,
 			jdbcType=VARCHAR}
-			,#{person.idCardNo, jdbcType=VARCHAR}
+			,#{person.namePinyin, jdbcType=VARCHAR}
+			,#{person.idCardNo,
+			jdbcType=VARCHAR}
 			,#{person.studentCode, jdbcType=VARCHAR}
 			,#{person.bloodType,
 			jdbcType=VARCHAR}
@@ -766,6 +793,9 @@
 			</if>
 			<if test="name != null">
 				NAME_ = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="namePinyin != null">
+				NAMEPINYIN_ = #{namePinyin, jdbcType=VARCHAR},
 			</if>
 			<if test="idCardNo != null and idCardNo != '' ">
 				IDCARDNO_ = #{idCardNo, jdbcType=VARCHAR},
@@ -951,7 +981,7 @@
 				order by ${orderBy}
 			</when>
 			<otherwise>
-				order by E.CREATETIME_ desc
+				order by E.NAME_ asc, E.NAMEPINYIN_ asc
 			</otherwise>
 		</choose>
 	</select>
@@ -1001,6 +1031,11 @@
 
 			<if test="nameLike != null and nameLike != '' ">
 				and E.NAME_ like #{nameLike}
+			</if>
+
+			<if test="namePinyinLike != null and namePinyinLike != '' ">
+				and ( E.NAME_ like #{namePinyinLike} or E.NAMEPINYIN_
+				like #{namePinyinLike} )
 			</if>
 
 			<if test="idCardNo != null and idCardNo != '' ">

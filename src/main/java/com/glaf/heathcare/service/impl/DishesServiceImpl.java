@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.glaf.core.id.*;
+import com.glaf.base.modules.sys.util.PinyinUtils;
 import com.glaf.core.dao.*;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.security.LoginContext;
@@ -67,6 +68,7 @@ public class DishesServiceImpl implements DishesService {
 		for (Dishes dishes : list) {
 			if (dishes.getId() == 0) {
 				dishes.setId(idGenerator.nextId("HEALTH_DISHES"));
+				dishes.setNamePinyin(PinyinUtils.converterToFirstSpell(dishes.getName(), true));
 			}
 		}
 
@@ -255,10 +257,12 @@ public class DishesServiceImpl implements DishesService {
 			if (dishes.getItems() != null && dishes.getItems().size() > 0) {
 				isNew = true;
 			} else {
+				dishes.setNamePinyin(PinyinUtils.converterToFirstSpell(dishes.getName(), true));
 				dishesMapper.insertDishes(dishes);
 			}
 		} else {
 			dishes.setUpdateTime(new Date());
+			dishes.setNamePinyin(PinyinUtils.converterToFirstSpell(dishes.getName(), true));
 			dishesMapper.updateDishes(dishes);
 		}
 		if (dishes.getItems() != null && dishes.getItems().size() > 0) {
@@ -331,6 +335,7 @@ public class DishesServiceImpl implements DishesService {
 				item.setDishesId(dishes.getId());
 			}
 			if (isNew) {
+				dishes.setNamePinyin(PinyinUtils.converterToFirstSpell(dishes.getName(), true));
 				dishesMapper.insertDishes(dishes);
 			}
 			dishesItemMapper.bulkInsertDishesItem(dishes.getItems());

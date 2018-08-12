@@ -563,6 +563,14 @@ public class SysDictoryController {
 			logger.error("更新菜肴数据错误！");
 		}
 
+		try {
+			logger.info("------------update person pinyin---------------");
+			PinyinUtils.processPerson();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("更新Person数据错误！");
+		}
+
 		String x_view = ViewProperties.getString("dictory.reloadDictory");
 		if (StringUtils.isNotEmpty(x_view)) {
 			return new ModelAndView(x_view, modelMap);

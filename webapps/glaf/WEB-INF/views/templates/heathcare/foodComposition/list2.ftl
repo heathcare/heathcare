@@ -247,7 +247,7 @@
 				    <input type="hidden" id="namePinyinLike" name="namePinyinLike" value="${namePinyinLike}">
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<#list charList as item>
-					&nbsp;<span style="cursor: pointer;" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
+					&nbsp;<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
 					</#list>
 				</td>
 			</tr>

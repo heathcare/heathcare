@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.glaf.base.modules.sys.util.PinyinUtils;
 import com.glaf.core.cache.CacheFactory;
 import com.glaf.core.config.SystemConfig;
 import com.glaf.core.dao.EntityDAO;
@@ -70,6 +71,7 @@ public class FoodCompositionServiceImpl implements FoodCompositionService {
 		for (FoodComposition foodComposition : list) {
 			if (foodComposition.getId() == 0) {
 				foodComposition.setId(idGenerator.nextId("HEALTH_FOOD_COMPOSITION"));
+				foodComposition.setNamePinyin(PinyinUtils.converterToFirstSpell(foodComposition.getName(), true));
 			}
 		}
 		if (StringUtils.equals(DBUtils.ORACLE, DBConnectionFactory.getDatabaseType())) {
@@ -236,6 +238,7 @@ public class FoodCompositionServiceImpl implements FoodCompositionService {
 			foodComposition.setId(idGenerator.nextId("HEALTH_FOOD_COMPOSITION"));
 			foodComposition.setCreateTime(new Date());
 			foodComposition.setUpdateTime(new Date());
+			foodComposition.setNamePinyin(PinyinUtils.converterToFirstSpell(foodComposition.getName(), true));
 			foodCompositionMapper.insertFoodComposition(foodComposition);
 		} else {
 			if (SystemConfig.getBoolean("use_query_cache")) {
@@ -248,6 +251,7 @@ public class FoodCompositionServiceImpl implements FoodCompositionService {
 			}
 
 			foodComposition.setUpdateTime(new Date());
+			foodComposition.setNamePinyin(PinyinUtils.converterToFirstSpell(foodComposition.getName(), true));
 			// logger.debug("-ncs:"+foodComposition.getNicotinicCid());
 			foodCompositionMapper.updateFoodComposition(foodComposition);
 		}
@@ -261,6 +265,7 @@ public class FoodCompositionServiceImpl implements FoodCompositionService {
 				foodComposition.setId(idGenerator.nextId("HEALTH_FOOD_COMPOSITION"));
 				foodComposition.setCreateTime(new Date());
 				foodComposition.setUpdateTime(new Date());
+				foodComposition.setNamePinyin(PinyinUtils.converterToFirstSpell(foodComposition.getName(), true));
 				foodCompositionMapper.insertFoodComposition(foodComposition);
 			}
 		}

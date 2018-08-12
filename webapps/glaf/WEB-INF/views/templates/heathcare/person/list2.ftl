@@ -15,7 +15,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/person/json?gradeId=${gradeId}',
+				url: '${contextPath}/heathcare/person/json?gradeId=${gradeId}&namePinyinLike=${namePinyinLike}',
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -393,12 +393,19 @@
        document.iForm.submit();
 	}
 	
+	function searchXY(namePinyinLike){
+        var nameLike = document.getElementById("nameLike").value;
+        var link = "${contextPath}/heathcare/person/json?nameLike="+nameLike+"&namePinyinLike="+namePinyinLike;
+		//window.location.href=link;
+		loadGridData(link);
+	}
+
 </script>
 </head>
 <body>  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:48px" class="toolbar-backgroud"> 
+   <div data-options="region:'north', split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 		<form id="iForm" name="iForm" method="post" action="">
 			<table>
@@ -430,6 +437,14 @@
 						   onclick="javascript:searchData();">查找</button>
 				</td>
 			 </tr>
+			 <tr>
+				<td colspan="3">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<#list charList as item>
+					 <span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;&nbsp;
+					</#list>
+				</td>
+		     </tr>
 			</table>
 	   </form>
    </div>

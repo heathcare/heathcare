@@ -350,6 +350,11 @@ public class PersonController {
 			query.setNameLike(nameLike);
 		}
 
+		String namePinyinLike = request.getParameter("namePinyinLike");
+		if (StringUtils.isNotEmpty(namePinyinLike)) {
+			query.setNamePinyinLike(namePinyinLike);
+		}
+
 		int start = 0;
 		int limit = 50;
 		String orderName = null;
@@ -423,6 +428,12 @@ public class PersonController {
 		List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
 		request.setAttribute("gradeInfos", list);
 
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
+
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
 			return new ModelAndView(view, modelMap);
@@ -440,6 +451,12 @@ public class PersonController {
 
 		List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
 		request.setAttribute("gradeInfos", list);
+
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
