@@ -229,6 +229,12 @@ public class FoodCompositionController {
 			List<SysTree> foodCategories = sysTreeService.getSysTreeList(root.getId());
 			request.setAttribute("foodCategories", foodCategories);
 		}
+		
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -877,6 +883,12 @@ public class FoodCompositionController {
 			List<SysTree> foodCategories = sysTreeService.getSysTreeList(root.getId());
 			request.setAttribute("foodCategories", foodCategories);
 		}
+		
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {

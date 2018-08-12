@@ -30,7 +30,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/foodComposition/json?typeId=${typeId}&wordLike_enc=${wordLike_enc}',
+				url: '${contextPath}/heathcare/foodComposition/json?typeId=${typeId}&wordLike_enc=${wordLike_enc}&namePinyinLike=${namePinyinLike}',
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -116,17 +116,36 @@
 		});
 	}
 
+	function loadGridData(url){
+	    jQuery.ajax({
+			type: "POST",
+			url:  url,
+			dataType:  'json',
+			error: function(data){
+				alert('服务器处理错误！');
+			},
+			success: function(data){
+				jQuery('#mydatagrid').datagrid('loadData', data);
+			}
+		});
+	}
+
 	function searchData(){
        document.iForm.submit();
 	}
 
+	function searchXY(nameLike){
+		var typeId = document.getElementById("typeId").value;
+        var link = "${contextPath}/heathcare/foodComposition/jsonAll?typeId="+typeId+"&namePinyinLike="+nameLike;
+		loadGridData(link);
+	}
 
 </script>
 </head>
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:45px" class="toolbar-backgroud"  > 
+   <div data-options="region:'north', split:false, border:true" style="height:68px" class="toolbar-backgroud"  > 
     <div style="margin:4px;"> 
 	<form id="iForm" name="iForm" method="post" action="">
 	<input type="hidden" id="nodeId" name="nodeId" value="">
@@ -135,8 +154,7 @@
     <table>
     <tr>
 	    <td>
-		<img src="${contextPath}/static/images/window.png">
-	     &nbsp;<span class="x_content_title">食物名称列表</span>
+		  <img src="${contextPath}/static/images/window.png"> &nbsp;<span class="x_content_title">食物名称列表</span>
 		</td>
 
 		<td>
@@ -155,7 +173,7 @@
 		<td>
 		   名称&nbsp;
 		   <input id="wordLike" name="wordLike" type="text" class="x-searchtext"  
-	              style="width:185px;" value="${wordLike}">
+	              style="width:125px;" value="${wordLike}">
 		</td>
 
 		<td>
@@ -165,6 +183,15 @@
 	                onclick="javascript:choose();">确定</button>
 		</td>
      </tr>
+	 <tr>
+		<td colspan="5">
+			<input type="hidden" id="namePinyinLike" name="namePinyinLike" value="${namePinyinLike}">
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<#list charList as item>
+			&nbsp;<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
+			</#list>
+		</td>
+	  </tr>
     </table>
 	</form>
    </div> 

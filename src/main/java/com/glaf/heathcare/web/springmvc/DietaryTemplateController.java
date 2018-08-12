@@ -591,7 +591,7 @@ public class DietaryTemplateController {
 				&& StringUtils.equals(sysFlag, "N")) {
 			request.setAttribute("canChangeDishes", true);
 		}
-		
+
 		List<String> charList = new ArrayList<String>();
 		for (int i = 65; i < 91; i++) {
 			charList.add("" + (char) i);
@@ -812,6 +812,12 @@ public class DietaryTemplateController {
 		List<District> districts = districtService.getDistrictList(0);
 		request.setAttribute("districts", districts);
 
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
+
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
 			return new ModelAndView(view, modelMap);
@@ -862,6 +868,12 @@ public class DietaryTemplateController {
 				request.setAttribute("categories", categories);
 			}
 		}
+
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -919,6 +931,12 @@ public class DietaryTemplateController {
 
 		List<District> districts = districtService.getDistrictList(0);
 		request.setAttribute("districts", districts);
+
+		List<String> charList = new ArrayList<String>();
+		for (int i = 65; i < 91; i++) {
+			charList.add("" + (char) i);
+		}
+		request.setAttribute("charList", charList);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -998,7 +1016,7 @@ public class DietaryTemplateController {
 
 		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", categories);
-		
+
 		List<String> charList = new ArrayList<String>();
 		for (int i = 65; i < 91; i++) {
 			charList.add("" + (char) i);
@@ -1039,7 +1057,7 @@ public class DietaryTemplateController {
 
 		List<SysTree> categories = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", categories);
-		
+
 		List<String> charList = new ArrayList<String>();
 		for (int i = 65; i < 91; i++) {
 			charList.add("" + (char) i);
