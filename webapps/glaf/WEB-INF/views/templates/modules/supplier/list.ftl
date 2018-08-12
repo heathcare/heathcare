@@ -340,7 +340,7 @@
 	    </td>
 		<td>
 		  名称&nbsp;<input id="keywordLike" name="keywordLike" type="text" 
-			       class="easyui-validatebox  x-searchtext" style="width:200px;"
+			       class="easyui-validatebox  x-searchtext" style="width:120px;"
 				   value="${keywordLike}">
 		</td>
 		<td>

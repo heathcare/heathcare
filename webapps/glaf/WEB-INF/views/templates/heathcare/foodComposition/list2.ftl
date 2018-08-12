@@ -207,7 +207,7 @@
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
+   <div data-options="region:'north', split:false, border:true" style="height:72px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 		<table>
 			<tr>
@@ -234,7 +234,7 @@
 						document.getElementById("nodeId").value="${nodeId}";
 					</script>
 					&nbsp;名称&nbsp;
-					<input type="text" id="wordLike" name="wordLike" value="${wordLike}" size="30"  style="width:180px" 
+					<input type="text" id="wordLike" name="wordLike" value="${wordLike}" size="30"  style="width:120px" 
 						   class="easyui-validatebox  x-searchtext">
 					&nbsp;&nbsp;
 					<button type="button" id="searchButton"  class="btnGrayMini" style="width: 90px" 

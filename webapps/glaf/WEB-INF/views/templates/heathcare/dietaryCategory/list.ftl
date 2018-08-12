@@ -378,7 +378,7 @@
 			  </script>
 			  &nbsp;
               <input id="nameLike" name="nameLike" type="text" class="x-searchtext"  
-					 style="width:295px;" value="${nameLike}">
+					 style="width:125px;" value="${nameLike}">
 			  <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'" 
 	             onclick="javascript:doSearch();" >查找</a>
 			</td>

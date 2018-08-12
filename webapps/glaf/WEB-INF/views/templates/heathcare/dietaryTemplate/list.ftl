@@ -509,9 +509,6 @@
 						<button type="button" id="checkButton111" class="btn btnGrayMini" style="width: 60px" 
 								onclick="javascript:checkAll();">全选</button>
 						</#if>
-						&nbsp;&nbsp;名称&nbsp;&nbsp;
-					   <input id="nameLike" name="nameLike" type="text" class="x-searchtext"  
-							  style="width:295px;" value="${nameLike}">
 					</td>
 					</tr>
 					<tr>
@@ -570,18 +567,11 @@
 						   document.getElementById("dayOfWeek").value="${dayOfWeek}";
 					  </script>
 					</td>
-					<!-- <td>
-						&nbsp;省份&nbsp;
-						<select id="province" name="province">
-						 <option value="">----请选择----</option>
-						 <#list districts as district>
-						 <option value="${district.name}">${district.name}</option>
-						 </#list>
-						</select>
-						<script type="text/javascript">
-						   document.getElementById("province").value="${province}";
-						</script>    
-					</td> -->
+					<td>
+						&nbsp;&nbsp;名称&nbsp;&nbsp;
+					   <input id="nameLike" name="nameLike" type="text" class="x-searchtext"  
+							  style="width:125px;" value="${nameLike}">
+					</td>
 					<td>
 						<button type="button" id="searchButton" class="btn btnGrayMini" style="width:60px" 
 								onclick="javascript:searchData();">查找</button>
