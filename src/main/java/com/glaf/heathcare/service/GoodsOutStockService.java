@@ -111,5 +111,8 @@ public interface GoodsOutStockService {
 
 	@Transactional
 	void updateGoodsOutStockStatus(List<GoodsOutStock> list);
+	
+	@Transactional
+	void updateAll(String tenantId, Map<Long, Double> dataMap);
 
 }

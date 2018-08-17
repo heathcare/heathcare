@@ -6,7 +6,22 @@
 <#include "/inc/init_easyui_import.ftl"/>
 <script type="text/javascript">
 
-   jQuery(function(){
+
+	function getLink(){
+		var link_ = "${contextPath}/heathcare/person/json?nameLike_enc=${nameLike_enc}";
+        if(jQuery("#gradeId").val() != ""){
+            link_ = link_ + "&gradeId="+jQuery("#gradeId").val();
+	    } else {
+            link_ = link_ + "&gradeId=${gradeId}";
+		}
+		var namePinyinLike = jQuery("#namePinyinLike").val();
+		if(namePinyinLike != ""){
+		    link_ = link_ + "&namePinyinLike="+namePinyinLike;
+		}
+		return link_;
+	}
+
+    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
 				width:1000,
 				height:480,
@@ -15,7 +30,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/person/json?gradeId=${gradeId}&namePinyinLike=${namePinyinLike}',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -34,6 +49,29 @@
 				pagePosition: 'both',
 				onDblClickRow: onRowClick 
 			});
+
+			var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 	});
 
 	
@@ -394,6 +432,7 @@
 	}
 	
 	function searchXY(namePinyinLike){
+		document.getElementById("namePinyinLike").value=namePinyinLike;
         var nameLike = document.getElementById("nameLike").value;
         var link = "${contextPath}/heathcare/person/json?nameLike="+nameLike+"&namePinyinLike="+namePinyinLike;
 		//window.location.href=link;
@@ -439,6 +478,7 @@
 			 </tr>
 			 <tr>
 				<td colspan="3">
+				    <input type="hidden" id="namePinyinLike" name="namePinyinLike">
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<#list charList as item>
 					 <span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;&nbsp;

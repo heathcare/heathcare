@@ -87,5 +87,8 @@ public interface GoodsPurchasePlanService {
 
 	@Transactional
 	void updateGoodsPurchasePlanStatus(List<GoodsPurchasePlan> list);
+	
+	@Transactional
+	void updateAll(String tenantId, Map<Long, Double> dataMap);
 
 }

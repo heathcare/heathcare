@@ -179,7 +179,7 @@ public class GrowthStandardController {
 					}
 					String filename = SystemProperties.getAppPath() + "/static/generate/js/growthStandard.js";
 					StringBuilder buff = new StringBuilder();
-					buff.append(" var foods = ").append(array.toJSONString()).append("; ");
+					buff.append(" var growthStandards = ").append(array.toJSONString()).append("; ");
 					FileUtils.save(filename, buff.toString().getBytes("UTF-8"));
 					return ResponseUtils.responseJsonResult(true);
 				}
@@ -601,6 +601,11 @@ public class GrowthStandardController {
 
 		if (loginContext.isSystemAdministrator()) {
 			request.setAttribute("can_write", true);
+		}
+		
+		request.setAttribute("heathcare_gen_js_perm", false);
+		if (loginContext.isSystemAdministrator()) {
+			request.setAttribute("heathcare_gen_js_perm", true);
 		}
 
 		String view = request.getParameter("view");

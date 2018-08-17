@@ -70,6 +70,7 @@
 		return "<a href='#' onclick=javascript:showName('"+row.goodsId+"')>"+val+"</a>";
 	}
 
+
 	function showName(id){
 	    var link="${contextPath}/heathcare/foodComposition/view?id="+id;
 		jQuery.layer({

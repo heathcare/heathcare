@@ -65,6 +65,10 @@
 	    } else {
             link_ = link_ + "&gradeId=${gradeId}";
 		}
+		var namePinyinLike = jQuery("#namePinyinLike").val();
+		if(namePinyinLike != ""){
+		    link_ = link_ + "&namePinyinLike="+namePinyinLike;
+		}
 		return link_;
 	}
 
@@ -514,6 +518,7 @@
 	}
 	
 	function searchXY(namePinyinLike){
+		document.getElementById("namePinyinLike").value=namePinyinLike;
         var nameLike = document.getElementById("nameLike").value;
         var link = "${contextPath}/heathcare/person/json?nameLike="+nameLike+"&namePinyinLike="+namePinyinLike;
 		//window.location.href=link;
@@ -572,6 +577,7 @@
 			 </tr>
 			 <tr>
 				<td colspan="3">
+				    <input type="hidden" id="namePinyinLike" name="namePinyinLike">
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<#list charList as item>
 					<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;&nbsp;

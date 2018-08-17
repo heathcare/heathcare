@@ -50,6 +50,8 @@ public interface GoodsPurchaseMapper {
 	void insertGoodsPurchase(GoodsPurchase model);
 
 	void updateGoodsPurchase(GoodsPurchase model);
+	
+	void updateGoodsPurchaseQuantity(GoodsPurchase model);
 
 	void updateGoodsPurchaseStatus(GoodsPurchase model);
 

@@ -415,6 +415,24 @@ public class RequestUtils {
 	}
 
 	/**
+	 * 从request中获取date参数
+	 * 
+	 * @param request
+	 * @param paramName
+	 * @return
+	 */
+	public static java.util.Date getDateTime(HttpServletRequest request, String paramName) {
+		String paramValue = request.getParameter(paramName);
+		if (StringUtils.isNotEmpty(paramValue)) {
+			try {
+				return org.apache.commons.lang3.time.DateUtils.parseDate(paramValue, "yyyy-MM-dd HH:mm:ss");
+			} catch (Exception ex) {
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * 从request中获取double参数
 	 * 
 	 * @param request

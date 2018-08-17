@@ -8,7 +8,11 @@
 <script type="text/javascript">
 
 	function getLink(){
-		var link_ = "${contextPath}/employee/json?nameLike_enc=${nameLike_enc}&namePinyinLike=${namePinyinLike}"; 
+		var link_ = "${contextPath}/employee/json?nameLike_enc=${nameLike_enc}"; 
+		var namePinyinLike = jQuery("#namePinyinLike").val();
+		if(namePinyinLike != ""){
+		    link_ = link_ + "&namePinyinLike="+namePinyinLike;
+		}
 		return link_;
 	}
 
@@ -319,6 +323,7 @@
 	}
 	
 	function searchXY(namePinyinLike){
+		document.getElementById("namePinyinLike").value=namePinyinLike;
         var link = "${contextPath}/employee/json?namePinyinLike="+namePinyinLike;
 		//window.location.href=link;
 		loadGridData(link);
@@ -361,6 +366,7 @@
 			 </tr>
 			 <tr>
 				<td colspan="3">
+				    <input type="hidden" id="namePinyinLike" name="namePinyinLike">
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<#list charList as item>
 					<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;&nbsp;

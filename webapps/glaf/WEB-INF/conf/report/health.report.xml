@@ -28,6 +28,7 @@
 
 	<report id="DietaryAnalyze">
 	    <title>膳食营养分析统计表</title>
+		<exportFilename>膳食营养分析统计表</exportFilename>
 	    <templateType>jxls2</templateType>
 		<templateFile>conf/report/templates/DietaryAnalyze.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.report.DietaryAnalyzePreprocessor</prepareClass>
@@ -53,6 +54,7 @@
 
 	<report id="GoodsCountQuantity">
 	    <title>出入库登记表</title>
+		<exportFilename>出入库登记表</exportFilename>
 	    <templateType>jxls2</templateType>
 		<templateFile>conf/report/templates/GoodsCountQuantity.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.report.GoodsCountPreprocessor</prepareClass>
@@ -66,6 +68,7 @@
 
 	<report id="WeeklyFoodActualQuantityCount">
 	    <title>一周食物用量表</title>
+		<exportFilename>一周食物用量表</exportFilename>
 	    <templateType>jxls1</templateType>
 		<templateFile>conf/report/templates/WeeklyFoodActualQuantityCount.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.report.WeeklyFoodActualQuantityCountPreprocessor</prepareClass>
@@ -79,6 +82,7 @@
 
 	<report id="WeekGoodsActualQuantity">
 	    <title>食物用量汇总表</title>
+		<exportFilename>食物用量汇总表</exportFilename>
 	    <templateType>jxls2</templateType>
 		<templateFile>conf/report/templates/WeekGoodsActualQuantity.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.report.WeekGoodsActualQuantityPreprocessor</prepareClass>
@@ -282,7 +286,7 @@
 	</report>
 
 	<report id="DietaryMultiAreaNutritionCount">
-	    <title>养成分统计表</title>
+	    <title>营养成分统计表</title>
 	    <templateType>jxls2</templateType>
 		<templateFile>conf/report/templates/DietaryMultiAreaNutritionCount.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.report.DietaryNutritionCountPreprocessor</prepareClass>
@@ -301,7 +305,8 @@
 	</report>
 
 	<report id="WeeklyFoodNutritionCount">
-	    <title>养成分统计表</title>
+	    <title>营养成分统计表</title>
+		<exportFilename>营养成分统计表#{yyyyMMdd}</exportFilename>
 	    <templateType>jxls2</templateType>
 		<templateFile>conf/report/templates/WeeklyFoodNutritionCount.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.report.WeeklyFoodNutritionCountPreprocessor</prepareClass>
@@ -334,6 +339,7 @@
 
 	<report id="TenantDietaryStructAnalyze">
 	    <title>膳食调查分析表</title>
+		<exportFilename>膳食调查分析表#{yyyyMMdd}</exportFilename>
 	    <templateType>jxls2</templateType>
 		<templateFile>conf/report/templates/DietaryStructAnalyze.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.tenant.TenantDietaryStructAnalyzePreprocessor</prepareClass>

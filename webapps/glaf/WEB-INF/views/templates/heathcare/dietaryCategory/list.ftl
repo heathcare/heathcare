@@ -327,6 +327,59 @@
 		});
 	}
 
+<#if heathcare_gen_js_perm == true>	 
+	function genJS(){
+		if(confirm("原来的JS将会被替换，确定重新生成吗？")){
+		    var link = "${contextPath}/heathcare/dietaryTemplateExport/genAllSysJS";
+	        var params = jQuery("#iForm").formSerialize();
+		    jQuery.ajax({
+				   type: "POST",
+				   url: link,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					     
+					   }
+				   }
+			 });
+		}
+	}
+
+	function genJSON(){
+		if(confirm("原来的JSON将会被替换，确定重新生成吗？")){
+		    var link = "${contextPath}/heathcare/dietaryTemplateExport/genAllSysJSON";
+	        var params = jQuery("#iForm").formSerialize();
+		    jQuery.ajax({
+				   type: "POST",
+				   url: link,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					     
+					   }
+				   }
+			 });
+		}
+	}
+ </#if>
+
+
 </script>
 </head>
 <body style="margin:1px;">  
@@ -337,7 +390,7 @@
 	  <table width="100%" align="left">
 		<tbody>
 		 <tr>
-		    <td width="35%" align="left">
+		    <td width="45%" align="left">
 				&nbsp;<img src="${contextPath}/static/images/window.png">
 				&nbsp;<span class="x_content_title">食谱模板类别列表</span>
 				<#if canEdit == true>
@@ -348,8 +401,14 @@
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 				   onclick="javascript:deleteSelections();">删除</a> 
 				</#if>
+				<#if heathcare_gen_js_perm == true>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-class'"
+				   onclick="javascript:genJS();">生成JS</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-class'"
+				   onclick="javascript:genJSON();">生成JSON</a>
+				</#if>
 			</td>
-			<td width="65%" align="left">
+			<td width="55%" align="left">
 			  &nbsp;餐点&nbsp;
 			  <#if typeDict?exists>
 				<span style="color:#0066ff;font-weight:bold;">${typeDict.name}</span>

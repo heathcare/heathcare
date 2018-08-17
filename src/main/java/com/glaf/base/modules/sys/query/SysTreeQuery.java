@@ -33,6 +33,7 @@ public class SysTreeQuery extends DataQuery {
 	protected String name;
 	protected String nameLike;
 	protected List<String> names;
+	protected String publicFlag;
 	protected String relationColumn;
 	protected String relationTable;
 	protected Integer sortGreaterThan;
@@ -194,6 +195,10 @@ public class SysTreeQuery extends DataQuery {
 		return orderBy;
 	}
 
+	public String getPublicFlag() {
+		return publicFlag;
+	}
+
 	public String getRelationColumn() {
 		return relationColumn;
 	}
@@ -305,6 +310,14 @@ public class SysTreeQuery extends DataQuery {
 		return this;
 	}
 
+	public SysTreeQuery publicFlag(String publicFlag) {
+		if (publicFlag == null) {
+			throw new RuntimeException("publicFlag is null");
+		}
+		this.publicFlag = publicFlag;
+		return this;
+	}
+
 	public void setCode(String code) {
 		this.code = code;
 	}
@@ -347,6 +360,10 @@ public class SysTreeQuery extends DataQuery {
 
 	public void setNodeIds(List<Long> nodeIds) {
 		this.nodeIds = nodeIds;
+	}
+
+	public void setPublicFlag(String publicFlag) {
+		this.publicFlag = publicFlag;
 	}
 
 	public void setRelationColumn(String relationColumn) {

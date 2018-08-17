@@ -52,6 +52,11 @@ public class ReportDefinition implements java.io.Serializable {
 	protected String title;
 
 	/**
+	 * 导出文件名称
+	 */
+	protected String exportFilename;
+
+	/**
 	 * 预处理类
 	 */
 	protected String prepareClass;
@@ -99,6 +104,10 @@ public class ReportDefinition implements java.io.Serializable {
 		return dataSetList;
 	}
 
+	public String getExportFilename() {
+		return exportFilename;
+	}
+
 	public String getPerms() {
 		return perms;
 	}
@@ -137,6 +146,10 @@ public class ReportDefinition implements java.io.Serializable {
 
 	public void setDataSetList(List<ReportDataSet> dataSetList) {
 		this.dataSetList = dataSetList;
+	}
+
+	public void setExportFilename(String exportFilename) {
+		this.exportFilename = exportFilename;
 	}
 
 	public void setPerms(String perms) {

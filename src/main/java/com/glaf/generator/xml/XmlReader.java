@@ -30,7 +30,6 @@ import com.glaf.core.util.Tools;
 
 public class XmlReader {
 
-	 
 	protected void read(Element elem, ColumnDefinition field) {
 		List<?> attrs = elem.attributes();
 		if (attrs != null && !attrs.isEmpty()) {
@@ -52,6 +51,7 @@ public class XmlReader {
 		field.setRenderType(elem.attributeValue("renderType"));
 		field.setColumnName(elem.attributeValue("column"));
 		field.setDataType(FieldType.getFieldType(field.getType()));
+
 		String length = elem.attributeValue("length");
 		if (StringUtils.isNumeric(length)) {
 			field.setLength(Integer.valueOf(length));
@@ -123,7 +123,7 @@ public class XmlReader {
 				} else {
 					tableDefinition.setUpdateAllowed(true);
 				}
- 
+
 				tableDefinition.setModuleName(element.attributeValue("moduleName"));
 
 				String primaryKey = element.attributeValue("primaryKey");

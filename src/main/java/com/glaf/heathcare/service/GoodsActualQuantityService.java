@@ -130,4 +130,7 @@ public interface GoodsActualQuantityService {
 
 	@Transactional
 	void updateGoodsActualQuantityStatus(List<GoodsActualQuantity> list);
+	
+	@Transactional
+	void updateAll(String tenantId, Map<Long, GoodsActualQuantity> dataMap);
 }

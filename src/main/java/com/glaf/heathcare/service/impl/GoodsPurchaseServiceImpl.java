@@ -366,6 +366,31 @@ public class GoodsPurchaseServiceImpl implements GoodsPurchaseService {
 	}
 
 	@Transactional
+	public void updateAll(String tenantId, Map<Long, GoodsPurchase> dataMap) {
+		GoodsPurchaseQuery query = new GoodsPurchaseQuery();
+		query.tenantId(tenantId);
+		query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+		List<Long> ids = new ArrayList<Long>();
+		ids.addAll(dataMap.keySet());
+		query.setIds(ids);
+		List<GoodsPurchase> list = this.list(query);
+		if (list != null && !list.isEmpty()) {
+			for (GoodsPurchase model : list) {
+				if (model.getBusinessStatus() == 0) {
+					if (dataMap.get(model.getId()) != null) {
+						GoodsPurchase p = dataMap.get(model.getId());
+						model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						model.setQuantity(p.getQuantity());
+						model.setPrice(p.getPrice());
+						model.setTotalPrice(p.getTotalPrice());
+						goodsPurchaseMapper.updateGoodsPurchaseQuantity(model);
+					}
+				}
+			}
+		}
+	}
+
+	@Transactional
 	public void updateGoodsPurchaseStatus(GoodsPurchase model) {
 		if (StringUtils.isNotEmpty(model.getTenantId())) {
 			model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(model.getTenantId())));

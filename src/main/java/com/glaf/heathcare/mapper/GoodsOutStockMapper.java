@@ -50,6 +50,8 @@ public interface GoodsOutStockMapper {
 	void insertGoodsOutStock(GoodsOutStock model);
 
 	void updateGoodsOutStock(GoodsOutStock model);
+	
+	void updateGoodsOutStockQuantity(GoodsOutStock model);
 
 	void updateGoodsOutStockStatus(GoodsOutStock model);
 

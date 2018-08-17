@@ -5,7 +5,16 @@
 <title>用户列表</title>
 <#include "/inc/init_easyui_import.ftl"/>
 <script type="text/javascript">
-   var contextPath="${contextPath}";
+    var contextPath="${contextPath}";
+
+    function getLink(){
+	    var link_ = "${contextPath}/sys/user/json";
+		var namePinyinLike = jQuery("#namePinyinLike").val();
+		if(namePinyinLike != ""){
+		    link_ = link_ + "&namePinyinLike="+namePinyinLike;
+		}
+		return link_;
+    }
 
     jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
@@ -16,7 +25,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/sys/user/json',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'userId',
@@ -38,6 +47,29 @@
 				pagePosition: 'both',
 				onDblClickRow: onMyRowClick 
 			});
+
+			var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 	});
 
 	function formatterUser(val, row){
@@ -224,29 +256,66 @@
 			});
 	    }
 	}
-		 		 
+	
+	function loadGridData(url){
+	    jQuery.ajax({
+			type: "POST",
+			url:  url,
+			dataType: 'json',
+			error: function(data){
+				alert('服务器处理错误！');
+			},
+			success: function(data){
+				jQuery('#mydatagrid').datagrid('loadData', data);
+			}
+		});
+	}
+
+	function searchXY(namePinyinLike){
+		jQuery("#namePinyinLike").val(namePinyinLike);
+        var link = "${contextPath}/sys/user/json?namePinyinLike="+namePinyinLike;
+		loadGridData(link);
+	}
+				 
 </script>
 </head>
 <body style="margin:1px;"> 
 
 <div style="margin:2;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:42px" class="toolbar-backgroud"> 
+   <div data-options="region:'north', split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
-		<img src="${contextPath}/static/images/window.png">
-		&nbsp;<span class="x_content_title">用户列表</span>
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
-		   onclick="javascript:addNew();">新增</a>  
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
-		   onclick="javascript:editSelected();">修改</a>  
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
-		   onclick="javascript:deleteSelections();">删除</a>
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-pwd'"
-		   onclick="javascript:resetPwd();">重置密码</a>  
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-actor'"
-		   onclick="javascript:userRoles();">用户角色</a>
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-role'"
-		   onclick="javascript:userTenants();">租户授权</a>
+	 <table width="100%" align="left">
+		<tbody>
+		  <tr>
+		    <td  align="left">
+				<img src="${contextPath}/static/images/window.png">
+				&nbsp;<span class="x_content_title">用户列表</span>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
+				   onclick="javascript:addNew();">新增</a>  
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
+				   onclick="javascript:editSelected();">修改</a>  
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
+				   onclick="javascript:deleteSelections();">删除</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-pwd'"
+				   onclick="javascript:resetPwd();">重置密码</a>  
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-actor'"
+				   onclick="javascript:userRoles();">用户角色</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-role'"
+				   onclick="javascript:userTenants();">租户授权</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td>
+			    <input type="hidden" id="namePinyinLike" name="namePinyinLike" value="${namePinyinLike}">
+			    &nbsp;&nbsp;&nbsp;&nbsp;
+				<#list charList as item>
+				&nbsp;<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;
+				</#list>
+			</td>
+		</tr>
+	   </tbody>
+	  </table>
    </div> 
   </div> 
   <div data-options="region:'center',border:true">

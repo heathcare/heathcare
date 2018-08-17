@@ -560,6 +560,35 @@ public class GoodsActualQuantityServiceImpl implements GoodsActualQuantityServic
 		}
 	}
 
+	@Transactional
+	public void updateAll(String tenantId, Map<Long, GoodsActualQuantity> dataMap) {
+		GoodsActualQuantityQuery query = new GoodsActualQuantityQuery();
+		query.tenantId(tenantId);
+		query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+		List<Long> ids = new ArrayList<Long>();
+		ids.addAll(dataMap.keySet());
+		query.setIds(ids);
+		List<GoodsActualQuantity> list = this.list(query);
+		if (list != null && !list.isEmpty()) {
+			for (GoodsActualQuantity model : list) {
+				if (model.getBusinessStatus() == 0) {
+					if (dataMap.get(model.getId()) != null) {
+						GoodsActualQuantity m = dataMap.get(model.getId());
+						model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						if (m.getQuantity() == model.getQuantity() && m.getPrice() == model.getPrice()
+								&& m.getTotalPrice() == model.getTotalPrice()) {
+							continue;
+						}
+						model.setQuantity(m.getQuantity());
+						model.setPrice(m.getPrice());
+						model.setTotalPrice(m.getTotalPrice());
+						goodsActualQuantityMapper.updateGoodsActualQuantity2(model);
+					}
+				}
+			}
+		}
+	}
+
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;

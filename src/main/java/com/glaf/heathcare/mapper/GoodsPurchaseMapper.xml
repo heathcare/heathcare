@@ -468,12 +468,28 @@
 
 	<update id="updateGoodsPurchaseStatus"
 		parameterType="com.glaf.heathcare.domain.GoodsPurchase">
-		
+
 		update GOODS_PURCHASE${tableSuffix}
 		set
-		BUSINESSSTATUS_ = #{businessStatus, jdbcType=INTEGER},
+		BUSINESSSTATUS_ = #{businessStatus,
+		jdbcType=INTEGER},
 		CONFIRMBY_ = #{confirmBy, jdbcType=VARCHAR},
 		CONFIRMTIME_ = #{confirmTime, jdbcType=TIMESTAMP}
+		where
+		ID_ = #{id,
+		jdbcType=BIGINT}
+
+	</update>
+
+
+	<update id="updateGoodsPurchaseQuantity"
+		parameterType="com.glaf.heathcare.domain.GoodsPurchase">
+
+		update GOODS_PURCHASE${tableSuffix}
+		set
+		QUANTITY_ = #{quantity, jdbcType=DOUBLE},
+		PRICE_ = #{price, jdbcType=DOUBLE},
+		TOTALPRICE_ = #{totalPrice, jdbcType=DOUBLE}
 		where
 		ID_ = #{id, jdbcType=BIGINT}
 

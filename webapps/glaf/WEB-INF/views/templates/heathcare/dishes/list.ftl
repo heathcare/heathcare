@@ -20,6 +20,19 @@
         x_width = Math.floor(window.screen.width * 0.72);
 	}  
 
+    function getLink(){
+	    var link_ = "${contextPath}/heathcare/dishes/json?nodeId=${nodeId}&nameLike_enc=${nameLike_enc}";
+		var sysFlag = jQuery("#sysFlag").val();
+		if(sysFlag != ""){
+		    link_ = link_ + "&sysFlag="+sysFlag;
+		}
+		var namePinyinLike = jQuery("#namePinyinLike").val();
+		if(namePinyinLike != ""){
+		    link_ = link_ + "&namePinyinLike="+namePinyinLike;
+		}
+		return link_;
+    }
+
 
     jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
@@ -30,7 +43,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/dishes/json?nodeId=${nodeId}&nameLike_enc=${nameLike_enc}&sysFlag=${sysFlag}&namePinyinLike=${namePinyinLike}',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -62,12 +75,28 @@
 				onDblClickRow: onMyRowClick 
 			});
 
-			var p = jQuery('#mydatagrid').datagrid('getPager');
-			jQuery(p).pagination({
-				onBeforeRefresh:function(){
-					//alert('before refresh');
-				}
-		    });
+			var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 	});
 
 	function formatterKey(value, row, index) {
@@ -121,7 +150,7 @@
 
 
 	function onMyRowClick(rowIndex, row){
-	    var link = '${contextPath}/heathcare/dishes/edit?id='+row.id;
+	    var link = '${contextPath}/heathcare/dishesItem?dishesId='+row.id;
 		layer.open({
 		  type: 2,
           maxmin: true,
@@ -371,6 +400,7 @@
         var nodeId = document.getElementById("nodeId").value;
 		var sysFlag = document.getElementById("sysFlag").value;
         var nameLike = document.getElementById("nameLike").value;
+		document.getElementById("namePinyinLike").value=namePinyinLike;
         var link = "${contextPath}/heathcare/dishes/json?nodeId="+nodeId+"&nameLike="+nameLike+"&sysFlag="+sysFlag+"&namePinyinLike="+namePinyinLike;
 		//window.location.href=link;
 		loadGridData(link);
@@ -390,6 +420,59 @@
 		});
 	}
 
+    <#if heathcare_gen_js_perm == true>
+	function genJS(){
+		if(confirm("原来的JS将会被替换，确定重新生成吗？")){
+		    var link = "${contextPath}/heathcare/dishes/genJS";
+	        var params = jQuery("#iForm").formSerialize();
+		    jQuery.ajax({
+				   type: "POST",
+				   url: link,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					     
+					   }
+				   }
+			 });
+		}
+	}
+
+	function genJSON(){
+		if(confirm("原来的JSON将会被替换，确定重新生成吗？")){
+		    var link = "${contextPath}/heathcare/dishes/genJSON";
+	        var params = jQuery("#iForm").formSerialize();
+		    jQuery.ajax({
+				   type: "POST",
+				   url: link,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					     
+					   }
+				   }
+			 });
+		}
+	}
+  </#if>
+
+
 </script>
 </head>
 <body style="margin:1px;">  
@@ -400,7 +483,7 @@
 	  <table width="100%" align="left">
 		<tbody>
 		 <tr>
-		    <td width="35%" align="left">
+		    <td width="55%" align="left">
 				&nbsp;<img src="${contextPath}/static/images/window.png">
 				&nbsp;<span class="x_content_title">菜肴列表</span>
 				<#if canEdit == true>
@@ -412,9 +495,15 @@
 				   onclick="javascript:deleteSelections();">删除</a> 
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-formula'"
 				   onclick="javascript:calAll();">计算</a>
+				<#if heathcare_gen_js_perm == true>
+                <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-class'"
+				   onclick="javascript:genJS();">生成JS</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-class'"
+				   onclick="javascript:genJSON();">生成JSON</a>
+				</#if>
 				</#if>
 			</td>
-			<td width="65%" align="left">
+			<td width="45%" align="left">
 			  &nbsp;类型&nbsp;
 			  <select id="sysFlag" name="sysFlag" onchange="javascript:doSearch();">
 				  <option value="">----请选择----</option> 
@@ -443,6 +532,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
+			    <input type="hidden" id="namePinyinLike" name="namePinyinLike">
 			    &nbsp;&nbsp;&nbsp;&nbsp;
 				<#list charList as item>
 				&nbsp;<span class="x_char_name" onclick="javascript:searchXY('${item}');">${item}</span>&nbsp;

@@ -2,9 +2,11 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.glaf.base.modules.sys.mapper.SysTreeMapper">
+<mapper
+	namespace="com.glaf.base.modules.sys.mapper.SysTreeMapper">
 
-	<resultMap id="sysTreeResultMap" type="com.glaf.base.modules.sys.model.SysTree">
+	<resultMap id="sysTreeResultMap"
+		type="com.glaf.base.modules.sys.model.SysTree">
 		<id property="id" column="ID" jdbcType="BIGINT" />
 		<result property="parentId" column="PARENTID" jdbcType="BIGINT" />
 		<result property="code" column="CODE" jdbcType="VARCHAR" />
@@ -15,7 +17,10 @@
 		<result property="iconCls" column="ICONCLS" jdbcType="VARCHAR" />
 		<result property="level" column="LEVEL" jdbcType="INTEGER" />
 		<result property="locked" column="LOCKED" jdbcType="INTEGER" />
-		<result property="moveable" column="MOVEABLE" jdbcType="VARCHAR" />
+		<result property="moveable" column="MOVEABLE"
+			jdbcType="VARCHAR" />
+		<result property="publicFlag" column="PUBLICFLAG"
+			jdbcType="VARCHAR" />
 		<result property="name" column="NAME" jdbcType="VARCHAR" />
 		<result property="sort" column="SORTNO" jdbcType="INTEGER" />
 		<result property="treeId" column="TREEID" jdbcType="VARCHAR" />
@@ -27,16 +32,23 @@
 			jdbcType="VARCHAR" />
 		<result property="url" column="URL" jdbcType="VARCHAR" />
 		<result property="value" column="VALUE_" jdbcType="VARCHAR" />
-		<result property="createBy" column="CREATEBY" jdbcType="VARCHAR" />
-		<result property="createDate" column="CREATEDATE" jdbcType="TIMESTAMP" />
-		<result property="updateBy" column="UPDATEBY" jdbcType="VARCHAR" />
-		<result property="updateDate" column="UPDATEDATE" jdbcType="TIMESTAMP" />
-		<result property="deleteFlag" column="DELETEFLAG" jdbcType="INTEGER" />
-		<result property="deleteTime" column="DELETETIME" jdbcType="TIMESTAMP" />
+		<result property="createBy" column="CREATEBY"
+			jdbcType="VARCHAR" />
+		<result property="createDate" column="CREATEDATE"
+			jdbcType="TIMESTAMP" />
+		<result property="updateBy" column="UPDATEBY"
+			jdbcType="VARCHAR" />
+		<result property="updateDate" column="UPDATEDATE"
+			jdbcType="TIMESTAMP" />
+		<result property="deleteFlag" column="DELETEFLAG"
+			jdbcType="INTEGER" />
+		<result property="deleteTime" column="DELETETIME"
+			jdbcType="TIMESTAMP" />
 	</resultMap>
 
 
-	<insert id="insertSysTree" parameterType="com.glaf.base.modules.sys.model.SysTree">
+	<insert id="insertSysTree"
+		parameterType="com.glaf.base.modules.sys.model.SysTree">
 		insert into SYS_TREE
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID
@@ -57,6 +69,9 @@
 			</if>
 			<if test="moveable != null">
 				,MOVEABLE
+			</if>
+			<if test="publicFlag != null">
+				,PUBLICFLAG
 			</if>
 			<if test="treeId != null">
 				,TREEID
@@ -135,6 +150,9 @@
 			<if test="moveable != null">
 				,#{moveable, jdbcType=VARCHAR}
 			</if>
+			<if test="publicFlag != null">
+				,#{publicFlag, jdbcType=VARCHAR}
+			</if>
 			<if test="treeId != null">
 				,#{treeId, jdbcType=VARCHAR}
 			</if>
@@ -206,6 +224,7 @@
 		,LEVEL
 		,LOCKED
 		,MOVEABLE
+		,PUBLICFLAG
 		,NAME
 		,PARENTID
 		,SORTNO
@@ -236,9 +255,12 @@
 			,#{sysTree.locked, jdbcType=INTEGER}
 			,#{sysTree.moveable,
 			jdbcType=VARCHAR}
+			,#{sysTree.publicFlag,
+			jdbcType=VARCHAR}
 			,#{sysTree.name,
 			jdbcType=VARCHAR}
-			,#{sysTree.parentId, jdbcType=BIGINT}
+			,#{sysTree.parentId,
+			jdbcType=BIGINT}
 			,#{sysTree.sort,
 			jdbcType=INTEGER}
 			,#{sysTree.treeId,
@@ -258,7 +280,8 @@
 	</insert>
 
 
-	<insert id="bulkInsertSysTree_oracle" parameterType="java.util.List">
+	<insert id="bulkInsertSysTree_oracle"
+		parameterType="java.util.List">
 		INSERT ALL
 		<foreach collection="list" item="sysTree" index="index">
 			insert into
@@ -274,6 +297,7 @@
 			,LEVEL
 			,LOCKED
 			,MOVEABLE
+			,PUBLICFLAG
 			,NAME
 			,PARENTID
 			,SORTNO
@@ -306,6 +330,8 @@
 			,#{sysTree.locked, jdbcType=INTEGER}
 			,#{sysTree.moveable,
 			jdbcType=VARCHAR}
+			,#{sysTree.publicFlag,
+			jdbcType=VARCHAR}
 			,#{sysTree.name,
 			jdbcType=VARCHAR}
 			,#{sysTree.parentId, jdbcType=BIGINT}
@@ -328,7 +354,8 @@
 	</insert>
 
 
-	<update id="updateSysTree" parameterType="com.glaf.base.modules.sys.model.SysTree">
+	<update id="updateSysTree"
+		parameterType="com.glaf.base.modules.sys.model.SysTree">
 		update SYS_TREE
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
@@ -364,6 +391,9 @@
 			</if>
 			<if test="iconCls != null">
 				ICONCLS = #{iconCls, jdbcType=VARCHAR},
+			</if>
+			<if test="publicFlag != null">
+				PUBLICFLAG = #{publicFlag, jdbcType=VARCHAR},
 			</if>
 			<if test="url != null">
 				URL = #{url, jdbcType=VARCHAR},
@@ -408,7 +438,8 @@
 	</delete>
 
 
-	<delete id="deleteSysTrees" parameterType="com.glaf.base.modules.sys.query.SysTreeQuery">
+	<delete id="deleteSysTrees"
+		parameterType="com.glaf.base.modules.sys.query.SysTreeQuery">
 		delete from SYS_TREE
 		where (
 		ID IN
@@ -420,12 +451,14 @@
 	</delete>
 
 
-	<select id="getSysTreeById" parameterType="long" resultMap="sysTreeResultMap">
+	<select id="getSysTreeById" parameterType="long"
+		resultMap="sysTreeResultMap">
 		select * from SYS_TREE where ID = #{id}
 	</select>
 
 
-	<select id="getDictorySysTrees" parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
+	<select id="getDictorySysTrees"
+		parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
 		resultMap="sysTreeResultMap">
 
 		select distinct E.* from SYS_TREE E
@@ -439,7 +472,8 @@
 	</select>
 
 
-	<select id="getRelationSysTrees" parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
+	<select id="getRelationSysTrees"
+		parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
 		resultMap="sysTreeResultMap">
 
 		select distinct E.* from SYS_TREE E
@@ -455,7 +489,8 @@
 	</select>
 
 
-	<select id="getSysTrees" parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
+	<select id="getSysTrees"
+		parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
 		resultMap="sysTreeResultMap">
 		select E.*
 		<include refid="selectSysTreesSql" />
@@ -471,7 +506,8 @@
 	</select>
 
 
-	<select id="getSysTreeCount" parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
+	<select id="getSysTreeCount"
+		parameterType="com.glaf.base.modules.sys.query.SysTreeQuery"
 		resultType="int">
 		select count(*)
 		<include refid="selectSysTreesSql" />
@@ -499,8 +535,8 @@
 
 			<if test="parentIds != null and parentIds.size != 0">
 				and E.PARENTID IN
-				<foreach item="x_parentId" index="index" collection="parentIds"
-					open="(" separator="," close=")">
+				<foreach item="x_parentId" index="index"
+					collection="parentIds" open="(" separator="," close=")">
 					#{x_parentId}
 				</foreach>
 			</if>
@@ -557,6 +593,10 @@
 				and E.TREEID like #{treeIdLike}
 			</if>
 
+			<if test="publicFlag != null and publicFlag != '' ">
+				and E.PUBLICFLAG like #{publicFlag}
+			</if>
+
 			<if test="urlLike != null and urlLike != '' ">
 				and E.URL like #{urlLike}
 			</if>
@@ -585,8 +625,8 @@
 
 		<if test="parentIds != null and parentIds.size != 0">
 			and E.PARENTID IN
-			<foreach item="x_parentId" index="index" collection="parentIds"
-				open="(" separator="," close=")">
+			<foreach item="x_parentId" index="index"
+				collection="parentIds" open="(" separator="," close=")">
 				#{x_parentId}
 			</foreach>
 		</if>
@@ -633,8 +673,8 @@
 
 		<if test="codes != null and codes.size != 0">
 			and E.CODE IN
-			<foreach item="x_code" index="index" collection="codes" open="("
-				separator="," close=")">
+			<foreach item="x_code" index="index" collection="codes"
+				open="(" separator="," close=")">
 				#{x_code}
 			</foreach>
 		</if>
@@ -649,6 +689,10 @@
 
 		<if test="treeIdRightLike != null and treeIdRightLike != '' ">
 			and E.TREEID like #{treeIdRightLike}
+		</if>
+
+		<if test="publicFlag != null and publicFlag != '' ">
+			and E.PUBLICFLAG like #{publicFlag}
 		</if>
 
 		<if test="urlLike != null and urlLike != '' ">

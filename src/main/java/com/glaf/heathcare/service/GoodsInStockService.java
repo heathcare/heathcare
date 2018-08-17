@@ -103,4 +103,7 @@ public interface GoodsInStockService {
 	@Transactional
 	void updateGoodsInStockStatus(List<GoodsInStock> list);
 
+	@Transactional
+	void updateAll(String tenantId, Map<Long, GoodsInStock> dataMap);
+
 }

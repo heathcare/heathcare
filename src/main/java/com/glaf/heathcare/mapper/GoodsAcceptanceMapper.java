@@ -50,6 +50,8 @@ public interface GoodsAcceptanceMapper {
 	void insertGoodsAcceptance(GoodsAcceptance model);
 
 	void updateGoodsAcceptance(GoodsAcceptance model);
+	
+	void updateGoodsAcceptanceQuantity(GoodsAcceptance model);
 
 	void updateGoodsAcceptanceStatus(GoodsAcceptance model);
 

@@ -305,6 +305,28 @@ public class GoodsAcceptanceServiceImpl implements GoodsAcceptanceService {
 			this.save(model);
 		}
 	}
+	
+	@Transactional
+	public void updateAll(String tenantId, Map<Long, Double> dataMap) {
+		GoodsAcceptanceQuery query = new GoodsAcceptanceQuery();
+		query.tenantId(tenantId);
+		query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+		List<Long> ids = new ArrayList<Long>();
+		ids.addAll(dataMap.keySet());
+		query.setIds(ids);
+		List<GoodsAcceptance> list = this.list(query);
+		if (list != null && !list.isEmpty()) {
+			for (GoodsAcceptance model : list) {
+				if (model.getBusinessStatus() == 0) {
+					if (dataMap.get(model.getId()) != null && model.getQuantity() != dataMap.get(model.getId())) {
+						model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						model.setQuantity(dataMap.get(model.getId()));
+						goodsAcceptanceMapper.updateGoodsAcceptanceQuantity(model);
+					}
+				}
+			}
+		}
+	}
 
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {

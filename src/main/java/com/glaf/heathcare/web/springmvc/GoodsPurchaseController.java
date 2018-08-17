@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.SysTenant;
@@ -414,6 +415,8 @@ public class GoodsPurchaseController {
 					rowJSON.put("id", goodsPurchase.getId());
 					rowJSON.put("rowId", goodsPurchase.getId());
 					rowJSON.put("goodsPurchaseId", goodsPurchase.getId());
+					rowJSON.put("ex_secutity_id", RSAUtils
+							.encryptString(loginContext.getTenantId() + ":" + String.valueOf(goodsPurchase.getId())));
 					rowJSON.put("startIndex", ++start);
 					if (goodsPurchase.getQuantity() > 0) {
 						rowJSON.put("quantity", Math.round(goodsPurchase.getQuantity() * 10D) / 10D);
@@ -753,6 +756,54 @@ public class GoodsPurchaseController {
 		}
 
 		return new ModelAndView("/heathcare/goodsPurchase/copy", modelMap);
+	}
+
+	@ResponseBody
+	@RequestMapping("/updateAll")
+	public byte[] updateAll(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug(params);
+		if (loginContext.getRoles().contains("TenantAdmin") || loginContext.getRoles().contains("HealthPhysician")
+				|| loginContext.getRoles().contains("Buyer") || loginContext.getRoles().contains("StockManager")) {
+			String json = request.getParameter("json");
+			if (StringUtils.isNotEmpty(json)) {
+				try {
+					JSONArray array = JSON.parseArray(json);
+					if (array != null && array.size() > 0) {
+						int len = array.size();
+						JSONObject jsonObject = null;
+						Map<Long, GoodsPurchase> dataMap = new HashMap<Long, GoodsPurchase>();
+						for (int i = 0; i < len; i++) {
+							jsonObject = array.getJSONObject(i);
+							String id = jsonObject.getString("id");
+							double quantity = jsonObject.getDoubleValue("quantity");
+							double price = jsonObject.getDoubleValue("price");
+							double totalPrice = jsonObject.getDoubleValue("totalPrice");
+							if (id != null && quantity > 0) {
+								id = RSAUtils.decryptString(id);
+								id = StringTools.replace(id, loginContext.getTenantId() + ":", "");
+								// id = id.substring(id.lastIndexOf(":") + 1, id.length());
+								// logger.debug(id);
+								GoodsPurchase model = new GoodsPurchase();
+								model.setQuantity(quantity);
+								model.setPrice(price);
+								model.setTotalPrice(totalPrice);
+								dataMap.put(Long.parseLong(id), model);
+							}
+						}
+						if (!dataMap.isEmpty()) {
+							goodsPurchaseService.updateAll(loginContext.getTenantId(), dataMap);
+							return ResponseUtils.responseJsonResult(true);
+						}
+					}
+				} catch (Exception ex) {
+					// ex.printStackTrace();
+					logger.error(ex);
+				}
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
 	}
 
 	@RequestMapping("/view")

@@ -32,7 +32,7 @@
 					</#if>
 				    {title:'序号', field:'startIndex', width:60, sortable:false},
 					{title:'物品名称', field:'goodsName', width:220, align:'left', sortable:true, formatter:formatterName},
-					{title:'重量(千克)', field:'quantity', width:120, align:'right', sortable:true},
+					{title:'重量(千克)', field:'quantity', width:120, align:'right', sortable:true, formatter:formatterQuantity},
 					{title:'计量单位', field:'unit', width:100, align:'center', formatter:formatterUnit},
 					{title:'验收日期', field:'acceptanceTime', width:100, align:'center', sortable:true},
 					{title:'状态', field:'businessStatus', width:100, align:'center', formatter:formatterStatus},
@@ -126,6 +126,13 @@
 		  str = "<a href='javascript:editRow(\""+row.id+"\");'>修改</a>&nbsp;<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>";
 		</#if>
 	    return str;
+	}
+
+	function formatterQuantity(val, row){
+		if(row.businessStatus == 9){
+			return val;
+		}
+        return "<input type='text' id='"+row.ex_secutity_id+"' name='plan_qty' size='5' class='x-small-decimal' value='"+val+"'>";
 	}
 
 	function formatterStatus(val, row){
@@ -547,14 +554,54 @@
             iframe: {src: link}
 		});
 	}
+
+
+    function saveAll(){
+	   if(confirm("确定保存数据吗？")){
+		  var array = document.getElementsByName("plan_qty");
+		  var len = array.length;
+		  var str = "[";
+		  for(var i=0; i<len; i++){
+             str = str +"{'id':'"+array[i].id+"', 'quantity':"+array[i].value+"}";
+			 if(i < len-1){
+				 str = str+", ";
+			 }
+		  }
+		  str = str+"]";
+		  document.getElementById("json").value=str;
+		  //alert(str);
+		  var params = jQuery("#iForm").formSerialize();
+          jQuery.ajax({
+				   type: "POST",
+				   url: '${contextPath}/heathcare/goodsAcceptance/updateAll',
+				   data: params,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+					       
+					   } 
+				   }
+			 });
+	    }
+	}
+	
 </script>
 </head>
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north', split:false, border:true" style="height:48px" class="toolbar-backgroud"> 
+   <div data-options="region:'north', split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 		<form id="iForm" name="iForm" method="post" action="">
+		  <input type="hidden" id="json" name="json">
 		  <table valign="middle">
 		   <tr>
 			<td valign="middle">
@@ -576,6 +623,8 @@
 		           onclick="javascript:copyPurchase();">复制采购单</a>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
 				   onclick="javascript:editSelected();">修改</a>  
+                <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-save'"
+		           onclick="javascript:saveAll();">保存</a>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 				   onclick="javascript:deleteSelections();">删除</a> 
 				</#if>

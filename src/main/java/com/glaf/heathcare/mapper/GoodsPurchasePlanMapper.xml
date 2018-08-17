@@ -379,6 +379,18 @@
 	</update>
 
 
+	<update id="updateGoodsPurchasePlanQuantity"
+		parameterType="com.glaf.heathcare.domain.GoodsPurchasePlan">
+
+		update GOODS_PURCHASE_PLAN${tableSuffix}
+		set
+		QUANTITY_ = #{quantity, jdbcType=DOUBLE}
+		where
+		ID_ = #{id, jdbcType=BIGINT}
+
+	</update>
+
+
 	<update id="updateGoodsPurchasePlanStatus"
 		parameterType="com.glaf.heathcare.domain.GoodsPurchasePlan">
 

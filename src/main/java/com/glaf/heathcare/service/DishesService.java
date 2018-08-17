@@ -73,6 +73,9 @@ public interface DishesService {
 	 * @return
 	 */
 	List<Dishes> getDishesListByQueryCriteria(int start, int pageSize, DishesQuery query);
+	
+	
+	List<Dishes> getSysDishesWithItems();
 
 	/**
 	 * 根据查询参数获取记录列表

@@ -351,6 +351,35 @@ public class GoodsInStockServiceImpl implements GoodsInStockService {
 		}
 	}
 
+	@Transactional
+	public void updateAll(String tenantId, Map<Long, GoodsInStock> dataMap) {
+		GoodsInStockQuery query = new GoodsInStockQuery();
+		query.tenantId(tenantId);
+		query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+		List<Long> ids = new ArrayList<Long>();
+		ids.addAll(dataMap.keySet());
+		query.setIds(ids);
+		List<GoodsInStock> list = this.list(query);
+		if (list != null && !list.isEmpty()) {
+			for (GoodsInStock model : list) {
+				if (model.getBusinessStatus() == 0) {
+					if (dataMap.get(model.getId()) != null) {
+						GoodsInStock inStock = dataMap.get(model.getId());
+						if (inStock.getQuantity() == model.getQuantity() && inStock.getPrice() == model.getPrice()
+								&& inStock.getTotalPrice() == model.getTotalPrice()) {
+							continue;
+						}
+						model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						model.setQuantity(inStock.getQuantity());
+						model.setPrice(inStock.getPrice());
+						model.setTotalPrice(inStock.getTotalPrice());
+						goodsInStockMapper.updateGoodsInStockQuantity(model);
+					}
+				}
+			}
+		}
+	}
+
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;

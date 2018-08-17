@@ -591,6 +591,11 @@ public class DietaryTemplateController {
 				&& StringUtils.equals(sysFlag, "N")) {
 			request.setAttribute("canChangeDishes", true);
 		}
+		
+		request.setAttribute("heathcare_gen_js_perm", false);
+		if (loginContext.isSystemAdministrator()) {
+			request.setAttribute("heathcare_gen_js_perm", true);
+		}
 
 		List<String> charList = new ArrayList<String>();
 		for (int i = 65; i < 91; i++) {

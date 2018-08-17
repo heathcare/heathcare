@@ -423,6 +423,28 @@ public class GoodsOutStockServiceImpl implements GoodsOutStockService {
 		}
 	}
 
+	@Transactional
+	public void updateAll(String tenantId, Map<Long, Double> dataMap) {
+		GoodsOutStockQuery query = new GoodsOutStockQuery();
+		query.tenantId(tenantId);
+		query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+		List<Long> ids = new ArrayList<Long>();
+		ids.addAll(dataMap.keySet());
+		query.setIds(ids);
+		List<GoodsOutStock> list = this.list(query);
+		if (list != null && !list.isEmpty()) {
+			for (GoodsOutStock model : list) {
+				if (model.getBusinessStatus() == 0) {
+					if (dataMap.get(model.getId()) != null && model.getQuantity() != dataMap.get(model.getId())) {
+						model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						model.setQuantity(dataMap.get(model.getId()));
+						goodsOutStockMapper.updateGoodsOutStockQuantity(model);
+					}
+				}
+			}
+		}
+	}
+
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;

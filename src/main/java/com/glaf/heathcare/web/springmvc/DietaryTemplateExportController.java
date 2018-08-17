@@ -47,15 +47,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.glaf.base.modules.sys.model.Dictory;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.DictoryService;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
-
+import com.glaf.core.config.SystemProperties;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
+import com.glaf.core.util.FileUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 
@@ -65,6 +67,7 @@ import com.glaf.heathcare.bean.DietaryTemplateCountBean;
 import com.glaf.heathcare.bean.DietaryTemplateCountExportBean;
 import com.glaf.heathcare.bean.DietaryTemplateExportBean;
 import com.glaf.heathcare.domain.DietaryCategory;
+import com.glaf.heathcare.query.DietaryCategoryQuery;
 import com.glaf.heathcare.service.DietaryCategoryService;
 import com.glaf.heathcare.service.DietaryCountService;
 import com.glaf.heathcare.service.DietaryItemService;
@@ -243,6 +246,124 @@ public class DietaryTemplateExportController {
 				}
 			}
 		}
+	}
+
+	@ResponseBody
+	@RequestMapping("/genAllSysJS")
+	public byte[] genAllSysJS(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				DietaryCategoryQuery query = new DietaryCategoryQuery();
+				query.locked(0);
+				query.sysFlag("Y");
+				List<DietaryCategory> categories = dietaryCategoryService.list(query);
+				if (categories != null && !categories.isEmpty()) {
+					for (DietaryCategory category : categories)
+						if (category != null) {
+							JSONArray array = dietaryTemplateService.getSuiteData(loginContext, "Y",
+									category.getSuitNo(), category.getTypeId());
+							if (array != null && array.size() > 0) {
+								String filename = SystemProperties.getAppPath() + "/static/generate/js/dietaryTemplate"
+										+ category.getSuitNo() + ".js";
+								StringBuilder buff = new StringBuilder();
+								buff.append(" var dietaryTemplates = ").append(array.toJSONString()).append("; ");
+								FileUtils.save(filename, buff.toString().getBytes("UTF-8"));
+							}
+						}
+				}
+				return ResponseUtils.responseJsonResult(true);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genAllSysJSON")
+	public byte[] genAllSysJSON(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				DietaryCategoryQuery query = new DietaryCategoryQuery();
+				query.locked(0);
+				query.sysFlag("Y");
+				List<DietaryCategory> categories = dietaryCategoryService.list(query);
+				if (categories != null && !categories.isEmpty()) {
+					for (DietaryCategory category : categories)
+						if (category != null) {
+							JSONArray array = dietaryTemplateService.getSuiteData(loginContext, "Y",
+									category.getSuitNo(), category.getTypeId());
+							if (array != null && array.size() > 0) {
+								String filename = SystemProperties.getAppPath()
+										+ "/static/generate/json/dietaryTemplate" + category.getSuitNo() + ".json";
+								FileUtils.save(filename, array.toJSONString().getBytes("UTF-8"));
+							}
+						}
+				}
+				return ResponseUtils.responseJsonResult(true);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genJS")
+	public byte[] genJS(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		int suitNo = RequestUtils.getInt(request, "suitNo");
+		if (suitNo > 0 && suitNo <= 1000 && loginContext.isSystemAdministrator()) {
+			try {
+				DietaryCategory category = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+				if (category != null) {
+					JSONArray array = dietaryTemplateService.getSuiteData(loginContext, "Y", suitNo,
+							category.getTypeId());
+					if (array != null && array.size() > 0) {
+						String filename = SystemProperties.getAppPath() + "/static/generate/js/dietaryTemplate" + suitNo
+								+ ".js";
+						StringBuilder buff = new StringBuilder();
+						buff.append(" var dietaryTemplates = ").append(array.toJSONString()).append("; ");
+						FileUtils.save(filename, buff.toString().getBytes("UTF-8"));
+						return ResponseUtils.responseJsonResult(true);
+					}
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genJSON")
+	public byte[] genJSON(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		int suitNo = RequestUtils.getInt(request, "suitNo");
+		if (suitNo > 0 && suitNo <= 1000 && loginContext.isSystemAdministrator()) {
+			try {
+				DietaryCategory category = dietaryCategoryService.getDietaryCategory(loginContext, suitNo);
+				if (category != null) {
+					JSONArray array = dietaryTemplateService.getSuiteData(loginContext, "Y", suitNo,
+							category.getTypeId());
+					if (array != null && array.size() > 0) {
+						String filename = SystemProperties.getAppPath() + "/static/generate/json/dietaryTemplate"
+								+ suitNo + ".json";
+						FileUtils.save(filename, array.toJSONString().getBytes("UTF-8"));
+						return ResponseUtils.responseJsonResult(true);
+					}
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
 	}
 
 	@javax.annotation.Resource
@@ -476,14 +597,14 @@ public class DietaryTemplateExportController {
 				String key = entry.getKey();
 				Object value = entry.getValue();
 				request.setAttribute("cnt_" + key, value);
-				//logger.debug("key:" + key);
+				// logger.debug("key:" + key);
 			}
 			if (!dataMap.isEmpty()) {
 				dietary_nutrient = true;
 			}
 			request.setAttribute("dietary_nutrient", dietary_nutrient);
 		} catch (Exception ex) {
-			//ex.printStackTrace();
+			// ex.printStackTrace();
 			logger.error(ex);
 		}
 

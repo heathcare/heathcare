@@ -53,6 +53,8 @@ public interface GoodsActualQuantityMapper {
 
 	void updateGoodsActualQuantity(GoodsActualQuantity model);
 	
+	void updateGoodsActualQuantity2(GoodsActualQuantity model);
+	
 	void updateGoodsActualQuantityStatus(GoodsActualQuantity model);
 
 }

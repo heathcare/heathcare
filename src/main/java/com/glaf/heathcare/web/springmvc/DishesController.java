@@ -41,8 +41,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.service.SysTreeService;
 import com.glaf.base.modules.sys.util.PinyinUtils;
+import com.glaf.core.config.SystemProperties;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
+import com.glaf.core.util.FileUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
@@ -195,6 +197,72 @@ public class DishesController {
 		return new ModelAndView("/heathcare/dishes/edit", modelMap);
 	}
 
+	@ResponseBody
+	@RequestMapping("/genJS")
+	public byte[] genJS(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				List<Dishes> list = dishesService.getSysDishesWithItems();
+				if (list != null && !list.isEmpty()) {
+					JSONArray array = new JSONArray();
+					if (list != null && !list.isEmpty()) {
+						for (Dishes model : list) {
+							JSONObject jsonObject = model.toJsonObject();
+							jsonObject.remove("tenantId");
+							jsonObject.remove("createBy");
+							jsonObject.remove("createTime");
+							jsonObject.remove("updateBy");
+							jsonObject.remove("updateTime");
+							array.add(jsonObject);
+						}
+					}
+					String filename = SystemProperties.getAppPath() + "/static/generate/js/dishes.js";
+					StringBuilder buff = new StringBuilder();
+					buff.append(" var dishes = ").append(array.toJSONString()).append("; ");
+					FileUtils.save(filename, buff.toString().getBytes("UTF-8"));
+					return ResponseUtils.responseJsonResult(true);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/genJSON")
+	public byte[] genJSON(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			try {
+				List<Dishes> list = dishesService.getSysDishesWithItems();
+				if (list != null && !list.isEmpty()) {
+					JSONArray array = new JSONArray();
+					if (list != null && !list.isEmpty()) {
+						for (Dishes model : list) {
+							JSONObject jsonObject = model.toJsonObject();
+							jsonObject.remove("tenantId");
+							jsonObject.remove("createBy");
+							jsonObject.remove("createTime");
+							jsonObject.remove("updateBy");
+							jsonObject.remove("updateTime");
+							array.add(jsonObject);
+						}
+					}
+					String filename = SystemProperties.getAppPath() + "/static/generate/json/dishes.json";
+					FileUtils.save(filename, array.toJSONString().getBytes("UTF-8"));
+					return ResponseUtils.responseJsonResult(true);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
 	@RequestMapping("/json")
 	@ResponseBody
 	public byte[] json(HttpServletRequest request, ModelMap modelMap) throws IOException {
@@ -203,6 +271,8 @@ public class DishesController {
 		DishesQuery query = new DishesQuery();
 		Tools.populate(query, params);
 		query.deleteFlag(0);
+
+		logger.debug("params:" + params);
 
 		String sysFlag = request.getParameter("sysFlag");
 
@@ -336,6 +406,11 @@ public class DishesController {
 
 		List<SysTree> trees = sysTreeService.getSysTreeList(4801L);// 菜肴分类
 		request.setAttribute("categories", trees);
+
+		request.setAttribute("heathcare_gen_js_perm", false);
+		if (loginContext.isSystemAdministrator()) {
+			request.setAttribute("heathcare_gen_js_perm", true);
+		}
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {

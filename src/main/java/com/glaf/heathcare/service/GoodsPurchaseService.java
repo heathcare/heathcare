@@ -114,5 +114,8 @@ public interface GoodsPurchaseService {
 
 	@Transactional
 	void updateGoodsPurchaseStatus(List<GoodsPurchase> list);
+	
+	@Transactional
+	void updateAll(String tenantId, Map<Long, GoodsPurchase> dataMap);
 
 }

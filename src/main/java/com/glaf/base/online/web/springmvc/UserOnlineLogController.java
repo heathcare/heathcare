@@ -62,11 +62,11 @@ public class UserOnlineLogController {
 		Tools.populate(query, params);
 		query.deleteFlag(0);
 		query.setSearchWord(request.getParameter("searchWord"));
-		if (RequestUtils.getDate(request, "loginDateGreaterThanOrEqual") != null) {
-			query.setLoginDateGreaterThanOrEqual(RequestUtils.getDate(request, "loginDateGreaterThanOrEqual"));
+		if (RequestUtils.getDateTime(request, "loginDateGreaterThanOrEqual") != null) {
+			query.setLoginDateGreaterThanOrEqual(RequestUtils.getDateTime(request, "loginDateGreaterThanOrEqual"));
 		}
-		if (RequestUtils.getDate(request, "loginDateLessThanOrEqual") != null) {
-			query.setLoginDateLessThanOrEqual(RequestUtils.getDate(request, "loginDateLessThanOrEqual"));
+		if (RequestUtils.getDateTime(request, "loginDateLessThanOrEqual") != null) {
+			query.setLoginDateLessThanOrEqual(RequestUtils.getDateTime(request, "loginDateLessThanOrEqual"));
 		}
 
 		int start = 0;

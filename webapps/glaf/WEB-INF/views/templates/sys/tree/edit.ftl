@@ -62,7 +62,7 @@
 <div style="margin:0;"></div>  
 
 <div class="easyui-layout" data-options="fit:true">  
-  <div data-options="region:'north',split:true,border:true" style="height:42px" class="toolbar-backgroud"> 
+  <div data-options="region:'north',split:true,border:true" style="height:45px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 		<img src="${contextPath}/static/images/window.png">&nbsp; 
 		<span class="x_content_title">编辑记录</span>
@@ -134,6 +134,14 @@
 		<td align="left">
              <textarea id="url" name="url" rows="6" cols="50" style="width:450px;height:120px;"
 			    class="x-textarea" >${tree.url}</textarea>
+		</td>
+	</tr>
+
+	<tr>
+		<td width="20%" align="left">是否公开</td>
+		<td align="left">
+		  <input type="radio" name="publicFlag" value="Y" <#if tree.publicFlag == "Y">checked</#if>>公开&nbsp;&nbsp;
+	      <input type="radio" name="publicFlag" value="N" <#if tree.publicFlag == "N">checked</#if>>保密&nbsp;&nbsp;
 		</td>
 	</tr>
 

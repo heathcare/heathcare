@@ -56,6 +56,7 @@ import com.glaf.base.modules.sys.model.SysTenant;
 import com.glaf.base.modules.sys.model.TenantConfig;
 import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.base.modules.sys.service.TenantConfigService;
+import com.glaf.core.el.ExpressionTools;
 import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
@@ -228,8 +229,16 @@ public class ReportMainController {
 					writer.write(content);
 					writer.flush();
 				} else {
-					ResponseUtils.download(request, response, data,
-							"export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls");
+					String filename = "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls";
+					if(StringUtils.isNotEmpty(rdf.getExportFilename())) {
+						filename = rdf.getExportFilename();
+						params.put("yyyyMMdd", DateUtils.getDateTime("yyyyMMdd", new Date()));
+						params.put("yyyyMMddHHmm", DateUtils.getDateTime("yyyyMMddHHmm", new Date()));
+						params.put("yyyyMMddHHmmss", DateUtils.getDateTime("yyyyMMddHHmmss", new Date()));
+
+						filename = ExpressionTools.evaluate(filename, params);
+					}
+					ResponseUtils.download(request, response, data, filename);
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();

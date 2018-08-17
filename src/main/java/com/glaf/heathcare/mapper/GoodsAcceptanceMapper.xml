@@ -354,6 +354,18 @@
 		jdbcType=BIGINT}
 
 	</update>
+	
+	
+	<update id="updateGoodsAcceptanceQuantity"
+		parameterType="com.glaf.heathcare.domain.GoodsAcceptance">
+
+		update GOODS_ACCEPTANCE${tableSuffix}
+		set
+		QUANTITY_ = #{quantity, jdbcType=DOUBLE}
+		where
+		ID_ = #{id, jdbcType=BIGINT}
+
+	</update>
 
 
 	<delete id="deleteGoodsAcceptanceById"

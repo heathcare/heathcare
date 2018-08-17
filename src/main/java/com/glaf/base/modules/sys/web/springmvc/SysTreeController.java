@@ -466,6 +466,7 @@ public class SysTreeController {
 			bean.setDesc(ParamUtil.getParameter(request, "desc"));
 			bean.setCode(ParamUtil.getParameter(request, "code"));
 			bean.setValue(ParamUtil.getParameter(request, "value"));
+			bean.setPublicFlag(ParamUtil.getParameter(request, "publicFlag"));
 			bean.setCreateBy(RequestUtils.getActorId(request));
 			bean.setUpdateBy(RequestUtils.getActorId(request));
 			if (insert) {
@@ -499,6 +500,7 @@ public class SysTreeController {
 			bean.setDesc(ParamUtil.getParameter(request, "desc"));
 			bean.setCode(ParamUtil.getParameter(request, "code"));
 			bean.setValue(ParamUtil.getParameter(request, "value"));
+			bean.setPublicFlag(ParamUtil.getParameter(request, "publicFlag"));
 			bean.setCreateBy(RequestUtils.getActorId(request));
 			bean.setUpdateBy(RequestUtils.getActorId(request));
 			boolean ret = sysTreeService.create(bean);
@@ -530,6 +532,7 @@ public class SysTreeController {
 				bean.setCode(ParamUtil.getParameter(request, "code"));
 				bean.setValue(ParamUtil.getParameter(request, "value"));
 				bean.setSort(ParamUtil.getIntParameter(request, "sort", 50));
+				bean.setPublicFlag(ParamUtil.getParameter(request, "publicFlag"));
 				bean.setUpdateBy(RequestUtils.getActorId(request));
 				sysTreeService.update(bean);
 				return ResponseUtils.responseResult(true);

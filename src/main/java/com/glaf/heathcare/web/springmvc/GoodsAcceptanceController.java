@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.glaf.base.modules.sys.model.SysTree;
@@ -53,7 +54,7 @@ import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.StringTools;
 import com.glaf.core.util.Tools;
-
+import com.glaf.core.util.security.RSAUtils;
 import com.glaf.heathcare.SysConfig;
 import com.glaf.heathcare.domain.FoodComposition;
 import com.glaf.heathcare.domain.GoodsAcceptance;
@@ -633,6 +634,8 @@ public class GoodsAcceptanceController {
 					rowJSON.put("id", goodsAcceptance.getId());
 					rowJSON.put("rowId", goodsAcceptance.getId());
 					rowJSON.put("goodsAcceptanceId", goodsAcceptance.getId());
+					rowJSON.put("ex_secutity_id", RSAUtils
+							.encryptString(loginContext.getTenantId() + ":" + String.valueOf(goodsAcceptance.getId())));
 					rowJSON.put("startIndex", ++start);
 					User user = userMap.get(goodsAcceptance.getConfirmBy());
 					if (user != null) {
@@ -1040,6 +1043,48 @@ public class GoodsAcceptanceController {
 		}
 
 		return new ModelAndView("/heathcare/goodsAcceptance/copy", modelMap);
+	}
+
+	@ResponseBody
+	@RequestMapping("/updateAll")
+	public byte[] updateAll(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug(params);
+		if (loginContext.getRoles().contains("TenantAdmin") || loginContext.getRoles().contains("HealthPhysician")
+				|| loginContext.getRoles().contains("Buyer") || loginContext.getRoles().contains("StockManager")) {
+			String json = request.getParameter("json");
+			if (StringUtils.isNotEmpty(json)) {
+				try {
+					JSONArray array = JSON.parseArray(json);
+					if (array != null && array.size() > 0) {
+						int len = array.size();
+						JSONObject jsonObject = null;
+						Map<Long, Double> dataMap = new HashMap<Long, Double>();
+						for (int i = 0; i < len; i++) {
+							jsonObject = array.getJSONObject(i);
+							String id = jsonObject.getString("id");
+							double quantity = jsonObject.getDoubleValue("quantity");
+							if (id != null && quantity > 0) {
+								id = RSAUtils.decryptString(id);
+								id = StringTools.replace(id, loginContext.getTenantId() + ":", "");
+								// id = id.substring(id.lastIndexOf(":") + 1, id.length());
+								logger.debug(id);
+								dataMap.put(Long.parseLong(id), quantity);
+							}
+						}
+						if (!dataMap.isEmpty()) {
+							goodsAcceptanceService.updateAll(loginContext.getTenantId(), dataMap);
+							return ResponseUtils.responseJsonResult(true);
+						}
+					}
+				} catch (Exception ex) {
+					// ex.printStackTrace();
+					logger.error(ex);
+				}
+			}
+		}
+		return ResponseUtils.responseJsonResult(false);
 	}
 
 	@RequestMapping("/view")

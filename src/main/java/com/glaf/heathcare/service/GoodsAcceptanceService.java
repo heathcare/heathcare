@@ -99,5 +99,8 @@ public interface GoodsAcceptanceService {
 
 	@Transactional
 	void updateGoodsAcceptanceStatus(List<GoodsAcceptance> list);
+	
+	@Transactional
+	void updateAll(String tenantId, Map<Long, Double> dataMap);
 
 }

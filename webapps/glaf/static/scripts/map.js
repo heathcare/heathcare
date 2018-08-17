@@ -132,4 +132,12 @@ function Map() {
 		}
 		return arr;
 	}
+
+	this.toString = function() {
+		var arr = new Array();
+		for (i = 0; i < this.elements.length; i++) {
+			arr.push(this.elements[i].key+"="+this.elements[i].value);
+		}
+		return arr;
+	}
 }

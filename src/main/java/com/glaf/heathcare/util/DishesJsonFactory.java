@@ -20,12 +20,12 @@ package com.glaf.heathcare.util;
 
 import java.util.List;
 
-import com.alibaba.fastjson.*;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import com.glaf.core.util.DateUtils;
-import com.glaf.heathcare.domain.*;
+import com.glaf.heathcare.domain.Dishes;
+import com.glaf.heathcare.domain.DishesItem;
 
 /**
  * 
@@ -130,19 +130,7 @@ public class DishesJsonFactory {
 		if (jsonObject.containsKey("verifyFlag")) {
 			model.setVerifyFlag(jsonObject.getString("verifyFlag"));
 		}
-		if (jsonObject.containsKey("createBy")) {
-			model.setCreateBy(jsonObject.getString("createBy"));
-		}
-		if (jsonObject.containsKey("createTime")) {
-			model.setCreateTime(jsonObject.getDate("createTime"));
-		}
-		if (jsonObject.containsKey("updateBy")) {
-			model.setUpdateBy(jsonObject.getString("updateBy"));
-		}
-		if (jsonObject.containsKey("updateTime")) {
-			model.setUpdateTime(jsonObject.getDate("updateTime"));
-		}
-
+		
 		if (jsonObject.getJSONArray("items") != null) {
 			JSONArray array = jsonObject.getJSONArray("items");
 			List<DishesItem> items = DishesItemJsonFactory.arrayToList(array);
@@ -209,23 +197,7 @@ public class DishesJsonFactory {
 		if (model.getVerifyFlag() != null) {
 			jsonObject.put("verifyFlag", model.getVerifyFlag());
 		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getCreateTime() != null) {
-			jsonObject.put("createTime", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_date", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_datetime", DateUtils.getDateTime(model.getCreateTime()));
-		}
-		if (model.getUpdateBy() != null) {
-			jsonObject.put("updateBy", model.getUpdateBy());
-		}
-		if (model.getUpdateTime() != null) {
-			jsonObject.put("updateTime", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_date", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_datetime", DateUtils.getDateTime(model.getUpdateTime()));
-		}
-
+		
 		if (model.getItems() != null && !model.getItems().isEmpty()) {
 			JSONArray array = DishesItemJsonFactory.listToArray(model.getItems());
 			jsonObject.put("items", array);
@@ -280,22 +252,7 @@ public class DishesJsonFactory {
 		if (model.getVerifyFlag() != null) {
 			jsonObject.put("verifyFlag", model.getVerifyFlag());
 		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getCreateTime() != null) {
-			jsonObject.put("createTime", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_date", DateUtils.getDate(model.getCreateTime()));
-			jsonObject.put("createTime_datetime", DateUtils.getDateTime(model.getCreateTime()));
-		}
-		if (model.getUpdateBy() != null) {
-			jsonObject.put("updateBy", model.getUpdateBy());
-		}
-		if (model.getUpdateTime() != null) {
-			jsonObject.put("updateTime", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_date", DateUtils.getDate(model.getUpdateTime()));
-			jsonObject.put("updateTime_datetime", DateUtils.getDateTime(model.getUpdateTime()));
-		}
+		
 		return jsonObject;
 	}
 

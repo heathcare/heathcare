@@ -6,6 +6,20 @@
 <#include "/inc/init_easyui_import.ftl"/>
 <script type="text/javascript">
 
+    function getLink(){
+	    var link_ = "${contextPath}/heathcare/foodComposition/jsonAll?wordLike_enc=${wordLike_enc}";
+		var nodeId = jQuery("#nodeId").val();
+		if(nodeId != ""){
+		    link_ = link_ + "&nodeId="+nodeId;
+		}
+		var namePinyinLike = jQuery("#namePinyinLike").val();
+		if(namePinyinLike != ""){
+		    link_ = link_ + "&namePinyinLike="+namePinyinLike;
+		}
+		return link_;
+    }
+
+
    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
 				width:1880,
@@ -15,7 +29,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/foodComposition/json?wordLike_enc=${wordLike_enc}&nodeId=${nodeId}&namePinyinLike=${namePinyinLike}',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -48,6 +62,29 @@
 				pagePosition: 'bottom',
 				onDblClickRow: onMyRowClick 
 			});
+
+			var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 
 	});
 
@@ -182,7 +219,7 @@
 	    jQuery.ajax({
 			type: "POST",
 			url:  url,
-			dataType:  'json',
+			dataType: 'json',
 			error: function(data){
 				alert('服务器处理错误！');
 			},
@@ -197,8 +234,9 @@
 	}
 
 	function searchXY(nameLike){
+		jQuery("#namePinyinLike").val(nameLike);
 		var nodeId = document.getElementById("nodeId").value;
-        var link = "${contextPath}/heathcare/foodComposition/json?nodeId="+nodeId+"&namePinyinLike="+nameLike;
+        var link = "${contextPath}/heathcare/foodComposition/jsonAll?nodeId="+nodeId+"&namePinyinLike="+nameLike;
 		loadGridData(link);
 	}
 

@@ -286,6 +286,11 @@ public class DietaryCategoryController {
 				}
 			}
 		}
+		
+		request.setAttribute("heathcare_gen_js_perm", false);
+		if (loginContext.isSystemAdministrator()) {
+			request.setAttribute("heathcare_gen_js_perm", true);
+		}
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {

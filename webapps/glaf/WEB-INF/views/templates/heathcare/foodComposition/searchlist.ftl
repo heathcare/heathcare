@@ -20,8 +20,20 @@
         x_width = Math.floor(window.screen.width * 0.72);
 	}  
 
+    function getLink(){
+	    var link_ = "${contextPath}/heathcare/foodComposition/json?wordLike_enc=${wordLike_enc}";
+		var typeId = jQuery("#typeId").val();
+		if(typeId != ""){
+		    link_ = link_ + "&typeId="+typeId;
+		}
+		var namePinyinLike = jQuery("#namePinyinLike").val();
+		if(namePinyinLike != ""){
+		    link_ = link_ + "&namePinyinLike="+namePinyinLike;
+		}
+		return link_;
+    }
 
-   jQuery(function(){
+    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
 				width:x_width,
 				height:x_height,
@@ -30,7 +42,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/heathcare/foodComposition/json?typeId=${typeId}&wordLike_enc=${wordLike_enc}&namePinyinLike=${namePinyinLike}',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -57,12 +69,28 @@
 				onDblClickRow: onMyRowClick 
 			});
 
-			var p = jQuery('#mydatagrid').datagrid('getPager');
-			jQuery(p).pagination({
-				onBeforeRefresh:function(){
-					//alert('before refresh');
-				}
-		    });
+			var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 	});
 
    function formatterName(val, row){
@@ -135,6 +163,7 @@
 	}
 
 	function searchXY(nameLike){
+		jQuery("#namePinyinLike").val(nameLike);
 		var typeId = document.getElementById("typeId").value;
         var link = "${contextPath}/heathcare/foodComposition/jsonAll?typeId="+typeId+"&namePinyinLike="+nameLike;
 		loadGridData(link);

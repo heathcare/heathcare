@@ -84,6 +84,27 @@ public final class StringTools {
 		return sb.toString();
 	}
 
+	public static String camelCaseName(String underscoreName) {
+		StringBuilder result = new StringBuilder();
+		if (underscoreName != null && underscoreName.length() > 0) {
+			boolean flag = false;
+			for (int i = 0; i < underscoreName.length(); i++) {
+				char ch = underscoreName.charAt(i);
+				if ("_".charAt(0) == ch) {
+					flag = true;
+				} else {
+					if (flag) {
+						result.append(Character.toUpperCase(ch));
+						flag = false;
+					} else {
+						result.append(ch);
+					}
+				}
+			}
+		}
+		return result.toString();
+	}
+	
 	public static String camelStyle(String str) {
 		if (str == null || str.indexOf("_") == -1) {
 			return str;

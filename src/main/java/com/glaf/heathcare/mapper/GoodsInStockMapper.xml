@@ -468,6 +468,20 @@
 		ID_ = #{id, jdbcType=BIGINT}
 
 	</update>
+	
+	
+	<update id="updateGoodsInStockQuantity"
+		parameterType="com.glaf.heathcare.domain.GoodsInStock">
+
+		update GOODS_IN_STOCK${tableSuffix}
+		set
+		QUANTITY_ = #{quantity, jdbcType=DOUBLE},
+		PRICE_ = #{price, jdbcType=DOUBLE},
+		TOTALPRICE_ = #{totalPrice, jdbcType=DOUBLE}
+		where
+		ID_ = #{id, jdbcType=BIGINT}
+
+	</update>
 
 
 	<update id="updateGoodsInStockStatus"

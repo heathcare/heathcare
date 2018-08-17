@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
@@ -178,7 +179,8 @@ public class GoodsPurchasePlanServiceImpl implements GoodsPurchasePlanService {
 	 * 
 	 * @return
 	 */
-	public List<GoodsPurchasePlan> getGoodsPurchasePlansByQueryCriteria(int start, int pageSize, GoodsPurchasePlanQuery query) {
+	public List<GoodsPurchasePlan> getGoodsPurchasePlansByQueryCriteria(int start, int pageSize,
+			GoodsPurchasePlanQuery query) {
 		RowBounds rowBounds = new RowBounds(start, pageSize);
 		if (StringUtils.isNotEmpty(query.getTenantId())) {
 			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
@@ -198,11 +200,12 @@ public class GoodsPurchasePlanServiceImpl implements GoodsPurchasePlanService {
 	@Transactional
 	public void save(GoodsPurchasePlan goodsPurchasePlan) {
 		if (StringUtils.isNotEmpty(goodsPurchasePlan.getTenantId())) {
-			goodsPurchasePlan.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(goodsPurchasePlan.getTenantId())));
+			goodsPurchasePlan
+					.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(goodsPurchasePlan.getTenantId())));
 		}
 
 		if (goodsPurchasePlan.getId() == 0) {
-			 
+
 			goodsPurchasePlan.setId(idGenerator.nextId("GOODS_PURCHASE_PLAN"));
 			goodsPurchasePlan.setCreateTime(new Date());
 
@@ -247,6 +250,28 @@ public class GoodsPurchasePlanServiceImpl implements GoodsPurchasePlanService {
 	@javax.annotation.Resource
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	@Transactional
+	public void updateAll(String tenantId, Map<Long, Double> dataMap) {
+		GoodsPurchasePlanQuery query = new GoodsPurchasePlanQuery();
+		query.tenantId(tenantId);
+		query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+		List<Long> ids = new ArrayList<Long>();
+		ids.addAll(dataMap.keySet());
+		query.setIds(ids);
+		List<GoodsPurchasePlan> list = list(query);
+		if (list != null && !list.isEmpty()) {
+			for (GoodsPurchasePlan model : list) {
+				if (model.getBusinessStatus() == 0) {
+					if (dataMap.get(model.getId()) != null && model.getQuantity() != dataMap.get(model.getId())) {
+						model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+						model.setQuantity(dataMap.get(model.getId()));
+						goodsPurchasePlanMapper.updateGoodsPurchasePlanQuantity(model);
+					}
+				}
+			}
+		}
 	}
 
 	@Transactional

@@ -248,6 +248,20 @@ public class DishesServiceImpl implements DishesService {
 		return list;
 	}
 
+	public List<Dishes> getSysDishesWithItems() {
+		DishesQuery query = new DishesQuery();
+		query.locked(0);
+		query.sysFlag("Y");
+		List<Dishes> list = dishesMapper.getDishesList(query);
+		if (list != null && !list.isEmpty()) {
+			for (Dishes dishes : list) {
+				List<DishesItem> items = dishesItemMapper.getDishesItemsByDishesId(dishes.getId());
+				dishes.setItems(items);
+			}
+		}
+		return list;
+	}
+
 	@Transactional
 	public void save(Dishes dishes) {
 		boolean isNew = false;

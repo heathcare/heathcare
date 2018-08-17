@@ -370,7 +370,7 @@ public class FoodCompositionController {
 	public byte[] jsonAll(HttpServletRequest request) throws IOException {
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
-		logger.debug("params:" + params);
+		logger.debug("all params:" + params);
 		FoodCompositionQuery query = new FoodCompositionQuery();
 		Tools.populate(query, params);
 		query.deleteFlag(0);
@@ -677,6 +677,11 @@ public class FoodCompositionController {
 
 		if (loginContext.isSystemAdministrator()) {
 			request.setAttribute("heathcare_write_perm", true);
+		}
+		
+		request.setAttribute("heathcare_gen_js_perm", false);
+		if (loginContext.isSystemAdministrator()) {
+			request.setAttribute("heathcare_gen_js_perm", true);
 		}
 
 		String view = request.getParameter("view");
