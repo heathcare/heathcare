@@ -1244,18 +1244,25 @@ public class GoodsOutStockController {
 
 				if (list != null && !list.isEmpty()) {
 
-					result.put("rows", rowsJSON);
-
 					for (GoodsStock goodsStock : list) {
-						JSONObject rowJSON = goodsStock.toJsonObject();
-						rowJSON.put("id", goodsStock.getId());
-						rowJSON.put("name", goodsStock.getGoodsName());
-						rowJSON.put("nodeId", goodsStock.getGoodsNodeId());
-						rowJSON.put("foodCompositionId", goodsStock.getGoodsId());
-						rowJSON.put("startIndex", ++start);
-						rowsJSON.add(rowJSON);
+						if (goodsStock.getGoodsNodeId() == 4402 || goodsStock.getGoodsNodeId() == 4403
+								|| goodsStock.getGoodsNodeId() == 4404 || goodsStock.getGoodsNodeId() == 4408
+								|| goodsStock.getGoodsNodeId() == 4412 || goodsStock.getGoodsNodeId() == 4418
+								|| goodsStock.getGoodsNodeId() == 4419) {
+							JSONObject rowJSON = goodsStock.toJsonObject();
+							rowJSON.put("id", goodsStock.getId());
+							rowJSON.put("name", goodsStock.getGoodsName());
+							rowJSON.put("nodeId", goodsStock.getGoodsNodeId());
+							rowJSON.put("foodCompositionId", goodsStock.getGoodsId());
+							rowJSON.put("startIndex", ++start);
+							rowsJSON.add(rowJSON);
+						}
 					}
-
+					total = rowsJSON.size();
+					result.put("rows", rowsJSON);
+					result.put("total", total);
+					result.put("totalCount", total);
+					result.put("totalRecords", total);
 				}
 			} else {
 				result.put("rows", rowsJSON);
