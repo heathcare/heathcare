@@ -89,7 +89,12 @@ public class FoodFavoriteController {
 
 			long nodeId = RequestUtils.getLong(request, "nodeId");
 			FoodFavoriteQuery query = new FoodFavoriteQuery();
-			query.tenantId(loginContext.getTenantId());
+			if (loginContext.isSystemAdministrator()) {
+				query.tenantId("SYS");
+			} else {
+				query.tenantId(loginContext.getTenantId());
+			}
+
 			if (nodeId > 0) {
 				query.nodeId(nodeId);
 
@@ -115,7 +120,11 @@ public class FoodFavoriteController {
 					}
 				} else {
 					GoodsActualQuantityQuery query2 = new GoodsActualQuantityQuery();
-					query2.tenantId(loginContext.getTenantId());
+					if (loginContext.isSystemAdministrator()) {
+						query2.tenantId("SYS");
+					} else {
+						query2.tenantId(loginContext.getTenantId());
+					}
 					if (nodeId > 0) {
 						query2.goodsNodeId(nodeId);
 					}
@@ -168,8 +177,8 @@ public class FoodFavoriteController {
 		}
 
 		request.setAttribute("save_permission", "false");
-		if (loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("Buyer")
-				|| loginContext.getRoles().contains("TenantAdmin")) {
+		if (loginContext.isSystemAdministrator() || loginContext.getRoles().contains("HealthPhysician")
+				|| loginContext.getRoles().contains("Buyer") || loginContext.getRoles().contains("TenantAdmin")) {
 			request.setAttribute("save_permission", "true");
 		}
 
@@ -187,8 +196,9 @@ public class FoodFavoriteController {
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		long nodeId = RequestUtils.getLong(request, "nodeId");
 		try {
-			if ((loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("Buyer")
-					|| loginContext.getRoles().contains("TenantAdmin")) && nodeId > 0) {
+			if ((loginContext.isSystemAdministrator() || loginContext.getRoles().contains("HealthPhysician")
+					|| loginContext.getRoles().contains("Buyer") || loginContext.getRoles().contains("TenantAdmin"))
+					&& nodeId > 0) {
 				List<FoodComposition> foods = foodCompositionService.getFoodCompositions(nodeId);
 				Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 				for (FoodComposition food : foods) {
@@ -215,7 +225,11 @@ public class FoodFavoriteController {
 					}
 				}
 
-				foodFavoriteService.saveAll(loginContext.getTenantId(), nodeId, foodFavorites);
+				if (loginContext.isSystemAdministrator()) {
+					foodFavoriteService.saveAll("SYS", nodeId, foodFavorites);
+				} else {
+					foodFavoriteService.saveAll(loginContext.getTenantId(), nodeId, foodFavorites);
+				}
 			}
 
 			return ResponseUtils.responseJsonResult(true);

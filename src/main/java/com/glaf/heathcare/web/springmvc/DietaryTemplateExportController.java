@@ -481,11 +481,14 @@ public class DietaryTemplateExportController {
 
 		if (StringUtils.equals(sysFlag, "Y")) {
 			if (loginContext.isSystemAdministrator()) {
+				request.setAttribute("tenantCorrelation", "false");
 				request.setAttribute("dietary_execute_perm", true);
 				request.setAttribute("dietary_copy_add_perm", true);
 			}
 		} else {
-			request.setAttribute("tenantCorrelation", "true");
+			if (!loginContext.isSystemAdministrator()) {
+				request.setAttribute("tenantCorrelation", "true");
+			}
 			if (loginContext.getRoles().contains("TenantAdmin")
 					|| loginContext.getRoles().contains("HealthPhysician")) {
 				request.setAttribute("dietary_execute_perm", true);
@@ -626,6 +629,7 @@ public class DietaryTemplateExportController {
 
 		if (StringUtils.equals(sysFlag, "Y")) {
 			if (loginContext.isSystemAdministrator()) {
+				request.setAttribute("tenantCorrelation", "false");
 				request.setAttribute("dietary_execute_perm", true);
 				request.setAttribute("dietary_copy_add_perm", true);
 			}
@@ -634,7 +638,9 @@ public class DietaryTemplateExportController {
 				request.setAttribute("dietary_copy_add_perm", true);
 			}
 		} else {
-			request.setAttribute("tenantCorrelation", "true");
+			if (!loginContext.isSystemAdministrator()) {
+				request.setAttribute("tenantCorrelation", "true");
+			}
 			if (loginContext.getRoles().contains("TenantAdmin")
 					|| loginContext.getRoles().contains("HealthPhysician")) {
 				request.setAttribute("dietary_execute_perm", true);
