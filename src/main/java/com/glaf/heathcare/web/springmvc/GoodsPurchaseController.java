@@ -396,6 +396,8 @@ public class GoodsPurchaseController {
 				result.put("rows", rowsJSON);
 
 				Map<String, User> userMap = IdentityFactory.getUserMap(loginContext.getTenantId());
+				Map<Long, FoodComposition> foodMap = foodCompositionService.getAllFoodCompositionMap();
+				FoodComposition fd = null;
 
 				GoodsStockQuery query2 = new GoodsStockQuery();
 				query2.tenantId(loginContext.getTenantId());
@@ -404,7 +406,16 @@ public class GoodsPurchaseController {
 				Map<Long, Double> qtyMap = new HashMap<Long, Double>();
 				if (list2 != null && !list2.isEmpty()) {
 					for (GoodsStock stock : list2) {
-						qtyMap.put(stock.getGoodsId(), stock.getQuantity());
+						fd = foodMap.get(stock.getGoodsId());
+						if (fd != null && StringUtils.equals(fd.getDailyFlag(), "Y")) {
+							continue;
+						}
+						if (stock.getGoodsNodeId() == 4402 || stock.getGoodsNodeId() == 4403
+								|| stock.getGoodsNodeId() == 4404 || stock.getGoodsNodeId() == 4408
+								|| stock.getGoodsNodeId() == 4412 || stock.getGoodsNodeId() == 4418
+								|| stock.getGoodsNodeId() == 4419) {
+							qtyMap.put(stock.getGoodsId(), stock.getQuantity());
+						}
 					}
 				}
 
@@ -578,6 +589,9 @@ public class GoodsPurchaseController {
 
 				Map<String, User> userMap = IdentityFactory.getUserMap(loginContext.getTenantId());
 
+				Map<Long, FoodComposition> foodMap = foodCompositionService.getAllFoodCompositionMap();
+				FoodComposition fd = null;
+
 				GoodsStockQuery query2 = new GoodsStockQuery();
 				query2.tenantId(loginContext.getTenantId());
 				query2.setQuantityGreaterThan(0D);
@@ -585,7 +599,16 @@ public class GoodsPurchaseController {
 				Map<Long, Double> qtyMap = new HashMap<Long, Double>();
 				if (list2 != null && !list2.isEmpty()) {
 					for (GoodsStock stock : list2) {
-						qtyMap.put(stock.getGoodsId(), stock.getQuantity());
+						fd = foodMap.get(stock.getGoodsId());
+						if (fd != null && StringUtils.equals(fd.getDailyFlag(), "Y")) {
+							continue;
+						}
+						if (stock.getGoodsNodeId() == 4402 || stock.getGoodsNodeId() == 4403
+								|| stock.getGoodsNodeId() == 4404 || stock.getGoodsNodeId() == 4408
+								|| stock.getGoodsNodeId() == 4412 || stock.getGoodsNodeId() == 4418
+								|| stock.getGoodsNodeId() == 4419) {
+							qtyMap.put(stock.getGoodsId(), stock.getQuantity());
+						}
 					}
 				}
 
