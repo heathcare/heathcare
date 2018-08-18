@@ -1243,8 +1243,13 @@ public class GoodsOutStockController {
 				List<GoodsStock> list = goodsStockService.getGoodsStocksByQueryCriteria(start, limit, query);
 
 				if (list != null && !list.isEmpty()) {
-
+					Map<Long, FoodComposition> foodMap = foodCompositionService.getAllFoodCompositionMap();
+					FoodComposition fd = null;
 					for (GoodsStock goodsStock : list) {
+						fd = foodMap.get(goodsStock.getGoodsId());
+						if (fd != null && StringUtils.equals(fd.getDailyFlag(), "Y")) {
+							continue;
+						}
 						if (goodsStock.getGoodsNodeId() == 4402 || goodsStock.getGoodsNodeId() == 4403
 								|| goodsStock.getGoodsNodeId() == 4404 || goodsStock.getGoodsNodeId() == 4408
 								|| goodsStock.getGoodsNodeId() == 4412 || goodsStock.getGoodsNodeId() == 4418
