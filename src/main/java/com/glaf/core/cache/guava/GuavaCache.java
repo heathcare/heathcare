@@ -37,7 +37,7 @@ public class GuavaCache implements com.glaf.core.cache.Cache {
 
 	protected static AtomicBoolean running = new AtomicBoolean(false);
 
-	protected static Cache<Object, Object> cache;
+	protected Cache<Object, Object> cache;
 
 	protected int cacheSize = 50000;
 
