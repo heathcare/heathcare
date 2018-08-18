@@ -53,6 +53,7 @@ public class CacheFactory {
 			try {
 				cache.clear(_region);
 			} catch (Throwable ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -237,6 +238,7 @@ public class CacheFactory {
 				cacheKeyMap.remove(cacheKey);
 			}
 		} catch (Throwable ex) {
+			ex.printStackTrace();
 		}
 	}
 

@@ -37,7 +37,7 @@ public class CaffeineCache implements com.glaf.core.cache.Cache {
 
 	protected static AtomicBoolean running = new AtomicBoolean(false);
 
-	protected Cache<Object, Object> cache;
+	protected static Cache<Object, Object> cache;
 
 	protected int cacheSize = 50000;
 

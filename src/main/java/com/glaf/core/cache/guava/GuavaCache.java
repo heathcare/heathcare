@@ -37,7 +37,7 @@ public class GuavaCache implements com.glaf.core.cache.Cache {
 
 	protected static AtomicBoolean running = new AtomicBoolean(false);
 
-	protected Cache<Object, Object> cache;
+	protected static Cache<Object, Object> cache;
 
 	protected int cacheSize = 50000;
 
@@ -64,8 +64,8 @@ public class GuavaCache implements com.glaf.core.cache.Cache {
 		getCache(region).invalidateAll();
 		getCache(region).cleanUp();
 		cacheConcurrentMap.remove(region);
-		logger.debug("------------------------" + region + " clear --------------------");
-		logger.debug("------------------------------------------------------------------");
+		logger.debug("-----------------" + region + " clear ----------------");
+		logger.debug("------------------------------------------------------");
 	}
 
 	public Object get(String key) {

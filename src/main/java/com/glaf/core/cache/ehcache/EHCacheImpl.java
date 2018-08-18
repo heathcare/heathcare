@@ -75,8 +75,8 @@ public class EHCacheImpl implements Cache {
 		try {
 			getCache(region).removeAll();
 			cacheConcurrentMap.remove(region);
-			logger.debug("------------------------" + region + " clear --------------------");
-			logger.debug("------------------------------------------------------------------");
+			logger.debug("-----------------" + region + " clear ----------------");
+			logger.debug("------------------------------------------------------");
 		} catch (ClassCastException e) {
 			throw new CacheException(e);
 		} catch (IllegalStateException e) {
@@ -254,6 +254,7 @@ public class EHCacheImpl implements Cache {
 	public void remove(String key) {
 		try {
 			getCache().remove(key);
+			logger.debug(" remove " + key + " from ehcache.");
 		} catch (ClassCastException e) {
 			throw new CacheException(e);
 		} catch (IllegalStateException e) {
@@ -266,6 +267,7 @@ public class EHCacheImpl implements Cache {
 	public void remove(String region, String key) {
 		try {
 			getCache(region).remove(key);
+			logger.debug(region + " remove " + key + " from ehcache.");
 		} catch (ClassCastException e) {
 			throw new CacheException(e);
 		} catch (IllegalStateException e) {

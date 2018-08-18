@@ -229,6 +229,9 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 			dietaryTemplateMapper.insertDietaryTemplate(dietaryTemplate);
 
 			CacheFactory.clear("dietary_template");
+			CacheFactory.clear("health_di_list2");
+			CacheFactory.clear("health_di_list");
+			CacheFactory.clear("health_di_count");
 		}
 	}
 
@@ -330,6 +333,10 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 				}
 
 				CacheFactory.clear("dietary_template");
+				CacheFactory.clear("health_di_list2");
+				CacheFactory.clear("health_di_list");
+				CacheFactory.clear("health_di_count");
+
 				this.save(dietaryTemplate);
 			}
 		}
@@ -346,11 +353,14 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 		Dishes dishes = dishesService.getDishes(dishesId);
 		if (dishes != null && dishes.getItems() != null && !dishes.getItems().isEmpty()) {
 			DietaryItemQuery query = new DietaryItemQuery();
+			query.setTableSuffix("");
 			query.templateId(templateId);
 			dietaryItemMapper.deleteDietaryItemsByTemplateId(query);
+
 			DietaryTemplate dietaryTemplate = this.getDietaryTemplate(templateId);
 			dietaryTemplate.setName(dishes.getName());
 			dietaryTemplate.setDescription(dishes.getDescription());
+
 			long typeId = 0;
 			if (dietaryTemplate.getItems() != null && !dietaryTemplate.getItems().isEmpty()) {
 				typeId = dietaryTemplate.getItems().get(0).getTypeId();
@@ -370,6 +380,7 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 				model.setTemplateId(templateId);
 				model.setTenantId(dietaryTemplate.getTenantId());
 				model.setUnit("g");
+				model.setTableSuffix("");
 				items.add(model);
 				dietaryItemMapper.insertDietaryItem(model);
 			}
@@ -447,10 +458,23 @@ public class DietaryTemplateServiceImpl implements DietaryTemplateService {
 				dietaryTemplate.setPhosphorus(dietaryTemplate.getPhosphorus() + food.getPhosphorus() * factor);// 累加计算
 			}
 
+			String cacheKey = "dietary_template_" + "_" + dietaryTemplate.getSuitNo() + "_"
+					+ dietaryTemplate.getSysFlag();
+			CacheFactory.remove("dietary_template", cacheKey);
+
+			cacheKey = "dietary_template_" + dietaryTemplate.getDayOfWeek() + "_" + dietaryTemplate.getSuitNo() + "_"
+					+ dietaryTemplate.getSysFlag();
+			CacheFactory.remove("dietary_template", cacheKey);
+
 			CacheFactory.clear("dietary_template");
+			CacheFactory.clear("health_di_list2");
+			CacheFactory.clear("health_di_list");
+			CacheFactory.clear("health_di_count");
+
 			dietaryTemplate.setUpdateTime(new Date());
 			dietaryTemplateMapper.updateDietaryTemplate(dietaryTemplate);
 
+			logger.debug("##################" + CacheFactory.getString("dietary_template", cacheKey));
 		}
 	}
 

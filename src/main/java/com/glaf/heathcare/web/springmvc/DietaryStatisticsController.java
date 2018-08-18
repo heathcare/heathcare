@@ -135,6 +135,7 @@ public class DietaryStatisticsController {
 				}
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			logger.error(ex);
 		} finally {
 			semaphore2.release();
