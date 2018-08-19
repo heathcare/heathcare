@@ -5,9 +5,32 @@
 <title>用户在线日志</title>
 <#include "/inc/init_easyui_layer3_import.ftl"/>
 <script type="text/javascript">
-   var contextPath="${contextPath}";
+    var contextPath="${request.contextPath}";
 
-   jQuery(function(){
+
+    function getLink(){
+	    var link_ = "${request.contextPath}/user/onlinelog/json?q=1";
+		 
+		var searchWord = jQuery("#searchWord").val();
+		if(searchWord != ""){
+		    link_ = link_ + "&searchWord="+searchWord;
+		}
+
+		var loginDateGreaterThanOrEqual = jQuery("#loginDateGreaterThanOrEqual").val();
+		if(loginDateGreaterThanOrEqual != ""){
+		    link_ = link_ + "&loginDateGreaterThanOrEqual="+loginDateGreaterThanOrEqual;
+		}
+
+		var loginDateLessThanOrEqual = jQuery("#loginDateLessThanOrEqual").val();
+		if(loginDateLessThanOrEqual != ""){
+		    link_ = link_ + "&loginDateLessThanOrEqual="+loginDateLessThanOrEqual;
+		}
+
+		return link_;
+    }
+
+
+    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
 				width:1000,
 				height:480,
@@ -16,7 +39,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/user/onlinelog/json',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -36,6 +59,28 @@
 				onDblClickRow: onMyRowClick 
 			});
 
+            var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 	});
 
    function onMyRowClick(rowIndex, row){
@@ -99,12 +144,19 @@
 	    jQuery('#mydatagrid').datagrid('clearSelections');
 	}
 
+
 	function loadGridData(url){
-        jQuery.post(url,{qq:'xx'},function(data){
-            //var text = JSON.stringify(data); 
-            //alert(text);
-            jQuery('#mydatagrid').datagrid('loadData', data);
-        },'json');
+	    jQuery.ajax({
+			type: "POST",
+			url:  url,
+			dataType: 'json',
+			error: function(data){
+				alert('服务器处理错误！');
+			},
+			success: function(data){
+				jQuery('#mydatagrid').datagrid('loadData', data);
+			}
+		});
 	}
 
 

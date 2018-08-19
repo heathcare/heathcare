@@ -40,6 +40,17 @@
 	});
 
 
+    function getLink(){
+	    var link_ = "${contextPath}/sys/district/json?parentId=${parentId}";
+		 
+		var nodeId = jQuery("#nodeId").val();
+		if(nodeId != ""){
+		    link_ = link_ + "&nodeId="+nodeId;
+		}
+		return link_;
+    }
+
+
     jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
 				width:1000,
@@ -49,7 +60,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/sys/district/json?parentId=${parentId}',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -80,6 +91,29 @@
 					 editRow(row.id);
 				}
 			});
+
+			var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 
 	});
 
@@ -236,13 +270,12 @@
 	    jQuery('#mydatagrid').datagrid('clearSelections');
 	}
 
+
 	function loadGridData(url){
-        //var params = jQuery("#iForm").formSerialize();
 	    jQuery.ajax({
 			type: "POST",
-			url:  url,
-			//data: params,
-			dataType:  'json',
+			url: url,
+			dataType: 'json',
 			error: function(data){
 				alert('服务器处理错误！');
 			},
@@ -251,6 +284,7 @@
 			}
 		});
 	}
+
 
 	function searchData(){
         var params = jQuery("#searchForm").formSerialize();

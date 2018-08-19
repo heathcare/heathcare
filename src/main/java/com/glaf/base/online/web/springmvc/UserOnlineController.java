@@ -122,10 +122,14 @@ public class UserOnlineController {
 		UserOnlineQuery query = new UserOnlineQuery();
 		Tools.populate(query, params);
 		query.deleteFlag(0);
-		query.setSearchWord(request.getParameter("searchWord"));
+
+		String searchWord = request.getParameter("searchWord");
+		if (StringUtils.isNotEmpty(searchWord)) {
+			query.setSearchWord(searchWord);
+		}
 
 		int start = 0;
-		int limit = 10;
+		int limit = 100;
 		String orderName = null;
 		String order = null;
 
@@ -140,7 +144,7 @@ public class UserOnlineController {
 		}
 
 		if (limit <= 0) {
-			limit = Paging.DEFAULT_PAGE_SIZE;
+			limit = 100;
 		}
 
 		JSONObject result = new JSONObject();

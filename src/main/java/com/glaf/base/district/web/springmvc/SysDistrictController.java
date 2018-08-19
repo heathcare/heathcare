@@ -157,8 +157,13 @@ public class SysDistrictController {
 			query.createBy(actorId);
 		}
 
-		Long parentId = RequestUtils.getLong(request, "parentId", 0);
-		query.parentId(parentId);
+		long nodeId = RequestUtils.getLong(request, "nodeId", 0);
+		if (nodeId > 0) {
+			query.parentId(nodeId);
+		} else {
+			long parentId = RequestUtils.getLong(request, "parentId", 0);
+			query.parentId(parentId);
+		}
 
 		String gridType = ParamUtils.getString(params, "gridType");
 		if (gridType == null) {

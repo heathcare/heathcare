@@ -39,13 +39,13 @@
 	});
 
     function getLink(){
-	    var link_ = "${contextPath}/sys/tree/json?";
+	    var link_ = "${contextPath}/sys/tree/json?q=1";
+
 		if(jQuery("#nodeId").val() != null && jQuery("#nodeId").val() != 'undefined'){
-			link_ = link_ + "parentId="+jQuery("#nodeId").val();
+			link_ = link_ + "&parentId="+jQuery("#nodeId").val();
 		} else {
-			link_ = link_ + "parentId=${parentId}";
+			link_ = link_ + "&parentId=${parentId}";
 		}
-		//alert(link_);
 	    return link_;
 	}
 
@@ -58,7 +58,6 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				//url: '${contextPath}/sys/tree/json?parentId=${parentId}',
 				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,

@@ -5,9 +5,20 @@
 <title>在线用户</title>
 <#include "/inc/init_easyui_layer3_import.ftl"/>
 <script type="text/javascript">
-   var contextPath="${contextPath}";
+    var contextPath="${contextPath}";
 
-   jQuery(function(){
+    function getLink(){
+	    var link_ = "${contextPath}/user/online/json?q=1";
+		 
+		var searchWord = jQuery("#searchWord").val();
+		if(searchWord != ""){
+		    link_ = link_ + "&searchWord="+searchWord;
+		}
+		return link_;
+    }
+
+
+    jQuery(function(){
 		jQuery('#mydatagrid').datagrid({
 				width:1000,
 				height:480,
@@ -16,7 +27,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible: true,
-				url: '${contextPath}/user/online/json',
+				url: getLink(),
 				remoteSort: false,
 				singleSelect: true,
 				idField: 'id',
@@ -36,6 +47,29 @@
 				pagePosition: 'both',
 				onDblClickRow: onMyRowClick 
 			});
+
+			var pgx = $("#mydatagrid").datagrid("getPager");
+			if(pgx){
+			   $(pgx).pagination({
+				   onBeforeRefresh:function(){
+					   //alert('before refresh');
+				   },
+				   onRefresh:function(pageNumber,pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					},
+				   onChangePageSize:function(){
+					   //alert('pagesize changed');
+					   loadGridData(getLink());
+					},
+				   onSelectPage:function(pageNumber, pageSize){
+					   //alert(pageNumber);
+					   //alert(pageSize);
+					   loadGridData(getLink()+"&page="+pageNumber+"&rows="+pageSize);
+					}
+			   });
+			}
 	});
 
    function formatterUser(val, row){
@@ -174,11 +208,17 @@
 	}
 
 	function loadGridData(url){
-        jQuery.post(url,{qq:'xx'},function(data){
-            //var text = JSON.stringify(data); 
-            //alert(text);
-            jQuery('#mydatagrid').datagrid('loadData', data);
-        },'json');
+	    jQuery.ajax({
+			type: "POST",
+			url:  url,
+			dataType: 'json',
+			error: function(data){
+				alert('服务器处理错误！');
+			},
+			success: function(data){
+				jQuery('#mydatagrid').datagrid('loadData', data);
+			}
+		});
 	}
 
     function searchData(){
