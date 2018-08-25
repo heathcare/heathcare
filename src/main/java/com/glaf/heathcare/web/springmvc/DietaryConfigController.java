@@ -276,12 +276,6 @@ public class DietaryConfigController {
 				}
 
 				try {
-					DataFileDomainFactory.createTables(databaseId, 2017);
-				} catch (Throwable ex) {
-					logger.error(ex);
-				}
-
-				try {
 					DataFileDomainFactory.createTables(databaseId, 2018);
 				} catch (Throwable ex) {
 					logger.error(ex);
