@@ -128,6 +128,14 @@ public class ReportMainController {
 				boolean hasPermission = false;
 				if (!loginContext.isSystemAdministrator()) {
 					List<String> perms = StringTools.split(rdf.getPerms(), "|");
+					Collection<String> roles = loginContext.getRoles();
+					if (roles != null && !roles.isEmpty()) {
+						for (String role : roles) {
+							if (perms.contains(role)) {
+								hasPermission = true;
+							}
+						}
+					}
 					Collection<String> permissions = loginContext.getPermissions();
 					if (permissions != null && !permissions.isEmpty()) {
 						for (String permission : permissions) {
@@ -230,7 +238,7 @@ public class ReportMainController {
 					writer.flush();
 				} else {
 					String filename = "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls";
-					if(StringUtils.isNotEmpty(rdf.getExportFilename())) {
+					if (StringUtils.isNotEmpty(rdf.getExportFilename())) {
 						filename = rdf.getExportFilename();
 						params.put("yyyyMMdd", DateUtils.getDateTime("yyyyMMdd", new Date()));
 						params.put("yyyyMMddHHmm", DateUtils.getDateTime("yyyyMMddHHmm", new Date()));

@@ -250,6 +250,9 @@ public class Person implements Serializable, JSONable {
 	@Column(name = "JOINDATE_")
 	protected Date joinDate;
 
+	@javax.persistence.Transient
+	protected String joinDateString;
+
 	/**
 	 * 健康状况
 	 */
@@ -587,6 +590,13 @@ public class Person implements Serializable, JSONable {
 		return joinDate;
 	}
 
+	public String getJoinDateString() {
+		if (this.joinDate != null) {
+			return DateUtils.getDate(this.joinDate);
+		}
+		return joinDateString;
+	}
+
 	public List<PersonLinkman> getLinkmans() {
 		return linkmans;
 	}
@@ -617,6 +627,10 @@ public class Person implements Serializable, JSONable {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public String getNamePinyin() {
+		return namePinyin;
 	}
 
 	public String getNation() {
@@ -850,6 +864,10 @@ public class Person implements Serializable, JSONable {
 		this.joinDate = joinDate;
 	}
 
+	public void setJoinDateString(String joinDateString) {
+		this.joinDateString = joinDateString;
+	}
+
 	public void setLinkmans(List<PersonLinkman> linkmans) {
 		this.linkmans = linkmans;
 	}
@@ -880,6 +898,10 @@ public class Person implements Serializable, JSONable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 
 	public void setNation(String nation) {
@@ -928,14 +950,6 @@ public class Person implements Serializable, JSONable {
 
 	public void setStatus(int status) {
 		this.status = status;
-	}
-
-	public String getNamePinyin() {
-		return namePinyin;
-	}
-
-	public void setNamePinyin(String namePinyin) {
-		this.namePinyin = namePinyin;
 	}
 
 	public void setStudentCode(String studentCode) {

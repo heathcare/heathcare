@@ -981,7 +981,7 @@
 				order by ${orderBy}
 			</when>
 			<otherwise>
-				order by E.NAME_ asc, E.NAMEPINYIN_ asc
+				order by E.GRADEID_, E.NAME_ asc, E.NAMEPINYIN_ asc
 			</otherwise>
 		</choose>
 	</select>

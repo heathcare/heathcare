@@ -21,33 +21,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.identity.Tenant;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.GradeInfoQuery;
-import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.heathcare.service.PersonService;
 
 public class PersonExportPreprocessor implements IReportPreprocessor {
+
+	protected static final Log logger = LogFactory.getLog(PersonExportPreprocessor.class);
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 
-		PersonQuery query = new PersonQuery();
-		query.tenantId(tenant.getTenantId());
-		String gradeId = (String) params.get("gradeId");
-		if (gradeId != null && gradeId != "") {
-			query.gradeId(gradeId);
-		}
-		query.locked(0);
-		query.deleteFlag(0);
-		List<Person> persons = personService.list(query);
+		List<Person> persons = personService.getTenantPersons(tenant.getTenantId());
 
 		GradeInfoQuery qx = new GradeInfoQuery();
 		qx.tenantId(tenant.getTenantId());
@@ -59,9 +53,6 @@ public class PersonExportPreprocessor implements IReportPreprocessor {
 		if (grades != null && !grades.isEmpty()) {
 			for (GradeInfo g : grades) {
 				gradeMap.put(g.getId(), g);
-				if (StringUtils.equals(g.getId(), gradeId)) {
-					params.put("grade", g);
-				}
 			}
 		}
 
@@ -74,10 +65,9 @@ public class PersonExportPreprocessor implements IReportPreprocessor {
 				}
 				p.setGradeName(gradeMap.get(p.getGradeId()) != null ? gradeMap.get(p.getGradeId()).getName() : "");
 			}
+			params.put("rows", persons);
+			logger.debug("persons size:" + persons.size());
 		}
-
-		params.put("rows", persons);
-
 	}
 
 }

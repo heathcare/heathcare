@@ -143,7 +143,9 @@ public class PersonServiceImpl implements PersonService {
 			List<String> gradeIds = new ArrayList<String>();
 			for (GradeInfo grade : grades) {
 				if (!gradeIds.contains(grade.getId())) {
-					gradeIds.add(grade.getId());
+					if (grade.getLocked() == 0) {
+						gradeIds.add(grade.getId());
+					}
 				}
 			}
 			PersonQuery query = new PersonQuery();

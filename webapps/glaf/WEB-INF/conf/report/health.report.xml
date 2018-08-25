@@ -173,6 +173,14 @@
         <perms>TenantAdmin|SystemAdministrator</perms>
 	</report>
 
+	<report id="youerinfo">
+	    <title>儿童基本信息</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/youerinfo.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.PersonExportPreprocessor</prepareClass>
+        <perms>TenantAdmin|SystemAdministrator</perms>
+	</report>
+
 	<report id="PersonInspection">
 	    <templateType>jxls2</templateType>
 		<templateFile>conf/report/templates/PersonInspection.xls</templateFile>
@@ -369,6 +377,12 @@
 		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationPersonExportPreprocessor</prepareClass>
 	</report>
 
+	<report id="mdicaldata">
+	    <title>体检数据</title>
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/mdicaldata.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalExaminationExportPreprocessor</prepareClass>
+	</report>
 
 	<report id="TenantMedicalExaminationGrade">
 	    <templateType>jxls2</templateType>

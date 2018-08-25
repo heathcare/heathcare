@@ -70,6 +70,9 @@ public class MedicalExamination implements Serializable, JSONable {
 	@Column(name = "GRADEID_", length = 50)
 	protected String gradeId;
 
+	@javax.persistence.Transient
+	protected String gradeName;
+
 	/**
 	 * 学生编号
 	 */
@@ -786,6 +789,9 @@ public class MedicalExamination implements Serializable, JSONable {
 	}
 
 	public String getBirthdayString() {
+		if (this.birthday != null) {
+			return DateUtils.getDate(this.birthday);
+		}
 		return birthdayString;
 	}
 
@@ -965,6 +971,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public String getGradeId() {
 		return this.gradeId;
+	}
+
+	public String getGradeName() {
+		return gradeName;
 	}
 
 	public String getHbsab() {
@@ -1479,6 +1489,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setGradeId(String gradeId) {
 		this.gradeId = gradeId;
+	}
+
+	public void setGradeName(String gradeName) {
+		this.gradeName = gradeName;
 	}
 
 	public void setHbsab(String hbsab) {
