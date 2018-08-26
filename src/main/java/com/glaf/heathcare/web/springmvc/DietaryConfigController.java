@@ -219,25 +219,7 @@ public class DietaryConfigController {
 				}
 
 				try {
-					DataFileDomainFactory.createTables(databaseId, 2017);
-				} catch (Throwable ex) {
-					logger.error(ex);
-				}
-
-				try {
-					DataFileDomainFactory.createTables(databaseId, 2018);
-				} catch (Throwable ex) {
-					logger.error(ex);
-				}
-
-				try {
-					DataFileDomainFactory.createTables(databaseId, 2019);
-				} catch (Throwable ex) {
-					logger.error(ex);
-				}
-
-				try {
-					DataFileDomainFactory.createTables(databaseId, 2020);
+					DataFileDomainFactory.createTenantTables(databaseId);
 				} catch (Throwable ex) {
 					logger.error(ex);
 				}
@@ -276,19 +258,7 @@ public class DietaryConfigController {
 				}
 
 				try {
-					DataFileDomainFactory.createTables(databaseId, 2018);
-				} catch (Throwable ex) {
-					logger.error(ex);
-				}
-
-				try {
-					DataFileDomainFactory.createTables(databaseId, 2019);
-				} catch (Throwable ex) {
-					logger.error(ex);
-				}
-
-				try {
-					DataFileDomainFactory.createTables(databaseId, 2020);
+					DataFileDomainFactory.createTenantTables(databaseId);
 				} catch (Throwable ex) {
 					logger.error(ex);
 				}
