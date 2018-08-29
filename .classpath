@@ -24,17 +24,11 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/cglib.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/classmate.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-cli.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-codec.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-collections.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-collections4.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-compress.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-configuration.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-dbcp.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-dbcp2.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-dbutils.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-digester.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-discovery.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-el.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-fileupload.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-httpclient.jar"/>
@@ -45,14 +39,12 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-lang2.jar" sourcepath="C:/Users/Administrator/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6-sources.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-lang3.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-mail.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-math.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-math3.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-net.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-pool.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-pool2.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-validator.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/concurrent.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/cors-filter.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/curator-client.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/curator-framework.jar"/>
@@ -64,7 +56,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/fst.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/guava.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/HikariCP.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/htmlparser.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/httpasyncclient-cache.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/httpasyncclient.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/httpclient-cache.jar"/>
@@ -161,7 +152,6 @@
 	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/xmlbeans.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/fastutil.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jansi.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls-core.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls-jexcel.jar"/>
@@ -169,7 +159,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls-reader.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxl.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-digester3.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/sqlite-jdbc.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/alipay-sdk-java.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/highcharts-export-convert.jar"/>
@@ -181,7 +170,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/j2cache-core.jar" sourcepath="jar/j2cache-core-sources.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/snappy-java.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/consul-api.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/gson.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/caffeine.jar" sourcepath="lib/caffeine-sources.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/flowable-bpmn-converter.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/flowable-bpmn-model.jar"/>
