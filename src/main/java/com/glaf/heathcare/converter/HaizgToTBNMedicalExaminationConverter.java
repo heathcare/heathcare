@@ -30,7 +30,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.glaf.core.security.Authentication;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ExcelUtils;
 import com.glaf.core.util.StringTools;
@@ -66,9 +65,6 @@ public class HaizgToTBNMedicalExaminationConverter {
 			}
 			MedicalExamination exam = new MedicalExamination();
 
-			if (Authentication.getAuthenticatedActorId() != null) {
-				exam.setCreateBy(Authentication.getAuthenticatedActorId());
-			}
 			String cellValue = null;
 			String year = null;
 			int cells = row.getLastCellNum();
