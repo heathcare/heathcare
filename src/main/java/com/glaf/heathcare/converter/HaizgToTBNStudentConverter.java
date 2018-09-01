@@ -65,11 +65,12 @@ public class HaizgToTBNStudentConverter {
 			}
 			Person person = new Person();
 
-			String cellValue = null;
 			String year = null;
+			HSSFCell cell = null;
+			String cellValue = null;
 			int cells = row.getLastCellNum();
 			for (int colIndex = 0; colIndex < cells; colIndex++) {
-				HSSFCell cell = row.getCell(colIndex);
+				cell = row.getCell(colIndex);
 				if (cell != null) {
 					cellValue = ExcelUtils.getStringOrDateValue(cell, 0);
 					if (cellValue == null) {

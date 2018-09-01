@@ -65,11 +65,17 @@ public class HaizgToTBNMedicalExaminationConverter {
 			}
 			MedicalExamination exam = new MedicalExamination();
 
-			String cellValue = null;
 			String year = null;
+			HSSFCell cell = null;
+			String cellValue = null;
 			int cells = row.getLastCellNum();
 			for (int colIndex = 0; colIndex < cells; colIndex++) {
-				HSSFCell cell = row.getCell(colIndex);
+				cell = row.getCell(4);
+				if (cell != null) {
+					cellValue = ExcelUtils.getString(cell, 0);
+					year = cellValue;
+				}
+				cell = row.getCell(colIndex);
 				if (cell != null) {
 					cellValue = ExcelUtils.getStringOrDateValue(cell, 0);
 					if (cellValue == null) {
@@ -89,7 +95,6 @@ public class HaizgToTBNMedicalExaminationConverter {
 						}
 						break;
 					case 4:// 学年
-						year = cellValue;
 						break;
 					case 3:// 班级
 						cellValue = StringTools.replace(cellValue, "小", "");
@@ -118,25 +123,25 @@ public class HaizgToTBNMedicalExaminationConverter {
 							exam.setWeight(Double.parseDouble(cellValue));
 						}
 						break;
-					case 10:// 左视力
+					case 11:// 左视力
 						cellValue = ExcelUtils.getString(cell, 1);
 						if (StringUtils.isNotEmpty(cellValue)) {
 							exam.setEyesightLeft(Double.parseDouble(cellValue));
 						}
 						break;
-					case 12:// 右视力
+					case 13:// 右视力
 						cellValue = ExcelUtils.getString(cell, 1);
 						if (StringUtils.isNotEmpty(cellValue)) {
 							exam.setEyesightRight(Double.parseDouble(cellValue));
 						}
 						break;
-					case 14:// 龋齿数
+					case 15:// 龋齿数
 						cellValue = ExcelUtils.getString(cell, 0);
 						if (StringUtils.isNotEmpty(cellValue)) {
 							exam.setSaprodontia(Integer.parseInt(cellValue));
 						}
 						break;
-					case 15:// 血红蛋白(g/L)
+					case 16:// 血红蛋白(g/L)
 						cellValue = ExcelUtils.getString(cell, 1);
 						if (StringUtils.isNotEmpty(cellValue)) {
 							exam.setHemoglobinValue(Double.parseDouble(cellValue));

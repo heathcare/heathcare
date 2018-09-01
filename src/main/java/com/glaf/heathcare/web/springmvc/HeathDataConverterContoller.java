@@ -71,7 +71,7 @@ public class HeathDataConverterContoller {
 		return new ModelAndView("/heathcare/dataConverter/showUpload", modelMap);
 	}
 
-	@RequestMapping(name = "/upload", method = RequestMethod.POST)
+	@RequestMapping(path = "/upload", method = RequestMethod.POST)
 	public void upload(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("file") MultipartFile mFile) throws IOException {
 		Map<String, Object> params = RequestUtils.getParameterMap(request);

@@ -137,7 +137,7 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/spring-jdbc.RELEASE.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/spring-orm.RELEASE.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/spring-tx.RELEASE.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/spring-web.RELEASE.jar"/>
+	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/spring-web.RELEASE.jar" sourcepath="C:/Users/Administrator/.m2/repository/org/springframework/spring-web/5.0.8.RELEASE/spring-web-5.0.8.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/spring-webmvc.RELEASE.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/sshd-core.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/stax2.jar"/>
