@@ -57,6 +57,8 @@ public class TableDomainFactory {
 		columnMap.put("locked", "LOCKED_");
 		columnMap.put("organizationId", "ORGANIZATIONID_");
 		columnMap.put("gradeId", "GRADEID_");
+		columnMap.put("category", "CATEGORY_");
+		columnMap.put("tableId", "TABLEID_");
 		columnMap.put("tenantId", "TENANTID_");
 		columnMap.put("businessStatus", "BUSINESS_STATUS_");
 		columnMap.put("processIntanceId", "PROCESSINTANCEID_");
@@ -91,6 +93,8 @@ public class TableDomainFactory {
 		javaTypeMap.put("organizationId", "Long");
 		javaTypeMap.put("gradeId", "String");
 		javaTypeMap.put("tenantId", "String");
+		javaTypeMap.put("category", "String");
+		javaTypeMap.put("tableId", "String");
 		javaTypeMap.put("businessStatus", "Integer");
 		javaTypeMap.put("processIntanceId", "String");
 		javaTypeMap.put("processKey", "String");
@@ -237,6 +241,20 @@ public class TableDomainFactory {
 		gradeId.setJavaType("String");
 		gradeId.setLength(50);
 		tableDefinition.addColumn(gradeId);
+
+		ColumnDefinition category = new ColumnDefinition();
+		category.setName("category");
+		category.setColumnName("CATEGORY_");// 业务分类编号
+		category.setJavaType("String");
+		category.setLength(50);
+		tableDefinition.addColumn(category);
+
+		ColumnDefinition tableId = new ColumnDefinition();
+		tableId.setName("tableId");
+		tableId.setColumnName("TABLEID_");// TABLE编号
+		tableId.setJavaType("String");
+		tableId.setLength(50);
+		tableDefinition.addColumn(tableId);
 
 		ColumnDefinition sort = new ColumnDefinition();
 		sort.setName("sort");
