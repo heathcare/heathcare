@@ -53,8 +53,8 @@ import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 
-import com.glaf.heathcare.converter.HaizgToTBNMedicalExaminationConverter;
-import com.glaf.heathcare.converter.HaizgToTBNStudentConverter;
+import com.glaf.heathcare.converter.HaizgMedicalExaminationConverter;
+import com.glaf.heathcare.converter.HaizgStudentConverter;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.report.bean.ReportContainer;
@@ -85,13 +85,13 @@ public class HeathDataConverterContoller {
 		try {
 			String type = request.getParameter("type");
 			if (StringUtils.equals(type, "person")) {
-				HaizgToTBNStudentConverter converter = new HaizgToTBNStudentConverter();
+				HaizgStudentConverter converter = new HaizgStudentConverter();
 				List<Person> persons = converter.getPersons(mFile.getInputStream());
 				params.put("persons", persons);
 				params.put("rows", persons);
 				rptId = "youerinfo";
 			} else if (StringUtils.equals(type, "exam")) {
-				HaizgToTBNMedicalExaminationConverter converter = new HaizgToTBNMedicalExaminationConverter();
+				HaizgMedicalExaminationConverter converter = new HaizgMedicalExaminationConverter();
 				List<MedicalExamination> exams = converter.getMedicalExaminations(mFile.getInputStream());
 				params.put("exams", exams);
 				params.put("rows", exams);

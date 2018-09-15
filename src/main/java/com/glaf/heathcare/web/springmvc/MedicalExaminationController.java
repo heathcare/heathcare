@@ -56,6 +56,8 @@ import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.Tools;
 import com.glaf.heathcare.bean.MedicalExaminationXlsImporter;
 import com.glaf.heathcare.bean.MedicalExaminationXlsxImporter;
+import com.glaf.heathcare.converter.HaizgMedicalExaminationConverter;
+import com.glaf.heathcare.converter.TBNMedicalExaminationConverter;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
@@ -201,6 +203,100 @@ public class MedicalExaminationController {
 					request.setAttribute("type", type);
 					request.setAttribute("checkId", checkId);
 					request.setAttribute("gradeId", gradeId);
+					request.setAttribute("checkDate", DateUtils.getDate(checkDate));
+				} catch (Exception ex) {
+					logger.error(ex);
+				} finally {
+					semaphore2.release();
+				}
+			}
+		}
+		if (StringUtils.equals(type, "1")) {
+			return this.enterList(request, modelMap);
+		}
+		return this.list(request, modelMap);
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImport2", method = RequestMethod.POST)
+	public ModelAndView doImport2(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		String type = request.getParameter("type");
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			Date checkDate = RequestUtils.getDate(request, "checkDate");
+			/**
+			 * 判断体检日期是否是当天以前的日期
+			 */
+			if (StringUtils.isNotEmpty(type) && checkDate != null && DateUtils.beforeTime(checkDate, new Date())) {
+
+				try {
+					semaphore2.acquire();
+					HaizgMedicalExaminationConverter converter = new HaizgMedicalExaminationConverter();
+					List<MedicalExamination> exams = converter.getMedicalExaminations(mFile.getInputStream());
+					if (exams != null && !exams.isEmpty()) {
+						if (loginContext.isSystemAdministrator()) {
+							String tenantId = request.getParameter("tenantId");
+							medicalExaminationService.insertAll(tenantId, type, exams, checkDate);
+						} else {
+							String tenantId = loginContext.getTenantId();
+							medicalExaminationService.insertAll(tenantId, type, exams, checkDate);
+						}
+					}
+					request.setAttribute("checkDate", DateUtils.getDate(checkDate));
+				} catch (Exception ex) {
+					logger.error(ex);
+				} finally {
+					semaphore2.release();
+				}
+			}
+		}
+		if (StringUtils.equals(type, "1")) {
+			return this.enterList(request, modelMap);
+		}
+		return this.list(request, modelMap);
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImport3", method = RequestMethod.POST)
+	public ModelAndView doImport3(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		String type = request.getParameter("type");
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			Date checkDate = RequestUtils.getDate(request, "checkDate");
+			/**
+			 * 判断体检日期是否是当天以前的日期
+			 */
+			if (StringUtils.isNotEmpty(type) && checkDate != null && DateUtils.beforeTime(checkDate, new Date())) {
+
+				try {
+					semaphore2.acquire();
+					TBNMedicalExaminationConverter converter = new TBNMedicalExaminationConverter();
+					List<MedicalExamination> exams = converter.getMedicalExaminations(mFile.getInputStream());
+					if (exams != null && !exams.isEmpty()) {
+						if (loginContext.isSystemAdministrator()) {
+							String tenantId = request.getParameter("tenantId");
+							medicalExaminationService.insertAll(tenantId, type, exams, checkDate);
+						} else {
+							String tenantId = loginContext.getTenantId();
+							medicalExaminationService.insertAll(tenantId, type, exams, checkDate);
+						}
+					}
 					request.setAttribute("checkDate", DateUtils.getDate(checkDate));
 				} catch (Exception ex) {
 					logger.error(ex);
@@ -1180,7 +1276,7 @@ public class MedicalExaminationController {
 		} else {
 			return result.toJSONString().getBytes();
 		}
-		
+
 		int heightLevel = RequestUtils.getInt(request, "heightLevel");
 		if (heightLevel >= 0) {
 			query.heightLevelGreaterThanOrEqual(heightLevel);

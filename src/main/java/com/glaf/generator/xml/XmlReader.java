@@ -51,7 +51,6 @@ public class XmlReader {
 		field.setRenderType(elem.attributeValue("renderType"));
 		field.setColumnName(elem.attributeValue("column"));
 		field.setDataType(FieldType.getFieldType(field.getType()));
-
 		String length = elem.attributeValue("length");
 		if (StringUtils.isNumeric(length)) {
 			field.setLength(Integer.valueOf(length));
@@ -80,6 +79,10 @@ public class XmlReader {
 		}
 		if (StringUtils.equals(elem.attributeValue("editable"), "true")) {
 			field.setEditable(true);
+			field.setEditableField("1");
+		} else {
+			field.setEditable(false);
+			field.setEditableField("0");
 		}
 		if (StringUtils.equals(elem.attributeValue("searchable"), "true")) {
 			field.setSearchable(true);

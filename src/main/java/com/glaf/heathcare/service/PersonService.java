@@ -68,6 +68,15 @@ public interface PersonService {
 	List<Person> getTenantPersons(String tenantId);
 
 	/**
+	 * 批量保存学生数据
+	 * 
+	 * @param tenantId
+	 * @param persons
+	 */
+	@Transactional
+	void insertAll(String tenantId, List<Person> persons, Date joinDate);
+
+	/**
 	 * 根据查询参数获取记录列表
 	 * 
 	 * @return

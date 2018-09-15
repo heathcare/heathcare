@@ -64,6 +64,8 @@
 		<select id="tplType" name="tplType">
 		  <option value="">----请选择----</option>
 		  <option value="doImport">按第一套模板导入</option>
+		  <option value="doImport2">按孩子国模板导入</option>
+		  <option value="doImport3">按童帮模板导入</option>
 	    </select>
     </td>
 </tr>

@@ -56,6 +56,8 @@ import com.glaf.heathcare.bean.PersonAndLinkmanXlsImporter;
 import com.glaf.heathcare.bean.PersonAndLinkmanXlsxImporter;
 import com.glaf.heathcare.bean.PersonSimpleXlsImporter;
 import com.glaf.heathcare.bean.PersonSimpleXlsxImporter;
+import com.glaf.heathcare.converter.HaizgStudentConverter;
+import com.glaf.heathcare.converter.TBNStudentConverter;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.PersonLinkman;
@@ -224,6 +226,80 @@ public class PersonController {
 						} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
 							importer1.doImport(loginContext.getTenantId(), gradeId, joinDate, mFile.getInputStream());
 						}
+					}
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
+			} finally {
+				semaphore2.release();
+			}
+		}
+		return this.list(request, modelMap);
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImport3", method = RequestMethod.POST)
+	public ModelAndView doImport3(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			Date joinDate = RequestUtils.getDate(request, "joinDate");
+			try {
+				semaphore2.acquire();
+
+				HaizgStudentConverter converter = new HaizgStudentConverter();
+				List<Person> persons = converter.getPersons(mFile.getInputStream());
+				if (persons != null && !persons.isEmpty()) {
+					if (loginContext.isSystemAdministrator()) {
+						String tenantId = request.getParameter("tenantId");
+						personService.insertAll(tenantId, persons, joinDate);
+					} else {
+						String tenantId = loginContext.getTenantId();
+						personService.insertAll(tenantId, persons, joinDate);
+					}
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
+			} finally {
+				semaphore2.release();
+			}
+		}
+		return this.list(request, modelMap);
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImport4", method = RequestMethod.POST)
+	public ModelAndView doImport4(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			Date joinDate = RequestUtils.getDate(request, "joinDate");
+			try {
+				semaphore2.acquire();
+
+				TBNStudentConverter converter = new TBNStudentConverter();
+				List<Person> persons = converter.getPersons(mFile.getInputStream());
+				if (persons != null && !persons.isEmpty()) {
+					if (loginContext.isSystemAdministrator()) {
+						String tenantId = request.getParameter("tenantId");
+						personService.insertAll(tenantId, persons, joinDate);
+					} else {
+						String tenantId = loginContext.getTenantId();
+						personService.insertAll(tenantId, persons, joinDate);
 					}
 				}
 			} catch (Exception ex) {

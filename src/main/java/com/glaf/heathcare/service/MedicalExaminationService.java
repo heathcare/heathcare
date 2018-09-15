@@ -18,11 +18,14 @@
 
 package com.glaf.heathcare.service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import com.glaf.heathcare.domain.*;
-import com.glaf.heathcare.query.*;
+import com.glaf.heathcare.domain.MedicalExamination;
+import com.glaf.heathcare.domain.MedicalExaminationCount;
+import com.glaf.heathcare.query.MedicalExaminationQuery;
 
 @Transactional(readOnly = true)
 public interface MedicalExaminationService {
@@ -86,6 +89,17 @@ public interface MedicalExaminationService {
 	 * @return
 	 */
 	List<MedicalExamination> list(MedicalExaminationQuery query);
+
+	/**
+	 * 批量插入体检信息
+	 * 
+	 * @param tenantId
+	 * @param type
+	 * @param rows
+	 * @param checkDate
+	 */
+	@Transactional
+	void insertAll(String tenantId, String type, List<MedicalExamination> rows, Date checkDate);
 
 	/**
 	 * 保存一条记录

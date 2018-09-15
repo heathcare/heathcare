@@ -36,11 +36,11 @@ import com.glaf.core.util.StringTools;
 
 import com.glaf.heathcare.domain.Person;
 
-public class HaizgToTBNStudentConverter {
-	protected final static Log logger = LogFactory.getLog(HaizgToTBNStudentConverter.class);
+public class TBNStudentConverter {
+	protected final static Log logger = LogFactory.getLog(TBNStudentConverter.class);
 
 	public List<Person> getPersons(java.io.InputStream inputStream) {
-		logger.debug("----------------HaizgToTBNStudentConverter------------------");
+		logger.debug("----------------TBNStudentConverter------------------");
 		HSSFWorkbook wb = null;
 		try {
 			wb = new HSSFWorkbook(inputStream);
@@ -64,8 +64,6 @@ public class HaizgToTBNStudentConverter {
 				continue;
 			}
 			Person person = new Person();
-
-			String year = null;
 			HSSFCell cell = null;
 			String cellValue = null;
 			int cells = row.getLastCellNum();
@@ -78,19 +76,16 @@ public class HaizgToTBNStudentConverter {
 					}
 					cellValue = cellValue.trim();
 					switch (colIndex) {
-					case 0:
-						year = cellValue;
+					case 0:// 班级
+						person.setGradeName(cellValue);
 						break;
-					case 1:// 班级
-						cellValue = StringTools.replace(cellValue, "小", "");
-						cellValue = StringTools.replace(cellValue, "中", "");
-						cellValue = StringTools.replace(cellValue, "大", "");
-						person.setGradeName(year + cellValue);
-						break;
-					case 4:// 姓名
+					case 1:// 姓名
 						person.setName(cellValue);
 						break;
-					case 5:// 性别
+					case 2:// 档案号
+						person.setStudentCode(cellValue);
+						break;
+					case 3:// 性别
 						if (StringUtils.contains(cellValue, "男")) {
 							person.setSex("男");
 						}
@@ -98,7 +93,7 @@ public class HaizgToTBNStudentConverter {
 							person.setSex("女");
 						}
 						break;
-					case 6:// 出生日期
+					case 4:// 出生日期
 						cellValue = StringTools.replace(cellValue, ".", "-");
 						cellValue = StringTools.replace(cellValue, "/", "-");
 						try {
@@ -107,13 +102,10 @@ public class HaizgToTBNStudentConverter {
 
 						}
 						break;
-					case 7:// 身份证号码
-						person.setIdCardNo(cellValue);
-						break;
-					case 8:// 民族
+					case 5: // 民族
 						person.setNation(cellValue);
 						break;
-					case 11:// 入园日期
+					case 7:// 入园日期
 						cellValue = StringTools.replace(cellValue, ".", "-");
 						cellValue = StringTools.replace(cellValue, "/", "-");
 						try {
@@ -121,12 +113,22 @@ public class HaizgToTBNStudentConverter {
 						} catch (Throwable ex) {
 						}
 						break;
-					case 16:// 籍贯
-						person.setBirthPlace(cellValue);
-						break;
-					case 17:// 家庭住址
+					case 9:// 家庭住址
 						person.setHomeAddress(cellValue);
 						break;
+					case 10:// 联系电话
+						person.setTelephone(cellValue);
+						break;
+					case 12:// 身份证号码
+						person.setIdCardNo(cellValue);
+						break;
+					case 15:// 过敏史
+						person.setAllergy(cellValue);
+						break;
+					case 16:// 疾病史,既往史
+						person.setPreviousHistory(cellValue);
+						break;
+
 					default:
 						break;
 					}

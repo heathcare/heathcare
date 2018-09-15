@@ -21,7 +21,9 @@ package com.glaf.heathcare.service.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +43,7 @@ import com.glaf.core.util.UUID32;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.PersonLinkman;
+import com.glaf.heathcare.mapper.GradeInfoMapper;
 import com.glaf.heathcare.mapper.PersonMapper;
 import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.service.GradeInfoService;
@@ -63,6 +66,8 @@ public class PersonServiceImpl implements PersonService {
 	protected PersonMapper personMapper;
 
 	protected PersonLinkmanService personLinkmanService;
+
+	protected GradeInfoMapper gradeInfoMapper;
 
 	protected GradeInfoService gradeInfoService;
 
@@ -163,6 +168,151 @@ public class PersonServiceImpl implements PersonService {
 		query.deleteFlag(0);
 		List<Person> list = personMapper.getPersons(query);
 		return list;
+	}
+
+	/**
+	 * 批量保存学生数据
+	 * 
+	 * @param tenantId
+	 * @param persons
+	 */
+	@Transactional
+	public void insertAll(String tenantId, List<Person> persons, Date joinDate) {
+		if (persons != null && !persons.isEmpty()) {
+			List<GradeInfo> grades = gradeInfoService.getGradeInfosByTenantId(tenantId);
+			Map<String, String> gradeMap = new HashMap<String, String>();
+			Map<String, String> gradeMap2 = new HashMap<String, String>();
+			if (grades != null && !grades.isEmpty()) {
+				for (GradeInfo grade : grades) {
+					gradeMap.put(grade.getName(), grade.getId());
+					gradeMap2.put(grade.getId(), grade.getName());
+				}
+			}
+
+			List<Person> rows = this.getTenantPersons(tenantId);
+			Map<String, String> personMap = new HashMap<String, String>();
+			if (rows != null && !rows.isEmpty()) {
+				for (Person person : rows) {
+					if (gradeMap2.get(person.getId()) != null) {
+						personMap.put(gradeMap2.get(person.getId()) + "_" + person.getName(), person.getId());
+					}
+				}
+			}
+
+			Calendar calendar = Calendar.getInstance();
+
+			for (Person person : persons) {
+				if (personMap.get(person.getGradeName() + "_" + person.getName()) != null) {
+					continue;// 存在就跳过，不处理了
+				}
+				person.setTenantId(tenantId);
+				if (gradeMap.get(person.getGradeName()) != null) {
+					person.setGradeId(gradeMap.get(person.getGradeName()));
+				} else {
+					GradeInfo grade = new GradeInfo();
+					grade.setId(UUID32.getUUID());
+					grade.setName(person.getGradeName());
+					grade.setTenantId(tenantId);
+					grade.setCreateTime(new Date());
+
+					gradeInfoMapper.insertGradeInfo(grade);
+
+					gradeMap.put(grade.getName(), grade.getId());
+					gradeMap2.put(grade.getId(), grade.getName());
+
+					person.setGradeId(grade.getId());
+				}
+
+				if (person.getBirthday() != null) {
+					calendar.setTime(person.getBirthday());
+					person.setYear(calendar.get(Calendar.YEAR));
+				}
+
+				if (StringUtils.isNotEmpty(person.getIdCardNo())) {
+					person.setId(DigestUtils.md5Hex(person.getIdCardNo()));
+				} else {
+					person.setId(UUID32.getUUID());
+				}
+				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
+
+				if (person.getJoinDate() == null) {
+					person.setJoinDate(joinDate);
+				}
+
+				personMapper.insertPerson(person);
+
+				List<PersonLinkman> linkmans = personLinkmanService.getLinkmans(person.getId());
+
+				if (StringUtils.isNotEmpty(person.getFather())) {
+					boolean hasF = false;
+					if (linkmans != null && !linkmans.isEmpty()) {
+						for (PersonLinkman linkman : linkmans) {
+							if (StringUtils.equals(linkman.getRelationship(), "father")) {
+								linkman.setTenantId(person.getTenantId());
+								linkman.setName(person.getFather());
+								linkman.setCompany(person.getFatherCompany());
+								linkman.setMobile(person.getFatherTelephone());
+								linkman.setWardship(person.getFatherWardship());
+								linkman.setRelationship("father");
+								linkman.setUpdateBy(Authentication.getAuthenticatedActorId());
+								linkman.setUpdateTime(new Date());
+								personLinkmanService.save(linkman);
+								hasF = true;
+								break;
+							}
+						}
+					}
+					if (!hasF) {
+						PersonLinkman linkman = new PersonLinkman();
+						linkman.setTenantId(person.getTenantId());
+						linkman.setPersonId(person.getId());
+						linkman.setName(person.getFather());
+						linkman.setCompany(person.getFatherCompany());
+						linkman.setMobile(person.getFatherTelephone());
+						linkman.setWardship(person.getFatherWardship());
+						linkman.setRelationship("father");
+						linkman.setCreateTime(new Date());
+						linkman.setCreateBy(Authentication.getAuthenticatedActorId());
+						personLinkmanService.save(linkman);
+					}
+				}
+
+				if (StringUtils.isNotEmpty(person.getMother())) {
+					boolean hasM = false;
+					if (linkmans != null && !linkmans.isEmpty()) {
+						for (PersonLinkman linkman : linkmans) {
+							if (StringUtils.equals(linkman.getRelationship(), "mother")) {
+								linkman.setTenantId(person.getTenantId());
+								linkman.setName(person.getMother());
+								linkman.setCompany(person.getMotherCompany());
+								linkman.setMobile(person.getMotherTelephone());
+								linkman.setWardship(person.getMotherWardship());
+								linkman.setRelationship("mother");
+								linkman.setUpdateBy(Authentication.getAuthenticatedActorId());
+								linkman.setUpdateTime(new Date());
+								personLinkmanService.save(linkman);
+								hasM = true;
+								break;
+							}
+						}
+					}
+					if (!hasM) {
+						PersonLinkman linkman = new PersonLinkman();
+						linkman.setTenantId(person.getTenantId());
+						linkman.setPersonId(person.getId());
+						linkman.setName(person.getMother());
+						linkman.setCompany(person.getMotherCompany());
+						linkman.setMobile(person.getMotherTelephone());
+						linkman.setWardship(person.getMotherWardship());
+						linkman.setRelationship("mother");
+						linkman.setCreateTime(new Date());
+						linkman.setCreateBy(Authentication.getAuthenticatedActorId());
+						personLinkmanService.save(linkman);
+					}
+				}
+			}
+
+		}
 	}
 
 	public List<Person> list(PersonQuery query) {
@@ -289,6 +439,16 @@ public class PersonServiceImpl implements PersonService {
 		this.entityDAO = entityDAO;
 	}
 
+	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.GradeInfoMapper")
+	public void setGradeInfoMapper(GradeInfoMapper gradeInfoMapper) {
+		this.gradeInfoMapper = gradeInfoMapper;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.gradeInfoService")
+	public void setGradeInfoService(GradeInfoService gradeInfoService) {
+		this.gradeInfoService = gradeInfoService;
+	}
+
 	@javax.annotation.Resource
 	public void setIdGenerator(IdGenerator idGenerator) {
 		this.idGenerator = idGenerator;
@@ -307,11 +467,6 @@ public class PersonServiceImpl implements PersonService {
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.PersonMapper")
 	public void setPersonMapper(PersonMapper personMapper) {
 		this.personMapper = personMapper;
-	}
-
-	@javax.annotation.Resource(name = "com.glaf.heathcare.service.gradeInfoService")
-	public void setGradeInfoService(GradeInfoService gradeInfoService) {
-		this.gradeInfoService = gradeInfoService;
 	}
 
 	@javax.annotation.Resource

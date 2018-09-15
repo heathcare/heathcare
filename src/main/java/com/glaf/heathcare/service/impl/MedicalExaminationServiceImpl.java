@@ -18,6 +18,7 @@
 
 package com.glaf.heathcare.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
 import com.glaf.core.service.ITableDataService;
+import com.glaf.core.util.DateUtils;
+import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationCount;
@@ -43,6 +46,7 @@ import com.glaf.heathcare.helper.MedicalExaminationHelper;
 import com.glaf.heathcare.mapper.MedicalExaminationMapper;
 import com.glaf.heathcare.query.GrowthStandardQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
+import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.heathcare.service.GrowthStandardService;
 import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
@@ -64,6 +68,8 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 	protected GrowthStandardService growthStandardService;
 
 	protected MedicalExaminationMapper medicalExaminationMapper;
+
+	protected GradeInfoService gradeInfoService;
 
 	protected PersonService personService;
 
@@ -183,6 +189,119 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 		return rows;
 	}
 
+	public List<MedicalExamination> getTenantMedicalExaminations(String tenantId) {
+		MedicalExaminationQuery query = new MedicalExaminationQuery();
+		query.tenantId(tenantId);
+
+		List<GradeInfo> grades = gradeInfoService.getGradeInfosByTenantId(tenantId);
+		List<String> gradeIds = new ArrayList<String>();
+		if (grades != null && !grades.isEmpty()) {
+			for (GradeInfo grade : grades) {
+				gradeIds.add(grade.getId());
+			}
+		}
+
+		query.gradeIds(gradeIds);
+		return list(query);
+	}
+
+	/**
+	 * 批量插入体检信息
+	 * 
+	 * @param tenantId
+	 * @param list
+	 * @param checkDate
+	 */
+	@Transactional
+	public void insertAll(String tenantId, String type, List<MedicalExamination> list, Date checkDate) {
+		if (list != null && !list.isEmpty()) {
+			List<GradeInfo> grades = gradeInfoService.getGradeInfosByTenantId(tenantId);
+			Map<String, String> gradeMap = new HashMap<String, String>();
+			Map<String, String> gradeMap2 = new HashMap<String, String>();
+			if (grades != null && !grades.isEmpty()) {
+				for (GradeInfo grade : grades) {
+					gradeMap.put(grade.getName(), grade.getId());
+					gradeMap2.put(grade.getId(), grade.getName());
+				}
+			}
+
+			List<Person> perosns = personService.getTenantPersons(tenantId);
+			Map<String, String> personMap = new HashMap<String, String>();
+			Map<String, String> personMap2 = new HashMap<String, String>();
+			if (perosns != null && !perosns.isEmpty()) {
+				for (Person person : perosns) {
+					if (gradeMap2.get(person.getId()) != null) {
+						personMap.put(gradeMap2.get(person.getId()) + "_" + person.getName(), person.getId());
+					}
+					personMap2.put(person.getId(), person.getGradeId());
+				}
+
+				GrowthStandardQuery query = new GrowthStandardQuery();
+				List<GrowthStandard> rows = growthStandardService.list(query);
+				Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
+				if (rows != null && !rows.isEmpty()) {
+					for (GrowthStandard gs : rows) {
+						gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+					}
+				}
+
+				MedicalExaminationCache.removePrefix(tenantId);
+
+				List<MedicalExamination> existsList = getTenantMedicalExaminations(tenantId);
+				Map<String, String> examMap = new HashMap<String, String>();
+				String tmpKey = null;
+				if (existsList != null && !existsList.isEmpty()) {
+					for (MedicalExamination exam : existsList) {
+						tmpKey = exam.getGradeName() + "_" + exam.getName();
+						if (exam.getCheckDate() != null) {
+							tmpKey = tmpKey + "_" + DateUtils.getDate(exam.getCheckDate());
+						} else {
+							tmpKey = tmpKey + "_" + DateUtils.getDate(checkDate);
+						}
+						examMap.put(tmpKey, exam.getName());
+					}
+				}
+
+				Calendar calendar = Calendar.getInstance();
+				MedicalExaminationHelper helper = new MedicalExaminationHelper();
+				for (MedicalExamination exam : list) {
+					tmpKey = exam.getGradeName() + "_" + exam.getName();
+					if (personMap.get(tmpKey) == null) {
+						continue;// 没有儿童基础信息跳过不处理。
+					} else {
+						exam.setPersonId(personMap.get(tmpKey));
+						exam.setGradeId(personMap2.get(exam.getPersonId()));
+					}
+					if (exam.getCheckDate() != null) {
+						tmpKey = tmpKey + "_" + DateUtils.getDate(exam.getCheckDate());
+					} else {
+						tmpKey = tmpKey + "_" + DateUtils.getDate(checkDate);
+					}
+					if (examMap.get(tmpKey) != null) {
+						continue;// 已经存在了就跳过不处理。
+					}
+
+					helper.evaluate(gsMap, exam);
+					if (exam.getId() == 0) {
+						exam.setId(idGenerator.nextId("HEALTH_MEDICAL_EXAMINATION"));
+						exam.setCreateTime(new Date());
+						calendar.setTime(checkDate);
+						if (exam.getCheckDate() != null) {
+							calendar.setTime(exam.getCheckDate());
+						}
+						int year = calendar.get(Calendar.YEAR);
+						int month = calendar.get(Calendar.MONTH) + 1;
+						exam.setYear(year);
+						exam.setMonth(month);
+						exam.setType(type);
+						exam.setTenantId(tenantId);
+						medicalExaminationMapper.insertMedicalExamination(exam);
+					}
+				}
+			}
+		}
+	}
+
 	public List<MedicalExamination> list(MedicalExaminationQuery query) {
 		List<MedicalExamination> list = medicalExaminationMapper.getMedicalExaminations(query);
 		return list;
@@ -246,6 +365,11 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;
+	}
+
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.gradeInfoService")
+	public void setGradeInfoService(GradeInfoService gradeInfoService) {
+		this.gradeInfoService = gradeInfoService;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.service.growthStandardService")

@@ -36,11 +36,11 @@ import com.glaf.core.util.StringTools;
 
 import com.glaf.heathcare.domain.MedicalExamination;
 
-public class HaizgToTBNMedicalExaminationConverter {
-	protected final static Log logger = LogFactory.getLog(HaizgToTBNMedicalExaminationConverter.class);
+public class HaizgMedicalExaminationConverter {
+	protected final static Log logger = LogFactory.getLog(HaizgMedicalExaminationConverter.class);
 
 	public List<MedicalExamination> getMedicalExaminations(java.io.InputStream inputStream) {
-		logger.debug("----------------HaizgToTBNMedicalExaminationConverter------------------");
+		logger.debug("----------------HaizgMedicalExaminationConverter------------------");
 		HSSFWorkbook wb = null;
 		try {
 			wb = new HSSFWorkbook(inputStream);
