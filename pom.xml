@@ -1096,7 +1096,7 @@
 		<dependency>
 		    <groupId>org.flowable</groupId>
 		    <artifactId>flowable-engine</artifactId>
-		    <version>6.3.1</version>
+		    <version>6.4.0</version>
 		</dependency>
 		<!-- <dependency>
 			<groupId>pentaho-kettle</groupId>
