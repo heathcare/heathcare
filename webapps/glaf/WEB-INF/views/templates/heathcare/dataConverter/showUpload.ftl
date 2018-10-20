@@ -39,7 +39,8 @@
 <label for="type">请选择您要转换的类型</label>&nbsp;&nbsp;
 	<select id="type" name="type">
 		<option value="person">儿童基本信息</option>
-		<option value="exam">儿童体检信息</option>
+		<option value="join">儿童入园体检信息</option>
+		<option value="exam">儿童常规体检信息</option>
 	</select>
 <br>
 </div>

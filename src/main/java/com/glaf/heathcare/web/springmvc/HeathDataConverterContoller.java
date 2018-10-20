@@ -54,6 +54,7 @@ import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 
 import com.glaf.heathcare.converter.HaizgMedicalExaminationConverter;
+import com.glaf.heathcare.converter.HaizgMedicalJoinExaminationConverter;
 import com.glaf.heathcare.converter.HaizgStudentConverter;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.Person;
@@ -90,6 +91,12 @@ public class HeathDataConverterContoller {
 				params.put("persons", persons);
 				params.put("rows", persons);
 				rptId = "youerinfo";
+			} else if (StringUtils.equals(type, "join")) {
+				HaizgMedicalJoinExaminationConverter converter = new HaizgMedicalJoinExaminationConverter();
+				List<MedicalExamination> exams = converter.getMedicalExaminations(mFile.getInputStream());
+				params.put("exams", exams);
+				params.put("rows", exams);
+				rptId = "mdicaldata";
 			} else if (StringUtils.equals(type, "exam")) {
 				HaizgMedicalExaminationConverter converter = new HaizgMedicalExaminationConverter();
 				List<MedicalExamination> exams = converter.getMedicalExaminations(mFile.getInputStream());
