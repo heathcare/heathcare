@@ -64,10 +64,13 @@ public class HaizgStudentConverter {
 				continue;
 			}
 			Person person = new Person();
-
-			String year = null;
+			//String year = null;
 			HSSFCell cell = null;
 			String cellValue = null;
+			String rel = null;
+			String tel = null;
+			String company = null;
+			String xname = null;
 			int cells = row.getLastCellNum();
 			for (int colIndex = 0; colIndex < cells; colIndex++) {
 				cell = row.getCell(colIndex);
@@ -79,13 +82,13 @@ public class HaizgStudentConverter {
 					cellValue = cellValue.trim();
 					switch (colIndex) {
 					case 0:
-						year = cellValue;
+						//year = cellValue;
 						break;
 					case 1:// 班级
-						cellValue = StringTools.replace(cellValue, "小", "");
-						cellValue = StringTools.replace(cellValue, "中", "");
-						cellValue = StringTools.replace(cellValue, "大", "");
-						person.setGradeName(year + cellValue);
+						//cellValue = StringTools.replace(cellValue, "小", "");
+						//cellValue = StringTools.replace(cellValue, "中", "");
+						//cellValue = StringTools.replace(cellValue, "大", "");
+						person.setGradeName(cellValue);
 						break;
 					case 4:// 姓名
 						person.setName(cellValue);
@@ -126,6 +129,56 @@ public class HaizgStudentConverter {
 						break;
 					case 17:// 家庭住址
 						person.setHomeAddress(cellValue);
+						break;
+					case 18:// 家庭成员1姓名
+						xname = cellValue;
+						break;
+					case 20:// 与家庭成员1关系
+						rel = cellValue;
+						break;
+					case 22:// 家庭成员1手机号码
+						tel = cellValue;
+						break;
+					case 23:// 家庭成员1单位
+						company = cellValue;
+						break;
+					case 24:
+						if (StringUtils.isEmpty(person.getFather()) && StringUtils.equals(rel, "父亲")
+								|| StringUtils.equals(rel, "爸爸")) {
+							person.setFather(xname);
+							person.setFatherTelephone(tel);
+							person.setFatherCompany(company);
+						} else if (StringUtils.isEmpty(person.getMother()) && StringUtils.equals(rel, "母亲")
+								|| StringUtils.equals(rel, "妈妈")) {
+							person.setMother(xname);
+							person.setMotherTelephone(tel);
+							person.setMotherCompany(company);
+						}
+						break;
+					case 25:
+						xname = cellValue;
+						break;
+					case 27:// 与家庭成员1关系
+						rel = cellValue;
+						break;
+					case 29:// 家庭成员1手机号码
+						tel = cellValue;
+						break;
+					case 30:// 家庭成员1单位
+						company = cellValue;
+						break;
+					case 31:
+						if (StringUtils.isEmpty(person.getFather()) && StringUtils.equals(rel, "父亲")
+								|| StringUtils.equals(rel, "爸爸")) {
+							person.setFather(xname);
+							person.setFatherTelephone(tel);
+							person.setFatherCompany(company);
+						} else if (StringUtils.isEmpty(person.getMother()) && StringUtils.equals(rel, "母亲")
+								|| StringUtils.equals(rel, "妈妈")) {
+							person.setMother(xname);
+							person.setMotherTelephone(tel);
+							person.setMotherCompany(company);
+						}
 						break;
 					default:
 						break;
