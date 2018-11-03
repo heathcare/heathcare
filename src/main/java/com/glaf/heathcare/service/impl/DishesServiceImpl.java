@@ -132,16 +132,7 @@ public class DishesServiceImpl implements DishesService {
 				continue;
 			}
 			quantity = item.getQuantity();
-			// double radical = food.getRadical();
-
-			// if (radical < 100 && radical > 0) {
-			/**
-			 * 计算每一份的实际量
-			 */
-			// realQuantity = quantity * (radical / 100);
-			// } else {
 			realQuantity = quantity;
-			// }
 			double factor = realQuantity / 100;// 转换成100g为标准
 			dishes.setHeatEnergy(dishes.getHeatEnergy() + food.getHeatEnergy() * factor);// 累加计算
 			dishes.setProtein(dishes.getProtein() + food.getProtein() * factor);// 累加计算
@@ -316,16 +307,8 @@ public class DishesServiceImpl implements DishesService {
 					continue;
 				}
 				quantity = item.getQuantity();
-				// double radical = food.getRadical();
-
-				// if (radical < 100 && radical > 0) {
-				/**
-				 * 计算每一份的实际量
-				 */
-				// realQuantity = quantity * (radical / 100);
-				// } else {
 				realQuantity = quantity;
-				// }
+		
 				double factor = realQuantity / 100;// 转换成100g为标准
 				dishes.setHeatEnergy(dishes.getHeatEnergy() + food.getHeatEnergy() * factor);// 累加计算
 				dishes.setProtein(dishes.getProtein() + food.getProtein() * factor);// 累加计算

@@ -743,8 +743,7 @@ public class DietaryController {
 				|| loginContext.getRoles().contains("TenantAdmin")) {
 
 			int fullDay = RequestUtils.getInt(request, "fullDay");
-			String radicalFlag = request.getParameter("radicalFlag");
-
+ 
 			List<PersonInfo> persons = personInfoService.getPersonInfos(loginContext.getTenantId());
 			if (persons == null || persons.isEmpty()) {
 				return ResponseUtils.responseJsonResult(false, "计划就餐人数未设置，请先设置才可生成采购计划！");
@@ -756,7 +755,7 @@ public class DietaryController {
 					logger.debug("正在生成一日采购计划......");
 					ContextUtil.put(iKey, loginContext.getActorId());
 					GoodsPurchasePlanByRadicalBean purchaseBean = new GoodsPurchasePlanByRadicalBean();
-					purchaseBean.addParchasePlan(loginContext, fullDay, radicalFlag);
+					purchaseBean.addParchasePlan(loginContext, fullDay);
 					return ResponseUtils.responseResult(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();

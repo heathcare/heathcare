@@ -93,12 +93,9 @@ public class GoodsPurchasePlanByRadicalBean {
 	 * 根据食谱编排形成采购计划
 	 * 
 	 * @param loginContext
-	 * @param fullDay
-	 *            日期
-	 * @param radicalFlag
-	 *            参考系数标识
+	 * @param fullDay      日期
 	 */
-	public void addParchasePlan(LoginContext loginContext, int fullDay, String radicalFlag) {
+	public void addParchasePlan(LoginContext loginContext, int fullDay) {
 		DietaryQuery query = new DietaryQuery();
 		query.tenantId(loginContext.getTenantId());
 		query.fullDay(fullDay);
@@ -125,8 +122,6 @@ public class GoodsPurchasePlanByRadicalBean {
 			}
 
 			if (!dietaryIds.isEmpty()) {
-				Double radical = 0D;
-				Double percent = null;
 				double quantity = 0;
 				double realQuantity = 0;
 				double totalRealQuantity = 0;
@@ -150,14 +145,12 @@ public class GoodsPurchasePlanByRadicalBean {
 						List<FoodComposition> foods = getFoodCompositionService().list(queryx);// 获取食物成分
 
 						Map<Long, Long> nodeIdMap = new HashMap<Long, Long>();
-						Map<Long, Double> radicalMap = new HashMap<Long, Double>();
 						Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 						Map<Long, FoodComposition> dailyFoodMap = new HashMap<Long, FoodComposition>();
 
 						for (FoodComposition food : foods) {
 							foodMap.put(food.getId(), food);
 							nodeIdMap.put(food.getId(), food.getNodeId());
-							radicalMap.put(food.getId(), food.getRadical());
 							if (StringUtils.equals(food.getDailyFlag(), "Y")) {
 								dailyFoodIds.add(food.getId());
 								dailyFoodMap.put(food.getId(), food);
@@ -220,28 +213,6 @@ public class GoodsPurchasePlanByRadicalBean {
 								if (dailyFoodMap.get(item.getFoodId()) != null) {
 									quantity = item.getQuantity();// 每一种食物的量
 									realQuantity = quantity;
-									/**
-									 * 需要换算成食部
-									 */
-									if (StringUtils.equals(radicalFlag, "2")) {
-										radical = radicalMap.get(item.getFoodId());
-										if (radical == null) {
-											radical = 100D;
-										}
-										if (radical < 100) {
-											/**
-											 * 计算每一份的实际量，转换成等量可食部的成品量
-											 */
-											realQuantity = quantity * (1.0 + ((100 - radical) / radical));
-										}
-										/**
-										 * 根据系统配置参数按类别计算
-										 */
-										percent = percentMap.get(nodeIdMap.get(item.getFoodId()));
-										if (percent != null && percent > 1 && percent < 2) {
-											realQuantity = realQuantity * percent;
-										}
-									}
 								}
 
 								totalRealQuantity = totalPersonQuantity * realQuantity;
@@ -322,28 +293,6 @@ public class GoodsPurchasePlanByRadicalBean {
 								}
 								quantity = item.getQuantity();// 每一种食物的量
 								realQuantity = quantity;
-								/**
-								 * 需要换算成食部
-								 */
-								if (StringUtils.equals(radicalFlag, "2")) {
-									radical = radicalMap.get(item.getFoodId());
-									if (radical == null) {
-										radical = 100D;
-									}
-									if (radical < 100) {
-										/**
-										 * 计算每一份的实际量，转换成等量可食部的成品量
-										 */
-										realQuantity = quantity * (1.0 + ((100 - radical) / radical));
-									}
-									/**
-									 * 根据系统配置参数按类别计算
-									 */
-									percent = percentMap.get(nodeIdMap.get(item.getFoodId()));
-									if (percent != null && percent > 1 && percent < 2) {
-										realQuantity = realQuantity * percent;
-									}
-								}
 								totalRealQuantity = totalPersonQuantity * realQuantity / 1000.0D;// 克G转换为千克KG
 								Double value = demandMap.get(item.getFoodId());
 								if (value == null) {
@@ -412,8 +361,7 @@ public class GoodsPurchasePlanByRadicalBean {
 							getDietaryService().batchPurchase(loginContext.getTenantId(), fullDay, planIds, "Y",
 									purchaseList);
 							logger.debug("----------------------生成用量计划表-----------------");
-							createGoodsUsagePlan(loginContext, year, SysConfig.getSemester(), week, fullDay,
-									radicalFlag);// 生成用量计划表
+							createGoodsUsagePlan(loginContext, year, SysConfig.getSemester(), week, fullDay);// 生成用量计划表
 						}
 					}
 				}
@@ -430,13 +378,12 @@ public class GoodsPurchasePlanByRadicalBean {
 	 * @param week
 	 * @param fullDay
 	 */
-	public void createGoodsUsagePlan(LoginContext loginContext, int year, int semester, int week, int fullDay,
-			String radicalFlag) {
+	public void createGoodsUsagePlan(LoginContext loginContext, int year, int semester, int week, int fullDay) {
 		PersonInfoHelper helper = new PersonInfoHelper();
 		double totalPersonQuantity = helper.getPersonFoodAgeQuantity(loginContext.getTenantId(), 1.03);
 		logger.debug("totalPersonQuantity=" + totalPersonQuantity);
 		getGoodsPlanQuantityService().createGoodsUsagePlan(loginContext, year, semester, week, fullDay,
-				totalPersonQuantity, radicalFlag);
+				totalPersonQuantity);
 	}
 
 	public DictoryService getDictoryService() {

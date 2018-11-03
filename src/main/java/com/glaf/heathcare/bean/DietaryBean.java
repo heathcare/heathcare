@@ -119,16 +119,8 @@ public class DietaryBean {
 						continue;
 					}
 					double quantity = item.getQuantity();
-					// double radical = food.getRadical();
 					double realQuantity = 0;
-					// if (radical < 100 && radical > 0) {
-					/**
-					 * 计算每一份的实际量
-					 */
-					// realQuantity = quantity * (radical / 100);
-					// } else {
 					realQuantity = quantity;
-					// }
 					double factor = realQuantity / 100;// 转换成100g为标准
 					dietary.setHeatEnergy(dietary.getHeatEnergy() + food.getHeatEnergy() * factor);// 累加计算
 					dietary.setProtein(dietary.getProtein() + food.getProtein() * factor);// 累加计算
@@ -176,7 +168,6 @@ public class DietaryBean {
 		}
 
 		double quantity = 0;
-		// double radical = 0;
 		double realQuantity = 0;
 		for (DietaryItem item : items) {
 			FoodComposition food = foodMap.get(item.getFoodId());
@@ -190,16 +181,8 @@ public class DietaryBean {
 				continue;
 			}
 			quantity = item.getQuantity();
-			// radical = food.getRadical();
 			realQuantity = 0;
-			// if (radical < 100 && radical > 0) {
-			/**
-			 * 计算每一份的实际量
-			 */
-			// realQuantity = quantity * (radical / 100);
-			// } else {
 			realQuantity = quantity;
-			// }
 
 			double factor = realQuantity / 100;// 转换成100g为标准
 
@@ -275,7 +258,6 @@ public class DietaryBean {
 		}
 
 		double quantity = 0;
-		// double radical = 0;
 		double realQuantity = 0;
 		for (DietaryItem item : items) {
 			FoodComposition food = foodMap.get(item.getFoodId());
@@ -289,16 +271,8 @@ public class DietaryBean {
 				continue;
 			}
 			quantity = item.getQuantity();
-			// radical = food.getRadical();
 			realQuantity = 0;
-			// if (radical < 100 && radical > 0) {
-			/**
-			 * 计算每一份的实际量
-			 */
-			// realQuantity = quantity * (radical / 100);
-			// } else {
 			realQuantity = quantity;
-			// }
 
 			double factor = realQuantity / 100;// 转换成100g为标准
 			CompositionCount count = countMap.get(food.getNodeId());

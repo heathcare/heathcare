@@ -160,8 +160,6 @@ public class GoodsPurchasePlanBean {
 						Map<Long, Long> nodeIdMap = new HashMap<Long, Long>();
 						Map<Long, FoodComposition> foodMap = new HashMap<Long, FoodComposition>();
 						Map<Long, FoodComposition> dailyFoodMap = new HashMap<Long, FoodComposition>();
-						// Map<Long, Double> radicalMap = new HashMap<Long,
-						// Double>();
 						for (FoodComposition food : foods) {
 							foodMap.put(food.getId(), food);
 							nodeIdMap.put(food.getId(), food.getNodeId());
@@ -191,7 +189,6 @@ public class GoodsPurchasePlanBean {
 						}
 
 						Date date = null;
-						// Double radical = 0D;
 						Double percent = null;
 						double quantity = 0;
 						double realQuantity = 0;
@@ -234,22 +231,7 @@ public class GoodsPurchasePlanBean {
 										 * 获取每日采购的食物
 										 */
 										if (dailyFoodMap.get(item.getFoodId()) != null) {
-											// radical =
-											// radicalMap.get(item.getFoodId());
-											// if (radical == null) {
-											// radical = 100D;
-											// }
 											quantity = item.getQuantity();// 每一种食品的量
-
-											// if (radical < 100) {
-											/**
-											 * 计算每一份的实际量
-											 */
-											// realQuantity = quantity * (1.0 +
-											// ((100 - radical) / radical));
-											// } else {
-											// realQuantity = quantity;
-											// }
 
 											/**
 											 * 根据系统配置参数按类别计算
@@ -331,22 +313,7 @@ public class GoodsPurchasePlanBean {
 							/**
 							 * 获取每种食品的食部
 							 */
-							// radical = radicalMap.get(item.getFoodId());
-							// if (radical == null) {
-							// radical = 100D;
-							// }
-
 							quantity = item.getQuantity();// 每一种食品的量
-
-							// if (radical < 100) {
-							/**
-							 * 计算每一份的实际量
-							 */
-							// realQuantity = quantity * (1.0 + ((100 - radical)
-							// / radical));
-							// } else {
-							// realQuantity = quantity;
-							// }
 
 							/**
 							 * 根据系统配置参数按类别计算

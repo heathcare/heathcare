@@ -162,7 +162,6 @@ public class WeeklyDietaryNutritionCountPreprocessor implements IReportPreproces
 					fd = foodMap.get(food.getId());
 					double quantity = food.getQuantity();
 					if (fd != null) {
-						// quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 						food.setName(fd.getName());
 						food.setQuantity(quantity);
 						food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -228,7 +227,6 @@ public class WeeklyDietaryNutritionCountPreprocessor implements IReportPreproces
 					fd = foodMap.get(food.getId());
 					double quantity = food.getQuantity();
 					if (fd != null) {
-						// quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 						food.setName(fd.getName());
 						food.setQuantity(quantity);
 						food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -294,7 +292,6 @@ public class WeeklyDietaryNutritionCountPreprocessor implements IReportPreproces
 					fd = foodMap.get(food.getId());
 					double quantity = food.getQuantity();
 					if (fd != null) {
-						// quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 						food.setName(fd.getName());
 						food.setQuantity(quantity);
 						food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -360,7 +357,6 @@ public class WeeklyDietaryNutritionCountPreprocessor implements IReportPreproces
 					fd = foodMap.get(food.getId());
 					double quantity = food.getQuantity();
 					if (fd != null) {
-						// quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 						food.setName(fd.getName());
 						food.setQuantity(quantity);
 						food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);

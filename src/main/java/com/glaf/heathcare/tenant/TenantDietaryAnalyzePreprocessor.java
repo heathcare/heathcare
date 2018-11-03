@@ -325,7 +325,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -376,7 +375,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -427,7 +425,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -478,7 +475,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -531,7 +527,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -582,7 +577,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -633,7 +627,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -684,7 +677,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -737,7 +729,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -790,7 +781,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -843,7 +833,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -896,7 +885,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);
@@ -947,7 +935,6 @@ public class TenantDietaryAnalyzePreprocessor implements IReportPreprocessor {
 						quantity = quantity * 1000;// 统一将千克（kg）转换成克（g）
 						quantity = quantity / (totalPerson);// 转成每人食用克数
 						if (fd != null) {
-							quantity = quantity * fd.getRadical() / 100D;// 转成可食部的量
 							food.setName(fd.getName());
 							food.setQuantity(quantity);
 							// food.setHeatEnergy(fd.getHeatEnergy() * quantity / 100D);

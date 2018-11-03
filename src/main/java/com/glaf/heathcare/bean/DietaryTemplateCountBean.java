@@ -79,7 +79,6 @@ public class DietaryTemplateCountBean {
 		}
 
 		double quantity = 0;
-		// double radical = 0;
 		double realQuantity = 0;
 		for (DietaryItem item : items) {
 			FoodComposition food = foodMap.get(item.getFoodId());
@@ -93,16 +92,9 @@ public class DietaryTemplateCountBean {
 				continue;
 			}
 			quantity = item.getQuantity();
-			// radical = food.getRadical();
+
 			realQuantity = 0;
-			// if (radical < 100 && radical > 0) {
-			/**
-			 * 计算每一份的实际量
-			 */
-			// realQuantity = quantity * (radical / 100);
-			// } else {
 			realQuantity = quantity;
-			// }
 
 			double factor = realQuantity / 100;// 转换成100g为标准
 
@@ -178,7 +170,6 @@ public class DietaryTemplateCountBean {
 		}
 
 		double quantity = 0;
-		// double radical = 0;
 		double realQuantity = 0;
 		for (DietaryItem item : items) {
 			FoodComposition food = foodMap.get(item.getFoodId());
@@ -192,16 +183,8 @@ public class DietaryTemplateCountBean {
 				continue;
 			}
 			quantity = item.getQuantity();
-			// radical = food.getRadical();
 			realQuantity = 0;
-			// if (radical < 100 && radical > 0) {
-			/**
-			 * 计算每一份的实际量
-			 */
-			// realQuantity = quantity * (radical / 100);
-			// } else {
 			realQuantity = quantity;
-			// }
 
 			double factor = realQuantity / 100;// 转换成100g为标准
 			CompositionCount count = countMap.get(food.getNodeId());
