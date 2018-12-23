@@ -23,7 +23,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.glaf.base.modules.sys.model.SysTree;
-import com.glaf.core.util.DateUtils;
 
 public class SysTreeJsonFactory {
 
@@ -68,6 +67,9 @@ public class SysTreeJsonFactory {
 		}
 		if (jsonObject.containsKey("moveable")) {
 			model.setMoveable(jsonObject.getString("moveable"));
+		}
+		if (jsonObject.containsKey("publicFlag")) {
+			model.setPublicFlag(jsonObject.getString("publicFlag"));
 		}
 		if (jsonObject.containsKey("treeId")) {
 			model.setTreeId(jsonObject.getString("treeId"));
@@ -129,6 +131,9 @@ public class SysTreeJsonFactory {
 		if (model.getMoveable() != null) {
 			jsonObject.put("moveable", model.getMoveable());
 		}
+		if (model.getPublicFlag() != null) {
+			jsonObject.put("publicFlag", model.getPublicFlag());
+		}
 		if (model.getTreeId() != null) {
 			jsonObject.put("treeId", model.getTreeId());
 		}
@@ -144,23 +149,6 @@ public class SysTreeJsonFactory {
 			jsonObject.put("value", model.getValue());
 		}
 		jsonObject.put("locked", model.getLocked());
-
-		if (model.getCreateDate() != null) {
-			jsonObject.put("createDate", DateUtils.getDate(model.getCreateDate()));
-			jsonObject.put("createDate_date", DateUtils.getDate(model.getCreateDate()));
-			jsonObject.put("createDate_datetime", DateUtils.getDateTime(model.getCreateDate()));
-		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getUpdateBy() != null) {
-			jsonObject.put("updateBy", model.getUpdateBy());
-		}
-		if (model.getUpdateDate() != null) {
-			jsonObject.put("updateDate", DateUtils.getDate(model.getUpdateDate()));
-			jsonObject.put("updateDate_date", DateUtils.getDate(model.getUpdateDate()));
-			jsonObject.put("updateDate_datetime", DateUtils.getDateTime(model.getUpdateDate()));
-		}
 
 		return jsonObject;
 	}
@@ -186,6 +174,17 @@ public class SysTreeJsonFactory {
 		if (model.getDiscriminator() != null) {
 			jsonObject.put("discriminator", model.getDiscriminator());
 		}
+
+		if (model.getCacheFlag() != null) {
+			jsonObject.put("cacheFlag", model.getCacheFlag());
+		}
+		if (model.getMoveable() != null) {
+			jsonObject.put("moveable", model.getMoveable());
+		}
+		if (model.getPublicFlag() != null) {
+			jsonObject.put("publicFlag", model.getPublicFlag());
+		}
+
 		if (model.getTreeId() != null) {
 			jsonObject.put("treeId", model.getTreeId());
 		}
@@ -201,22 +200,6 @@ public class SysTreeJsonFactory {
 		}
 		if (model.getValue() != null) {
 			jsonObject.put("value", model.getValue());
-		}
-		if (model.getCreateDate() != null) {
-			jsonObject.put("createDate", DateUtils.getDate(model.getCreateDate()));
-			jsonObject.put("createDate_date", DateUtils.getDate(model.getCreateDate()));
-			jsonObject.put("createDate_datetime", DateUtils.getDateTime(model.getCreateDate()));
-		}
-		if (model.getCreateBy() != null) {
-			jsonObject.put("createBy", model.getCreateBy());
-		}
-		if (model.getUpdateBy() != null) {
-			jsonObject.put("updateBy", model.getUpdateBy());
-		}
-		if (model.getUpdateDate() != null) {
-			jsonObject.put("updateDate", DateUtils.getDate(model.getUpdateDate()));
-			jsonObject.put("updateDate_date", DateUtils.getDate(model.getUpdateDate()));
-			jsonObject.put("updateDate_datetime", DateUtils.getDateTime(model.getUpdateDate()));
 		}
 
 		return jsonObject;

@@ -105,7 +105,12 @@ public class TenantConfigController {
 					tenantConfig.setTenantId(loginContext.getTenantId());
 					tenantConfig.setCreateBy(actorId);
 				}
- 
+
+				tenantConfig.setBreakfastTime(request.getParameter("breakfastTime"));
+				tenantConfig.setBreakfastMidTime(request.getParameter("breakfastMidTime"));
+				tenantConfig.setLunchTime(request.getParameter("lunchTime"));
+				tenantConfig.setSnackTime(request.getParameter("snackTime"));
+				tenantConfig.setDinnerTime(request.getParameter("dinnerTime"));
 				tenantConfig.setSysName(request.getParameter("sysName"));
 				tenantConfig.setShareFlag(request.getParameter("shareFlag"));
 				tenantConfig.setTypeId(RequestUtils.getLong(request, "typeId"));

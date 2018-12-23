@@ -204,7 +204,7 @@ public class SysDictoryController {
 				if (trees != null && trees.size() > 0) {
 					StringBuilder buff = new StringBuilder();
 					for (SysTree tree : trees) {
-						if (StringUtils.isNotEmpty(tree.getCode())) {
+						if (StringUtils.isNotEmpty(tree.getCode()) && StringUtils.equals(tree.getPublicFlag(), "Y")) {
 							List<Dictory> list = dictoryService.getAvailableDictoryList(tree.getId());
 							if (list != null && !list.isEmpty()) {
 								JSONArray array = new JSONArray();
@@ -248,7 +248,7 @@ public class SysDictoryController {
 				if (trees != null && trees.size() > 0) {
 					JSONObject result = new JSONObject();
 					for (SysTree tree : trees) {
-						if (StringUtils.isNotEmpty(tree.getCode())) {
+						if (StringUtils.isNotEmpty(tree.getCode()) && StringUtils.equals(tree.getPublicFlag(), "Y")) {
 							List<Dictory> list = dictoryService.getAvailableDictoryList(tree.getId());
 							if (list != null && !list.isEmpty()) {
 								JSONArray array = new JSONArray();
@@ -640,6 +640,38 @@ public class SysDictoryController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.error("更新用户数据错误！");
+		}
+
+		try {
+			logger.info("------------update food pinyin---------------");
+			PinyinUtils.processFoodComposition();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("更新食物成分数据错误！");
+		}
+
+		try {
+			logger.info("------------update dishes pinyin---------------");
+			PinyinUtils.processDishes();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("更新菜肴数据错误！");
+		}
+
+		try {
+			logger.info("------------update person pinyin---------------");
+			PinyinUtils.processPerson();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("更新Person数据错误！");
+		}
+
+		try {
+			logger.info("------------update employee pinyin---------------");
+			PinyinUtils.processEmployee();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("更新Employee数据错误！");
 		}
 
 		String x_view = ViewProperties.getString("dictory.reloadDictory");
