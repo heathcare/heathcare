@@ -64,7 +64,7 @@ public class DictoryServiceImpl implements DictoryService {
 	}
 
 	public int count(DictoryQuery query) {
-		return dictoryMapper.getSysDictoryCount(query);
+		return dictoryMapper.getDictoryCount(query);
 	}
 
 	@Transactional
@@ -110,7 +110,19 @@ public class DictoryServiceImpl implements DictoryService {
 	@Transactional
 	public void deleteById(Long id) {
 		if (id != null) {
-			dictoryMapper.deleteSysDictoryById(id);
+			dictoryMapper.deleteDictoryById(id);
+			if (SystemConfig.getBoolean("use_query_cache")) {
+				CacheFactory.clear("dictory");
+			}
+		}
+	}
+
+	@Transactional
+	public void deleteByIds(List<Long> rowIds) {
+		if (rowIds != null && !rowIds.isEmpty()) {
+			DictoryQuery query = new DictoryQuery();
+			query.rowIds(rowIds);
+			dictoryMapper.deleteDictories(query);
 			if (SystemConfig.getBoolean("use_query_cache")) {
 				CacheFactory.clear("dictory");
 			}
@@ -165,13 +177,13 @@ public class DictoryServiceImpl implements DictoryService {
 	}
 
 	public List<Dictory> getDictories(DictoryQuery query) {
-		return dictoryMapper.getSysDictories(query);
+		return dictoryMapper.getDictories(query);
 	}
 
 	public List<Dictory> getDictories(String codeLike) {
 		DictoryQuery query = new DictoryQuery();
 		query.setCodeLike(codeLike);
-		return dictoryMapper.getSysDictories(query);
+		return dictoryMapper.getDictories(query);
 	}
 
 	public Dictory getDictory(Long id) {
@@ -190,7 +202,7 @@ public class DictoryServiceImpl implements DictoryService {
 			}
 		}
 
-		Dictory dictory = dictoryMapper.getSysDictoryById(id);
+		Dictory dictory = dictoryMapper.getDictoryById(id);
 
 		if (dictory != null && SystemConfig.getBoolean("use_query_cache")) {
 			JSONObject json = dictory.toJsonObject();
@@ -200,7 +212,7 @@ public class DictoryServiceImpl implements DictoryService {
 	}
 
 	public int getDictoryCountByQueryCriteria(DictoryQuery query) {
-		return dictoryMapper.getSysDictoryCount(query);
+		return dictoryMapper.getDictoryCount(query);
 	}
 
 	public PageResult getDictoryList(int pageNo, int pageSize) {
@@ -274,17 +286,17 @@ public class DictoryServiceImpl implements DictoryService {
 	 * @return
 	 */
 	public List<Dictory> getDictoryListByCategory(String category) {
-		return dictoryMapper.getSysDictoryListByCategory(category);
+		return dictoryMapper.getDictoryListByCategory(category);
 	}
 
 	public List<Dictory> getDictorysByQueryCriteria(int start, int pageSize, DictoryQuery query) {
 		RowBounds rowBounds = new RowBounds(start, pageSize);
-		List<Dictory> rows = sqlSessionTemplate.selectList("getSysDictories", query, rowBounds);
+		List<Dictory> rows = sqlSessionTemplate.selectList("getDictories", query, rowBounds);
 		return rows;
 	}
 
 	public List<Dictory> list(DictoryQuery query) {
-		List<Dictory> list = dictoryMapper.getSysDictories(query);
+		List<Dictory> list = dictoryMapper.getDictories(query);
 		return list;
 	}
 
@@ -294,7 +306,7 @@ public class DictoryServiceImpl implements DictoryService {
 			dictory.setId(idGenerator.nextId());
 			dictory.setCreateDate(new Date());
 			dictory.setSort(1);
-			dictoryMapper.insertSysDictory(dictory);
+			dictoryMapper.insertDictory(dictory);
 
 			long nodeId = dictory.getNodeId();
 			SysTree tree = sysTreeService.findById(nodeId);
@@ -303,7 +315,7 @@ public class DictoryServiceImpl implements DictoryService {
 			}
 		} else {
 			dictory.setUpdateDate(new Date());
-			dictoryMapper.updateSysDictory(dictory);
+			dictoryMapper.updateDictory(dictory);
 			if (SystemConfig.getBoolean("use_query_cache")) {
 				String cacheKey = "sys_dict_" + dictory.getId();
 				CacheFactory.remove("dictory", cacheKey);

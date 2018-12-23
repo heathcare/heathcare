@@ -2,29 +2,22 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper
-	namespace="com.glaf.base.modules.sys.mapper.DictoryMapper">
+<mapper namespace="com.glaf.base.modules.sys.mapper.DictoryMapper">
 
-	<resultMap id="sysDictoryResultMap"
-		type="com.glaf.base.modules.sys.model.Dictory">
+	<resultMap id="dictoryResultMap" type="com.glaf.base.modules.sys.model.Dictory">
 		<id property="id" column="ID" jdbcType="BIGINT" />
 		<result property="nodeId" column="TYPEID" jdbcType="BIGINT" />
-		<result property="category" column="CATEGORY"
-			jdbcType="VARCHAR" />
+		<result property="category" column="CATEGORY" jdbcType="VARCHAR" />
 		<result property="name" column="NAME" jdbcType="VARCHAR" />
 		<result property="desc" column="DICTDESC" jdbcType="VARCHAR" />
 		<result property="code" column="CODE" jdbcType="VARCHAR" />
 		<result property="value" column="VALUE_" jdbcType="VARCHAR" />
 		<result property="sort" column="SORTNO" jdbcType="INTEGER" />
 		<result property="locked" column="LOCKED" jdbcType="INTEGER" />
-		<result property="createDate" column="CREATEDATE"
-			jdbcType="TIMESTAMP" />
-		<result property="createBy" column="CREATEBY"
-			jdbcType="VARCHAR" />
-		<result property="updateBy" column="UPDATEBY"
-			jdbcType="VARCHAR" />
-		<result property="updateDate" column="UPDATEDATE"
-			jdbcType="TIMESTAMP" />
+		<result property="createDate" column="CREATEDATE" jdbcType="TIMESTAMP" />
+		<result property="createBy" column="CREATEBY" jdbcType="VARCHAR" />
+		<result property="updateBy" column="UPDATEBY" jdbcType="VARCHAR" />
+		<result property="updateDate" column="UPDATEDATE" jdbcType="TIMESTAMP" />
 		<result property="ext1" column="EXT1" jdbcType="VARCHAR" />
 		<result property="ext2" column="EXT2" jdbcType="VARCHAR" />
 		<result property="ext3" column="EXT3" jdbcType="VARCHAR" />
@@ -49,8 +42,7 @@
 	</resultMap>
 
 
-	<insert id="insertSysDictory"
-		parameterType="com.glaf.base.modules.sys.model.Dictory">
+	<insert id="insertDictory" parameterType="com.glaf.base.modules.sys.model.Dictory">
 		insert into SYS_DICTORY
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID
@@ -255,8 +247,7 @@
 	</insert>
 
 
-	<update id="updateSysDictory"
-		parameterType="com.glaf.base.modules.sys.model.Dictory">
+	<update id="updateDictory" parameterType="com.glaf.base.modules.sys.model.Dictory">
 		update SYS_DICTORY
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
@@ -354,30 +345,40 @@
 	</update>
 
 
-	<delete id="deleteSysDictoryById" parameterType="long">
+	<delete id="deleteDictoryById" parameterType="long">
 		delete from
 		SYS_DICTORY
 		where ID = #{id}
 	</delete>
 
 
-	<select id="getSysDictoryById" parameterType="long"
-		resultMap="sysDictoryResultMap">
+	<delete id="deleteDictories" parameterType="com.glaf.base.modules.sys.query.DictoryQuery">
+		delete from SYS_DICTORY
+		where (
+		ID IN
+		<foreach item="x_rowId" index="index" collection="rowIds"
+			open="(" separator="," close=")">
+			#{x_rowId}
+		</foreach>
+		)
+	</delete>
+
+
+	<select id="getDictoryById" parameterType="long" resultMap="dictoryResultMap">
 		select * from SYS_DICTORY where ID = #{id}
 	</select>
 
 
-	<select id="getSysDictoryListByCategory" parameterType="string"
-		resultMap="sysDictoryResultMap">
+	<select id="getDictoryListByCategory" parameterType="string"
+		resultMap="dictoryResultMap">
 		select * from SYS_DICTORY where CATEGORY = #{id}
 	</select>
 
 
-	<select id="getSysDictories"
-		parameterType="com.glaf.base.modules.sys.query.DictoryQuery"
-		resultMap="sysDictoryResultMap">
+	<select id="getDictories" parameterType="com.glaf.base.modules.sys.query.DictoryQuery"
+		resultMap="dictoryResultMap">
 		select E.*
-		<include refid="selectSysDictoriesSql" />
+		<include refid="selectDictoriesSql" />
 		<choose>
 			<when test="orderBy != null">
 				order by ${orderBy}
@@ -389,15 +390,14 @@
 	</select>
 
 
-	<select id="getSysDictoryCount"
-		parameterType="com.glaf.base.modules.sys.query.DictoryQuery"
+	<select id="getDictoryCount" parameterType="com.glaf.base.modules.sys.query.DictoryQuery"
 		resultType="int">
 		select count(*)
-		<include refid="selectSysDictoriesSql" />
+		<include refid="selectDictoriesSql" />
 	</select>
 
 
-	<sql id="selectSysDictoriesSql">
+	<sql id="selectDictoriesSql">
 
 		from SYS_DICTORY E
 

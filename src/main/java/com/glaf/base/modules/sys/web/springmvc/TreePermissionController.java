@@ -65,11 +65,11 @@ import com.glaf.base.modules.sys.service.TreePermissionService;
 public class TreePermissionController {
 	protected static final Log logger = LogFactory.getLog(TreePermissionController.class);
 
+	protected TreePermissionService treePermissionService;
+
 	protected SysTreeService sysTreeService;
 
 	protected SysUserService sysUserService;
-
-	protected TreePermissionService treePermissionService;
 
 	public TreePermissionController() {
 

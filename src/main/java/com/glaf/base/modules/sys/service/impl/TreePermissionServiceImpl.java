@@ -177,18 +177,6 @@ public class TreePermissionServiceImpl implements TreePermissionService {
 		return rows;
 	}
 
-	public List<Long> getUserTypeNodeIds(String userId, String type) {
-		TreePermissionQuery query = new TreePermissionQuery();
-		query.userId(userId);
-		query.type(type);
-		List<TreePermission> list = treePermissionMapper.getTreePermissions(query);
-		List<Long> nodeIds = new ArrayList<Long>();
-		for (TreePermission p : list) {
-			nodeIds.add(p.getNodeId());
-		}
-		return nodeIds;
-	}
-
 	public List<TreePermission> list(TreePermissionQuery query) {
 		List<TreePermission> list = treePermissionMapper.getTreePermissions(query);
 		return list;

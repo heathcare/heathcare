@@ -100,12 +100,6 @@ public class SysTree implements Serializable, TreeModel, JSONable {
 	protected String moveable;
 
 	/**
-	 * 是否公开
-	 */
-	@Column(name = "PUBLICFLAG", length = 10)
-	protected String publicFlag;
-
-	/**
 	 * 名称
 	 */
 	@Column(name = "NAME", length = 100)
@@ -345,10 +339,6 @@ public class SysTree implements Serializable, TreeModel, JSONable {
 		return providerClass;
 	}
 
-	public String getPublicFlag() {
-		return publicFlag;
-	}
-
 	public int getSort() {
 		return sort;
 	}
@@ -502,10 +492,6 @@ public class SysTree implements Serializable, TreeModel, JSONable {
 
 	public void setProviderClass(String providerClass) {
 		this.providerClass = providerClass;
-	}
-
-	public void setPublicFlag(String publicFlag) {
-		this.publicFlag = publicFlag;
 	}
 
 	public void setSort(int sort) {
