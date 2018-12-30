@@ -127,7 +127,7 @@ public class GradeInfoServiceImpl implements GradeInfoService {
 	@Transactional
 	public String createTeacher(String createBy, GradeInfo gradeInfo) {
 		SysTenant sysTenant = sysTenantService.getSysTenantByTenantId(gradeInfo.getTenantId());
-		int seqno = idGenerator.nextId("tenant_" + sysTenant.getId()).intValue();
+		int seqno = (int) idGenerator.nextId("tenant_" + sysTenant.getId());
 		String userId = String.valueOf(sysTenant.getId() + StringTools.getDigit3Id(seqno));
 		SysUser bean = new SysUser();
 		bean.setActorId(userId);
