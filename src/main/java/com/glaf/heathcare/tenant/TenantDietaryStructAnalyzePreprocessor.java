@@ -74,7 +74,7 @@ public class TenantDietaryStructAnalyzePreprocessor implements IReportPreprocess
 
 	private static String getCellValue(CellValue cell) {
 		String cellValue = null;
-		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+		if (cell.getCellType() == CellType.NUMERIC) {
 			cellValue = String.valueOf(cell.getNumberValue());
 		} else {
 			cellValue = cell.getStringValue();
@@ -84,11 +84,11 @@ public class TenantDietaryStructAnalyzePreprocessor implements IReportPreprocess
 
 	protected double getValue(FormulaEvaluator evaluator, HSSFCell cell) {
 		String strValue = null;
-		if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+		if (cell.getCellType() == CellType.NUMERIC) {
 			return cell.getNumericCellValue();
-		} else if (cell.getCellTypeEnum() == CellType.STRING) {
+		} else if (cell.getCellType() == CellType.STRING) {
 			strValue = cell.getStringCellValue();
-		} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
+		} else if (cell.getCellType() == CellType.FORMULA) {
 			CellValue cellValue = evaluator.evaluate(cell);
 			strValue = getCellValue(cellValue);
 		}
