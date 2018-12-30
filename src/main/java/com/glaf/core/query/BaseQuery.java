@@ -18,6 +18,7 @@
 
 package com.glaf.core.query;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +34,10 @@ import com.glaf.core.util.Paging;
 public class BaseQuery extends AbstractQuery<Object> {
 	private static final long serialVersionUID = 1L;
 	protected String actorId;
-	protected List<String> actorIds = new java.util.concurrent.CopyOnWriteArrayList<String>();
-	protected List<String> businessKeys = new java.util.concurrent.CopyOnWriteArrayList<String>();
+	protected List<String> actorIds = new ArrayList<String>();
+	protected List<String> businessKeys = new ArrayList<String>();
 	protected String createBy;
-	protected QueryCondition currentQueryCondition;
+
 	protected boolean isFilterPermission = true;
 	protected boolean isInitialized = false;
 	protected boolean isOwner = false;
@@ -46,7 +47,7 @@ public class BaseQuery extends AbstractQuery<Object> {
 	protected int pageNo;
 	protected int pageSize;
 	protected Object parameter;
-	protected List rowIds = new java.util.concurrent.CopyOnWriteArrayList();
+	protected List rowIds = new ArrayList();
 	protected String serviceKey;
 	protected String sortField;
 	protected String sortOrder;
@@ -182,10 +183,6 @@ public class BaseQuery extends AbstractQuery<Object> {
 		return createBy;
 	}
 
-	public QueryCondition getCurrentQueryCondition() {
-		return currentQueryCondition;
-	}
-
 	public DataRequest getDataRequest() {
 		return dataRequest;
 	}
@@ -299,10 +296,6 @@ public class BaseQuery extends AbstractQuery<Object> {
 
 	public void setCreateBy(String createBy) {
 		this.createBy = createBy;
-	}
-
-	public void setCurrentQueryCondition(QueryCondition currentQueryCondition) {
-		this.currentQueryCondition = currentQueryCondition;
 	}
 
 	public void setDataRequest(DataRequest dataRequest) {
