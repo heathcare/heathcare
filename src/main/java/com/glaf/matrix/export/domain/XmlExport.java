@@ -77,6 +77,12 @@ public class XmlExport implements Serializable, JSONable {
 	protected String title;
 
 	/**
+	 * 数据集编号
+	 */
+	@Column(name = "DATASETID_", length = 50)
+	protected String datasetId;
+
+	/**
 	 * SQL语句
 	 */
 	@Lob
@@ -294,6 +300,10 @@ public class XmlExport implements Serializable, JSONable {
 		return dataList;
 	}
 
+	public String getDatasetId() {
+		return datasetId;
+	}
+
 	public Element getElement() {
 		return element;
 	}
@@ -446,6 +456,10 @@ public class XmlExport implements Serializable, JSONable {
 
 	public void setDataList(List<Map<String, Object>> dataList) {
 		this.dataList = dataList;
+	}
+
+	public void setDatasetId(String datasetId) {
+		this.datasetId = datasetId;
 	}
 
 	public void setElement(Element element) {

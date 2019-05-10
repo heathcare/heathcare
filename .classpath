@@ -92,8 +92,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jsch.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jsoup.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/kryo.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/log4j-api.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/log4j-core.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/log4j.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/logback-core.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/mail.jar"/>
@@ -111,9 +109,7 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/quartz-all.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/resteasy-cache-core.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/resteasy-jackson2-provider.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/resteasy-jaxrs.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/resteasy-multipart-provider.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/resteasy-netty.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/resteasy-netty4.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/resteasy-spring.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/scannotation.jar"/>
@@ -190,5 +186,9 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/asm-analysis.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/asm-util.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/asm.jar"/>
+	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/java-jwt.jar"/>
+	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jjwt-api.jar"/>
+	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jjwt-impl.jar"/>
+	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jjwt-jackson.jar"/>
 	<classpathentry kind="output" path="webapps/glaf/WEB-INF/classes"/>
 </classpath>

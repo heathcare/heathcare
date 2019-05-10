@@ -160,7 +160,7 @@ public class XmlExportDataBean {
 				JdbcUtils.close(srcPsmt);
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			// ex.printStackTrace();
 			logger.error("execute sql query error", ex);
 			throw new RuntimeException(ex);
 		} finally {

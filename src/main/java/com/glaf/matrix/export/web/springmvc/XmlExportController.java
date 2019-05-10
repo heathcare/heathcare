@@ -61,7 +61,6 @@ import com.glaf.core.base.TreeModel;
 import com.glaf.core.config.DatabaseConnectionConfig;
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.domain.Database;
-import com.glaf.core.identity.User;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.service.IDatabaseService;
 import com.glaf.core.tree.helper.JacksonTreeHelper;
@@ -74,7 +73,7 @@ import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.StaxonUtils;
 import com.glaf.core.util.StringTools;
 import com.glaf.core.util.Tools;
-
+ 
 import com.glaf.matrix.export.domain.XmlExport;
 import com.glaf.matrix.export.handler.DataHandler;
 import com.glaf.matrix.export.handler.ExportDataHandler;
@@ -158,6 +157,7 @@ public class XmlExportController {
 			if (parent != null) {
 				request.setAttribute("parent", parent);
 			}
+
 		}
 
 		if (nodeParentId > 0) {
@@ -505,9 +505,13 @@ public class XmlExportController {
 			} else {
 				xmlExport = xmlExportService.getXmlExport(expId);
 			}
-			if (mFile != null && xmlExport != null && StringUtils.equals(xmlExport.getActive(), "Y")) {
+			if (mFile != null) {
 				JSONObject jsonObject = JSON.parseObject(new String(mFile.getBytes(), "UTF-8"));
-				xmlExportService.importAll(xmlExport.getId(), jsonObject);
+				if (xmlExport != null) {
+					xmlExportService.importAll(xmlExport.getId(), jsonObject);
+				} else {
+					xmlExportService.importAll(jsonObject);
+				}
 				writer.println("<h3><span style='color:#339933;'>导入成功！</span><h3>");
 				writer.flush();
 			}
@@ -548,9 +552,14 @@ public class XmlExportController {
 			} else {
 				xmlExport = xmlExportService.getXmlExport(expId);
 			}
-			if (StringUtils.isNotEmpty(json) && xmlExport != null && StringUtils.equals(xmlExport.getActive(), "Y")) {
-				JSONObject jsonObject = JSON.parseObject(json);
-				xmlExportService.importAll(xmlExport.getId(), jsonObject);
+			if (StringUtils.isNotEmpty(json)) {
+				if (xmlExport != null) {
+					JSONObject jsonObject = JSON.parseObject(json);
+					xmlExportService.importAll(xmlExport.getId(), jsonObject);
+				} else {
+					JSONObject jsonObject = JSON.parseObject(json);
+					xmlExportService.importAll(jsonObject);
+				}
 				writer.println("<h3>导入成功！<h3>");
 				writer.flush();
 			}
@@ -676,8 +685,11 @@ public class XmlExportController {
 	@ResponseBody
 	@RequestMapping("/save")
 	public byte[] save(HttpServletRequest request) {
-		User user = RequestUtils.getUser(request);
-		String actorId = user.getActorId();
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (!loginContext.isSystemAdministrator()) {
+			return ResponseUtils.responseJsonResult(false, "只有管理员才能操作");
+		}
+		String actorId = loginContext.getActorId();
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
 		XmlExport xmlExport = new XmlExport();
 		try {
@@ -685,6 +697,7 @@ public class XmlExportController {
 			xmlExport.setName(request.getParameter("name"));
 			xmlExport.setMapping(request.getParameter("mapping"));
 			xmlExport.setTitle(request.getParameter("title"));
+			xmlExport.setDatasetId(request.getParameter("datasetId"));
 			xmlExport.setSql(request.getParameter("sql"));
 			xmlExport.setResultFlag(request.getParameter("resultFlag"));
 			xmlExport.setNodeParentId(RequestUtils.getLong(request, "nodeParentId"));
@@ -717,8 +730,11 @@ public class XmlExportController {
 	@ResponseBody
 	@RequestMapping("/saveAs")
 	public byte[] saveAs(HttpServletRequest request) {
-		User user = RequestUtils.getUser(request);
-		String actorId = user.getActorId();
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (!loginContext.isSystemAdministrator()) {
+			return ResponseUtils.responseJsonResult(false, "只有管理员才能操作");
+		}
+		String actorId = loginContext.getActorId();
 		try {
 			String expId = RequestUtils.getString(request, "expId");
 			if (expId != null) {
