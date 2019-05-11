@@ -12,6 +12,10 @@
 		<result property="tenantId" column="TENANTID_"
 			jdbcType="VARCHAR" />
 		<result property="gradeId" column="GRADEID_" jdbcType="VARCHAR" />
+		<result property="provinceId" column="PROVINCEID_"
+			jdbcType="BIGINT" />
+		<result property="cityId" column="CITYID_" jdbcType="BIGINT" />
+		<result property="areaId" column="AREAID_" jdbcType="BIGINT" />
 		<result property="female" column="FEMALE_" jdbcType="INTEGER" />
 		<result property="male" column="MALE_" jdbcType="INTEGER" />
 		<result property="personCount" column="PERSONCOUNT_"
@@ -98,6 +102,15 @@
 			</if>
 			<if test="gradeId != null">
 				,GRADEID_
+			</if>
+			<if test="provinceId != null">
+				,PROVINCEID_
+			</if>
+			<if test="cityId != null">
+				,CITYID_
+			</if>
+			<if test="areaId != null">
+				,AREAID_
 			</if>
 			<if test="female != null">
 				,FEMALE_
@@ -233,6 +246,15 @@
 			<if test="gradeId != null">
 				,#{gradeId, jdbcType=VARCHAR}
 			</if>
+			<if test="provinceId != null">
+				,#{provinceId, jdbcType=BIGINT}
+			</if>
+			<if test="cityId != null">
+				,#{cityId, jdbcType=BIGINT}
+			</if>
+			<if test="areaId != null">
+				,#{areaId, jdbcType=BIGINT}
+			</if>
 			<if test="female != null">
 				,#{female, jdbcType=INTEGER}
 			</if>
@@ -364,6 +386,9 @@
 		,CHECKID_
 		,TENANTID_
 		,GRADEID_
+		,PROVINCEID_
+		,CITYID_
+		,AREAID_
 		,FEMALE_
 		,MALE_
 		,PERSONCOUNT_
@@ -416,6 +441,12 @@
 			jdbcType=VARCHAR}
 			,#{medicalExaminationGradeCount.gradeId,
 			jdbcType=VARCHAR}
+			,#{medicalExaminationGradeCount.provinceId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationGradeCount.cityId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationGradeCount.areaId,
+			jdbcType=BIGINT}
 			,#{medicalExaminationGradeCount.female,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.male,
@@ -511,6 +542,9 @@
 			,CHECKID_
 			,TENANTID_
 			,GRADEID_
+			,PROVINCEID_
+			,CITYID_
+			,AREAID_
 			,FEMALE_
 			,MALE_
 			,PERSONCOUNT_
@@ -560,6 +594,9 @@
 			jdbcType=VARCHAR}
 			,#{medicalExaminationGradeCount.gradeId,
 			jdbcType=VARCHAR}
+			,#{medicalExaminationGradeCount.provinceId, jdbcType=BIGINT}
+			,#{medicalExaminationGradeCount.cityId, jdbcType=BIGINT}
+			,#{medicalExaminationGradeCount.areaId, jdbcType=BIGINT}
 			,#{medicalExaminationGradeCount.female,
 			jdbcType=INTEGER}
 			,#{medicalExaminationGradeCount.male,
@@ -763,6 +800,18 @@
 
 			<if test="type != null and type != '' ">
 				and E.TYPE_ = #{type}
+			</if>
+
+			<if test="provinceId != null">
+				and E.PROVINCEID_ = #{provinceId}
+			</if>
+
+			<if test="cityId != null">
+				and E.CITYID_ = #{cityId}
+			</if>
+
+			<if test="areaId != null">
+				and E.AREAID_ = #{areaId}
 			</if>
 
 		</where>

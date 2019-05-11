@@ -29,6 +29,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.glaf.base.modules.sys.model.SysTenant;
+import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.Database;
@@ -64,6 +66,7 @@ public class MedicalExaminationGradeCountBean {
 
 	public void execute(String tenantId, String type, int year, int month) {
 		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
+		SysTenantService sysTenantService = ContextFactory.getBean("sysTenantService");
 		GrowthStandardService growthStandardService = ContextFactory
 				.getBean("com.glaf.heathcare.service.growthStandardService");
 		MedicalExaminationService medicalExaminationService = ContextFactory
@@ -130,6 +133,8 @@ public class MedicalExaminationGradeCountBean {
 					checkTable = true;
 				}
 			}
+			
+			SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
 
 			GradeInfoQuery query0 = new GradeInfoQuery();
 			query0.tenantId(tenantId);
@@ -341,6 +346,9 @@ public class MedicalExaminationGradeCountBean {
 									cnt.setHbsabPercent(cnt.getHbsab() * 1.0D / cnt.getCheckPerson());
 									cnt.setHvaigmPercent(cnt.getHvaigm() * 1.0D / cnt.getCheckPerson());
 								}
+								cnt.setProvinceId(tenant.getProvinceId());
+								cnt.setCityId(tenant.getCityId());
+								cnt.setAreaId(tenant.getAreaId());
 							}
 
 							if (database != null) {

@@ -33,6 +33,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.glaf.base.modules.sys.model.SysTenant;
+import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.core.base.TableModel;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
@@ -61,6 +63,8 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 	protected MedicalExaminationCountMapper medicalExaminationCountMapper;
 
 	protected ITableDataService tableDataService;
+
+	protected SysTenantService sysTenantService;
 
 	public MedicalExaminationCountServiceImpl() {
 
@@ -201,6 +205,13 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 		table.addIntegerColumn("MONTH_", month);
 		tableDataService.deleteTableData(table);
 
+		SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+		for (MedicalExaminationCount model : list) {
+			model.setAreaId(tenant.getAreaId());
+			model.setCityId(tenant.getCityId());
+			model.setProvinceId(tenant.getProvinceId());
+		}
+
 		this.bulkInsert(list);
 	}
 
@@ -214,6 +225,13 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 		query.yearGreaterThanOrEqual(year - 2);
 		query.targetType(targetType);
 		medicalExaminationCountMapper.deleteMedicalExaminationCounts(query);
+
+		SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+		for (MedicalExaminationCount model : list) {
+			model.setAreaId(tenant.getAreaId());
+			model.setCityId(tenant.getCityId());
+			model.setProvinceId(tenant.getProvinceId());
+		}
 
 		this.bulkInsert(list);
 	}
@@ -241,6 +259,11 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 	@javax.annotation.Resource
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	@javax.annotation.Resource
+	public void setSysTenantService(SysTenantService sysTenantService) {
+		this.sysTenantService = sysTenantService;
 	}
 
 	@javax.annotation.Resource

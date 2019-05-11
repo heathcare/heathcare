@@ -63,6 +63,24 @@ public class MedicalExaminationCount implements Serializable {
 	@Column(name = "GRADENAME_", length = 200)
 	protected String gradeName;
 
+	/**
+	 * 省/直辖市编号
+	 */
+	@Column(name = "PROVINCEID_")
+	protected long provinceId;
+
+	/**
+	 * 市编号
+	 */
+	@Column(name = "CITYID_")
+	protected long cityId;
+
+	/**
+	 * 区/县编号
+	 */
+	@Column(name = "AREAID_")
+	protected long areaId;
+
 	@javax.persistence.Transient
 	protected Date checkDate;
 
@@ -304,6 +322,10 @@ public class MedicalExaminationCount implements Serializable {
 		return true;
 	}
 
+	public long getAreaId() {
+		return areaId;
+	}
+
 	public Date getCheckDate() {
 		return checkDate;
 	}
@@ -321,6 +343,10 @@ public class MedicalExaminationCount implements Serializable {
 
 	public int getCheckPerson() {
 		return checkPerson;
+	}
+
+	public long getCityId() {
+		return cityId;
 	}
 
 	public Date getCreateTime() {
@@ -536,6 +562,10 @@ public class MedicalExaminationCount implements Serializable {
 		return prctileWeightObesityPercent;
 	}
 
+	public long getProvinceId() {
+		return provinceId;
+	}
+
 	public int getSortNo() {
 		return sortNo;
 	}
@@ -580,6 +610,10 @@ public class MedicalExaminationCount implements Serializable {
 		return MedicalExaminationCountJsonFactory.jsonToObject(jsonObject);
 	}
 
+	public void setAreaId(long areaId) {
+		this.areaId = areaId;
+	}
+
 	public void setCheckDate(Date checkDate) {
 		this.checkDate = checkDate;
 	}
@@ -594,6 +628,10 @@ public class MedicalExaminationCount implements Serializable {
 
 	public void setCheckPerson(int checkPerson) {
 		this.checkPerson = checkPerson;
+	}
+
+	public void setCityId(long cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setCreateTime(Date createTime) {
@@ -762,6 +800,10 @@ public class MedicalExaminationCount implements Serializable {
 
 	public void setPrctileWeightObesityPercent(double prctileWeightObesityPercent) {
 		this.prctileWeightObesityPercent = prctileWeightObesityPercent;
+	}
+
+	public void setProvinceId(long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public void setSortNo(int sortNo) {

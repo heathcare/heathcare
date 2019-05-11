@@ -29,6 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.glaf.core.id.*;
+import com.glaf.base.modules.sys.model.SysTenant;
+import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.core.dao.*;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.util.*;
@@ -52,6 +54,8 @@ public class MedicalExaminationEvaluateServiceImpl implements MedicalExamination
 	protected SqlSessionTemplate sqlSessionTemplate;
 
 	protected MedicalExaminationEvaluateMapper medicalExaminationEvaluateMapper;
+
+	protected SysTenantService sysTenantService;
 
 	public MedicalExaminationEvaluateServiceImpl() {
 
@@ -147,6 +151,14 @@ public class MedicalExaminationEvaluateServiceImpl implements MedicalExamination
 		query.year(year);
 		query.month(month);
 		medicalExaminationEvaluateMapper.deleteMedicalExaminationEvaluates(query);
+
+		SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+		for (MedicalExaminationEvaluate model : rows) {
+			model.setAreaId(tenant.getAreaId());
+			model.setCityId(tenant.getCityId());
+			model.setProvinceId(tenant.getProvinceId());
+		}
+
 		this.bulkInsert(rows);
 	}
 
@@ -158,6 +170,14 @@ public class MedicalExaminationEvaluateServiceImpl implements MedicalExamination
 	@Transactional
 	public void saveAll(String tenantId, List<MedicalExaminationEvaluate> rows) {
 		medicalExaminationEvaluateMapper.deleteMedicalExaminationEvaluateByTenantId(tenantId);
+
+		SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+		for (MedicalExaminationEvaluate model : rows) {
+			model.setAreaId(tenant.getAreaId());
+			model.setCityId(tenant.getCityId());
+			model.setProvinceId(tenant.getProvinceId());
+		}
+
 		this.bulkInsert(rows);
 	}
 
@@ -184,6 +204,11 @@ public class MedicalExaminationEvaluateServiceImpl implements MedicalExamination
 	@javax.annotation.Resource
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	@javax.annotation.Resource
+	public void setSysTenantService(SysTenantService sysTenantService) {
+		this.sysTenantService = sysTenantService;
 	}
 
 }

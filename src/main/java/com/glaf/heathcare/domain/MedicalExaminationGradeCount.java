@@ -69,6 +69,24 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 	protected String gradeName;
 
 	/**
+	 * 省/直辖市编号
+	 */
+	@Column(name = "PROVINCEID_")
+	protected long provinceId;
+
+	/**
+	 * 市编号
+	 */
+	@Column(name = "CITYID_")
+	protected long cityId;
+
+	/**
+	 * 区/县编号
+	 */
+	@Column(name = "AREAID_")
+	protected long areaId;
+
+	/**
 	 * 女生人数
 	 */
 	@Column(name = "FEMALE_")
@@ -436,6 +454,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		return anemiaMid;
 	}
 
+	public long getAreaId() {
+		return areaId;
+	}
+
 	public int getBloodLead() {
 		return bloodLead;
 	}
@@ -474,6 +496,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public int getCheckPerson() {
 		return checkPerson;
+	}
+
+	public long getCityId() {
+		return cityId;
 	}
 
 	public int getEyesightDysfunction() {
@@ -602,6 +628,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public int getPersonCount() {
 		return personCount;
+	}
+
+	public long getProvinceId() {
+		return provinceId;
 	}
 
 	public int getSaprodontia() {
@@ -748,6 +778,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 		this.anemiaMid = anemiaMid;
 	}
 
+	public void setAreaId(long areaId) {
+		this.areaId = areaId;
+	}
+
 	public void setBloodLead(int bloodLead) {
 		this.bloodLead = bloodLead;
 	}
@@ -774,6 +808,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public void setCheckPerson(int checkPerson) {
 		this.checkPerson = checkPerson;
+	}
+
+	public void setCityId(long cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setEyesightDysfunction(int eyesightDysfunction) {
@@ -878,6 +916,10 @@ public class MedicalExaminationGradeCount implements Serializable, JSONable {
 
 	public void setPersonCount(int personCount) {
 		this.personCount = personCount;
+	}
+
+	public void setProvinceId(long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public void setSaprodontia(int saprodontia) {

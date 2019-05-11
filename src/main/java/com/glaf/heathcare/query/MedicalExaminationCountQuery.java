@@ -41,24 +41,19 @@ public class MedicalExaminationCountQuery extends DataQuery {
 	protected List<Integer> months;
 	protected Integer gradeYear;
 	protected String targetType;
+	protected Long provinceId;
+	protected Long cityId;
+	protected Long areaId;
 
 	public MedicalExaminationCountQuery() {
 
 	}
 
-	public String getGradeNotNull() {
-		return gradeNotNull;
-	}
-
-	public void setGradeNotNull(String gradeNotNull) {
-		this.gradeNotNull = gradeNotNull;
-	}
-
-	public MedicalExaminationCountQuery gradeNotNull(String gradeNotNull) {
-		if (gradeNotNull == null) {
-			throw new RuntimeException("gradeNotNull is null");
+	public MedicalExaminationCountQuery areaId(Long areaId) {
+		if (areaId == null) {
+			throw new RuntimeException("areaId is null");
 		}
-		this.gradeNotNull = gradeNotNull;
+		this.areaId = areaId;
 		return this;
 	}
 
@@ -86,6 +81,18 @@ public class MedicalExaminationCountQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalExaminationCountQuery cityId(Long cityId) {
+		if (cityId == null) {
+			throw new RuntimeException("cityId is null");
+		}
+		this.cityId = cityId;
+		return this;
+	}
+
+	public Long getAreaId() {
+		return areaId;
+	}
+
 	public String getCheckId() {
 		return checkId;
 	}
@@ -98,12 +105,20 @@ public class MedicalExaminationCountQuery extends DataQuery {
 		return checkPersonGreaterThanOrEqual;
 	}
 
+	public Long getCityId() {
+		return cityId;
+	}
+
 	public String getGradeId() {
 		return gradeId;
 	}
 
 	public List<String> getGradeIds() {
 		return gradeIds;
+	}
+
+	public String getGradeNotNull() {
+		return gradeNotNull;
 	}
 
 	public Integer getGradeYear() {
@@ -297,6 +312,10 @@ public class MedicalExaminationCountQuery extends DataQuery {
 		return orderBy;
 	}
 
+	public Long getProvinceId() {
+		return provinceId;
+	}
+
 	public String getTargetType() {
 		return targetType;
 	}
@@ -338,6 +357,14 @@ public class MedicalExaminationCountQuery extends DataQuery {
 			throw new RuntimeException("gradeIds is empty ");
 		}
 		this.gradeIds = gradeIds;
+		return this;
+	}
+
+	public MedicalExaminationCountQuery gradeNotNull(String gradeNotNull) {
+		if (gradeNotNull == null) {
+			throw new RuntimeException("gradeNotNull is null");
+		}
+		this.gradeNotNull = gradeNotNull;
 		return this;
 	}
 
@@ -427,6 +454,18 @@ public class MedicalExaminationCountQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalExaminationCountQuery provinceId(Long provinceId) {
+		if (provinceId == null) {
+			throw new RuntimeException("provinceId is null");
+		}
+		this.provinceId = provinceId;
+		return this;
+	}
+
+	public void setAreaId(Long areaId) {
+		this.areaId = areaId;
+	}
+
 	public void setCheckId(String checkId) {
 		this.checkId = checkId;
 	}
@@ -439,12 +478,20 @@ public class MedicalExaminationCountQuery extends DataQuery {
 		this.checkPersonGreaterThanOrEqual = checkPersonGreaterThanOrEqual;
 	}
 
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
+	}
+
 	public void setGradeId(String gradeId) {
 		this.gradeId = gradeId;
 	}
 
 	public void setGradeIds(List<String> gradeIds) {
 		this.gradeIds = gradeIds;
+	}
+
+	public void setGradeNotNull(String gradeNotNull) {
+		this.gradeNotNull = gradeNotNull;
 	}
 
 	public void setGradeYear(Integer gradeYear) {
@@ -465,6 +512,10 @@ public class MedicalExaminationCountQuery extends DataQuery {
 
 	public void setMonths(List<Integer> months) {
 		this.months = months;
+	}
+
+	public void setProvinceId(Long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public void setTargetType(String targetType) {

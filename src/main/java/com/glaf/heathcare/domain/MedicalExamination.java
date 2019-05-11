@@ -666,6 +666,24 @@ public class MedicalExamination implements Serializable, JSONable {
 	protected int sortNo;
 
 	/**
+	 * 省/直辖市编号
+	 */
+	@Column(name = "PROVINCEID_")
+	protected long provinceId;
+
+	/**
+	 * 市编号
+	 */
+	@Column(name = "CITYID_")
+	protected long cityId;
+
+	/**
+	 * 区/县编号
+	 */
+	@Column(name = "AREAID_")
+	protected long areaId;
+
+	/**
 	 * 创建人
 	 */
 	@Column(name = "CREATEBY_", length = 50)
@@ -780,6 +798,10 @@ public class MedicalExamination implements Serializable, JSONable {
 		return anemiaLevel;
 	}
 
+	public long getAreaId() {
+		return areaId;
+	}
+
 	public long getBatchId() {
 		return batchId;
 	}
@@ -885,6 +907,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public String getCheckResult() {
 		return this.checkResult;
+	}
+
+	public long getCityId() {
+		return cityId;
 	}
 
 	public String getConfirmBy() {
@@ -1134,6 +1160,10 @@ public class MedicalExamination implements Serializable, JSONable {
 		return previousWeight;
 	}
 
+	public long getProvinceId() {
+		return provinceId;
+	}
+
 	public String getPudendum() {
 		return this.pudendum;
 	}
@@ -1323,6 +1353,10 @@ public class MedicalExamination implements Serializable, JSONable {
 		this.anemiaLevel = anemiaLevel;
 	}
 
+	public void setAreaId(long areaId) {
+		this.areaId = areaId;
+	}
+
 	public void setBatchId(long batchId) {
 		this.batchId = batchId;
 	}
@@ -1413,6 +1447,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setCheckResult(String checkResult) {
 		this.checkResult = checkResult;
+	}
+
+	public void setCityId(long cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setConfirmBy(String confirmBy) {
@@ -1625,6 +1663,10 @@ public class MedicalExamination implements Serializable, JSONable {
 
 	public void setPreviousWeight(double previousWeight) {
 		this.previousWeight = previousWeight;
+	}
+
+	public void setProvinceId(long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public void setPudendum(String pudendum) {

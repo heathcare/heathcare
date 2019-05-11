@@ -28,6 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.glaf.base.modules.sys.model.SysTenant;
+import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.Database;
@@ -57,6 +59,7 @@ public class MedicalExaminationEvaluateBean {
 
 	public void execute(String tenantId, int year, int month) {
 		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
+		SysTenantService sysTenantService = ContextFactory.getBean("sysTenantService");
 		GrowthStandardService growthStandardService = ContextFactory
 				.getBean("com.glaf.heathcare.service.growthStandardService");
 		MedicalExaminationService medicalExaminationService = ContextFactory
@@ -91,6 +94,8 @@ public class MedicalExaminationEvaluateBean {
 					DBUtils.createTable(database.getName(), tableDefinition);
 				}
 			}
+			
+			SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
 
 			GradeInfoQuery query0 = new GradeInfoQuery();
 			query0.tenantId(tenantId);
@@ -171,6 +176,9 @@ public class MedicalExaminationEvaluateBean {
 											(model.getWeight() - model.getStdWeight()) * 100D / model.getStdWeight());
 								}
 
+								model.setProvinceId(tenant.getProvinceId());
+								model.setCityId(tenant.getCityId());
+								model.setAreaId(tenant.getAreaId());
 								rows.add(model);
 							}
 						}

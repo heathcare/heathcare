@@ -58,11 +58,22 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 	protected Integer yearGreaterThanOrEqual;
 	protected Integer yearLessThanOrEqual;
 	protected Integer month;
+	protected Long provinceId;
+	protected Long cityId;
+	protected Long areaId;
 	protected Date createTimeGreaterThanOrEqual;
 	protected Date createTimeLessThanOrEqual;
 
 	public MedicalExaminationEvaluateQuery() {
 
+	}
+
+	public MedicalExaminationEvaluateQuery areaId(Long areaId) {
+		if (areaId == null) {
+			throw new RuntimeException("areaId is null");
+		}
+		this.areaId = areaId;
+		return this;
 	}
 
 	public MedicalExaminationEvaluateQuery batchId(Long batchId) {
@@ -94,6 +105,14 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 			throw new RuntimeException("checkId is null");
 		}
 		this.checkId = checkId;
+		return this;
+	}
+
+	public MedicalExaminationEvaluateQuery cityId(Long cityId) {
+		if (cityId == null) {
+			throw new RuntimeException("cityId is null");
+		}
+		this.cityId = cityId;
 		return this;
 	}
 
@@ -486,6 +505,14 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 			throw new RuntimeException("personIds is empty ");
 		}
 		this.personIds = personIds;
+		return this;
+	}
+
+	public MedicalExaminationEvaluateQuery provinceId(Long provinceId) {
+		if (provinceId == null) {
+			throw new RuntimeException("provinceId is null");
+		}
+		this.provinceId = provinceId;
 		return this;
 	}
 

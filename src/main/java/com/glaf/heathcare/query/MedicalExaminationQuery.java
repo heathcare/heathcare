@@ -112,6 +112,9 @@ public class MedicalExaminationQuery extends DataQuery {
 	protected Integer monthLessThanOrEqual;
 	protected List<Integer> months;
 	protected String remarkLike;
+	protected Long provinceId;
+	protected Long cityId;
+	protected Long areaId;
 	protected String confirmBy;
 	protected String confirmByLike;
 	protected Date confirmTimeGreaterThanOrEqual;
@@ -152,6 +155,14 @@ public class MedicalExaminationQuery extends DataQuery {
 			throw new RuntimeException("alt is null");
 		}
 		this.altLike = altLike;
+		return this;
+	}
+
+	public MedicalExaminationQuery areaId(Long areaId) {
+		if (areaId == null) {
+			throw new RuntimeException("areaId is null");
+		}
+		this.areaId = areaId;
 		return this;
 	}
 
@@ -296,6 +307,14 @@ public class MedicalExaminationQuery extends DataQuery {
 			throw new RuntimeException("checkResult is null");
 		}
 		this.checkResultLike = checkResultLike;
+		return this;
+	}
+
+	public MedicalExaminationQuery cityId(Long cityId) {
+		if (cityId == null) {
+			throw new RuntimeException("cityId is null");
+		}
+		this.cityId = cityId;
 		return this;
 	}
 
@@ -491,6 +510,10 @@ public class MedicalExaminationQuery extends DataQuery {
 		return altLike;
 	}
 
+	public Long getAreaId() {
+		return areaId;
+	}
+
 	public Long getBatchId() {
 		return batchId;
 	}
@@ -601,6 +624,10 @@ public class MedicalExaminationQuery extends DataQuery {
 			}
 		}
 		return checkResultLike;
+	}
+
+	public Long getCityId() {
+		return cityId;
 	}
 
 	public String getConfirmBy() {
@@ -1062,6 +1089,10 @@ public class MedicalExaminationQuery extends DataQuery {
 		return pharyngealLike;
 	}
 
+	public Long getProvinceId() {
+		return provinceId;
+	}
+
 	public String getPudendum() {
 		return pudendum;
 	}
@@ -1468,6 +1499,14 @@ public class MedicalExaminationQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalExaminationQuery provinceId(Long provinceId) {
+		if (provinceId == null) {
+			throw new RuntimeException("provinceId is null");
+		}
+		this.provinceId = provinceId;
+		return this;
+	}
+
 	public MedicalExaminationQuery pudendum(String pudendum) {
 		if (pudendum == null) {
 			throw new RuntimeException("pudendum is null");
@@ -1530,6 +1569,10 @@ public class MedicalExaminationQuery extends DataQuery {
 
 	public void setAltLike(String altLike) {
 		this.altLike = altLike;
+	}
+
+	public void setAreaId(Long areaId) {
+		this.areaId = areaId;
 	}
 
 	public void setBatchId(Long batchId) {
@@ -1602,6 +1645,10 @@ public class MedicalExaminationQuery extends DataQuery {
 
 	public void setCheckResultLike(String checkResultLike) {
 		this.checkResultLike = checkResultLike;
+	}
+
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setConfirmBy(String confirmBy) {
@@ -1778,6 +1825,10 @@ public class MedicalExaminationQuery extends DataQuery {
 
 	public void setPharyngealLike(String pharyngealLike) {
 		this.pharyngealLike = pharyngealLike;
+	}
+
+	public void setProvinceId(Long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public void setPudendum(String pudendum) {

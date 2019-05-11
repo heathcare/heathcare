@@ -46,6 +46,15 @@ public class MedicalExaminationCountJsonFactory {
 		if (jsonObject.containsKey("gradeName")) {
 			model.setGradeName(jsonObject.getString("gradeName"));
 		}
+		if (jsonObject.containsKey("provinceId")) {
+			model.setProvinceId(jsonObject.getLong("provinceId"));
+		}
+		if (jsonObject.containsKey("cityId")) {
+			model.setCityId(jsonObject.getLong("cityId"));
+		}
+		if (jsonObject.containsKey("areaId")) {
+			model.setAreaId(jsonObject.getLong("areaId"));
+		}
 		if (jsonObject.containsKey("checkId")) {
 			model.setCheckId(jsonObject.getString("checkId"));
 		}
@@ -193,6 +202,9 @@ public class MedicalExaminationCountJsonFactory {
 		if (model.getCheckId() != null) {
 			jsonObject.put("checkId", model.getCheckId());
 		}
+		jsonObject.put("provinceId", model.getProvinceId());
+		jsonObject.put("cityId", model.getCityId());
+		jsonObject.put("areaId", model.getAreaId());
 		jsonObject.put("totalPerson", model.getTotalPerson());
 		jsonObject.put("totalMale", model.getTotalMale());
 		jsonObject.put("totalFemale", model.getTotalFemale());
@@ -262,6 +274,9 @@ public class MedicalExaminationCountJsonFactory {
 		if (model.getCheckId() != null) {
 			jsonObject.put("checkId", model.getCheckId());
 		}
+		jsonObject.put("provinceId", model.getProvinceId());
+		jsonObject.put("cityId", model.getCityId());
+		jsonObject.put("areaId", model.getAreaId());
 		jsonObject.put("totalPerson", model.getTotalPerson());
 		jsonObject.put("totalMale", model.getTotalMale());
 		jsonObject.put("totalFemale", model.getTotalFemale());

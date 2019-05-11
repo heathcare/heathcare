@@ -33,6 +33,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.glaf.base.modules.sys.model.SysTenant;
+import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
 import com.glaf.core.service.ITableDataService;
@@ -74,6 +76,8 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 	protected PersonService personService;
 
 	protected ITableDataService tableDataService;
+
+	protected SysTenantService sysTenantService;
 
 	public MedicalExaminationServiceImpl() {
 
@@ -336,6 +340,11 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 				medicalExamination.setMonth(month);
 			}
 
+			SysTenant tenant = sysTenantService.getSysTenantByTenantId(medicalExamination.getTenantId());
+			medicalExamination.setAreaId(tenant.getAreaId());
+			medicalExamination.setCityId(tenant.getCityId());
+			medicalExamination.setProvinceId(tenant.getProvinceId());
+
 			medicalExaminationMapper.insertMedicalExamination(medicalExamination);
 		} else {
 
@@ -400,6 +409,11 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 	@javax.annotation.Resource
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	@javax.annotation.Resource
+	public void setSysTenantService(SysTenantService sysTenantService) {
+		this.sysTenantService = sysTenantService;
 	}
 
 	@javax.annotation.Resource

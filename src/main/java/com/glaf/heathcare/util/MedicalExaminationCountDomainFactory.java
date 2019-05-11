@@ -45,6 +45,9 @@ public class MedicalExaminationCountDomainFactory {
 		columnMap.put("gradeId", "GRADEID_");
 		columnMap.put("gradeName", "GRADENAME_");
 		columnMap.put("checkId", "CHECKID_");
+		columnMap.put("provinceId", "PROVINCEID_");
+		columnMap.put("cityId", "CITYID_");
+		columnMap.put("areaId", "AREAID_");
 		columnMap.put("totalPerson", "TOTALPERSON_");
 		columnMap.put("totalMale", "TOTALMALE_");
 		columnMap.put("totalFemale", "TOTALFEMALE_");
@@ -89,6 +92,9 @@ public class MedicalExaminationCountDomainFactory {
 
 		javaTypeMap.put("id", "String");
 		javaTypeMap.put("tenantId", "String");
+		javaTypeMap.put("provinceId", "Long");
+		javaTypeMap.put("cityId", "Long");
+		javaTypeMap.put("areaId", "Long");
 		javaTypeMap.put("gradeId", "String");
 		javaTypeMap.put("gradeName", "String");
 		javaTypeMap.put("checkId", "String");
@@ -166,6 +172,24 @@ public class MedicalExaminationCountDomainFactory {
 		tenantId.setJavaType("String");
 		tenantId.setLength(50);
 		tableDefinition.addColumn(tenantId);
+
+		ColumnDefinition provinceId = new ColumnDefinition();
+		provinceId.setName("provinceId");
+		provinceId.setColumnName("PROVINCEID_");
+		provinceId.setJavaType("Long");
+		tableDefinition.addColumn(provinceId);
+
+		ColumnDefinition cityId = new ColumnDefinition();
+		cityId.setName("cityId");
+		cityId.setColumnName("CITYID_");
+		cityId.setJavaType("Long");
+		tableDefinition.addColumn(cityId);
+
+		ColumnDefinition areaId = new ColumnDefinition();
+		areaId.setName("areaId");
+		areaId.setColumnName("AREAID_");
+		areaId.setJavaType("Long");
+		tableDefinition.addColumn(areaId);
 
 		ColumnDefinition gradeId = new ColumnDefinition();
 		gradeId.setName("gradeId");

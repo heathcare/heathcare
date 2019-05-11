@@ -160,6 +160,10 @@
 		<result property="ageOfTheMoon" column="AGEOFTHEMOON_"
 			jdbcType="INTEGER" />
 		<result property="remark" column="REMARK_" jdbcType="VARCHAR" />
+		<result property="provinceId" column="PROVINCEID_"
+			jdbcType="BIGINT" />
+		<result property="cityId" column="CITYID_" jdbcType="BIGINT" />
+		<result property="areaId" column="AREAID_" jdbcType="BIGINT" />
 		<result property="confirmBy" column="CONFIRMBY_"
 			jdbcType="VARCHAR" />
 		<result property="confirmTime" column="CONFIRMTIME_"
@@ -433,6 +437,15 @@
 			</if>
 			<if test="remark != null">
 				,REMARK_
+			</if>
+			<if test="provinceId != null">
+				,PROVINCEID_
+			</if>
+			<if test="cityId != null">
+				,CITYID_
+			</if>
+			<if test="areaId != null">
+				,AREAID_
 			</if>
 			<if test="confirmBy != null">
 				,CONFIRMBY_
@@ -709,6 +722,15 @@
 			<if test="remark != null">
 				,#{remark, jdbcType=VARCHAR}
 			</if>
+			<if test="provinceId != null">
+				,#{provinceId, jdbcType=BIGINT}
+			</if>
+			<if test="cityId != null">
+				,#{cityId, jdbcType=BIGINT}
+			</if>
+			<if test="areaId != null">
+				,#{areaId, jdbcType=BIGINT}
+			</if>
 			<if test="confirmBy != null">
 				,#{confirmBy, jdbcType=VARCHAR}
 			</if>
@@ -815,6 +837,9 @@
 		,MONTH_
 		,AGEOFTHEMOON_
 		,REMARK_
+		,PROVINCEID_
+		,CITYID_
+		,AREAID_
 		,CONFIRMBY_
 		,CONFIRMTIME_
 		,CREATEBY_
@@ -910,6 +935,9 @@
 			,#{medicalExamination.month, jdbcType=INTEGER}
 			,#{medicalExamination.ageOfTheMoon, jdbcType=INTEGER}
 			,#{medicalExamination.remark, jdbcType=VARCHAR}
+			,#{medicalExamination.provinceId, jdbcType=BIGINT}
+			,#{medicalExamination.cityId, jdbcType=BIGINT}
+			,#{medicalExamination.areaId, jdbcType=BIGINT}
 			,#{medicalExamination.confirmBy, jdbcType=VARCHAR}
 			,#{medicalExamination.confirmTime, jdbcType=TIMESTAMP}
 			,#{medicalExamination.createBy, jdbcType=VARCHAR}
@@ -1012,11 +1040,15 @@
 			,MONTH_
 			,AGEOFTHEMOON_
 			,REMARK_
+			,PROVINCEID_
+			,CITYID_
+			,AREAID_
 			,CONFIRMBY_
 			,CONFIRMTIME_
 			,CREATEBY_
 			,CREATETIME_
-			) values (
+			)
+			values (
 			#{medicalExamination.id, jdbcType=BIGINT}
 			,#{medicalExamination.batchId, jdbcType=BIGINT}
 			,#{medicalExamination.checkId, jdbcType=VARCHAR}
@@ -1104,6 +1136,9 @@
 			,#{medicalExamination.month, jdbcType=INTEGER}
 			,#{medicalExamination.ageOfTheMoon, jdbcType=INTEGER}
 			,#{medicalExamination.remark, jdbcType=VARCHAR}
+			,#{medicalExamination.provinceId, jdbcType=BIGINT}
+			,#{medicalExamination.cityId, jdbcType=BIGINT}
+			,#{medicalExamination.areaId, jdbcType=BIGINT}
 			,#{medicalExamination.confirmBy, jdbcType=VARCHAR}
 			,#{medicalExamination.confirmTime, jdbcType=TIMESTAMP}
 			,#{medicalExamination.createBy, jdbcType=VARCHAR}
@@ -1380,6 +1415,15 @@
 			<if test="remark != null">
 				REMARK_ = #{remark, jdbcType=VARCHAR},
 			</if>
+			<if test="provinceId != null">
+				PROVINCEID_ = #{provinceId, jdbcType=BIGINT},
+			</if>
+			<if test="cityId != null">
+				CITYID_ = #{cityId, jdbcType=BIGINT},
+			</if>
+			<if test="areaId != null">
+				AREAID_ = #{areaId, jdbcType=BIGINT},
+			</if>
 			<if test="confirmBy != null">
 				CONFIRMBY_ = #{confirmBy, jdbcType=VARCHAR},
 			</if>
@@ -1457,6 +1501,18 @@
 
 		<if test="month != null">
 			and E.MONTH_ = #{month}
+		</if>
+
+		<if test="provinceId != null">
+			and E.PROVINCEID_ = #{provinceId}
+		</if>
+
+		<if test="cityId != null">
+			and E.CITYID_ = #{cityId}
+		</if>
+
+		<if test="areaId != null">
+			and E.AREAID_ = #{areaId}
 		</if>
 
 		<if test="checkDateLessThanOrEqual != null">
@@ -1559,7 +1615,7 @@
 			<if test="heightLessThanOrEqual != null">
 				and E.HEIGHT_ &lt;= #{heightLessThanOrEqual}
 			</if>
-			
+
 			<if test="heightLevelGreaterThanOrEqual != null">
 				and E.HEIGHTLEVEL_ &gt;= #{heightLevelGreaterThanOrEqual}
 			</if>
@@ -1838,6 +1894,18 @@
 
 			<if test="remarkLike != null and remarkLike != '' ">
 				and E.REMARK_ like #{remarkLike}
+			</if>
+
+			<if test="provinceId != null">
+				and E.PROVINCEID_ = #{provinceId}
+			</if>
+
+			<if test="cityId != null">
+				and E.CITYID_ = #{cityId}
+			</if>
+
+			<if test="areaId != null">
+				and E.AREAID_ = #{areaId}
 			</if>
 
 			<if test="confirmBy != null and confirmBy != '' ">

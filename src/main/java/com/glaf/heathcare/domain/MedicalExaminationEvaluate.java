@@ -69,6 +69,24 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable {
 	protected String tenantId;
 
 	/**
+	 * 省/直辖市编号
+	 */
+	@Column(name = "PROVINCEID_")
+	protected long provinceId;
+
+	/**
+	 * 市编号
+	 */
+	@Column(name = "CITYID_")
+	protected long cityId;
+
+	/**
+	 * 区/县编号
+	 */
+	@Column(name = "AREAID_")
+	protected long areaId;
+
+	/**
 	 * 班级编号
 	 */
 	@Column(name = "GRADEID_", length = 50)
@@ -274,6 +292,10 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable {
 		return ageOfTheMoon;
 	}
 
+	public long getAreaId() {
+		return areaId;
+	}
+
 	public long getBatchId() {
 		return this.batchId;
 	}
@@ -311,6 +333,10 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable {
 
 	public String getCheckId() {
 		return this.checkId;
+	}
+
+	public long getCityId() {
+		return cityId;
 	}
 
 	public Date getCreateTime() {
@@ -370,6 +396,10 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable {
 
 	public String getPersonId() {
 		return this.personId;
+	}
+
+	public long getProvinceId() {
+		return provinceId;
 	}
 
 	public String getSex() {
@@ -457,6 +487,10 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable {
 		this.ageOfTheMoon = ageOfTheMoon;
 	}
 
+	public void setAreaId(long areaId) {
+		this.areaId = areaId;
+	}
+
 	public void setBatchId(long batchId) {
 		this.batchId = batchId;
 	}
@@ -487,6 +521,10 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable {
 
 	public void setCheckId(String checkId) {
 		this.checkId = checkId;
+	}
+
+	public void setCityId(long cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setCreateTime(Date createTime) {
@@ -539,6 +577,10 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable {
 
 	public void setPersonId(String personId) {
 		this.personId = personId;
+	}
+
+	public void setProvinceId(long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public void setSex(String sex) {

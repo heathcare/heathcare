@@ -69,6 +69,7 @@ public class MedicalExaminationEvaluateCountBean {
 
 	public void execute(String tenantId) {
 		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
+		SysTenantService sysTenantService = ContextFactory.getBean("sysTenantService");
 		GrowthStandardService growthStandardService = ContextFactory
 				.getBean("com.glaf.heathcare.service.growthStandardService");
 		MedicalExaminationService medicalExaminationService = ContextFactory
@@ -115,6 +116,8 @@ public class MedicalExaminationEvaluateCountBean {
 					DBUtils.createTable(database.getName(), tableDefinition);
 				}
 			}
+			
+			SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
 
 			GradeInfoQuery query0 = new GradeInfoQuery();
 			query0.tenantId(tenantId);
@@ -423,6 +426,9 @@ public class MedicalExaminationEvaluateCountBean {
 										cnt.setPrctileWeightObesityPercent(
 												cnt.getPrctileWeightObesity() * 1.0D / cnt.getCheckPerson());
 									}
+									cnt.setProvinceId(tenant.getProvinceId());
+									cnt.setCityId(tenant.getCityId());
+									cnt.setAreaId(tenant.getAreaId());
 								}
 
 								if (database != null) {

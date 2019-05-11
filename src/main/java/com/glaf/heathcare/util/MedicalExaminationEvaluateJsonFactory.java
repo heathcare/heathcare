@@ -58,6 +58,15 @@ public class MedicalExaminationEvaluateJsonFactory {
 		if (jsonObject.containsKey("tenantId")) {
 			model.setTenantId(jsonObject.getString("tenantId"));
 		}
+		if (jsonObject.containsKey("provinceId")) {
+			model.setProvinceId(jsonObject.getLong("provinceId"));
+		}
+		if (jsonObject.containsKey("cityId")) {
+			model.setCityId(jsonObject.getLong("cityId"));
+		}
+		if (jsonObject.containsKey("areaId")) {
+			model.setAreaId(jsonObject.getLong("areaId"));
+		}
 		if (jsonObject.containsKey("gradeId")) {
 			model.setGradeId(jsonObject.getString("gradeId"));
 		}
@@ -154,6 +163,10 @@ public class MedicalExaminationEvaluateJsonFactory {
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
 		jsonObject.put("batchId", model.getBatchId());
+		jsonObject.put("provinceId", model.getProvinceId());
+		jsonObject.put("cityId", model.getCityId());
+		jsonObject.put("areaId", model.getAreaId());
+
 		if (model.getCheckId() != null) {
 			jsonObject.put("checkId", model.getCheckId());
 		}
@@ -225,6 +238,10 @@ public class MedicalExaminationEvaluateJsonFactory {
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
 		jsonObject.put("batchId", model.getBatchId());
+		jsonObject.put("provinceId", model.getProvinceId());
+		jsonObject.put("cityId", model.getCityId());
+		jsonObject.put("areaId", model.getAreaId());
+
 		if (model.getCheckId() != null) {
 			jsonObject.put("checkId", model.getCheckId());
 		}

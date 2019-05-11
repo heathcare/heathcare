@@ -34,6 +34,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.glaf.base.modules.sys.model.SysTenant;
+import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ExcelXlsxUtils;
@@ -52,9 +54,12 @@ public class MedicalExaminationXlsxImporter {
 	public String importData(String tenantId, String gradeId, String type, Date checkDate,
 			List<MedicalExaminationXlsArea> areas, java.io.InputStream inputStream) {
 		logger.debug("----------------MedicalExaminationXlsxReader------------------");
+		SysTenantService sysTenantService = ContextFactory.getBean("sysTenantService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		MedicalExaminationService medicalExaminationService = ContextFactory
 				.getBean("com.glaf.heathcare.service.medicalExaminationService");
+		SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+
 		List<Person> persons = null;
 		if (StringUtils.isNotEmpty(gradeId)) {
 			persons = personService.getPersons(gradeId);
@@ -182,6 +187,9 @@ public class MedicalExaminationXlsxImporter {
 									}
 								}
 							}
+							exam.setProvinceId(tenant.getProvinceId());
+							exam.setCityId(tenant.getCityId());
+							exam.setAreaId(tenant.getAreaId());
 							exams.add(exam);
 						}
 					}

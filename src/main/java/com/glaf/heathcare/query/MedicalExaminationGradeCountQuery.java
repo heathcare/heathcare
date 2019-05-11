@@ -31,9 +31,20 @@ public class MedicalExaminationGradeCountQuery extends DataQuery {
 	protected Integer year;
 	protected Integer month;
 	protected String type;
+	protected Long provinceId;
+	protected Long cityId;
+	protected Long areaId;
 
 	public MedicalExaminationGradeCountQuery() {
 
+	}
+
+	public MedicalExaminationGradeCountQuery areaId(Long areaId) {
+		if (areaId == null) {
+			throw new RuntimeException("areaId is null");
+		}
+		this.areaId = areaId;
+		return this;
 	}
 
 	public MedicalExaminationGradeCountQuery checkId(String checkId) {
@@ -52,12 +63,28 @@ public class MedicalExaminationGradeCountQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalExaminationGradeCountQuery cityId(Long cityId) {
+		if (cityId == null) {
+			throw new RuntimeException("cityId is null");
+		}
+		this.cityId = cityId;
+		return this;
+	}
+
+	public Long getAreaId() {
+		return areaId;
+	}
+
 	public String getCheckId() {
 		return checkId;
 	}
 
 	public List<String> getCheckIds() {
 		return checkIds;
+	}
+
+	public Long getCityId() {
+		return cityId;
 	}
 
 	public String getGradeId() {
@@ -199,6 +226,10 @@ public class MedicalExaminationGradeCountQuery extends DataQuery {
 		return orderBy;
 	}
 
+	public Long getProvinceId() {
+		return provinceId;
+	}
+
 	public String getTenantId() {
 		return tenantId;
 	}
@@ -274,12 +305,28 @@ public class MedicalExaminationGradeCountQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalExaminationGradeCountQuery provinceId(Long provinceId) {
+		if (provinceId == null) {
+			throw new RuntimeException("provinceId is null");
+		}
+		this.provinceId = provinceId;
+		return this;
+	}
+
+	public void setAreaId(Long areaId) {
+		this.areaId = areaId;
+	}
+
 	public void setCheckId(String checkId) {
 		this.checkId = checkId;
 	}
 
 	public void setCheckIds(List<String> checkIds) {
 		this.checkIds = checkIds;
+	}
+
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setGradeId(String gradeId) {
@@ -292,6 +339,10 @@ public class MedicalExaminationGradeCountQuery extends DataQuery {
 
 	public void setMonth(Integer month) {
 		this.month = month;
+	}
+
+	public void setProvinceId(Long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public void setTenantId(String tenantId) {

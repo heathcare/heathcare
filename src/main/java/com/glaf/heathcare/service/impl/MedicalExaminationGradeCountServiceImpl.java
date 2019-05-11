@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.glaf.base.modules.sys.model.SysTenant;
+import com.glaf.base.modules.sys.service.SysTenantService;
 import com.glaf.core.dao.EntityDAO;
 import com.glaf.core.id.IdGenerator;
 import com.glaf.core.jdbc.DBConnectionFactory;
@@ -46,6 +48,8 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 	protected GrowthRateCountService growthRateCountService;
 
 	protected PhysicalGrowthCountService physicalGrowthCountService;
+
+	protected SysTenantService sysTenantService;
 
 	public MedicalExaminationGradeCountServiceImpl() {
 
@@ -107,25 +111,6 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 		return medicalExaminationGradeCountMapper.getMedicalExaminationGradeCountCount(query);
 	}
 
-	/**
-	 * 根据查询参数获取一页的数据
-	 * 
-	 * @return
-	 */
-	public List<MedicalExaminationGradeCount> getMedicalExaminationGradeCountsByQueryCriteria(int start, int pageSize,
-			MedicalExaminationGradeCountQuery query) {
-		RowBounds rowBounds = new RowBounds(start, pageSize);
-		List<MedicalExaminationGradeCount> rows = sqlSessionTemplate.selectList("getMedicalExaminationGradeCounts",
-				query, rowBounds);
-		return rows;
-	}
-
-	public List<MedicalExaminationGradeCount> list(MedicalExaminationGradeCountQuery query) {
-		List<MedicalExaminationGradeCount> list = medicalExaminationGradeCountMapper
-				.getMedicalExaminationGradeCounts(query);
-		return list;
-	}
-
 	public List<MedicalExaminationGradeCount> getMedicalExaminationGradeCountList(String tenantId, String checkId) {
 		MedicalExaminationGradeCountQuery query = new MedicalExaminationGradeCountQuery();
 		query.tenantId(tenantId);
@@ -175,16 +160,43 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 		}
 		return list;
 	}
-	
+
+	/**
+	 * 根据查询参数获取一页的数据
+	 * 
+	 * @return
+	 */
+	public List<MedicalExaminationGradeCount> getMedicalExaminationGradeCountsByQueryCriteria(int start, int pageSize,
+			MedicalExaminationGradeCountQuery query) {
+		RowBounds rowBounds = new RowBounds(start, pageSize);
+		List<MedicalExaminationGradeCount> rows = sqlSessionTemplate.selectList("getMedicalExaminationGradeCounts",
+				query, rowBounds);
+		return rows;
+	}
+
+	public List<MedicalExaminationGradeCount> list(MedicalExaminationGradeCountQuery query) {
+		List<MedicalExaminationGradeCount> list = medicalExaminationGradeCountMapper
+				.getMedicalExaminationGradeCounts(query);
+		return list;
+	}
+
 	@Transactional
-	public void saveAll(String tenantId, String type, int year, int month, Collection<MedicalExaminationGradeCount> list) {
+	public void saveAll(String tenantId, String type, int year, int month,
+			Collection<MedicalExaminationGradeCount> list) {
 		MedicalExaminationGradeCountQuery query = new MedicalExaminationGradeCountQuery();
 		query.tenantId(tenantId);
 		query.type(type);
 		query.year(year);
 		query.month(month);
 		medicalExaminationGradeCountMapper.deleteMedicalExaminationGradeCount(query);
-		
+
+		SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+		for (MedicalExaminationGradeCount model : list) {
+			model.setAreaId(tenant.getAreaId());
+			model.setCityId(tenant.getCityId());
+			model.setProvinceId(tenant.getProvinceId());
+		}
+
 		this.bulkInsert(list);
 	}
 
@@ -240,6 +252,14 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 
 			growthRateCountService.bulkInsert(rows1);
 			physicalGrowthCountService.bulkInsert(rows2);
+
+			SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
+			for (MedicalExaminationGradeCount model : list) {
+				model.setAreaId(tenant.getAreaId());
+				model.setCityId(tenant.getCityId());
+				model.setProvinceId(tenant.getProvinceId());
+			}
+
 			this.bulkInsert(list);
 		}
 	}
@@ -247,12 +267,6 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 	@javax.annotation.Resource
 	public void setEntityDAO(EntityDAO entityDAO) {
 		this.entityDAO = entityDAO;
-	}
-
-	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.MedicalExaminationGradeCountMapper")
-	public void setMedicalExaminationGradeCountMapper(
-			MedicalExaminationGradeCountMapper medicalExaminationGradeCountMapper) {
-		this.medicalExaminationGradeCountMapper = medicalExaminationGradeCountMapper;
 	}
 
 	@javax.annotation.Resource(name = "com.glaf.heathcare.service.growthRateCountService")
@@ -270,6 +284,12 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
+	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.MedicalExaminationGradeCountMapper")
+	public void setMedicalExaminationGradeCountMapper(
+			MedicalExaminationGradeCountMapper medicalExaminationGradeCountMapper) {
+		this.medicalExaminationGradeCountMapper = medicalExaminationGradeCountMapper;
+	}
+
 	@javax.annotation.Resource(name = "com.glaf.heathcare.service.physicalGrowthCountService")
 	public void setPhysicalGrowthCountService(PhysicalGrowthCountService physicalGrowthCountService) {
 		this.physicalGrowthCountService = physicalGrowthCountService;
@@ -278,6 +298,11 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 	@javax.annotation.Resource
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	@javax.annotation.Resource
+	public void setSysTenantService(SysTenantService sysTenantService) {
+		this.sysTenantService = sysTenantService;
 	}
 
 }

@@ -13,6 +13,10 @@
 		<result property="jobNo" column="JOBNO_" jdbcType="VARCHAR" />
 		<result property="tenantId" column="TENANTID_"
 			jdbcType="VARCHAR" />
+		<result property="provinceId" column="PROVINCEID_"
+			jdbcType="BIGINT" />
+		<result property="cityId" column="CITYID_" jdbcType="BIGINT" />
+		<result property="areaId" column="AREAID_" jdbcType="BIGINT" />
 		<result property="gradeId" column="GRADEID_" jdbcType="VARCHAR" />
 		<result property="personId" column="PERSONID_"
 			jdbcType="VARCHAR" />
@@ -73,6 +77,15 @@
 			</if>
 			<if test="tenantId != null">
 				,TENANTID_
+			</if>
+			<if test="provinceId != null">
+				,PROVINCEID_
+			</if>
+			<if test="cityId != null">
+				,CITYID_
+			</if>
+			<if test="areaId != null">
+				,AREAID_
 			</if>
 			<if test="gradeId != null">
 				,GRADEID_
@@ -166,6 +179,15 @@
 			<if test="tenantId != null">
 				,#{tenantId, jdbcType=VARCHAR}
 			</if>
+			<if test="provinceId != null">
+				,#{provinceId, jdbcType=BIGINT}
+			</if>
+			<if test="cityId != null">
+				,#{cityId, jdbcType=BIGINT}
+			</if>
+			<if test="areaId != null">
+				,#{areaId, jdbcType=BIGINT}
+			</if>
 			<if test="gradeId != null">
 				,#{gradeId, jdbcType=VARCHAR}
 			</if>
@@ -253,6 +275,9 @@
 		,CHECKID_
 		,JOBNO_
 		,TENANTID_
+		,PROVINCEID_
+		,CITYID_
+		,AREAID_
 		,GRADEID_
 		,PERSONID_
 		,NAME_
@@ -292,6 +317,12 @@
 			jdbcType=VARCHAR}
 			,#{medicalExaminationEvaluate.tenantId,
 			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.provinceId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.cityId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.areaId,
+			jdbcType=BIGINT}
 			,#{medicalExaminationEvaluate.gradeId,
 			jdbcType=VARCHAR}
 			,#{medicalExaminationEvaluate.personId,
@@ -336,6 +367,9 @@
 			,CHECKID_
 			,JOBNO_
 			,TENANTID_
+			,PROVINCEID_
+			,CITYID_
+			,AREAID_
 			,GRADEID_
 			,PERSONID_
 			,NAME_
@@ -372,6 +406,12 @@
 			jdbcType=VARCHAR}
 			,#{medicalExaminationEvaluate.tenantId,
 			jdbcType=VARCHAR}
+			,#{medicalExaminationEvaluate.provinceId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.cityId,
+			jdbcType=BIGINT}
+			,#{medicalExaminationEvaluate.areaId,
+			jdbcType=BIGINT}
 			,#{medicalExaminationEvaluate.gradeId,
 			jdbcType=VARCHAR}
 			,#{medicalExaminationEvaluate.personId,
@@ -643,6 +683,18 @@
 
 			<if test="month != null">
 				and E.MONTH_ = #{month}
+			</if>
+
+			<if test="provinceId != null">
+				and E.PROVINCEID_ = #{provinceId}
+			</if>
+
+			<if test="cityId != null">
+				and E.CITYID_ = #{cityId}
+			</if>
+
+			<if test="areaId != null">
+				and E.AREAID_ = #{areaId}
 			</if>
 
 			<if test="createTimeGreaterThanOrEqual != null">
