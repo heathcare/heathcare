@@ -54,7 +54,6 @@ import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.UUID32;
 import com.glaf.core.util.security.RSAUtils;
-
 import com.glaf.matrix.data.bean.TableDataBean;
 import com.glaf.matrix.data.domain.DataFileEntity;
 import com.glaf.matrix.data.domain.DataModel;
@@ -286,17 +285,6 @@ public class DataFileController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/init")
-	public byte[] init(HttpServletRequest request) {
-		LoginContext loginContext = RequestUtils.getLoginContext(request);
-		if (loginContext.isSystemAdministrator()) {
-			DataFileFactory.getInstance().checkAndCreateFileDB();
-			return ResponseUtils.responseJsonResult(true);
-		}
-		return ResponseUtils.responseJsonResult(false);
-	}
-
-	@ResponseBody
 	@RequestMapping("/getRedisKeys")
 	public byte[] getRedisKeys(HttpServletRequest request) {
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
@@ -314,6 +302,17 @@ public class DataFileController {
 					return array.toJSONString().getBytes();
 				}
 			}
+		}
+		return ResponseUtils.responseJsonResult(false);
+	}
+
+	@ResponseBody
+	@RequestMapping("/init")
+	public byte[] init(HttpServletRequest request) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (loginContext.isSystemAdministrator()) {
+			DataFileFactory.getInstance().checkAndCreateFileDB();
+			return ResponseUtils.responseJsonResult(true);
 		}
 		return ResponseUtils.responseJsonResult(false);
 	}

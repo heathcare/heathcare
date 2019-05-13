@@ -32,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.glaf.modules.dictory.util.*;
 import com.glaf.core.base.JSONable;
 
-@Entity
+@Entity(name = "TDictory")
 @Table(name = "T_DICTORY")
 public class Dictory implements Serializable, JSONable {
 
@@ -41,7 +41,7 @@ public class Dictory implements Serializable, JSONable {
 	@Id
 	@Column(name = "ID", nullable = false)
 	protected long id;
-	
+
 	/**
 	 * 所属租户
 	 */
@@ -251,8 +251,6 @@ public class Dictory implements Serializable, JSONable {
 	public Dictory() {
 
 	}
-	
-	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -268,13 +266,9 @@ public class Dictory implements Serializable, JSONable {
 		return true;
 	}
 
-
-
 	public String getCategory() {
 		return category;
 	}
-
-
 
 	public String getCode() {
 		return this.code;

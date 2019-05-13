@@ -18,28 +18,17 @@
 
 package com.glaf.matrix.data.web.springmvc;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jxls.common.Context;
-import org.jxls.transform.poi.PoiTransformer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,10 +46,9 @@ import com.glaf.core.util.Constants;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.LowerLinkedMap;
 import com.glaf.core.util.RequestUtils;
-import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.security.RSAUtils;
+
 import com.glaf.matrix.data.bean.TableDataBean;
-import com.glaf.matrix.data.bean.TableExcelExportBean;
 import com.glaf.matrix.data.domain.Comment;
 import com.glaf.matrix.data.domain.DataModel;
 import com.glaf.matrix.data.domain.SqlCriteria;
@@ -71,9 +59,6 @@ import com.glaf.matrix.data.factory.DataItemFactory;
 import com.glaf.matrix.data.service.ITableService;
 import com.glaf.matrix.data.service.SqlCriteriaService;
 import com.glaf.matrix.data.service.TableCorrelationService;
-import com.glaf.report.bean.ReportContainer;
-import com.glaf.report.data.ReportDefinition;
-import com.glaf.report.data.ReportPreprocessor;
 
 @Controller("/tableData")
 @RequestMapping("/tableData")
@@ -354,6 +339,87 @@ public class TableDataController {
 
 		return new ModelAndView("/tableData/datalist", modelMap);
 	}
+	
+	@RequestMapping("/datalistview")
+	public ModelAndView datalistview(HttpServletRequest request, ModelMap modelMap) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		RequestUtils.setRequestParameterToAttribute(request);
+		request.setAttribute("canEdit", true);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		logger.debug("params:" + params);
+		String tableId = request.getParameter("tableId");
+		if (StringUtils.isNotEmpty(tableId)) {
+			SysTable sysTable = tableService.getSysTableById(tableId);
+			if (sysTable != null) {
+				List<TableColumn> columns = tableService.getTableColumnsByTableId(tableId);
+				if (columns != null && !columns.isEmpty()) {
+					List<TableColumn> list = new ArrayList<TableColumn>();
+					for (TableColumn column : columns) {
+						if (column.getDisplayType() == 2 || column.getDisplayType() == 4) {
+							list.add(column);
+						}
+					}
+					request.setAttribute("columns", columns);
+					request.setAttribute("table", sysTable);
+					request.setAttribute("sysTable", sysTable);
+					request.setAttribute("tableDefinition", sysTable);
+				}
+
+				List<TableCorrelation> list = tableCorrelationService.getTableCorrelationsByMasterTableId(tableId);
+				if (list != null && !list.isEmpty()) {
+					List<SysTable> correlations = new ArrayList<SysTable>();
+					for (TableCorrelation t : list) {
+						SysTable table = tableService.getSysTableById(t.getSlaveTableId());
+						table.setTableCorrelation(t);
+						correlations.add(table);
+					}
+					request.setAttribute("correlations", correlations);
+				}
+
+				list = tableCorrelationService.getTableCorrelationsBySlaveTableId(tableId);
+				if (list != null && !list.isEmpty()) {
+					TableCorrelation tc = list.get(0);
+					SysTable masterTable = tableService.getSysTableById(tc.getMasterTableId());
+					long topId = RequestUtils.getLong(request, "topId");
+					if (topId > 0) {
+						TableDataBean tableDataBean = new TableDataBean();
+						DataModel dataModel = tableDataBean.getDataModelById(loginContext, masterTable, topId);
+						if (dataModel != null) {
+							LowerLinkedMap dataMap = new LowerLinkedMap();
+							dataMap.putAll(dataModel.getDataMap());
+							int business_status = dataModel.getBusinessStatus();
+							if (business_status == 9) {
+								request.setAttribute("canEdit", false);
+							}
+						}
+					}
+				}
+
+				// SqlCriteriaQuery query2 = new SqlCriteriaQuery();
+				// query2.businessKey(sysTable.getTableName());
+				// query2.moduleId(tableId);
+				List<SqlCriteria> sqlCriterias = sqlCriteriaService.getSqlCriterias(sysTable.getTableName(), tableId);
+				if (sqlCriterias != null && !sqlCriterias.isEmpty()) {
+					for (SqlCriteria col : sqlCriterias) {
+						if (StringUtils.isNotEmpty(request.getParameter(col.getParamName()))) {
+							col.setValue(request.getParameter(col.getParamName()));
+							if (col.getValue() != null) {
+								col.setValueEnc(RequestUtils.encodeString(col.getValue().toString()));
+							}
+						}
+					}
+					request.setAttribute("sqlCriterias", sqlCriterias);
+				}
+			}
+		}
+
+		String view = request.getParameter("view");
+		if (StringUtils.isNotEmpty(view)) {
+			return new ModelAndView(view, modelMap);
+		}
+
+		return new ModelAndView("/tableData/datalistview", modelMap);
+	}
 
 	@RequestMapping("/edit")
 	public ModelAndView edit(HttpServletRequest request, ModelMap modelMap) {
@@ -542,83 +608,6 @@ public class TableDataController {
 		}
 
 		return new ModelAndView("/tableData/edit", modelMap);
-	}
-
-	@ResponseBody
-	@RequestMapping("/exportXls")
-	public void exportXls(HttpServletRequest request, HttpServletResponse response) {
-		LoginContext loginContext = RequestUtils.getLoginContext(request);
-		Map<String, Object> params = RequestUtils.getParameterMap(request);
-		// String systemName = Environment.getCurrentSystemName();
-		ReportDefinition rdf = null;
-		ReportPreprocessor reportPreprocessor = null;
-		byte[] bytes = null;
-		InputStream is = null;
-		ByteArrayInputStream bais = null;
-		ByteArrayOutputStream baos = null;
-		BufferedOutputStream bos = null;
-		try {
-			// EnvUtils.setEnv(loginContext, false);// 切换到读库
-			request.setAttribute("exportXls", true);
-			String reportId = null;
-			String tableId = request.getParameter("tableId");
-			if (StringUtils.isNotEmpty(tableId)) {
-				SysTable sysTable = tableService.getSysTableById(tableId);
-				if (sysTable != null) {
-					reportId = sysTable.getReportId();
-				}
-			}
-
-			if (StringUtils.isNotEmpty(reportId)) {
-				rdf = ReportContainer.getContainer().getReportDefinition(reportId);
-			}
-
-			if (rdf != null && rdf.getData() != null) {
-				if (StringUtils.isNotEmpty(rdf.getPrepareClass())) {
-					reportPreprocessor = (ReportPreprocessor) com.glaf.core.util.ReflectUtils
-							.instantiate(rdf.getPrepareClass());
-					reportPreprocessor.prepare(loginContext, params);
-				}
-				bais = new ByteArrayInputStream(rdf.getData());
-				is = new BufferedInputStream(bais);
-				baos = new ByteArrayOutputStream();
-				bos = new BufferedOutputStream(baos);
-
-				Context context2 = PoiTransformer.createInitialContext();
-
-				Set<Entry<String, Object>> entrySet = params.entrySet();
-				for (Entry<String, Object> entry : entrySet) {
-					String key = entry.getKey();
-					Object value = entry.getValue();
-					context2.putVar(key, value);
-				}
-
-				org.jxls.util.JxlsHelper.getInstance().processTemplate(is, bos, context2);
-
-				bos.flush();
-				baos.flush();
-				bytes = baos.toByteArray();
-			} else {
-				TableExcelExportBean exportBean = new TableExcelExportBean();
-				// long databaseId = loginContext.getTenant().getDatabaseId();
-				XSSFWorkbook wb = exportBean.export(request);
-				baos = new ByteArrayOutputStream();
-				bos = new BufferedOutputStream(baos);
-				wb.write(bos);
-				bos.flush();
-				baos.flush();
-				bytes = baos.toByteArray();
-			}
-			ResponseUtils.download(request, response, bytes, "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xlsx");
-		} catch (Exception ex) {
-			logger.error(ex);
-		} finally {
-			// Environment.setCurrentSystemName(systemName);
-			com.glaf.core.util.IOUtils.closeStream(is);
-			com.glaf.core.util.IOUtils.closeStream(bais);
-			com.glaf.core.util.IOUtils.closeStream(baos);
-			com.glaf.core.util.IOUtils.closeStream(bos);
-		}
 	}
 
 	@ResponseBody

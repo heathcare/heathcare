@@ -59,7 +59,7 @@ public class PieChartGen implements ChartGen {
 			cell.setColumnName("col_" + i);
 			cell.setSeries("条目" + i);
 			cell.setDoubleValue(rand.nextInt(100) + 1.0);
-			chartModel.addColumn(cell);
+			chartModel.addCellData(cell);
 		}
 		PieChartGen chartDemo = new PieChartGen();
 		JFreeChart chart = chartDemo.createChart(chartModel);

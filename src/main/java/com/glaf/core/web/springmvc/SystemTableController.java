@@ -1018,7 +1018,7 @@ public class SystemTableController {
 
 	@ResponseBody
 	@RequestMapping("/updateHibernateDDL")
-	public byte[] updateHibernateDDL(HttpServletRequest request) throws IOException {
+	public byte[] updateHibernateDDL(HttpServletRequest request) {
 		String systemName = request.getParameter("systemName");
 		String currentName = Environment.getCurrentSystemName();
 		try {

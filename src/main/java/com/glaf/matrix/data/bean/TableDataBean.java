@@ -754,10 +754,10 @@ public class TableDataBean {
 									subOrganizationIds = new HashSet<Long>();
 								}
 								subOrganizationIds.add(loginContext.getOrganizationId());
-								
+
 							} else {
 								if (loginContext.getOrganizationId() > 0) {
-								
+
 								}
 
 							}

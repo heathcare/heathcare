@@ -58,7 +58,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.glaf.chart.domain.Chart;
 import com.glaf.chart.query.ChartQuery;
-import com.glaf.chart.service.IChartService;
+import com.glaf.chart.service.ChartService;
+
 import com.glaf.core.config.ViewProperties;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.DateUtils;
@@ -93,7 +94,7 @@ public class ReportController {
 
 	protected IReportService reportService;
 
-	protected IChartService chartService;
+	protected ChartService chartService;
 
 	protected SqlDefinitionService sqlDefinitionService;
 
@@ -796,7 +797,7 @@ public class ReportController {
 	}
 
 	@javax.annotation.Resource
-	public void setChartService(IChartService chartService) {
+	public void setChartService(ChartService chartService) {
 		this.chartService = chartService;
 	}
 

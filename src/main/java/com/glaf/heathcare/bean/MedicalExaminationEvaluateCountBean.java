@@ -116,7 +116,7 @@ public class MedicalExaminationEvaluateCountBean {
 					DBUtils.createTable(database.getName(), tableDefinition);
 				}
 			}
-			
+
 			SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
 
 			GradeInfoQuery query0 = new GradeInfoQuery();
@@ -181,6 +181,9 @@ public class MedicalExaminationEvaluateCountBean {
 								org.apache.commons.beanutils.PropertyUtils.copyProperties(model, exam);
 
 								model.setTenantId(tenantId);
+								model.setProvinceId(tenant.getProvinceId());
+								model.setCityId(tenant.getCityId());
+								model.setAreaId(tenant.getAreaId());
 								model.setGradeId(person.getGradeId());
 								model.setBirthday(person.getBirthday());
 								model.setSex(person.getSex());

@@ -31,7 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jfree.chart.JFreeChart;
 
-import com.glaf.chart.bean.ChartDataBean;
+import com.glaf.chart.bean.ChartDataManager;
 import com.glaf.chart.domain.Chart;
 import com.glaf.chart.gen.ChartGen;
 import com.glaf.chart.gen.JFreeChartFactory;
@@ -344,7 +344,7 @@ public class ReportFactory {
 						while (retry < 2 && !success) {
 							try {
 								retry++;
-								ChartDataBean manager = new ChartDataBean();
+								ChartDataManager manager = new ChartDataManager();
 								Chart chart = manager.getChartAndFetchDataById(chartId, params,
 										Authentication.getAuthenticatedActorId());
 								createChart(chart, params);

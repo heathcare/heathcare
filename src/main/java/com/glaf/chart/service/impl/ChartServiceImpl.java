@@ -29,28 +29,27 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSON;
 import com.glaf.chart.domain.Chart;
 import com.glaf.chart.mapper.ChartMapper;
 import com.glaf.chart.query.ChartQuery;
-import com.glaf.chart.service.IChartService;
-import com.glaf.chart.util.ChartJsonFactory;
-import com.glaf.core.cache.CacheFactory;
-import com.glaf.core.config.SystemConfig;
-import com.glaf.core.id.IdGenerator;
+import com.glaf.chart.service.ChartService;
+
 import com.glaf.core.service.ITableDataService;
 import com.glaf.core.service.ITablePageService;
+import com.glaf.core.util.UUID32;
+import com.glaf.matrix.data.domain.SqlDefinition;
+import com.glaf.matrix.data.service.SqlDefinitionService;
 
 @Service("chartService")
 @Transactional(readOnly = true)
-public class ChartServiceImpl implements IChartService {
+public class ChartServiceImpl implements ChartService {
 	protected final static Log logger = LogFactory.getLog(ChartServiceImpl.class);
-
-	protected IdGenerator idGenerator;
 
 	protected SqlSessionTemplate sqlSessionTemplate;
 
 	protected ChartMapper chartMapper;
+
+	protected SqlDefinitionService sqlDefinitionService;
 
 	protected ITableDataService tableDataService;
 
@@ -61,7 +60,7 @@ public class ChartServiceImpl implements IChartService {
 	}
 
 	public int count(ChartQuery query) {
-		query.ensureInitialized();
+
 		return chartMapper.getChartCount(query);
 	}
 
@@ -85,25 +84,25 @@ public class ChartServiceImpl implements IChartService {
 		if (id == null) {
 			return null;
 		}
-
-		String cacheKey = "sys_chart_" + id;
-		if (SystemConfig.getBoolean("use_query_cache")) {
-			String text = CacheFactory.getString("chart", cacheKey);
-			if (StringUtils.isNotEmpty(text)) {
-				try {
-					com.alibaba.fastjson.JSONObject json = JSON.parseObject(text);
-					Chart chart = ChartJsonFactory.jsonToObject(json);
-					if (chart != null) {
-						return chart;
-					}
-				} catch (Exception ex) {
-				}
-			}
-		}
-
 		Chart chart = chartMapper.getChartById(id);
-		if (chart != null) {
-			CacheFactory.put("chart", cacheKey, chart.toJsonObject().toJSONString());
+		return chart;
+	}
+
+	/**
+	 * 根据别名获取图表定义
+	 * 
+	 * @param mapping
+	 * @return
+	 */
+	public Chart getChartByMapping(String mapping) {
+		Chart chart = null;
+		if (StringUtils.isNotEmpty(mapping)) {
+			ChartQuery query = new ChartQuery();
+			query.setMapping(mapping);
+			List<Chart> list = this.list(query);
+			if (list != null && !list.isEmpty()) {
+				chart = list.get(0);
+			}
 		}
 		return chart;
 	}
@@ -116,68 +115,11 @@ public class ChartServiceImpl implements IChartService {
 	 */
 	public Chart getChartByName(String name) {
 		Chart chart = null;
-
-		String cacheKey = "sys_chart_" + name;
-		if (SystemConfig.getBoolean("use_query_cache")) {
-			String text = CacheFactory.getString("chart", cacheKey);
-			if (StringUtils.isNotEmpty(text)) {
-				try {
-					com.alibaba.fastjson.JSONObject json = JSON.parseObject(text);
-					chart = ChartJsonFactory.jsonToObject(json);
-					if (chart != null) {
-						return chart;
-					}
-				} catch (Exception ex) {
-				}
-			}
-		}
-
 		ChartQuery query = new ChartQuery();
 		query.chartName(name);
 		List<Chart> list = this.list(query);
 		if (list != null && !list.isEmpty()) {
 			chart = list.get(0);
-			if (chart != null) {
-				CacheFactory.put("chart", cacheKey, chart.toJsonObject().toJSONString());
-			}
-		}
-		return chart;
-	}
-
-	/**
-	 * 根据别名获取图表定义
-	 * 
-	 * @param mapping
-	 * @return
-	 */
-	public Chart getChartByMapping(String mapping) {
-		Chart chart = null;
-
-		String cacheKey = "sys_chart_" + mapping;
-		if (SystemConfig.getBoolean("use_query_cache")) {
-			String text = CacheFactory.getString("chart", cacheKey);
-			if (StringUtils.isNotEmpty(text)) {
-				try {
-					com.alibaba.fastjson.JSONObject json = JSON.parseObject(text);
-					chart = ChartJsonFactory.jsonToObject(json);
-					if (chart != null) {
-						return chart;
-					}
-				} catch (Exception ex) {
-				}
-			}
-		}
-
-		if (StringUtils.isNotEmpty(mapping)) {
-			ChartQuery query = new ChartQuery();
-			query.setMapping(mapping);
-			List<Chart> list = this.list(query);
-			if (list != null && !list.isEmpty()) {
-				chart = list.get(0);
-				if (chart != null) {
-					CacheFactory.put("chart", cacheKey, chart.toJsonObject().toJSONString());
-				}
-			}
 		}
 		return chart;
 	}
@@ -203,7 +145,7 @@ public class ChartServiceImpl implements IChartService {
 	}
 
 	public List<Chart> list(ChartQuery query) {
-		query.ensureInitialized();
+
 		List<Chart> list = chartMapper.getCharts(query);
 		return list;
 	}
@@ -211,19 +153,21 @@ public class ChartServiceImpl implements IChartService {
 	@Transactional
 	public void save(Chart chart) {
 		if (StringUtils.isEmpty(chart.getId())) {
-			chart.setId(idGenerator.getNextId());
+			chart.setId(UUID32.generateShortUuid());
 			chart.setCreateDate(new Date());
 			chartMapper.insertChart(chart);
 		} else {
-			String cacheKey = "sys_chart_" + chart.getId();
-			CacheFactory.remove("sys_chart", cacheKey);
-			cacheKey = "sys_chart_" + chart.getMapping();
-			CacheFactory.remove("sys_chart", cacheKey);
-			cacheKey = "sys_chart_" + chart.getChartName();
-			CacheFactory.remove("sys_chart", cacheKey);
 			chartMapper.updateChart(chart);
 		}
-
+		if (chart.getQuerySQL() != null) {
+			SqlDefinition queryDefinition = new SqlDefinition();
+			queryDefinition.setCode(chart.getId());
+			queryDefinition.setName(chart.getChartName());
+			queryDefinition.setSql(chart.getQuerySQL());
+			queryDefinition.setTitle(chart.getSubject());
+			queryDefinition.setType("CHART");
+			sqlDefinitionService.save(queryDefinition);
+		}
 	}
 
 	@javax.annotation.Resource
@@ -232,8 +176,8 @@ public class ChartServiceImpl implements IChartService {
 	}
 
 	@javax.annotation.Resource
-	public void setIdGenerator(IdGenerator idGenerator) {
-		this.idGenerator = idGenerator;
+	public void setSqlDefinitionService(SqlDefinitionService sqlDefinitionService) {
+		this.sqlDefinitionService = sqlDefinitionService;
 	}
 
 	@javax.annotation.Resource

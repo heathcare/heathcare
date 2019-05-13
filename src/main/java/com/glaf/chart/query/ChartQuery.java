@@ -33,13 +33,10 @@ public class ChartQuery extends DataQuery {
 	protected String chartTitle;
 	protected String chartTitleLike;
 	protected String chartType;
-	protected String chartTypeLike;
-	protected List<String> chartTypes;
 	protected String imageType;
-	protected String imageTypeLike;
-	protected List<String> imageTypes;
 	protected String mapping;
 	protected String enableFlag;
+	protected String keywordsLike;
 	protected Date createDateGreaterThanOrEqual;
 	protected Date createDateLessThanOrEqual;
 	protected String createByLike;
@@ -104,30 +101,6 @@ public class ChartQuery extends DataQuery {
 		return this;
 	}
 
-	public ChartQuery chartTypeLike(String chartTypeLike) {
-		if (chartTypeLike == null) {
-			throw new RuntimeException("chartType is null");
-		}
-		this.chartTypeLike = chartTypeLike;
-		return this;
-	}
-
-	public ChartQuery chartTypes(List<String> chartTypes) {
-		if (chartTypes == null) {
-			throw new RuntimeException("chartTypes is empty ");
-		}
-		this.chartTypes = chartTypes;
-		return this;
-	}
-
-	public ChartQuery createBy(String createBy) {
-		if (createBy == null) {
-			throw new RuntimeException("createBy is null");
-		}
-		this.createBy = createBy;
-		return this;
-	}
-
 	public ChartQuery createByLike(String createByLike) {
 		if (createByLike == null) {
 			throw new RuntimeException("createBy is null");
@@ -136,8 +109,7 @@ public class ChartQuery extends DataQuery {
 		return this;
 	}
 
-	public ChartQuery createDateGreaterThanOrEqual(
-			Date createDateGreaterThanOrEqual) {
+	public ChartQuery createDateGreaterThanOrEqual(Date createDateGreaterThanOrEqual) {
 		if (createDateGreaterThanOrEqual == null) {
 			throw new RuntimeException("createDate is null");
 		}
@@ -205,26 +177,6 @@ public class ChartQuery extends DataQuery {
 		return chartType;
 	}
 
-	public String getChartTypeLike() {
-		if (chartTypeLike != null && chartTypeLike.trim().length() > 0) {
-			if (!chartTypeLike.startsWith("%")) {
-				chartTypeLike = "%" + chartTypeLike;
-			}
-			if (!chartTypeLike.endsWith("%")) {
-				chartTypeLike = chartTypeLike + "%";
-			}
-		}
-		return chartTypeLike;
-	}
-
-	public List<String> getChartTypes() {
-		return chartTypes;
-	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
 	public String getCreateByLike() {
 		if (createByLike != null && createByLike.trim().length() > 0) {
 			if (!createByLike.startsWith("%")) {
@@ -253,20 +205,16 @@ public class ChartQuery extends DataQuery {
 		return imageType;
 	}
 
-	public String getImageTypeLike() {
-		if (imageTypeLike != null && imageTypeLike.trim().length() > 0) {
-			if (!imageTypeLike.startsWith("%")) {
-				imageTypeLike = "%" + imageTypeLike;
+	public String getKeywordsLike() {
+		if (keywordsLike != null && keywordsLike.trim().length() > 0) {
+			if (!keywordsLike.startsWith("%")) {
+				keywordsLike = "%" + keywordsLike;
 			}
-			if (!imageTypeLike.endsWith("%")) {
-				imageTypeLike = imageTypeLike + "%";
+			if (!keywordsLike.endsWith("%")) {
+				keywordsLike = keywordsLike + "%";
 			}
 		}
-		return imageTypeLike;
-	}
-
-	public List<String> getImageTypes() {
-		return imageTypes;
+		return keywordsLike;
 	}
 
 	public String getMapping() {
@@ -376,22 +324,6 @@ public class ChartQuery extends DataQuery {
 		return this;
 	}
 
-	public ChartQuery imageTypeLike(String imageTypeLike) {
-		if (imageTypeLike == null) {
-			throw new RuntimeException("imageType is null");
-		}
-		this.imageTypeLike = imageTypeLike;
-		return this;
-	}
-
-	public ChartQuery imageTypes(List<String> imageTypes) {
-		if (imageTypes == null) {
-			throw new RuntimeException("imageTypes is empty ");
-		}
-		this.imageTypes = imageTypes;
-		return this;
-	}
-
 	@Override
 	public void initQueryColumns() {
 		super.initQueryColumns();
@@ -452,24 +384,11 @@ public class ChartQuery extends DataQuery {
 		this.chartType = chartType;
 	}
 
-	public void setChartTypeLike(String chartTypeLike) {
-		this.chartTypeLike = chartTypeLike;
-	}
-
-	public void setChartTypes(List<String> chartTypes) {
-		this.chartTypes = chartTypes;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
 	public void setCreateByLike(String createByLike) {
 		this.createByLike = createByLike;
 	}
 
-	public void setCreateDateGreaterThanOrEqual(
-			Date createDateGreaterThanOrEqual) {
+	public void setCreateDateGreaterThanOrEqual(Date createDateGreaterThanOrEqual) {
 		this.createDateGreaterThanOrEqual = createDateGreaterThanOrEqual;
 	}
 
@@ -485,12 +404,8 @@ public class ChartQuery extends DataQuery {
 		this.imageType = imageType;
 	}
 
-	public void setImageTypeLike(String imageTypeLike) {
-		this.imageTypeLike = imageTypeLike;
-	}
-
-	public void setImageTypes(List<String> imageTypes) {
-		this.imageTypes = imageTypes;
+	public void setKeywordsLike(String keywordsLike) {
+		this.keywordsLike = keywordsLike;
 	}
 
 	public void setMapping(String mapping) {

@@ -16,16 +16,19 @@
  * limitations under the License.
  */
 
-package com.glaf.chart.service;
+package com.glaf.matrix.cycle.service;
 
 import java.util.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.glaf.chart.domain.*;
-import com.glaf.chart.query.*;
+import com.glaf.matrix.cycle.domain.*;
+import com.glaf.matrix.cycle.query.*;
 
 @Transactional(readOnly = true)
-public interface IChartService {
+public interface LoopSqlToTableService {
+
+	@Transactional
+	void bulkInsert(List<LoopSqlToTable> list);
 
 	/**
 	 * 根据主键删除记录
@@ -41,52 +44,43 @@ public interface IChartService {
 	 * @return
 	 */
 	@Transactional
-	void deleteByIds(List<String> rowIds);
-
-	/**
-	 * 根据查询参数获取记录列表
-	 * 
-	 * @return
-	 */
-	List<Chart> list(ChartQuery query);
-
-	/**
-	 * 根据查询参数获取记录总数
-	 * 
-	 * @return
-	 */
-	int getChartCountByQueryCriteria(ChartQuery query);
-
-	/**
-	 * 根据查询参数获取一页的数据
-	 * 
-	 * @return
-	 */
-	List<Chart> getChartsByQueryCriteria(int start, int pageSize,
-			ChartQuery query);
+	void deleteByIds(List<String> ids);
 
 	/**
 	 * 根据主键获取一条记录
 	 * 
 	 * @return
 	 */
-	Chart getChart(String id);
+	LoopSqlToTable getLoopSqlToTable(String id);
 
 	/**
-	 * 根据名称获取图表定义
+	 * 根据查询参数获取记录总数
 	 * 
-	 * @param name
 	 * @return
 	 */
-	Chart getChartByName(String name);
+	int getLoopSqlToTableCountByQueryCriteria(LoopSqlToTableQuery query);
 
 	/**
-	 * 根据别名获取图表定义
+	 * 根据查询参数获取一页的数据
 	 * 
-	 * @param mapping
 	 * @return
 	 */
-	Chart getChartByMapping(String mapping);
+	List<LoopSqlToTable> getLoopSqlToTablesByQueryCriteria(int start, int pageSize, LoopSqlToTableQuery query);
+
+	/**
+	 * 根据查询参数获取记录列表
+	 * 
+	 * @return
+	 */
+	List<LoopSqlToTable> list(LoopSqlToTableQuery query);
+	
+	/**
+	 * 新增一条记录
+	 * 
+	 * @return
+	 */
+	@Transactional
+	void insert(LoopSqlToTable loopSqlToTable);
 
 	/**
 	 * 保存一条记录
@@ -94,6 +88,9 @@ public interface IChartService {
 	 * @return
 	 */
 	@Transactional
-	void save(Chart chart);
+	void save(LoopSqlToTable loopSqlToTable);
+	
+	@Transactional
+	void updateLoopSqlToTableSyncStatus(LoopSqlToTable model);
 
 }

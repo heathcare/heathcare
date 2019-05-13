@@ -20,11 +20,12 @@ package com.glaf.chart.web.springmvc;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,32 +40,97 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.glaf.chart.bean.ChartDataBean;
+import com.glaf.chart.bean.ChartDataManager;
 import com.glaf.chart.domain.Chart;
-import com.glaf.chart.service.IChartService;
+import com.glaf.chart.service.ChartService;
 import com.glaf.core.base.ColumnModel;
 import com.glaf.core.config.ViewProperties;
-import com.glaf.core.security.LoginContext;
-import com.glaf.matrix.data.service.SqlDefinitionService;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 
-@Controller("/chart/kendo")
-@RequestMapping("/chart/kendo")
+@Controller("/matrix/chart/kendo")
+@RequestMapping("/matrix/chart/kendo")
 public class KendouiChartController {
 	protected static final Log logger = LogFactory.getLog(KendouiChartController.class);
 
-	protected IChartService chartService;
-
-	protected SqlDefinitionService sqlDefinitionService;
+	protected ChartService chartService;
 
 	public KendouiChartController() {
 
 	}
 
+	@ResponseBody
+	@RequestMapping("/json")
+	public byte[] json(HttpServletRequest request, ModelMap modelMap) throws IOException {
+		RequestUtils.setRequestParameterToAttribute(request);
+		Map<String, Object> params = RequestUtils.getParameterMap(request);
+		String chartId = ParamUtils.getString(params, "chartId");
+		String mapping = ParamUtils.getString(params, "mapping");
+		String mapping_enc = ParamUtils.getString(params, "mapping_enc");
+		String name = ParamUtils.getString(params, "name");
+		String name_enc = ParamUtils.getString(params, "name_enc");
+		Chart chart = null;
+		if (StringUtils.isNotEmpty(chartId)) {
+			chart = chartService.getChart(chartId);
+		} else if (StringUtils.isNotEmpty(name)) {
+			chart = chartService.getChartByName(name);
+		} else if (StringUtils.isNotEmpty(name_enc)) {
+			String str = RequestUtils.decodeString(name_enc);
+			chart = chartService.getChartByName(str);
+		} else if (StringUtils.isNotEmpty(mapping)) {
+			chart = chartService.getChartByMapping(mapping);
+		} else if (StringUtils.isNotEmpty(mapping_enc)) {
+			String str = RequestUtils.decodeString(mapping_enc);
+			chart = chartService.getChartByMapping(str);
+		}
+		JSONArray result = new JSONArray();
+		if (chart != null) {
+			String chartType = request.getParameter("chartType");
+			if (StringUtils.isEmpty(chartType)) {
+				chartType = chart.getChartType();
+			}
+			ChartDataManager manager = new ChartDataManager();
+			chart = manager.getChartAndFetchDataById(chart.getId(), params, RequestUtils.getActorId(request));
+			logger.debug("chart rows size:" + chart.getColumns().size());
+			List<ColumnModel> columns = chart.getColumns();
+			if (columns != null && !columns.isEmpty()) {
+				logger.debug("chartType:" + chartType);
+				if (StringUtils.equalsIgnoreCase(chartType, "funnel")) {
+					logger.debug("sort columns");
+					Collections.sort(columns);
+				}
+				double total = 0D;
+				if (StringUtils.equalsIgnoreCase(chartType, "pie")
+						|| StringUtils.equalsIgnoreCase(chartType, "donut")) {
+					for (ColumnModel cm : columns) {
+						total += cm.getDoubleValue();
+					}
+				}
+				for (ColumnModel cm : columns) {
+					JSONObject json = new JSONObject();
+					json.put("category", cm.getCategory());
+					json.put("series", cm.getSeries());
+					json.put("value", cm.getDoubleValue());
+					if (StringUtils.equalsIgnoreCase(chartType, "pie")
+							|| StringUtils.equalsIgnoreCase(chartType, "donut")) {
+						json.put("category", cm.getCategory());
+						json.put("value", Math.round(cm.getDoubleValue() / total * 10000) / 100.0D);
+					}
+					result.add(json);
+				}
+			}
+		}
+		logger.debug("json:" + result.toJSONString());
+		return result.toJSONString().getBytes("UTF-8");
+	}
+
+	@javax.annotation.Resource
+	public void setChartService(ChartService chartService) {
+		this.chartService = chartService;
+	}
+
 	@RequestMapping("/showChart")
-	public ModelAndView chart(HttpServletRequest request, ModelMap modelMap) {
-		LoginContext loginContext = RequestUtils.getLoginContext(request);
+	public ModelAndView showChart(HttpServletRequest request, ModelMap modelMap) {
 		RequestUtils.setRequestParameterToAttribute(request);
 		Map<String, Object> params = RequestUtils.getParameterMap(request);
 		String chartId = ParamUtils.getString(params, "chartId");
@@ -91,13 +157,7 @@ public class KendouiChartController {
 			if (StringUtils.isEmpty(chartType)) {
 				chartType = chart.getChartType();
 			}
-			if (!loginContext.isSystemAdministrator()) {
-				if (StringUtils.equals(request.getParameter("tenantCorrelation"), "true")) {
-					params.put("tenantid", loginContext.getTenantId());
-					params.put("tenantId", loginContext.getTenantId());
-				}
-			}
-			ChartDataBean manager = new ChartDataBean();
+			ChartDataManager manager = new ChartDataManager();
 			chart = manager.getChartAndFetchDataById(chart.getId(), params, RequestUtils.getActorId(request));
 			logger.debug("chart rows size:" + chart.getColumns().size());
 			request.setAttribute("chart", chart);
@@ -129,7 +189,7 @@ public class KendouiChartController {
 				Map<String, List<Double>> seriesMap = new HashMap<String, List<Double>>();
 
 				for (ColumnModel cm : columns) {
-					String series = cm.getCategory();
+					String series = cm.getSeries();
 					if (series != null) {
 						List<Double> valueList = seriesMap.get(series);
 						if (valueList == null) {
@@ -174,27 +234,102 @@ public class KendouiChartController {
 					result.add(json);
 				}
 			}
+
+			if (StringUtils.equalsIgnoreCase(chartType, "column_line")) {
+
+				JSONArray complexResult = new JSONArray();
+
+				if (chart.getColumns() != null && !chart.getColumns().isEmpty()) {
+					Map<String, List<Double>> dataMap = new HashMap<String, List<Double>>();
+
+					for (ColumnModel cm : chart.getColumns()) {
+						String key = cm.getSeries();
+						if (key != null) {
+							List<Double> valueList = dataMap.get(key);
+							if (valueList == null) {
+								valueList = new ArrayList<Double>();
+							}
+							if (cm.getDoubleValue() != null) {
+								valueList.add(cm.getDoubleValue());
+							} else {
+								valueList.add(0D);
+							}
+							dataMap.put(key, valueList);
+						}
+					}
+
+					if (!dataMap.isEmpty()) {
+						Set<Entry<String, List<Double>>> entrySet = dataMap.entrySet();
+						for (Entry<String, List<Double>> entry : entrySet) {
+							String key = entry.getKey();
+							List<Double> valueList = entry.getValue();
+							JSONObject json = new JSONObject();
+							json.put("name", key);
+							json.put("type", "column");
+							json.put("yAxis", 1);
+							json.put("data", valueList);
+							complexResult.add(json);
+						}
+					}
+				}
+
+				if (chart.getSecondColumns() != null && !chart.getSecondColumns().isEmpty()) {
+					Map<String, List<Double>> dataMap = new HashMap<String, List<Double>>();
+
+					for (ColumnModel cm : chart.getSecondColumns()) {
+						String key = cm.getSeries();
+						if (key != null) {
+							List<Double> valueList = dataMap.get(key);
+							if (valueList == null) {
+								valueList = new ArrayList<Double>();
+							}
+							if (cm.getDoubleValue() != null) {
+								valueList.add(cm.getDoubleValue());
+							} else {
+								valueList.add(0D);
+							}
+							dataMap.put(key, valueList);
+						}
+					}
+
+					if (!dataMap.isEmpty()) {
+						Set<Entry<String, List<Double>>> entrySet = dataMap.entrySet();
+						for (Entry<String, List<Double>> entry : entrySet) {
+							String key = entry.getKey();
+							List<Double> valueList = entry.getValue();
+							JSONObject json = new JSONObject();
+							json.put("name", key);
+							json.put("data", valueList);
+							json.put("type", "line");
+							complexResult.add(json);
+						}
+					}
+				}
+
+				request.setAttribute("complexJsonArray", complexResult.toJSONString());
+			}
+
 			request.setAttribute("jsonArray", result.toJSONString());
 			if (StringUtils.equalsIgnoreCase(chartType, "pie")) {
-				return new ModelAndView("/chart/kendo/pie", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/pie", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "donut")) {
-				return new ModelAndView("/chart/kendo/donut", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/donut", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "area")) {
-				return new ModelAndView("/chart/kendo/area", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/area", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "bar")) {
-				return new ModelAndView("/chart/kendo/bar", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/bar", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "column")) {
-				return new ModelAndView("/chart/kendo/column", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/column", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "line")) {
-				return new ModelAndView("/chart/kendo/line", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/line", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "radarLine")) {
-				return new ModelAndView("/chart/kendo/radarLine", modelMap);
-			} else if (StringUtils.equalsIgnoreCase(chartType, "bar")) {
-				return new ModelAndView("/chart/kendo/bar", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/radarLine", modelMap);
+			} else if (StringUtils.equalsIgnoreCase(chartType, "funnel")) {
+				return new ModelAndView("/matrix/chart/kendo/funnel", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "stacked_area")) {
-				return new ModelAndView("/chart/kendo/stacked_area", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/stacked_area", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "stackedbar")) {
-				return new ModelAndView("/chart/kendo/stackedbar", modelMap);
+				return new ModelAndView("/matrix/chart/kendo/stackedbar", modelMap);
 			}
 		}
 		String x_view = ViewProperties.getString("kendo.chart");
@@ -202,78 +337,7 @@ public class KendouiChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/chart/kendo/chart", modelMap);
-	}
-
-	@ResponseBody
-	@RequestMapping("/json")
-	public byte[] json(HttpServletRequest request, ModelMap modelMap) throws IOException {
-		RequestUtils.setRequestParameterToAttribute(request);
-		Map<String, Object> params = RequestUtils.getParameterMap(request);
-		String chartId = ParamUtils.getString(params, "chartId");
-		String mapping = ParamUtils.getString(params, "mapping");
-		String mapping_enc = ParamUtils.getString(params, "mapping_enc");
-		String name = ParamUtils.getString(params, "name");
-		String name_enc = ParamUtils.getString(params, "name_enc");
-		Chart chart = null;
-		if (StringUtils.isNotEmpty(chartId)) {
-			chart = chartService.getChart(chartId);
-		} else if (StringUtils.isNotEmpty(name)) {
-			chart = chartService.getChartByName(name);
-		} else if (StringUtils.isNotEmpty(name_enc)) {
-			String str = RequestUtils.decodeString(name_enc);
-			chart = chartService.getChartByName(str);
-		} else if (StringUtils.isNotEmpty(mapping)) {
-			chart = chartService.getChartByMapping(mapping);
-		} else if (StringUtils.isNotEmpty(mapping_enc)) {
-			String str = RequestUtils.decodeString(mapping_enc);
-			chart = chartService.getChartByMapping(str);
-		}
-		JSONArray result = new JSONArray();
-		if (chart != null) {
-			String chartType = request.getParameter("chartType");
-			if (StringUtils.isEmpty(chartType)) {
-				chartType = chart.getChartType();
-			}
-			ChartDataBean manager = new ChartDataBean();
-			chart = manager.getChartAndFetchDataById(chart.getId(), params, RequestUtils.getActorId(request));
-			logger.debug("chart rows size:" + chart.getColumns().size());
-			request.setAttribute("chart", chart);
-			List<ColumnModel> columns = chart.getColumns();
-			if (columns != null && !columns.isEmpty()) {
-				double total = 0D;
-				if (StringUtils.equalsIgnoreCase(chartType, "pie")
-						|| StringUtils.equalsIgnoreCase(chartType, "donut")) {
-					for (ColumnModel cm : columns) {
-						total += cm.getDoubleValue();
-					}
-				}
-				for (ColumnModel cm : columns) {
-					JSONObject json = new JSONObject();
-					json.put("category", cm.getCategory());
-					json.put("series", cm.getSeries());
-					json.put("value", cm.getDoubleValue());
-					if (StringUtils.equalsIgnoreCase(chartType, "pie")
-							|| StringUtils.equalsIgnoreCase(chartType, "donut")) {
-						json.put("category", cm.getCategory());
-						json.put("value", Math.round(cm.getDoubleValue() / total * 10000) / 100.0D);
-					}
-					result.add(json);
-				}
-			}
-		}
-		logger.debug("json:" + result.toJSONString());
-		return result.toJSONString().getBytes("UTF-8");
-	}
-
-	@javax.annotation.Resource
-	public void setChartService(IChartService chartService) {
-		this.chartService = chartService;
-	}
-
-	@javax.annotation.Resource
-	public void setSqlDefinitionService(SqlDefinitionService sqlDefinitionService) {
-		this.sqlDefinitionService = sqlDefinitionService;
+		return new ModelAndView("/matrix/chart/kendo/chart", modelMap);
 	}
 
 }
