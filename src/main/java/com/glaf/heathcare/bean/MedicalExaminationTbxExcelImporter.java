@@ -112,6 +112,110 @@ public class MedicalExaminationTbxExcelImporter {
 		Date tmpDate = null;
 		try {
 			wb = WorkbookFactory.create(inputStream);
+
+			String checkId = UUID32.getUUID();
+			List<MedicalExamination> exams = new ArrayList<MedicalExamination>();
+
+			for (MedicalExaminationXlsArea area : areas) {
+				Sheet sheet = wb.getSheetAt(0);
+				int endRow = sheet.getLastRowNum();
+				if (area.getEndRow() < endRow) {
+					endRow = area.getEndRow();
+				}
+				logger.debug("start row:" + area.getStartRow());
+				logger.debug("end row:" + endRow);
+				for (int rowIndex = area.getStartRow(); rowIndex <= endRow; rowIndex++) {
+					row = sheet.getRow(rowIndex);
+					if (row == null) {
+						continue;
+					}
+					try {
+						gradeCell = row.getCell(area.getGradeColIndex());
+						personCell = row.getCell(area.getNameColIndex());
+						if (gradeCell != null && personCell != null) {
+							gradeValue = ExcelUtils.getCellValue(cell);
+							personValue = ExcelUtils.getCellValue(cell);
+							if (gradeValue != null && personValue != null) {
+								person = personMap.get(gradeValue.trim() + "_" + personValue.trim());
+								if (person != null) {
+									MedicalExamination exam = new MedicalExamination();
+									exam.setTenantId(tenantId);
+									exam.setCheckId(checkId);
+									exam.setType(type);
+									exam.setCheckDate(checkDate);
+									exam.setPersonId(person.getId());
+									exam.setName(person.getName().trim());
+									exam.setBirthday(person.getBirthday());
+									exam.setSex(person.getSex());
+
+									cell = row.getCell(area.getHeightColIndex());
+									if (cell != null) {
+										cellValue = ExcelUtils.getValue(cell, 2);
+										if (StringUtils.isNotEmpty(cellValue)) {
+											exam.setHeight(Double.parseDouble(cellValue));
+										}
+									}
+
+									cell = row.getCell(area.getWeightColIndex());
+									if (cell != null) {
+										cellValue = ExcelUtils.getValue(cell, 2);
+										if (StringUtils.isNotEmpty(cellValue)) {
+											exam.setWeight(Double.parseDouble(cellValue));
+										}
+									}
+
+									cell = row.getCell(area.getEyesightLeftColIndex());
+									if (cell != null) {
+										cellValue = ExcelUtils.getValue(cell, 1);
+										if (StringUtils.isNotEmpty(cellValue)) {
+											exam.setEyesightLeft(Double.parseDouble(cellValue));
+										}
+									}
+
+									cell = row.getCell(area.getEyesightRightColIndex());
+									if (cell != null) {
+										cellValue = ExcelUtils.getValue(cell, 1);
+										if (StringUtils.isNotEmpty(cellValue)) {
+											exam.setEyesightRight(Double.parseDouble(cellValue));
+										}
+									}
+
+									cell = row.getCell(area.getHemoglobinColIndex());
+									if (cell != null) {
+										cellValue = ExcelUtils.getValue(cell, 2);
+										if (StringUtils.isNotEmpty(cellValue)) {
+											exam.setHemoglobinValue(Double.parseDouble(cellValue));
+										}
+									}
+
+									cell = row.getCell(area.getCheckDateColIndex());
+									if (cell != null) {
+										cellValue = ExcelUtils.getCellValue(cell);
+										if (StringUtils.isNotEmpty(cellValue)) {
+											tmpDate = DateUtils.toDate(cellValue);
+											if (DateUtils.getYearMonth(tmpDate) == DateUtils.getYearMonth(checkDate)) {
+												exam.setCheckDate(tmpDate);
+											}
+										}
+									}
+
+									exam.setProvinceId(tenant.getProvinceId());
+									exam.setCityId(tenant.getCityId());
+									exam.setAreaId(tenant.getAreaId());
+									exams.add(exam);
+								}
+							}
+						}
+					} catch (Exception ex) {
+						logger.error(ex);
+					}
+				}
+			}
+
+			if (exams.size() > 0) {
+				medicalExaminationService.bulkInsert(exams);
+			}
+			return checkId;
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -122,110 +226,6 @@ public class MedicalExaminationTbxExcelImporter {
 				}
 			}
 		}
-
-		String checkId = UUID32.getUUID();
-		List<MedicalExamination> exams = new ArrayList<MedicalExamination>();
-
-		for (MedicalExaminationXlsArea area : areas) {
-			Sheet sheet = wb.getSheetAt(0);
-			int endRow = sheet.getLastRowNum();
-			if (area.getEndRow() < endRow) {
-				endRow = area.getEndRow();
-			}
-			logger.debug("start row:" + area.getStartRow());
-			logger.debug("end row:" + endRow);
-			for (int rowIndex = area.getStartRow(); rowIndex <= endRow; rowIndex++) {
-				row = sheet.getRow(rowIndex);
-				if (row == null) {
-					continue;
-				}
-				try {
-					gradeCell = row.getCell(area.getGradeColIndex());
-					personCell = row.getCell(area.getNameColIndex());
-					if (gradeCell != null && personCell != null) {
-						gradeValue = ExcelUtils.getCellValue(cell);
-						personValue = ExcelUtils.getCellValue(cell);
-						if (gradeValue != null && personValue != null) {
-							person = personMap.get(gradeValue.trim() + "_" + personValue.trim());
-							if (person != null) {
-								MedicalExamination exam = new MedicalExamination();
-								exam.setTenantId(tenantId);
-								exam.setCheckId(checkId);
-								exam.setType(type);
-								exam.setCheckDate(checkDate);
-								exam.setPersonId(person.getId());
-								exam.setName(person.getName().trim());
-								exam.setBirthday(person.getBirthday());
-								exam.setSex(person.getSex());
-
-								cell = row.getCell(area.getHeightColIndex());
-								if (cell != null) {
-									cellValue = ExcelUtils.getValue(cell, 2);
-									if (StringUtils.isNotEmpty(cellValue)) {
-										exam.setHeight(Double.parseDouble(cellValue));
-									}
-								}
-
-								cell = row.getCell(area.getWeightColIndex());
-								if (cell != null) {
-									cellValue = ExcelUtils.getValue(cell, 2);
-									if (StringUtils.isNotEmpty(cellValue)) {
-										exam.setWeight(Double.parseDouble(cellValue));
-									}
-								}
-
-								cell = row.getCell(area.getEyesightLeftColIndex());
-								if (cell != null) {
-									cellValue = ExcelUtils.getValue(cell, 1);
-									if (StringUtils.isNotEmpty(cellValue)) {
-										exam.setEyesightLeft(Double.parseDouble(cellValue));
-									}
-								}
-
-								cell = row.getCell(area.getEyesightRightColIndex());
-								if (cell != null) {
-									cellValue = ExcelUtils.getValue(cell, 1);
-									if (StringUtils.isNotEmpty(cellValue)) {
-										exam.setEyesightRight(Double.parseDouble(cellValue));
-									}
-								}
-
-								cell = row.getCell(area.getHemoglobinColIndex());
-								if (cell != null) {
-									cellValue = ExcelUtils.getValue(cell, 2);
-									if (StringUtils.isNotEmpty(cellValue)) {
-										exam.setHemoglobinValue(Double.parseDouble(cellValue));
-									}
-								}
-
-								cell = row.getCell(area.getCheckDateColIndex());
-								if (cell != null) {
-									cellValue = ExcelUtils.getCellValue(cell);
-									if (StringUtils.isNotEmpty(cellValue)) {
-										tmpDate = DateUtils.toDate(cellValue);
-										if (DateUtils.getYearMonth(tmpDate) == DateUtils.getYearMonth(checkDate)) {
-											exam.setCheckDate(tmpDate);
-										}
-									}
-								}
-
-								exam.setProvinceId(tenant.getProvinceId());
-								exam.setCityId(tenant.getCityId());
-								exam.setAreaId(tenant.getAreaId());
-								exams.add(exam);
-							}
-						}
-					}
-				} catch (Exception ex) {
-					logger.error(ex);
-				}
-			}
-		}
-
-		if (exams.size() > 0) {
-			medicalExaminationService.bulkInsert(exams);
-		}
-		return checkId;
 	}
 
 }
