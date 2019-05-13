@@ -18,26 +18,28 @@
 
 package com.glaf.heathcare.service.impl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.glaf.core.id.*;
 import com.glaf.base.modules.sys.model.SysTenant;
 import com.glaf.base.modules.sys.service.SysTenantService;
-import com.glaf.core.dao.*;
+import com.glaf.core.dao.EntityDAO;
+import com.glaf.core.id.IdGenerator;
 import com.glaf.core.jdbc.DBConnectionFactory;
-import com.glaf.core.util.*;
+import com.glaf.core.util.DBUtils;
 
-import com.glaf.heathcare.mapper.*;
-import com.glaf.heathcare.domain.*;
-import com.glaf.heathcare.query.*;
+import com.glaf.heathcare.domain.MedicalExaminationEvaluate;
+import com.glaf.heathcare.mapper.MedicalExaminationEvaluateMapper;
+import com.glaf.heathcare.query.MedicalExaminationEvaluateQuery;
 import com.glaf.heathcare.service.MedicalExaminationEvaluateService;
 
 @Service("com.glaf.heathcare.service.medicalExaminationEvaluateService")
