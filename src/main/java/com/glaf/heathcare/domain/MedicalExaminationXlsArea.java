@@ -36,6 +36,11 @@ public class MedicalExaminationXlsArea {
 	protected int nameColIndex;
 
 	/**
+	 * 班级所在列
+	 */
+	protected int gradeColIndex;
+
+	/**
 	 * 身高所在列
 	 */
 	protected int heightColIndex;
@@ -44,6 +49,16 @@ public class MedicalExaminationXlsArea {
 	 * 体重所在列
 	 */
 	protected int weightColIndex;
+
+	/**
+	 * 左视力
+	 */
+	protected int eyesightLeftColIndex;
+
+	/**
+	 * 右视力
+	 */
+	protected int eyesightRightColIndex;
 
 	/**
 	 * 血色素所在列
@@ -65,6 +80,18 @@ public class MedicalExaminationXlsArea {
 
 	public int getEndRow() {
 		return endRow;
+	}
+
+	public int getEyesightLeftColIndex() {
+		return eyesightLeftColIndex;
+	}
+
+	public int getEyesightRightColIndex() {
+		return eyesightRightColIndex;
+	}
+
+	public int getGradeColIndex() {
+		return gradeColIndex;
 	}
 
 	public int getHeightColIndex() {
@@ -93,6 +120,18 @@ public class MedicalExaminationXlsArea {
 
 	public void setEndRow(int endRow) {
 		this.endRow = endRow;
+	}
+
+	public void setEyesightLeftColIndex(int eyesightLeftColIndex) {
+		this.eyesightLeftColIndex = eyesightLeftColIndex;
+	}
+
+	public void setEyesightRightColIndex(int eyesightRightColIndex) {
+		this.eyesightRightColIndex = eyesightRightColIndex;
+	}
+
+	public void setGradeColIndex(int gradeColIndex) {
+		this.gradeColIndex = gradeColIndex;
 	}
 
 	public void setHeightColIndex(int heightColIndex) {

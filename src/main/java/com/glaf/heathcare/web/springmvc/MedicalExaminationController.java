@@ -54,6 +54,7 @@ import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.Tools;
+import com.glaf.heathcare.bean.MedicalExaminationTbxExcelImporter;
 import com.glaf.heathcare.bean.MedicalExaminationXlsImporter;
 import com.glaf.heathcare.bean.MedicalExaminationXlsxImporter;
 import com.glaf.heathcare.converter.HaizgMedicalExaminationConverter;
@@ -297,6 +298,64 @@ public class MedicalExaminationController {
 							medicalExaminationService.insertAll(tenantId, type, exams, checkDate);
 						}
 					}
+					request.setAttribute("checkDate", DateUtils.getDate(checkDate));
+				} catch (Exception ex) {
+					logger.error(ex);
+				} finally {
+					semaphore2.release();
+				}
+			}
+		}
+		if (StringUtils.equals(type, "1")) {
+			return this.enterList(request, modelMap);
+		}
+		return this.list(request, modelMap);
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImportTbx", method = RequestMethod.POST)
+	public ModelAndView doImportTbx(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		String type = request.getParameter("type");
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			String tenantId = loginContext.getTenantId();
+			Date checkDate = RequestUtils.getDate(request, "checkDate");
+			/**
+			 * 判断体检日期是否是当天以前的日期
+			 */
+			if (StringUtils.isNotEmpty(type) && checkDate != null && DateUtils.beforeTime(checkDate, new Date())) {
+				MedicalExaminationTbxExcelImporter bean = new MedicalExaminationTbxExcelImporter();
+				List<MedicalExaminationXlsArea> areas = new ArrayList<MedicalExaminationXlsArea>();
+				MedicalExaminationXlsArea area = new MedicalExaminationXlsArea();
+				area.setStartRow(2);
+				area.setEndRow(2000);
+				area.setNameColIndex(0);
+				area.setGradeColIndex(3);
+				area.setWeightColIndex(6);
+				area.setHeightColIndex(7);
+				area.setCheckDateColIndex(4);
+				area.setHemoglobinColIndex(8);
+				area.setEyesightLeftColIndex(31);
+				area.setEyesightRightColIndex(32);
+				areas.add(area);
+				String checkId = null;
+				try {
+					semaphore2.acquire();
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						checkId = bean.importData(tenantId, type, checkDate, areas, mFile.getInputStream());
+					} else {
+						checkId = bean.importData(tenantId, type, checkDate, areas, mFile.getInputStream());
+					}
+					request.setAttribute("type", type);
+					request.setAttribute("checkId", checkId);
 					request.setAttribute("checkDate", DateUtils.getDate(checkDate));
 				} catch (Exception ex) {
 					logger.error(ex);

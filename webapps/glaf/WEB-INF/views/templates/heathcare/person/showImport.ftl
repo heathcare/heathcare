@@ -56,8 +56,8 @@
 	<option value="">----请选择----</option>
 	<option value="doImport">按第一套模板导入</option>
 	<option value="doImport2">按第二套模板导入</option>
-	<option value="doImport3">按孩子国模板导入</option>
-	<option value="doImport4">按童帮模板导入</option>
+	<option value="doImport3">按三套模板导入</option>
+	<option value="doImportTbx">按TBN模板导入</option>
 </select>
 <br><br>
 <input type="file" id="file" name="file" size="50" class="input-file"> 
