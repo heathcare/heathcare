@@ -62,7 +62,7 @@ public class MedicalExaminationDefServiceImpl implements MedicalExaminationDefSe
 		for (MedicalExaminationDef medicalExaminationDef : list) {
 			if (medicalExaminationDef.getId() == 0) {
 				medicalExaminationDef.setId(idGenerator.nextId("HEALTH_MEDICAL_EXAMINATION_DEF"));
-				medicalExaminationDef.setCheckId(UUID32.getUUID());
+				medicalExaminationDef.setCheckId(UUID32.generateShortUuid());
 				medicalExaminationDef.setCreateTime(new Date());
 			}
 		}
@@ -159,7 +159,7 @@ public class MedicalExaminationDefServiceImpl implements MedicalExaminationDefSe
 	public void save(MedicalExaminationDef medicalExaminationDef) {
 		if (medicalExaminationDef.getId() == 0) {
 			medicalExaminationDef.setId(idGenerator.nextId("HEALTH_MEDICAL_EXAMINATION_DEF"));
-			medicalExaminationDef.setCheckId(UUID32.getUUID());
+			medicalExaminationDef.setCheckId(UUID32.generateShortUuid());
 			medicalExaminationDef.setCreateTime(new Date());
 			// medicalExaminationDef.setDeleteFlag(0);
 			medicalExaminationDefMapper.insertMedicalExaminationDef(medicalExaminationDef);

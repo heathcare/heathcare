@@ -231,7 +231,7 @@ public class GradeAdjustServiceImpl implements GradeAdjustService {
 						gradeInfoService.save(grade);
 
 						GradeAdjust adjust = new GradeAdjust();
-						adjust.setId(UUID32.getUUID());
+						adjust.setId(UUID32.generateShortUuid());
 						adjust.setTenantId(tenantId);
 						adjust.setGradeId(grade.getId());
 						adjust.setYear(year);

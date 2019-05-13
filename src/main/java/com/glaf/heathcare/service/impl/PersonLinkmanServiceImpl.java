@@ -61,7 +61,7 @@ public class PersonLinkmanServiceImpl implements PersonLinkmanService {
 	public void bulkInsert(List<PersonLinkman> list) {
 		for (PersonLinkman personLinkman : list) {
 			if (StringUtils.isEmpty(personLinkman.getId())) {
-				personLinkman.setId(idGenerator.getNextId("HEALTH_PERSON_LINKMAN"));
+				personLinkman.setId(UUID32.generateShortUuid());
 			}
 		}
 
@@ -153,7 +153,7 @@ public class PersonLinkmanServiceImpl implements PersonLinkmanService {
 	@Transactional
 	public void save(PersonLinkman linkman) {
 		if (StringUtils.isEmpty(linkman.getId())) {
-			linkman.setId(UUID32.getUUID());
+			linkman.setId(UUID32.generateShortUuid());
 			linkman.setCreateTime(new Date());
 
 			personLinkmanMapper.insertPersonLinkman(linkman);
@@ -181,12 +181,12 @@ public class PersonLinkmanServiceImpl implements PersonLinkmanService {
 					model.setRemark(linkman.getRemark());
 					personLinkmanMapper.updatePersonLinkman(model);
 				} else {
-					linkman.setId(UUID32.getUUID());
+					linkman.setId(UUID32.generateShortUuid());
 					linkman.setCreateTime(new Date());
 					personLinkmanMapper.insertPersonLinkman(linkman);
 				}
 			} else {
-				linkman.setId(UUID32.getUUID());
+				linkman.setId(UUID32.generateShortUuid());
 				linkman.setCreateTime(new Date());
 				personLinkmanMapper.insertPersonLinkman(linkman);
 			}

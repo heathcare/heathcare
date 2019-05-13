@@ -90,7 +90,7 @@ public class GradeInfoServiceImpl implements GradeInfoService {
 	public void bulkInsert(List<GradeInfo> list) {
 		for (GradeInfo gradeInfo : list) {
 			if (StringUtils.isEmpty(gradeInfo.getId())) {
-				gradeInfo.setId(UUID32.getUUID());
+				gradeInfo.setId(UUID32.generateShortUuid());
 				gradeInfo.setCreateTime(new Date());
 			}
 		}
@@ -297,7 +297,7 @@ public class GradeInfoServiceImpl implements GradeInfoService {
 		CacheFactory.remove("grade_info", cacheKey);
 
 		if (StringUtils.isEmpty(gradeInfo.getId())) {
-			gradeInfo.setId(UUID32.getUUID());
+			gradeInfo.setId(UUID32.generateShortUuid());
 			gradeInfo.setCreateTime(new Date());
 			gradeInfoMapper.insertGradeInfo(gradeInfo);
 		} else {
@@ -325,7 +325,7 @@ public class GradeInfoServiceImpl implements GradeInfoService {
 			for (String actorId : actorIds) {
 				TableModel t = new TableModel();
 				t.setTableName("HEALTH_GRADE_PRIVILEGE");
-				t.addStringColumn("ID_", UUID32.getUUID());
+				t.addStringColumn("ID_", UUID32.generateShortUuid());
 				if (StringUtils.isNotEmpty(gradeId)) {
 					t.addStringColumn("GRADEID_", gradeId);
 				}

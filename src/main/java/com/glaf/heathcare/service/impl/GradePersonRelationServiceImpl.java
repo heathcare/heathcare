@@ -61,7 +61,7 @@ public class GradePersonRelationServiceImpl implements GradePersonRelationServic
 	public void bulkInsert(List<GradePersonRelation> list) {
 		for (GradePersonRelation gradePersonRelation : list) {
 			if (StringUtils.isEmpty(gradePersonRelation.getId())) {
-				gradePersonRelation.setId(UUID32.getUUID());
+				gradePersonRelation.setId(UUID32.generateShortUuid());
 				gradePersonRelation.setCreateTime(new Date());
 			}
 		}
@@ -174,7 +174,7 @@ public class GradePersonRelationServiceImpl implements GradePersonRelationServic
 	@Transactional
 	public void save(GradePersonRelation gradePersonRelation) {
 		if (StringUtils.isEmpty(gradePersonRelation.getId())) {
-			gradePersonRelation.setId(UUID32.getUUID());
+			gradePersonRelation.setId(UUID32.generateShortUuid());
 			gradePersonRelation.setCreateTime(new Date());
 
 			gradePersonRelationMapper.insertGradePersonRelation(gradePersonRelation);

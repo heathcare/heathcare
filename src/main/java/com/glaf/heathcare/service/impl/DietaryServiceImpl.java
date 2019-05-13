@@ -358,7 +358,7 @@ public class DietaryServiceImpl implements DietaryService {
 
 	@Transactional
 	public void bulkInsert(String tenantId, Date date, List<Dietary> list) {
-		String sectionId = UUID32.getUUID();
+		String sectionId = UUID32.generateShortUuid();
 		List<TableModel> tableModels = new ArrayList<TableModel>();
 		for (Dietary dietary : list) {
 			if (dietary.getId() == 0) {
@@ -708,7 +708,7 @@ public class DietaryServiceImpl implements DietaryService {
 
 			}
 
-			String sectionId = UUID32.getUUID();
+			String sectionId = UUID32.generateShortUuid();
 			for (Long templateId : templateIds) {
 				DietaryTemplate dietaryTemplate = dietaryTemplateService.getDietaryTemplate(templateId);
 				if (dietaryTemplate != null) {
@@ -1066,7 +1066,7 @@ public class DietaryServiceImpl implements DietaryService {
 			dietary.setCreateTime(new Date());
 
 			if (StringUtils.isNotEmpty(dietary.getTenantId())) {
-				String sectionId = UUID32.getUUID();
+				String sectionId = UUID32.generateShortUuid();
 
 				DietaryQuery query = new DietaryQuery();
 				query.tenantId(dietary.getTenantId());
@@ -1135,7 +1135,7 @@ public class DietaryServiceImpl implements DietaryService {
 			query2.fullDay(fullDay);
 			dietaryItemMapper.deleteDietaryItems(query2);
 
-			sectionMap.put(fullDay, UUID32.getUUID());
+			sectionMap.put(fullDay, UUID32.generateShortUuid());
 			calendar.setTime(DateUtils.toDate(String.valueOf(fullDay)));
 			int year = calendar.get(Calendar.YEAR);
 			int month = calendar.get(Calendar.MONTH) + 1;

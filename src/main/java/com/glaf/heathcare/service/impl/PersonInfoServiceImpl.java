@@ -64,7 +64,7 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 	public void bulkInsert(List<PersonInfo> list) {
 		for (PersonInfo personInfo : list) {
 			if (StringUtils.isEmpty(personInfo.getId())) {
-				personInfo.setId(UUID32.getUUID());
+				personInfo.setId(UUID32.generateShortUuid());
 				personInfo.setCreateTime(new Date());
 			}
 		}
@@ -157,7 +157,7 @@ public class PersonInfoServiceImpl implements PersonInfoService {
 	@Transactional
 	public void save(PersonInfo personInfo) {
 		if (StringUtils.isEmpty(personInfo.getId())) {
-			personInfo.setId(UUID32.getUUID());
+			personInfo.setId(UUID32.generateShortUuid());
 			personInfo.setCreateTime(new Date());
 			personInfoMapper.insertPersonInfo(personInfo);
 		} else {

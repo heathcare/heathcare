@@ -210,7 +210,7 @@ public class PersonServiceImpl implements PersonService {
 					person.setGradeId(gradeMap.get(person.getGradeName()));
 				} else {
 					GradeInfo grade = new GradeInfo();
-					grade.setId(UUID32.getUUID());
+					grade.setId(UUID32.generateShortUuid());
 					grade.setName(person.getGradeName());
 					grade.setTenantId(tenantId);
 					grade.setCreateTime(new Date());
@@ -231,7 +231,7 @@ public class PersonServiceImpl implements PersonService {
 				if (StringUtils.isNotEmpty(person.getIdCardNo())) {
 					person.setId(DigestUtils.md5Hex(person.getIdCardNo()));
 				} else {
-					person.setId(UUID32.getUUID());
+					person.setId(UUID32.generateShortUuid());
 				}
 				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
 
@@ -341,7 +341,7 @@ public class PersonServiceImpl implements PersonService {
 				if (StringUtils.isNotEmpty(person.getIdCardNo())) {
 					person.setId(DigestUtils.md5Hex(person.getIdCardNo()));
 				} else {
-					person.setId(UUID32.getUUID());
+					person.setId(UUID32.generateShortUuid());
 				}
 				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
 				personMapper.insertPerson(person);
@@ -351,7 +351,7 @@ public class PersonServiceImpl implements PersonService {
 				if (StringUtils.isNotEmpty(person.getIdCardNo())) {
 					person.setId(DigestUtils.md5Hex(person.getIdCardNo()));
 				} else {
-					person.setId(UUID32.getUUID());
+					person.setId(UUID32.generateShortUuid());
 				}
 				person.setCreateTime(new Date());
 				person.setNamePinyin(PinyinUtils.converterToFirstSpell(person.getName(), true));
