@@ -493,11 +493,30 @@ public class MedicalExaminationEvaluateCountBean {
 					TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
 							.getTableDefinition("HEALTH_MEDICAL_EXAM_EVAL");
 					DBUtils.createTable(database.getName(), tableDefinition);
+				} else {
+					TableDefinition tableDefinition = MedicalExaminationEvaluateDomainFactory
+							.getTableDefinition("HEALTH_MEDICAL_EXAM_EVAL");
+					DBUtils.alterTable(database.getName(), tableDefinition);
 				}
+
 				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_COUNT")) {
 					TableDefinition tableDefinition = MedicalExaminationCountDomainFactory
 							.getTableDefinition("HEALTH_MEDICAL_EXAM_COUNT");
 					DBUtils.createTable(database.getName(), tableDefinition);
+				} else {
+					TableDefinition tableDefinition = MedicalExaminationCountDomainFactory
+							.getTableDefinition("HEALTH_MEDICAL_EXAM_COUNT");
+					DBUtils.alterTable(database.getName(), tableDefinition);
+				}
+
+				if (!DBUtils.tableExists(database.getName(), "HEALTH_MEDICAL_EXAM_GRADE_CNT")) {
+					TableDefinition tableDefinition = MedicalExaminationGradeCountDomainFactory
+							.getTableDefinition("HEALTH_MEDICAL_EXAM_GRADE_CNT");
+					DBUtils.createTable(database.getName(), tableDefinition);
+				} else {
+					TableDefinition tableDefinition = MedicalExaminationGradeCountDomainFactory
+							.getTableDefinition("HEALTH_MEDICAL_EXAM_GRADE_CNT");
+					DBUtils.alterTable(database.getName(), tableDefinition);
 				}
 			}
 
