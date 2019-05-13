@@ -75,14 +75,6 @@ public interface MedicalExaminationCountService {
 	 */
 	List<MedicalExaminationCount> list(MedicalExaminationCountQuery query);
 
-	/**
-	 * 保存一条记录
-	 * 
-	 * @return
-	 */
-	@Transactional
-	void save(MedicalExaminationCount medicalExaminationCount);
-
 	@Transactional
 	void saveAll(String tenantId, int year, int month, String type, String targetType,
 			Collection<MedicalExaminationCount> list);

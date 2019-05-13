@@ -41,7 +41,7 @@ import com.glaf.core.id.IdGenerator;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.service.ITableDataService;
 import com.glaf.core.util.DBUtils;
-
+import com.glaf.core.util.UUID32;
 import com.glaf.heathcare.domain.MedicalExaminationCount;
 import com.glaf.heathcare.mapper.MedicalExaminationCountMapper;
 import com.glaf.heathcare.query.MedicalExaminationCountQuery;
@@ -91,7 +91,7 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 				if (model.getTargetType() != null) {
 					buffer.append("_").append(model.getTargetType());
 				}
-				buffer.append("_").append(ts++);
+				buffer.append("_").append(UUID32.generateShortUuid());
 				model.setId(buffer.toString());
 				model.setCreateTime(date);
 			}
@@ -180,19 +180,7 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 		return list;
 	}
 
-	@Transactional
-	public void save(MedicalExaminationCount model) {
-		if (StringUtils.isEmpty(model.getId())) {
-			if (model.getTotalPerson() > 0 && model.getCheckPerson() > 0 && StringUtils.isNotEmpty(model.getType())) {
-				model.setId(idGenerator.getNextId("HEALTH_MEDICAL_EXAM_COUNT"));
-				model.setCreateTime(new Date());
-				medicalExaminationCountMapper.insertMedicalExaminationCount(model);
-			}
-		} else {
-			medicalExaminationCountMapper.updateMedicalExaminationCount(model);
-		}
-	}
-
+	 
 	@Transactional
 	public void saveAll(String tenantId, int year, int month, String type, String targetType,
 			Collection<MedicalExaminationCount> list) {
@@ -210,6 +198,11 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 			model.setAreaId(tenant.getAreaId());
 			model.setCityId(tenant.getCityId());
 			model.setProvinceId(tenant.getProvinceId());
+			model.setYear(year);
+			model.setMonth(month);
+			model.setType(type);
+			model.setTargetType(targetType);
+			model.setTenantId(tenantId);
 		}
 
 		this.bulkInsert(list);
@@ -231,6 +224,8 @@ public class MedicalExaminationCountServiceImpl implements MedicalExaminationCou
 			model.setAreaId(tenant.getAreaId());
 			model.setCityId(tenant.getCityId());
 			model.setProvinceId(tenant.getProvinceId());
+			model.setTargetType(targetType);
+			model.setTenantId(tenantId);
 		}
 
 		this.bulkInsert(list);

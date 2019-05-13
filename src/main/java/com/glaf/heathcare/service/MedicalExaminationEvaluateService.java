@@ -39,13 +39,6 @@ public interface MedicalExaminationEvaluateService {
 	void deleteMedicalExaminationEvaluateByTenantId(String tenantId);
 
 	/**
-	 * 根据主键获取一条记录
-	 * 
-	 * @return
-	 */
-	MedicalExaminationEvaluate getMedicalExaminationEvaluate(long id);
-
-	/**
 	 * 根据查询参数获取记录总数
 	 * 
 	 * @return
@@ -74,7 +67,7 @@ public interface MedicalExaminationEvaluateService {
 	 */
 	@Transactional
 	void saveAll(String tenantId, int year, int month, List<MedicalExaminationEvaluate> rows);
-	
+
 	/**
 	 * 批量保存记录
 	 * 

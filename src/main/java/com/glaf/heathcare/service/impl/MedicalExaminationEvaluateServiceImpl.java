@@ -105,15 +105,6 @@ public class MedicalExaminationEvaluateServiceImpl implements MedicalExamination
 		medicalExaminationEvaluateMapper.deleteMedicalExaminationEvaluateByTenantId(tenantId);
 	}
 
-	public MedicalExaminationEvaluate getMedicalExaminationEvaluate(long id) {
-		if (id == 0) {
-			return null;
-		}
-		MedicalExaminationEvaluate medicalExaminationEvaluate = medicalExaminationEvaluateMapper
-				.getMedicalExaminationEvaluateById(id);
-		return medicalExaminationEvaluate;
-	}
-
 	/**
 	 * 根据查询参数获取记录总数
 	 * 
@@ -159,6 +150,9 @@ public class MedicalExaminationEvaluateServiceImpl implements MedicalExamination
 			model.setAreaId(tenant.getAreaId());
 			model.setCityId(tenant.getCityId());
 			model.setProvinceId(tenant.getProvinceId());
+			model.setYear(year);
+			model.setMonth(month);
+			model.setTenantId(tenantId);
 		}
 
 		this.bulkInsert(rows);
@@ -178,6 +172,7 @@ public class MedicalExaminationEvaluateServiceImpl implements MedicalExamination
 			model.setAreaId(tenant.getAreaId());
 			model.setCityId(tenant.getCityId());
 			model.setProvinceId(tenant.getProvinceId());
+			model.setTenantId(tenantId);
 		}
 
 		this.bulkInsert(rows);

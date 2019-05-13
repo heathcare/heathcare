@@ -196,6 +196,10 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 			model.setAreaId(tenant.getAreaId());
 			model.setCityId(tenant.getCityId());
 			model.setProvinceId(tenant.getProvinceId());
+			model.setYear(year);
+			model.setMonth(month);
+			model.setType(type);
+			model.setTenantId(tenantId);
 		}
 
 		this.bulkInsert(list);
@@ -259,6 +263,8 @@ public class MedicalExaminationGradeCountServiceImpl implements MedicalExaminati
 				model.setAreaId(tenant.getAreaId());
 				model.setCityId(tenant.getCityId());
 				model.setProvinceId(tenant.getProvinceId());
+				model.setCheckId(checkId);
+				model.setTenantId(tenantId);
 			}
 
 			this.bulkInsert(list);
