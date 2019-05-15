@@ -33,7 +33,7 @@ import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationCount;
 import com.glaf.heathcare.domain.Person;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.query.PersonQuery;
@@ -116,7 +116,7 @@ public class TenantMedicalExaminationCountPreprocessor implements IReportPreproc
 					gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 				}
 			}
-			MedicalExaminationHelper helper = new MedicalExaminationHelper();
+			MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 			for (MedicalExamination ex : list) {
 				person = personMap.get(ex.getPersonId());
 				if (person != null) {

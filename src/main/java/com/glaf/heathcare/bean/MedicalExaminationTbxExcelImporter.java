@@ -133,8 +133,8 @@ public class MedicalExaminationTbxExcelImporter {
 						gradeCell = row.getCell(area.getGradeColIndex());
 						personCell = row.getCell(area.getNameColIndex());
 						if (gradeCell != null && personCell != null) {
-							gradeValue = ExcelUtils.getCellValue(cell);
-							personValue = ExcelUtils.getCellValue(cell);
+							gradeValue = ExcelUtils.getCellValue(gradeCell);
+							personValue = ExcelUtils.getCellValue(personCell);
 							if (gradeValue != null && personValue != null) {
 								person = personMap.get(gradeValue.trim() + "_" + personValue.trim());
 								if (person != null) {

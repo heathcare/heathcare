@@ -45,7 +45,7 @@ import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationCount;
 import com.glaf.heathcare.domain.Person;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.mapper.MedicalExaminationMapper;
 import com.glaf.heathcare.query.GrowthStandardQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
@@ -96,7 +96,7 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 		}
 
 		Calendar calendar = Calendar.getInstance();
-		MedicalExaminationHelper helper = new MedicalExaminationHelper();
+		MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 		for (MedicalExamination medicalExamination : list) {
 			MedicalExaminationCache.removePrefix(medicalExamination.getTenantId());
 			helper.evaluate(gsMap, medicalExamination);
@@ -268,7 +268,7 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 				}
 
 				Calendar calendar = Calendar.getInstance();
-				MedicalExaminationHelper helper = new MedicalExaminationHelper();
+				MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 				for (MedicalExamination exam : list) {
 					tmpKey = exam.getGradeName() + "_" + exam.getName();
 					if (personMap.get(tmpKey) == null) {
@@ -324,7 +324,7 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 			for (GrowthStandard gs : rows) {
 				gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 			}
-			MedicalExaminationHelper helper = new MedicalExaminationHelper();
+			MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 			helper.evaluate(gsMap, medicalExamination);
 		}
 

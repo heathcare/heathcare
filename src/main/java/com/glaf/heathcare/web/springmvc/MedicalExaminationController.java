@@ -65,7 +65,7 @@ import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationDef;
 import com.glaf.heathcare.domain.MedicalExaminationXlsArea;
 import com.glaf.heathcare.domain.Person;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.MedicalExaminationDefQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.service.GradeInfoService;
@@ -885,7 +885,7 @@ public class MedicalExaminationController {
 				}
 
 				Person person = null;
-				MedicalExaminationHelper helper = new MedicalExaminationHelper();
+				MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 				for (MedicalExamination medicalExamination : list) {
 					helper.evaluate(gsMap, medicalExamination);
 					JSONObject rowJSON = medicalExamination.toJsonObject();
@@ -1255,7 +1255,7 @@ public class MedicalExaminationController {
 					}
 				}
 
-				MedicalExaminationHelper helper = new MedicalExaminationHelper();
+				MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 				Person person = personService.getPerson(personId);
 				for (MedicalExamination medicalExamination : list) {
 					helper.evaluate(gsMap, medicalExamination);
@@ -1414,7 +1414,7 @@ public class MedicalExaminationController {
 				}
 
 				Person person = null;
-				MedicalExaminationHelper helper = new MedicalExaminationHelper();
+				MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 				for (MedicalExamination medicalExamination : list) {
 					helper.evaluate(gsMap, medicalExamination);
 					JSONObject rowJSON = medicalExamination.toJsonObject();

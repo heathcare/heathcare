@@ -40,7 +40,7 @@ import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.domain.PhysicalGrowthCount;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.query.PersonQuery;
@@ -66,7 +66,7 @@ public class PhysicalGrowthCountBean {
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		PhysicalGrowthCountService physicalGrowthCountService = ContextFactory
 				.getBean("com.glaf.heathcare.service.physicalGrowthCountService");
-		MedicalExaminationHelper helper = new MedicalExaminationHelper();
+		MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 		String systemName = Environment.getCurrentSystemName();
 		List<MedicalExamination> exams = null;
 		List<Person> persons = null;
@@ -132,10 +132,11 @@ public class PhysicalGrowthCountBean {
 						Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 						if (standards != null && !standards.isEmpty()) {
 							for (GrowthStandard gs : standards) {
-								gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								if (StringUtils.equals(gs.getType(), "4")) {
 									int height = (int) Math.round(gs.getHeight());
 									gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+								} else {
+									gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								}
 							}
 						}

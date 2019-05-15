@@ -45,11 +45,12 @@ import com.glaf.core.util.DBUtils;
 
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.GrowthStandard;
+import com.glaf.heathcare.domain.IMedicalEvaluate;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationCount;
 import com.glaf.heathcare.domain.MedicalExaminationEvaluate;
 import com.glaf.heathcare.domain.Person;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.query.PersonQuery;
@@ -84,7 +85,7 @@ public class MedicalExaminationEvaluateCountBean {
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		List<MedicalExaminationCount> tenantList = new ArrayList<MedicalExaminationCount>();
 		List<MedicalExaminationEvaluate> rows = new ArrayList<MedicalExaminationEvaluate>();
-		MedicalExaminationHelper helper = new MedicalExaminationHelper();
+		MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 		String systemName = Environment.getCurrentSystemName();
 		Collection<MedicalExaminationCount> list = null;
 		Collection<MedicalExaminationCount> values = null;
@@ -159,10 +160,11 @@ public class MedicalExaminationEvaluateCountBean {
 						Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 						if (standards != null && !standards.isEmpty()) {
 							for (GrowthStandard gs : standards) {
-								gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								if (StringUtils.equals(gs.getType(), "4")) {
 									int height = (int) Math.round(gs.getHeight());
 									gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+								} else {
+									gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								}
 							}
 						}
@@ -213,8 +215,12 @@ public class MedicalExaminationEvaluateCountBean {
 									 */
 									Map<String, Integer> personCountMap = gradePersonRelationService
 											.getPersonCountMap(tenantId, cnt.getYear(), cnt.getMonth());
-									list = helper.populate(tenantId, cnt.getYear(), cnt.getMonth(), cnt.getType(),
-											grades, persons, exams, standards, personCountMap);
+                                    List<IMedicalEvaluate> rowsx = new ArrayList<IMedicalEvaluate>();
+									for(MedicalExamination exam:exams) {
+										rowsx.add(exam);
+									}
+                                    list = helper.populate(tenantId, cnt.getYear(), cnt.getMonth(), cnt.getType(),
+											grades, persons, rowsx, standards, personCountMap);
 									if (list != null && !list.isEmpty()) {
 										for (MedicalExaminationCount model : list) {
 											model.setTenantId(tenantId);

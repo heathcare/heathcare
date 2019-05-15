@@ -51,6 +51,7 @@ import com.glaf.core.util.RequestUtils;
 
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.GrowthStandard;
+import com.glaf.heathcare.domain.IMedicalEvaluate;
 import com.glaf.heathcare.domain.MedicalExaminationCount;
 import com.glaf.heathcare.domain.MedicalExaminationEvaluate;
 import com.glaf.heathcare.domain.Person;
@@ -197,7 +198,11 @@ public class MedicalExaminationChartController {
 							// Environment.setCurrentSystemName(Environment.DEFAULT_SYSTEM_NAME);
 							Map<String, Integer> personCountMap = gradePersonRelationService.getPersonCountMap(tenantId,
 									year, month);
-							rows = helper.populate(tenantId, year, month, type, grades, persons, exams, standards,
+							List<IMedicalEvaluate> rowsx = new ArrayList<IMedicalEvaluate>();
+							for (MedicalExaminationEvaluate exam : exams) {
+								rowsx.add(exam);
+							}
+							rows = helper.populate(tenantId, year, month, type, grades, persons, rowsx, standards,
 									personCountMap);
 							if (rows != null && !rows.isEmpty()) {
 								String title = "";

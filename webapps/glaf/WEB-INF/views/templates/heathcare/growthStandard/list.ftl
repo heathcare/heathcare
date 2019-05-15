@@ -508,10 +508,10 @@
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 		   onclick="javascript:deleteSelections();">删除</a> 
 		<#if heathcare_gen_js_perm == true>
-		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-class'"
+		<!-- <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-class'"
 		   onclick="javascript:genJS();">生成JS</a>
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-class'"
-		   onclick="javascript:genJSON();">生成JSON</a>
+		   onclick="javascript:genJSON();">生成JSON</a> -->
 		</#if>
 		</#if>
 		</td>

@@ -37,7 +37,7 @@ import com.glaf.heathcare.util.*;
 
 @Entity
 @Table(name = "HEALTH_MEDICAL_EXAM_EVAL")
-public class MedicalExaminationEvaluate implements Serializable, JSONable {
+public class MedicalExaminationEvaluate implements Serializable, JSONable, IMedicalEvaluate {
 	private static final long serialVersionUID = 1L;
 
 	@Id

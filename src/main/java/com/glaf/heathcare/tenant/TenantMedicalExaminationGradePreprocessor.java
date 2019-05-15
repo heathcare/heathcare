@@ -35,7 +35,7 @@ import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.Person;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.report.IReportPreprocessor;
@@ -114,7 +114,7 @@ public class TenantMedicalExaminationGradePreprocessor implements IReportPreproc
 
 					List<GrowthStandard> standards = growthStandardService.getAllGrowthStandards();
 					Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
-					MedicalExaminationHelper helper = new MedicalExaminationHelper();
+					MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 					if (standards != null && !standards.isEmpty()) {
 						for (GrowthStandard std : standards) {
 							if (StringUtils.equals(std.getType(), "4")) {

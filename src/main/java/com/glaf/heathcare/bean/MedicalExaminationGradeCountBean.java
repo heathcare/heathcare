@@ -44,7 +44,7 @@ import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationGradeCount;
 import com.glaf.heathcare.domain.Person;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.query.PersonQuery;
@@ -77,7 +77,7 @@ public class MedicalExaminationGradeCountBean {
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		MedicalExaminationGradeCountService medicalExaminationGradeCountService = ContextFactory
 				.getBean("com.glaf.heathcare.service.medicalExaminationGradeCountService");
-		MedicalExaminationHelper helper = new MedicalExaminationHelper();
+		MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 		String systemName = Environment.getCurrentSystemName();
 		List<MedicalExamination> exams = null;
 		List<Person> persons = null;

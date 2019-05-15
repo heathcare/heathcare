@@ -42,7 +42,7 @@ import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExamination;
 import com.glaf.heathcare.domain.MedicalExaminationEvaluate;
 import com.glaf.heathcare.domain.Person;
-import com.glaf.heathcare.helper.MedicalExaminationHelper;
+import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.query.MedicalExaminationQuery;
 import com.glaf.heathcare.query.PersonQuery;
@@ -70,7 +70,7 @@ public class MedicalExaminationEvaluateBean {
 
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		List<MedicalExaminationEvaluate> rows = new ArrayList<MedicalExaminationEvaluate>();
-		MedicalExaminationHelper helper = new MedicalExaminationHelper();
+		MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 		String systemName = Environment.getCurrentSystemName();
 		List<MedicalExamination> exams = null;
 		List<Person> persons = null;
@@ -94,7 +94,7 @@ public class MedicalExaminationEvaluateBean {
 					DBUtils.createTable(database.getName(), tableDefinition);
 				}
 			}
-			
+
 			SysTenant tenant = sysTenantService.getSysTenantByTenantId(tenantId);
 
 			GradeInfoQuery query0 = new GradeInfoQuery();
@@ -139,12 +139,11 @@ public class MedicalExaminationEvaluateBean {
 						Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 						if (standards != null && !standards.isEmpty()) {
 							for (GrowthStandard gs : standards) {
-								if (StringUtils.equals(gs.getType(), "3")) {
-									gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex(), gs);
-								}
 								if (StringUtils.equals(gs.getType(), "4")) {
-									// int height = (int) Math.round(gs.getHeight());
-									// gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+									int height = (int) Math.round(gs.getHeight());
+									gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+								} else {
+									gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								}
 							}
 						}

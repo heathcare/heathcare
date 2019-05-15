@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.glaf.heathcare.mapper.MedicalSpotCheckMapper">
+
+	<resultMap id="medicalSpotCheckResultMap"
+		type="com.glaf.heathcare.domain.MedicalSpotCheck">
+		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="name" column="NAME_" jdbcType="VARCHAR" />
+		<result property="sex" column="SEX_" jdbcType="VARCHAR" />
+		<result property="birthday" column="BIRTHDAY_"
+			jdbcType="TIMESTAMP" />
+		<result property="nation" column="NATION_" jdbcType="VARCHAR" />
+		<result property="height" column="HEIGHT_" jdbcType="DOUBLE" />
+		<result property="heightLevel" column="HEIGHTLEVEL_"
+			jdbcType="INTEGER" />
+		<result property="heightEvaluate" column="HEIGHTEVALUATE_"
+			jdbcType="VARCHAR" />
+		<result property="weight" column="WEIGHT_" jdbcType="DOUBLE" />
+		<result property="weightLevel" column="WEIGHTLEVEL_"
+			jdbcType="INTEGER" />
+		<result property="weightEvaluate" column="WEIGHTEVALUATE_"
+			jdbcType="VARCHAR" />
+		<result property="weightHeightEvaluate"
+			column="WEIGHTHEIGHTEVALUATE_" jdbcType="VARCHAR" />
+		<result property="weightHeightLevel"
+			column="WEIGHTHEIGHTLEVEL_" jdbcType="INTEGER" />
+		<result property="weightHeightPercent"
+			column="WEIGHTHEIGHTPERCENT_" jdbcType="DOUBLE" />
+		<result property="bmi" column="BMI_" jdbcType="DOUBLE" />
+		<result property="bmiIndex" column="BMIINDEX_"
+			jdbcType="DOUBLE" />
+		<result property="bmiEvaluate" column="BMIEVALUATE_"
+			jdbcType="VARCHAR" />
+		<result property="eyesightLeft" column="EYESIGHTLEFT_"
+			jdbcType="DOUBLE" />
+		<result property="eyesightRight" column="EYESIGHTRIGHT_"
+			jdbcType="DOUBLE" />
+		<result property="hemoglobin" column="HEMOGLOBIN_"
+			jdbcType="DOUBLE" />
+		<result property="year" column="YEAR_" jdbcType="INTEGER" />
+		<result property="month" column="MONTH_" jdbcType="INTEGER" />
+		<result property="ageOfTheMoon" column="AGEOFTHEMOON_"
+			jdbcType="INTEGER" />
+		<result property="ageOfTheMoonString"
+			column="AGEOFTHEMOONSTRING_" jdbcType="VARCHAR" />
+		<result property="province" column="PROVINCE_"
+			jdbcType="VARCHAR" />
+		<result property="city" column="CITY_" jdbcType="VARCHAR" />
+		<result property="area" column="AREA_" jdbcType="VARCHAR" />
+		<result property="organization" column="ORGANIZATION_"
+			jdbcType="VARCHAR" />
+		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
+		<result property="checkDate" column="CHECKDATE_"
+			jdbcType="TIMESTAMP" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATETIME_"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<insert id="insertMedicalSpotCheck"
+		parameterType="com.glaf.heathcare.domain.MedicalSpotCheck">
+		insert into HEALTH_MEDICAL_SPOT_CHECK
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID_
+			<if test="name != null">
+				,NAME_
+			</if>
+			<if test="sex != null">
+				,SEX_
+			</if>
+			<if test="birthday != null">
+				,BIRTHDAY_
+			</if>
+			<if test="nation != null">
+				,NATION_
+			</if>
+			<if test="height != null">
+				,HEIGHT_
+			</if>
+			<if test="heightLevel != null">
+				,HEIGHTLEVEL_
+			</if>
+			<if test="heightEvaluate != null">
+				,HEIGHTEVALUATE_
+			</if>
+			<if test="weight != null">
+				,WEIGHT_
+			</if>
+			<if test="weightLevel != null">
+				,WEIGHTLEVEL_
+			</if>
+			<if test="weightEvaluate != null">
+				,WEIGHTEVALUATE_
+			</if>
+			<if test="weightHeightEvaluate != null">
+				,WEIGHTHEIGHTEVALUATE_
+			</if>
+			<if test="weightHeightLevel != null">
+				,WEIGHTHEIGHTLEVEL_
+			</if>
+			<if test="weightHeightPercent != null">
+				,WEIGHTHEIGHTPERCENT_
+			</if>
+			<if test="bmi != null">
+				,BMI_
+			</if>
+			<if test="bmiIndex != null">
+				,BMIINDEX_
+			</if>
+			<if test="bmiEvaluate != null">
+				,BMIEVALUATE_
+			</if>
+			<if test="eyesightLeft != null">
+				,EYESIGHTLEFT_
+			</if>
+			<if test="eyesightRight != null">
+				,EYESIGHTRIGHT_
+			</if>
+			<if test="hemoglobin != null">
+				,HEMOGLOBIN_
+			</if>
+			<if test="year != null">
+				,YEAR_
+			</if>
+			<if test="month != null">
+				,MONTH_
+			</if>
+			<if test="ageOfTheMoon != null">
+				,AGEOFTHEMOON_
+			</if>
+			<if test="ageOfTheMoonString != null">
+				,AGEOFTHEMOONSTRING_
+			</if>
+			<if test="province != null">
+				,PROVINCE_
+			</if>
+			<if test="city != null">
+				,CITY_
+			</if>
+			<if test="area != null">
+				,AREA_
+			</if>
+			<if test="organization != null">
+				,ORGANIZATION_
+			</if>
+			<if test="type != null">
+				,TYPE_
+			</if>
+			<if test="checkDate != null">
+				,CHECKDATE_
+			</if>
+			<if test="createBy != null">
+				,CREATEBY_
+			</if>
+			<if test="createTime != null">
+				,CREATETIME_
+			</if>
+		</trim>
+
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}
+
+			<if test="name != null">
+				,#{name, jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+				,#{sex, jdbcType=VARCHAR}
+			</if>
+			<if test="birthday != null">
+				,#{birthday, jdbcType=TIMESTAMP}
+			</if>
+			<if test="nation != null">
+				,#{nation, jdbcType=VARCHAR}
+			</if>
+			<if test="height != null">
+				,#{height, jdbcType=DOUBLE}
+			</if>
+			<if test="heightLevel != null">
+				,#{heightLevel, jdbcType=INTEGER}
+			</if>
+			<if test="heightEvaluate != null">
+				,#{heightEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="weight != null">
+				,#{weight, jdbcType=DOUBLE}
+			</if>
+			<if test="weightLevel != null">
+				,#{weightLevel, jdbcType=INTEGER}
+			</if>
+			<if test="weightEvaluate != null">
+				,#{weightEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="weightHeightEvaluate != null">
+				,#{weightHeightEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="weightHeightLevel != null">
+				,#{weightHeightLevel, jdbcType=INTEGER}
+			</if>
+			<if test="weightHeightPercent != null">
+				,#{weightHeightPercent, jdbcType=DOUBLE}
+			</if>
+			<if test="bmi != null">
+				,#{bmi, jdbcType=DOUBLE}
+			</if>
+			<if test="bmiIndex != null">
+				,#{bmiIndex, jdbcType=DOUBLE}
+			</if>
+			<if test="bmiEvaluate != null">
+				,#{bmiEvaluate, jdbcType=VARCHAR}
+			</if>
+			<if test="eyesightLeft != null">
+				,#{eyesightLeft, jdbcType=DOUBLE}
+			</if>
+			<if test="eyesightRight != null">
+				,#{eyesightRight, jdbcType=DOUBLE}
+			</if>
+			<if test="hemoglobin != null">
+				,#{hemoglobin, jdbcType=DOUBLE}
+			</if>
+			<if test="year != null">
+				,#{year, jdbcType=INTEGER}
+			</if>
+			<if test="month != null">
+				,#{month, jdbcType=INTEGER}
+			</if>
+			<if test="ageOfTheMoon != null">
+				,#{ageOfTheMoon, jdbcType=INTEGER}
+			</if>
+			<if test="ageOfTheMoonString != null">
+				,#{ageOfTheMoonString, jdbcType=VARCHAR}
+			</if>
+			<if test="province != null">
+				,#{province, jdbcType=VARCHAR}
+			</if>
+			<if test="city != null">
+				,#{city, jdbcType=VARCHAR}
+			</if>
+			<if test="area != null">
+				,#{area, jdbcType=VARCHAR}
+			</if>
+			<if test="organization != null">
+				,#{organization, jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+				,#{type, jdbcType=VARCHAR}
+			</if>
+			<if test="checkDate != null">
+				,#{checkDate, jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+				,#{createBy, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				,#{createTime, jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</insert>
+
+
+	<insert id="bulkInsertMedicalSpotCheck"
+		parameterType="java.util.List">
+		insert into HEALTH_MEDICAL_SPOT_CHECK (
+		ID_
+		,NAME_
+		,SEX_
+		,BIRTHDAY_
+		,NATION_
+		,HEIGHT_
+		,HEIGHTLEVEL_
+		,HEIGHTEVALUATE_
+		,WEIGHT_
+		,WEIGHTLEVEL_
+		,WEIGHTEVALUATE_
+		,WEIGHTHEIGHTEVALUATE_
+		,WEIGHTHEIGHTLEVEL_
+		,WEIGHTHEIGHTPERCENT_
+		,BMI_
+		,BMIINDEX_
+		,BMIEVALUATE_
+		,EYESIGHTLEFT_
+		,EYESIGHTRIGHT_
+		,HEMOGLOBIN_
+		,YEAR_
+		,MONTH_
+		,AGEOFTHEMOON_
+		,AGEOFTHEMOONSTRING_
+		,PROVINCE_
+		,CITY_
+		,AREA_
+		,ORGANIZATION_
+		,TYPE_
+		,CHECKDATE_
+		,CREATEBY_
+		,CREATETIME_
+		) values
+		<foreach collection="list" item="medicalSpotCheck"
+			index="index" separator=",">
+			(
+			#{medicalSpotCheck.id, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.name, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.sex,
+			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.birthday, jdbcType=TIMESTAMP}
+			,#{medicalSpotCheck.nation, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.height, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.heightLevel, jdbcType=INTEGER}
+			,#{medicalSpotCheck.heightEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.weight, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.weightLevel, jdbcType=INTEGER}
+			,#{medicalSpotCheck.weightEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.weightHeightEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.weightHeightLevel, jdbcType=INTEGER}
+			,#{medicalSpotCheck.weightHeightPercent, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.bmi, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.bmiIndex, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.bmiEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.eyesightLeft, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.eyesightRight, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.hemoglobin, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.year, jdbcType=INTEGER}
+			,#{medicalSpotCheck.month, jdbcType=INTEGER}
+			,#{medicalSpotCheck.ageOfTheMoon, jdbcType=INTEGER}
+			,#{medicalSpotCheck.ageOfTheMoonString, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.province, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.city, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.area,
+			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organization, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.type, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.checkDate, jdbcType=TIMESTAMP}
+			,#{medicalSpotCheck.createBy, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+
+	<insert id="bulkInsertMedicalSpotCheck_oracle"
+		parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="medicalSpotCheck"
+			index="index">
+			insert into HEALTH_MEDICAL_SPOT_CHECK (
+			ID_
+			,NAME_
+			,SEX_
+			,BIRTHDAY_
+			,NATION_
+			,HEIGHT_
+			,HEIGHTLEVEL_
+			,HEIGHTEVALUATE_
+			,WEIGHT_
+			,WEIGHTLEVEL_
+			,WEIGHTEVALUATE_
+			,WEIGHTHEIGHTEVALUATE_
+			,WEIGHTHEIGHTLEVEL_
+			,WEIGHTHEIGHTPERCENT_
+			,BMI_
+			,BMIINDEX_
+			,BMIEVALUATE_
+			,EYESIGHTLEFT_
+			,EYESIGHTRIGHT_
+			,HEMOGLOBIN_
+			,YEAR_
+			,MONTH_
+			,AGEOFTHEMOON_
+			,AGEOFTHEMOONSTRING_
+			,PROVINCE_
+			,CITY_
+			,AREA_
+			,ORGANIZATION_
+			,TYPE_
+			,CHECKDATE_
+			,CREATEBY_
+			,CREATETIME_
+			) values (
+			#{medicalSpotCheck.id,
+			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.name,
+			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.sex, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.birthday, jdbcType=TIMESTAMP}
+			,#{medicalSpotCheck.nation, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.height, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.heightLevel, jdbcType=INTEGER}
+			,#{medicalSpotCheck.heightEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.weight, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.weightLevel, jdbcType=INTEGER}
+			,#{medicalSpotCheck.weightEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.weightHeightEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.weightHeightLevel, jdbcType=INTEGER}
+			,#{medicalSpotCheck.weightHeightPercent, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.bmi, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.bmiIndex, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.bmiEvaluate, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.eyesightLeft, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.eyesightRight, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.hemoglobin, jdbcType=DOUBLE}
+			,#{medicalSpotCheck.year, jdbcType=INTEGER}
+			,#{medicalSpotCheck.month, jdbcType=INTEGER}
+			,#{medicalSpotCheck.ageOfTheMoon, jdbcType=INTEGER}
+			,#{medicalSpotCheck.ageOfTheMoonString, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.province, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.city, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.area,
+			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organization, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.type, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.checkDate, jdbcType=TIMESTAMP}
+			,#{medicalSpotCheck.createBy, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.createTime, jdbcType=TIMESTAMP}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+
+	<update id="updateMedicalSpotCheck"
+		parameterType="com.glaf.heathcare.domain.MedicalSpotCheck">
+		update HEALTH_MEDICAL_SPOT_CHECK
+		set
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="heightLevel != null">
+				HEIGHTLEVEL_ = #{heightLevel, jdbcType=INTEGER},
+			</if>
+			<if test="heightEvaluate != null">
+				HEIGHTEVALUATE_ = #{heightEvaluate, jdbcType=VARCHAR},
+			</if>
+			<if test="weightLevel != null">
+				WEIGHTLEVEL_ = #{weightLevel, jdbcType=INTEGER},
+			</if>
+			<if test="weightEvaluate != null">
+				WEIGHTEVALUATE_ = #{weightEvaluate, jdbcType=VARCHAR},
+			</if>
+			<if test="weightHeightEvaluate != null">
+				WEIGHTHEIGHTEVALUATE_ = #{weightHeightEvaluate,
+				jdbcType=VARCHAR},
+			</if>
+			<if test="weightHeightLevel != null">
+				WEIGHTHEIGHTLEVEL_ = #{weightHeightLevel,
+				jdbcType=INTEGER},
+			</if>
+			<if test="weightHeightPercent != null">
+				WEIGHTHEIGHTPERCENT_ = #{weightHeightPercent,
+				jdbcType=DOUBLE},
+			</if>
+			<if test="bmi != null">
+				BMI_ = #{bmi, jdbcType=DOUBLE},
+			</if>
+			<if test="bmiIndex != null">
+				BMIINDEX_ = #{bmiIndex, jdbcType=DOUBLE},
+			</if>
+			<if test="bmiEvaluate != null">
+				BMIEVALUATE_ = #{bmiEvaluate, jdbcType=VARCHAR},
+			</if>
+		</trim>
+		where
+		ID_ = #{id, jdbcType=VARCHAR}
+
+	</update>
+
+
+	<delete id="deleteMedicalSpotChecks"
+		parameterType="com.glaf.heathcare.query.MedicalSpotCheckQuery">
+		delete from HEALTH_MEDICAL_SPOT_CHECK
+		where (
+		ID_ IN
+		<foreach item="x_id" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{x_id}
+		</foreach>
+		)
+	</delete>
+
+
+	<select id="getMedicalSpotChecks"
+		parameterType="com.glaf.heathcare.query.MedicalSpotCheckQuery"
+		resultMap="medicalSpotCheckResultMap">
+		select distinct E.*
+		<include refid="selectMedicalSpotChecksSql" />
+		<choose>
+			<when test="orderBy != null">
+				order by ${orderBy}
+			</when>
+			<otherwise>
+				order by E.CHECKDATE_ desc
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getMedicalSpotCheckCount"
+		parameterType="com.glaf.heathcare.query.MedicalSpotCheckQuery"
+		resultType="int">
+		select count(*)
+		<include refid="selectMedicalSpotChecksSql" />
+	</select>
+
+
+	<sql id="selectMedicalSpotChecksSql">
+
+		from HEALTH_MEDICAL_SPOT_CHECK E
+
+		<where>
+			1 = 1
+
+			<if test="sex != null and sex != '' ">
+				and E.SEX_ = #{sex}
+			</if>
+
+			<if test="nation != null and nation != '' ">
+				and E.NATION_ = #{nation}
+			</if>
+
+			<if test="year != null">
+				and E.YEAR_ = #{year}
+			</if>
+
+			<if test="month != null">
+				and E.MONTH_ = #{month}
+			</if>
+
+			<if test="ageOfTheMoon != null">
+				and E.AGEOFTHEMOON_ = #{ageOfTheMoon}
+			</if>
+
+			<if test="ageOfTheMoonGreaterThanOrEqual != null">
+				and E.AGEOFTHEMOON_ &gt;=
+				#{ageOfTheMoonGreaterThanOrEqual}
+			</if>
+
+			<if test="ageOfTheMoonLessThanOrEqual != null">
+				and E.AGEOFTHEMOON_ &lt;= #{ageOfTheMoonLessThanOrEqual}
+			</if>
+
+			<if test="heightLevelLessThanOrEqual != null">
+				and E.HEIGHTLEVEL_ &lt;= #{heightLevelLessThanOrEqual}
+			</if>
+
+			<if test="heightLevelGreaterThanOrEqual != null">
+				and E.HEIGHTLEVEL_ &gt;=
+				#{heightLevelGreaterThanOrEqual}
+			</if>
+
+			<if test="weightLevelLessThanOrEqual != null">
+				and E.WEIGHTLEVEL_ &lt;= #{weightLevelLessThanOrEqual}
+			</if>
+
+			<if test="weightLevelGreaterThanOrEqual != null">
+				and E.WEIGHTLEVEL_ &gt;=
+				#{weightLevelGreaterThanOrEqual}
+			</if>
+
+			<if test="provinceLike != null and provinceLike != '' ">
+				and E.PROVINCE_ like #{provinceLike}
+			</if>
+
+			<if test="cityLike != null and cityLike != '' ">
+				and E.CITY_ like #{cityLike}
+			</if>
+
+			<if test="areaLike != null and areaLike != '' ">
+				and E.AREA_ like #{areaLike}
+			</if>
+
+			<if test="organizationLike != null and organizationLike != '' ">
+				and E.ORGANIZATION_ like #{organizationLike}
+			</if>
+
+			<if test="type != null and type != '' ">
+				and E.TYPE_ = #{type}
+			</if>
+
+			<if test="actorId != null and actorId != '' ">
+				and E.CREATEBY_ = #{actorId}
+			</if>
+
+		</where>
+	</sql>
+
+</mapper>
