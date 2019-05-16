@@ -32,6 +32,16 @@ import com.glaf.heathcare.domain.*;
  */
 public class MedicalExaminationJsonFactory {
 
+	public static java.util.List<MedicalExamination> arrayToList(JSONArray array) {
+		java.util.List<MedicalExamination> list = new java.util.ArrayList<MedicalExamination>();
+		for (int i = 0, len = array.size(); i < len; i++) {
+			JSONObject jsonObject = array.getJSONObject(i);
+			MedicalExamination model = jsonToObject(jsonObject);
+			list.add(model);
+		}
+		return list;
+	}
+
 	public static MedicalExamination jsonToObject(JSONObject jsonObject) {
 		MedicalExamination model = new MedicalExamination();
 		if (jsonObject.containsKey("id")) {
@@ -318,6 +328,17 @@ public class MedicalExaminationJsonFactory {
 		}
 
 		return model;
+	}
+
+	public static JSONArray listToArray(java.util.List<MedicalExamination> list) {
+		JSONArray array = new JSONArray();
+		if (list != null && !list.isEmpty()) {
+			for (MedicalExamination model : list) {
+				JSONObject jsonObject = model.toJsonObject();
+				array.add(jsonObject);
+			}
+		}
+		return array;
 	}
 
 	public static JSONObject toJsonObject(MedicalExamination model) {
@@ -825,27 +846,6 @@ public class MedicalExaminationJsonFactory {
 			jsonObject.put("createTime_datetime", DateUtils.getDateTime(model.getCreateTime()));
 		}
 		return jsonObject;
-	}
-
-	public static JSONArray listToArray(java.util.List<MedicalExamination> list) {
-		JSONArray array = new JSONArray();
-		if (list != null && !list.isEmpty()) {
-			for (MedicalExamination model : list) {
-				JSONObject jsonObject = model.toJsonObject();
-				array.add(jsonObject);
-			}
-		}
-		return array;
-	}
-
-	public static java.util.List<MedicalExamination> arrayToList(JSONArray array) {
-		java.util.List<MedicalExamination> list = new java.util.ArrayList<MedicalExamination>();
-		for (int i = 0, len = array.size(); i < len; i++) {
-			JSONObject jsonObject = array.getJSONObject(i);
-			MedicalExamination model = jsonToObject(jsonObject);
-			list.add(model);
-		}
-		return list;
 	}
 
 	private MedicalExaminationJsonFactory() {

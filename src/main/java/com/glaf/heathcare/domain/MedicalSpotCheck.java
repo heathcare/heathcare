@@ -45,7 +45,7 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 	protected String id;
 
 	/**
-	 * 学生编号
+	 * 儿童编号
 	 */
 	@Column(name = "PERSONID_", length = 50)
 	protected String personId;

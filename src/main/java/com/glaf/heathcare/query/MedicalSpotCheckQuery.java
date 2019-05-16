@@ -24,6 +24,7 @@ import com.glaf.core.query.DataQuery;
 public class MedicalSpotCheckQuery extends DataQuery {
 	private static final long serialVersionUID = 1L;
 	protected List<String> ids;
+	protected String personId;
 	protected String sex;
 	protected String nation;
 	protected Integer year;
@@ -280,6 +281,10 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return organizationLike;
 	}
 
+	public String getPersonId() {
+		return personId;
+	}
+
 	public String getProvinceLike() {
 		if (provinceLike != null && provinceLike.trim().length() > 0) {
 			if (!provinceLike.startsWith("%")) {
@@ -371,6 +376,14 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalSpotCheckQuery personId(String personId) {
+		if (personId == null) {
+			throw new RuntimeException("personId is null");
+		}
+		this.personId = personId;
+		return this;
+	}
+
 	public MedicalSpotCheckQuery provinceLike(String provinceLike) {
 		if (provinceLike == null) {
 			throw new RuntimeException("provinceLike is null");
@@ -421,6 +434,10 @@ public class MedicalSpotCheckQuery extends DataQuery {
 
 	public void setOrganizationLike(String organizationLike) {
 		this.organizationLike = organizationLike;
+	}
+
+	public void setPersonId(String personId) {
+		this.personId = personId;
 	}
 
 	public void setProvinceLike(String provinceLike) {

@@ -8,6 +8,8 @@
 	<resultMap id="medicalSpotCheckResultMap"
 		type="com.glaf.heathcare.domain.MedicalSpotCheck">
 		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="personId" column="PERSONID_"
+			jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
 		<result property="sex" column="SEX_" jdbcType="VARCHAR" />
 		<result property="birthday" column="BIRTHDAY_"
@@ -67,6 +69,9 @@
 		insert into HEALTH_MEDICAL_SPOT_CHECK
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
+			<if test="personId != null">
+				,PERSONID_
+			</if>
 			<if test="name != null">
 				,NAME_
 			</if>
@@ -164,7 +169,9 @@
 
 		<trim prefix=" values (" suffix=")" suffixOverrides=",">
 			#{id, jdbcType=VARCHAR}
-
+            <if test="personId != null">
+				,#{personId, jdbcType=VARCHAR}
+			</if>
 			<if test="name != null">
 				,#{name, jdbcType=VARCHAR}
 			</if>
@@ -266,6 +273,7 @@
 		parameterType="java.util.List">
 		insert into HEALTH_MEDICAL_SPOT_CHECK (
 		ID_
+		,PERSONID_
 		,NAME_
 		,SEX_
 		,BIRTHDAY_
@@ -302,6 +310,7 @@
 			index="index" separator=",">
 			(
 			#{medicalSpotCheck.id, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.personId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.name, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.sex,
 			jdbcType=VARCHAR}
@@ -347,6 +356,7 @@
 			index="index">
 			insert into HEALTH_MEDICAL_SPOT_CHECK (
 			ID_
+			,PERSONID_
 			,NAME_
 			,SEX_
 			,BIRTHDAY_
@@ -381,6 +391,7 @@
 			) values (
 			#{medicalSpotCheck.id,
 			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.personId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.name,
 			jdbcType=VARCHAR}
 			,#{medicalSpotCheck.sex, jdbcType=VARCHAR}
@@ -509,6 +520,10 @@
 		<where>
 			1 = 1
 
+            <if test="personId != null and personId != '' ">
+				and E.PERSONID_ = #{personId}
+			</if>
+			
 			<if test="sex != null and sex != '' ">
 				and E.SEX_ = #{sex}
 			</if>

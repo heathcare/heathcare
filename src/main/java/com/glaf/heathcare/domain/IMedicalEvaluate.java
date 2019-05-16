@@ -58,6 +58,8 @@ public interface IMedicalEvaluate {
 
 	int getWeightHeightLevel();
 
+	double getWeightHeightPercent();
+
 	int getWeightLevel();
 
 	int getYear();
@@ -99,6 +101,8 @@ public interface IMedicalEvaluate {
 	void setWeightHeightEvaluateHtml(String weightHeightEvaluateHtml);
 
 	void setWeightHeightLevel(int weightHeightLevel);
+
+	void setWeightHeightPercent(double weightHeightPercent);
 
 	void setWeightLevel(int weightLevel);
 

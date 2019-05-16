@@ -36,6 +36,9 @@ public class MedicalSpotCheckJsonFactory {
 		if (jsonObject.containsKey("id")) {
 			model.setId(jsonObject.getString("id"));
 		}
+		if (jsonObject.containsKey("personId")) {
+			model.setPersonId(jsonObject.getString("personId"));
+		}
 		if (jsonObject.containsKey("name")) {
 			model.setName(jsonObject.getString("name"));
 		}
@@ -138,6 +141,9 @@ public class MedicalSpotCheckJsonFactory {
 		jsonObject.put("id", model.getId());
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
+		if (model.getPersonId() != null) {
+			jsonObject.put("personId", model.getPersonId());
+		}
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
 		}
@@ -229,6 +235,9 @@ public class MedicalSpotCheckJsonFactory {
 		jsonObject.put("id", model.getId());
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
+		if (model.getPersonId() != null) {
+			jsonObject.put("personId", model.getPersonId());
+		}
 		if (model.getName() != null) {
 			jsonObject.put("name", model.getName());
 		}
