@@ -37,7 +37,7 @@
 		</javac>
 		<copy todir="bin">
 		<fileset dir="src/main/java" 
-		includes="com/glaf/**/*.conf,com/glaf/**/*.sql,com/glaf/**/*.properties,com/glaf/**/*.xml" />
+		includes="com/glaf/**/*.conf,com/glaf/**/*.sql,com/glaf/**/*.properties,com/glaf/**/*.xml,com/glaf/**/*.xls" />
 		</copy>
 	</target>
 
@@ -49,7 +49,7 @@
 
 		<jar jarfile="glaf-framework.jar">
 		    <fileset dir="bin" 
-			         includes="com/glaf/**/*.class,com/glaf/**/*.xml,com/glaf/**/*.properties" 
+			         includes="com/glaf/**/*.class,com/glaf/**/*.xml,com/glaf/**/*.properties,com/glaf/**/*.xls" 
 					 excludes="com/glaf/heathcare/**/*.*, **/test/**"/>
 		    <fileset dir="jar-conf" includes="**/*.xml,**/*.properties"/>
         </jar>
