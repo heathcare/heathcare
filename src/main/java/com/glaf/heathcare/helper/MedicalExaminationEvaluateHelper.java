@@ -119,7 +119,7 @@ public class MedicalExaminationEvaluateHelper {
 							.setWeightEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>低体重</span>");
 				} else if (weight < gs.getNegativeOneDSDeviation() && weight >= gs.getNegativeTwoDSDeviation()) {
 					medicalExamination.setWeightLevel(-1);
-					medicalExamination.setWeightEvaluate("低体重");
+					medicalExamination.setWeightEvaluate("偏瘦");
 					medicalExamination
 							.setWeightEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>低体重</span>");
 				} else {
@@ -151,11 +151,6 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination.setWeightEvaluate("轻度肥胖");
 					medicalExamination.setWeightHeightEvaluateHtml(
 							"<span style='color:#ff9900; font:bold 12px 微软雅黑;'>轻度肥胖</span>");
-				} else if (weight > gs.getMedian() && weight <= gs.getOneDSDeviation()) {
-					medicalExamination.setWeightLevel(1);
-					medicalExamination.setWeightEvaluate("超重");
-					medicalExamination
-							.setWeightHeightEvaluateHtml("<span style='color:#ffff00; font:bold 12px 微软雅黑;'>超重</span>");
 				} else if (weight < gs.getNegativeThreeDSDeviation()) {
 					medicalExamination.setWeightHeightLevel(-3);
 					medicalExamination.setWeightHeightEvaluate("消瘦");
@@ -189,7 +184,7 @@ public class MedicalExaminationEvaluateHelper {
 			if (gs != null) {
 				if (BMI > gs.getThreeDSDeviation()) {
 					medicalExamination.setBmiIndex(3);
-					medicalExamination.setBmiEvaluate("严重肥胖");
+					medicalExamination.setBmiEvaluate("重度肥胖");
 					medicalExamination
 							.setBmiEvaluateHtml("<span style='color:#ff0000; font:bold 12px 微软雅黑;'>严重肥胖</span>");
 				} else if (BMI > gs.getTwoDSDeviation() && BMI <= gs.getThreeDSDeviation()) {
@@ -214,7 +209,7 @@ public class MedicalExaminationEvaluateHelper {
 							.setBmiEvaluateHtml("<span style='color:#ff6666; font:bold 12px 微软雅黑;'>低体重</span>");
 				} else if (BMI < gs.getNegativeOneDSDeviation() && BMI >= gs.getNegativeTwoDSDeviation()) {
 					medicalExamination.setBmiIndex(-1);
-					medicalExamination.setBmiEvaluate("低体重");
+					medicalExamination.setBmiEvaluate("偏瘦");
 					medicalExamination
 							.setBmiEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>低体重</span>");
 				} else {
