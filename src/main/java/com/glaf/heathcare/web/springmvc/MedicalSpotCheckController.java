@@ -101,7 +101,7 @@ public class MedicalSpotCheckController {
 				List<MedicalSpotCheckXlsArea> areas = new ArrayList<MedicalSpotCheckXlsArea>();
 				MedicalSpotCheckXlsArea area = new MedicalSpotCheckXlsArea();
 				area.setStartRow(1);
-				area.setEndRow(50000);
+				area.setEndRow(5000);
 				area.setAgeOfTheMoonColIndex(1);
 				area.setNationColIndex(2);
 				area.setHemoglobinColIndex(3);
@@ -111,14 +111,17 @@ public class MedicalSpotCheckController {
 				area.setAreaColIndex(7);
 				area.setOrganizationColIndex(8);
 				area.setSexColIndex(9);
+				area.setGradeColIndex(10);
 				areas.add(area);
 				String checkId = null;
 				try {
 					// semaphore2.acquire();
 					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						checkId = bean.importData(loginContext.getActorId(), type, areas, mFile.getInputStream());
+						checkId = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, areas,
+								mFile.getInputStream());
 					} else {
-						checkId = bean.importData(loginContext.getActorId(), type, areas, mFile.getInputStream());
+						checkId = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, areas,
+								mFile.getInputStream());
 					}
 					request.setAttribute("type", type);
 					request.setAttribute("checkId", checkId);
@@ -162,12 +165,17 @@ public class MedicalSpotCheckController {
 		query.actorId(loginContext.getActorId());
 		query.setActorId(loginContext.getActorId());
 		query.setLoginContext(loginContext);
+		if (loginContext.getTenantId() != null) {
+			query.tenantId(loginContext.getTenantId());
+		}
 
-		int heightLevel = RequestUtils.getInt(request, "heightLevel");
-		if (heightLevel > 0) {
-			query.setHeightLevelGreaterThanOrEqual(0);
+		int heightLevel = RequestUtils.getInt(request, "heightLevel", -9);
+		if (heightLevel >= 0) {
+			query.setHeightLevelGreaterThanOrEqual(heightLevel);
 		} else {
-			query.setHeightLevelLessThanOrEqual(heightLevel);
+			if (heightLevel != -9) {
+				query.setHeightLevelLessThanOrEqual(heightLevel);
+			}
 		}
 
 		int start = 0;

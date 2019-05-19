@@ -143,12 +143,13 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public double getAvg() {
+		avg = Math.round(avg * 10D) / 10D;
 		return avg;
 	}
 
 	public String getAvgString() {
 		if (avg > 0) {
-			avg = Math.round(avg * 100D) / 100D;
+			avg = Math.round(avg * 10D) / 10D;
 		} else {
 			double total = 0;
 			int size = negative3DList.size() + negative2DList.size() + negative1DList.size() + normalList.size()
@@ -176,7 +177,7 @@ public class MedicalSpotCheckTotalModel {
 					total += val.getValue();
 				}
 				avg = total / size;
-				avg = Math.round(avg * 100D) / 100D;
+				avg = Math.round(avg * 10D) / 10D;
 			}
 		}
 		avgString = String.valueOf(avg);
@@ -189,7 +190,7 @@ public class MedicalSpotCheckTotalModel {
 
 	public String getCnDiffValueString() {
 		if (cnDiffValue != 0) {
-			cnDiffValue = Math.round(cnDiffValue * 100D) / 100D;
+			cnDiffValue = Math.round(cnDiffValue * 10D) / 10D;
 			cnDiffValueString = String.valueOf(cnDiffValue);
 			return cnDiffValueString;
 		}
@@ -293,7 +294,7 @@ public class MedicalSpotCheckTotalModel {
 
 	public String getWhoDiffValueString() {
 		if (whoDiffValue != 0) {
-			whoDiffValue = Math.round(whoDiffValue * 100D) / 100D;
+			whoDiffValue = Math.round(whoDiffValue * 10D) / 10D;
 			whoDiffValueString = String.valueOf(whoDiffValue);
 			return whoDiffValueString;
 		}

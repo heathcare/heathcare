@@ -36,6 +36,12 @@ public class MedicalSpotCheckJsonFactory {
 		if (jsonObject.containsKey("id")) {
 			model.setId(jsonObject.getString("id"));
 		}
+		if (jsonObject.containsKey("tenantId")) {
+			model.setTenantId(jsonObject.getString("tenantId"));
+		}
+		if (jsonObject.containsKey("gradeName")) {
+			model.setGradeName(jsonObject.getString("gradeName"));
+		}
 		if (jsonObject.containsKey("personId")) {
 			model.setPersonId(jsonObject.getString("personId"));
 		}
@@ -123,6 +129,9 @@ public class MedicalSpotCheckJsonFactory {
 		if (jsonObject.containsKey("type")) {
 			model.setType(jsonObject.getString("type"));
 		}
+		if (jsonObject.containsKey("ordinal")) {
+			model.setOrdinal(jsonObject.getInteger("ordinal"));
+		}
 		if (jsonObject.containsKey("checkDate")) {
 			model.setCheckDate(jsonObject.getDate("checkDate"));
 		}
@@ -141,6 +150,13 @@ public class MedicalSpotCheckJsonFactory {
 		jsonObject.put("id", model.getId());
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
+
+		if (model.getTenantId() != null) {
+			jsonObject.put("tenantId", model.getTenantId());
+		}
+		if (model.getGradeName() != null) {
+			jsonObject.put("gradeName", model.getGradeName());
+		}
 		if (model.getPersonId() != null) {
 			jsonObject.put("personId", model.getPersonId());
 		}
@@ -214,6 +230,7 @@ public class MedicalSpotCheckJsonFactory {
 		if (model.getType() != null) {
 			jsonObject.put("type", model.getType());
 		}
+		jsonObject.put("ordinal", model.getOrdinal());
 		if (model.getCheckDate() != null) {
 			jsonObject.put("checkDate", DateUtils.getDate(model.getCheckDate()));
 			jsonObject.put("checkDate_date", DateUtils.getDate(model.getCheckDate()));
@@ -235,6 +252,13 @@ public class MedicalSpotCheckJsonFactory {
 		jsonObject.put("id", model.getId());
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
+
+		if (model.getTenantId() != null) {
+			jsonObject.put("tenantId", model.getTenantId());
+		}
+		if (model.getGradeName() != null) {
+			jsonObject.put("gradeName", model.getGradeName());
+		}
 		if (model.getPersonId() != null) {
 			jsonObject.put("personId", model.getPersonId());
 		}
@@ -308,6 +332,7 @@ public class MedicalSpotCheckJsonFactory {
 		if (model.getType() != null) {
 			jsonObject.put("type", model.getType());
 		}
+		jsonObject.put("ordinal", model.getOrdinal());
 		if (model.getCheckDate() != null) {
 			jsonObject.put("checkDate", DateUtils.getDate(model.getCheckDate()));
 			jsonObject.put("checkDate_date", DateUtils.getDate(model.getCheckDate()));

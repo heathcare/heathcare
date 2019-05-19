@@ -8,6 +8,10 @@
 	<resultMap id="medicalSpotCheckResultMap"
 		type="com.glaf.heathcare.domain.MedicalSpotCheck">
 		<id property="id" column="ID_" jdbcType="VARCHAR" />
+		<result property="tenantId" column="TENANTID_"
+			jdbcType="VARCHAR" />
+		<result property="gradeName" column="GRADENAME_"
+			jdbcType="VARCHAR" />
 		<result property="personId" column="PERSONID_"
 			jdbcType="VARCHAR" />
 		<result property="name" column="NAME_" jdbcType="VARCHAR" />
@@ -55,6 +59,7 @@
 		<result property="organization" column="ORGANIZATION_"
 			jdbcType="VARCHAR" />
 		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
+		<result property="ordinal" column="ORDINAL_" jdbcType="INTEGER" />
 		<result property="checkDate" column="CHECKDATE_"
 			jdbcType="TIMESTAMP" />
 		<result property="createBy" column="CREATEBY_"
@@ -69,6 +74,12 @@
 		insert into HEALTH_MEDICAL_SPOT_CHECK
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
+			<if test="tenantId != null">
+				,TENANTID_
+			</if>
+			<if test="gradeName != null">
+				,GRADENAME_
+			</if>
 			<if test="personId != null">
 				,PERSONID_
 			</if>
@@ -156,6 +167,9 @@
 			<if test="type != null">
 				,TYPE_
 			</if>
+			<if test="ordinal != null">
+				,ORDINAL_
+			</if>
 			<if test="checkDate != null">
 				,CHECKDATE_
 			</if>
@@ -169,7 +183,13 @@
 
 		<trim prefix=" values (" suffix=")" suffixOverrides=",">
 			#{id, jdbcType=VARCHAR}
-            <if test="personId != null">
+			<if test="tenantId != null">
+				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="gradeName != null">
+				,#{gradeName, jdbcType=VARCHAR}
+			</if>
+			<if test="personId != null">
 				,#{personId, jdbcType=VARCHAR}
 			</if>
 			<if test="name != null">
@@ -256,6 +276,9 @@
 			<if test="type != null">
 				,#{type, jdbcType=VARCHAR}
 			</if>
+			<if test="ordinal != null">
+				,#{ordinal, jdbcType=INTEGER}
+			</if>
 			<if test="checkDate != null">
 				,#{checkDate, jdbcType=TIMESTAMP}
 			</if>
@@ -273,6 +296,8 @@
 		parameterType="java.util.List">
 		insert into HEALTH_MEDICAL_SPOT_CHECK (
 		ID_
+		,TENANTID_
+		,GRADENAME_
 		,PERSONID_
 		,NAME_
 		,SEX_
@@ -302,6 +327,7 @@
 		,AREA_
 		,ORGANIZATION_
 		,TYPE_
+		,ORDINAL_
 		,CHECKDATE_
 		,CREATEBY_
 		,CREATETIME_
@@ -310,6 +336,8 @@
 			index="index" separator=",">
 			(
 			#{medicalSpotCheck.id, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.tenantId, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.gradeName, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.personId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.name, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.sex,
@@ -341,6 +369,7 @@
 			jdbcType=VARCHAR}
 			,#{medicalSpotCheck.organization, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.type, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.ordinal, jdbcType=INTEGER}
 			,#{medicalSpotCheck.checkDate, jdbcType=TIMESTAMP}
 			,#{medicalSpotCheck.createBy, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.createTime, jdbcType=TIMESTAMP}
@@ -356,6 +385,8 @@
 			index="index">
 			insert into HEALTH_MEDICAL_SPOT_CHECK (
 			ID_
+			,TENANTID_
+			,GRADENAME_
 			,PERSONID_
 			,NAME_
 			,SEX_
@@ -385,16 +416,20 @@
 			,AREA_
 			,ORGANIZATION_
 			,TYPE_
+			,ORDINAL_
 			,CHECKDATE_
 			,CREATEBY_
 			,CREATETIME_
 			) values (
 			#{medicalSpotCheck.id,
 			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.tenantId, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.gradeName, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.personId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.name,
 			jdbcType=VARCHAR}
-			,#{medicalSpotCheck.sex, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.sex,
+			jdbcType=VARCHAR}
 			,#{medicalSpotCheck.birthday, jdbcType=TIMESTAMP}
 			,#{medicalSpotCheck.nation, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.height, jdbcType=DOUBLE}
@@ -422,6 +457,7 @@
 			jdbcType=VARCHAR}
 			,#{medicalSpotCheck.organization, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.type, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.ordinal, jdbcType=INTEGER}
 			,#{medicalSpotCheck.checkDate, jdbcType=TIMESTAMP}
 			,#{medicalSpotCheck.createBy, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.createTime, jdbcType=TIMESTAMP}
@@ -499,7 +535,7 @@
 				order by ${orderBy}
 			</when>
 			<otherwise>
-				order by E.CHECKDATE_ desc
+				order by E.ORDINAL_ asc
 			</otherwise>
 		</choose>
 	</select>
@@ -520,10 +556,18 @@
 		<where>
 			1 = 1
 
-            <if test="personId != null and personId != '' ">
+			<if test="tenantId != null and tenantId != '' ">
+				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="gradeNameLike != null and gradeNameLike != '' ">
+				and E.GRADENAME_ like #{gradeNameLike}
+			</if>
+
+			<if test="personId != null and personId != '' ">
 				and E.PERSONID_ = #{personId}
 			</if>
-			
+
 			<if test="sex != null and sex != '' ">
 				and E.SEX_ = #{sex}
 			</if>

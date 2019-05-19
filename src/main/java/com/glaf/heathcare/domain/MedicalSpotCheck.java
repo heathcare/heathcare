@@ -45,6 +45,18 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 	protected String id;
 
 	/**
+	 * 租户编号
+	 */
+	@Column(name = "TENANTID_", length = 50)
+	protected String tenantId;
+
+	/**
+	 * 班级名称
+	 */
+	@Column(name = "GRADENAME_", length = 100)
+	protected String gradeName;
+
+	/**
 	 * 儿童编号
 	 */
 	@Column(name = "PERSONID_", length = 50)
@@ -232,6 +244,12 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 	protected String type;
 
 	/**
+	 * 顺序号
+	 */
+	@Column(name = "ORDINAL_")
+	protected int ordinal;
+
+	/**
 	 * 体检时间
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
@@ -297,7 +315,7 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 
 	public double getBmi() {
 		if (bmi > 0) {
-			bmi = Math.round(bmi * 100D) / 100D;
+			bmi = Math.round(bmi * 10D) / 10D;
 		}
 		return this.bmi;
 	}
@@ -352,6 +370,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 		return this.eyesightRight;
 	}
 
+	public String getGradeName() {
+		return gradeName;
+	}
+
 	public double getHeight() {
 		return this.height;
 	}
@@ -388,6 +410,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 		return this.nation;
 	}
 
+	public int getOrdinal() {
+		return ordinal;
+	}
+
 	public String getOrganization() {
 		return this.organization;
 	}
@@ -402,6 +428,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 
 	public String getSex() {
 		return this.sex;
+	}
+
+	public String getTenantId() {
+		return tenantId;
 	}
 
 	public String getType() {
@@ -512,6 +542,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 		this.eyesightRight = eyesightRight;
 	}
 
+	public void setGradeName(String gradeName) {
+		this.gradeName = gradeName;
+	}
+
 	public void setHeight(double height) {
 		this.height = height;
 	}
@@ -548,6 +582,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 		this.nation = nation;
 	}
 
+	public void setOrdinal(int ordinal) {
+		this.ordinal = ordinal;
+	}
+
 	public void setOrganization(String organization) {
 		this.organization = organization;
 	}
@@ -562,6 +600,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	public void setType(String type) {

@@ -42,6 +42,9 @@ public class MedicalSpotCheckDomainFactory {
 
 	static {
 		columnMap.put("id", "ID_");
+		columnMap.put("tenantId", "TENANTID_");
+		columnMap.put("gradeName", "GRADENAME_");
+		columnMap.put("personId", "PERSONID_");
 		columnMap.put("name", "NAME_");
 		columnMap.put("sex", "SEX_");
 		columnMap.put("birthday", "BIRTHDAY_");
@@ -73,6 +76,9 @@ public class MedicalSpotCheckDomainFactory {
 		columnMap.put("createTime", "CREATETIME_");
 
 		javaTypeMap.put("id", "String");
+		javaTypeMap.put("tenantId", "String");
+		javaTypeMap.put("gradeName", "String");
+		javaTypeMap.put("personId", "String");
 		javaTypeMap.put("name", "String");
 		javaTypeMap.put("sex", "String");
 		javaTypeMap.put("birthday", "Date");
@@ -128,6 +134,27 @@ public class MedicalSpotCheckDomainFactory {
 		idColumn.setJavaType("String");
 		idColumn.setLength(64);
 		tableDefinition.setIdColumn(idColumn);
+
+		ColumnDefinition tenantId = new ColumnDefinition();
+		tenantId.setName("tenantId");
+		tenantId.setColumnName("TENANTID_");
+		tenantId.setJavaType("String");
+		tenantId.setLength(50);
+		tableDefinition.addColumn(tenantId);
+
+		ColumnDefinition gradeName = new ColumnDefinition();
+		gradeName.setName("gradeName");
+		gradeName.setColumnName("GRADENAME_");
+		gradeName.setJavaType("String");
+		gradeName.setLength(100);
+		tableDefinition.addColumn(gradeName);
+
+		ColumnDefinition personId = new ColumnDefinition();
+		personId.setName("personId");
+		personId.setColumnName("PERSONID_");
+		personId.setJavaType("String");
+		personId.setLength(50);
+		tableDefinition.addColumn(personId);
 
 		ColumnDefinition name = new ColumnDefinition();
 		name.setName("name");

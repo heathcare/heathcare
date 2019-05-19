@@ -24,6 +24,7 @@ import com.glaf.core.query.DataQuery;
 public class MedicalSpotCheckQuery extends DataQuery {
 	private static final long serialVersionUID = 1L;
 	protected List<String> ids;
+	protected String gradeNameLike;
 	protected String personId;
 	protected String sex;
 	protected String nation;
@@ -120,6 +121,18 @@ public class MedicalSpotCheckQuery extends DataQuery {
 			}
 		}
 		return cityLike;
+	}
+
+	public String getGradeNameLike() {
+		if (gradeNameLike != null && gradeNameLike.trim().length() > 0) {
+			if (!gradeNameLike.startsWith("%")) {
+				gradeNameLike = "%" + gradeNameLike;
+			}
+			if (!gradeNameLike.endsWith("%")) {
+				gradeNameLike = gradeNameLike + "%";
+			}
+		}
+		return gradeNameLike;
 	}
 
 	public Integer getHeightLevelGreaterThanOrEqual() {
@@ -317,6 +330,14 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return year;
 	}
 
+	public MedicalSpotCheckQuery gradeNameLike(String gradeNameLike) {
+		if (gradeNameLike == null) {
+			throw new RuntimeException("gradeName is null");
+		}
+		this.gradeNameLike = gradeNameLike;
+		return this;
+	}
+
 	@Override
 	public void initQueryColumns() {
 		super.initQueryColumns();
@@ -410,6 +431,10 @@ public class MedicalSpotCheckQuery extends DataQuery {
 
 	public void setCityLike(String cityLike) {
 		this.cityLike = cityLike;
+	}
+
+	public void setGradeNameLike(String gradeNameLike) {
+		this.gradeNameLike = gradeNameLike;
 	}
 
 	public void setHeightLevelGreaterThanOrEqual(Integer heightLevelGreaterThanOrEqual) {

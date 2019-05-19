@@ -43,7 +43,8 @@ import com.glaf.heathcare.service.MedicalSpotCheckService;
 public class MedicalSpotCheckExcelImporter {
 	protected final static Log logger = LogFactory.getLog(MedicalSpotCheckExcelImporter.class);
 
-	public String importData(String userId, String type, List<MedicalSpotCheckXlsArea> areas, java.io.InputStream inputStream) {
+	public String importData(String tenantId, String userId, String type, List<MedicalSpotCheckXlsArea> areas,
+			java.io.InputStream inputStream) {
 		logger.debug("----------------MedicalSpotCheckExcelImporter------------------");
 		MedicalSpotCheckService medicalSpotCheckService = ContextFactory
 				.getBean("com.glaf.heathcare.service.medicalSpotCheckService");
@@ -62,7 +63,7 @@ public class MedicalSpotCheckExcelImporter {
 
 			String checkId = UUID32.generateShortUuid();
 			List<MedicalSpotCheck> exams = new ArrayList<MedicalSpotCheck>();
-
+			int ordinal = 0;
 			for (MedicalSpotCheckXlsArea area : areas) {
 				int sheetCnt = wb.getNumberOfSheets();
 				for (int index = 0; index < sheetCnt; index++) {
@@ -121,6 +122,14 @@ public class MedicalSpotCheckExcelImporter {
 										if (cell != null) {
 											cellValue = ExcelUtils.getCellValue(cell);
 											exam.setOrganization(cellValue);
+										}
+									}
+
+									if (area.getGradeColIndex() != -1) {
+										cell = row.getCell(area.getGradeColIndex());
+										if (cell != null) {
+											cellValue = ExcelUtils.getCellValue(cell);
+											exam.setGradeName(cellValue);
 										}
 									}
 
@@ -196,7 +205,9 @@ public class MedicalSpotCheckExcelImporter {
 											}
 										}
 									}
+									exam.setTenantId(tenantId);
 									exam.setCreateBy(userId);
+									exam.setOrdinal(++ordinal);
 									exams.add(exam);
 								}
 							}

@@ -396,4 +396,10 @@
 		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationGradeCountPreprocessor</prepareClass>
 	</report>
 
+	<report id="MedicalSpotCheckTotal">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalSpotCheckTotal.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.tenant.MedicalSpotCheckPreprocessor</prepareClass>
+	</report>
+
 </reports>

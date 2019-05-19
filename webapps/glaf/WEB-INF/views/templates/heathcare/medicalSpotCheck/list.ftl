@@ -310,8 +310,8 @@
 				</script>
 				&nbsp;身高评价&nbsp;
 				<select id="heightLevel" name="heightLevel" onchange="javascript:doSearch();">
-					<option value="9">--请选择--</option>
-					<option value="1">正常</option>
+					<option value="-9">--请选择--</option>
+					<option value="0">正常</option>
 					<option value="-1">生长迟缓</option>
 					<option value="-2">中度生长迟缓</option>
 				</select>

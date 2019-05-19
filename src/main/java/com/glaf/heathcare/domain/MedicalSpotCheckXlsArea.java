@@ -86,6 +86,11 @@ public class MedicalSpotCheckXlsArea {
 	protected int organizationColIndex = -1;
 
 	/**
+	 * 班级所在列
+	 */
+	protected int gradeColIndex = -1;
+
+	/**
 	 * 年龄所在列
 	 */
 	protected int ageOfTheMoonColIndex;
@@ -125,6 +130,10 @@ public class MedicalSpotCheckXlsArea {
 
 	public int getEyesightRightColIndex() {
 		return eyesightRightColIndex;
+	}
+
+	public int getGradeColIndex() {
+		return gradeColIndex;
 	}
 
 	public int getHeightColIndex() {
@@ -185,6 +194,10 @@ public class MedicalSpotCheckXlsArea {
 
 	public void setEyesightRightColIndex(int eyesightRightColIndex) {
 		this.eyesightRightColIndex = eyesightRightColIndex;
+	}
+
+	public void setGradeColIndex(int gradeColIndex) {
+		this.gradeColIndex = gradeColIndex;
 	}
 
 	public void setHeightColIndex(int heightColIndex) {
