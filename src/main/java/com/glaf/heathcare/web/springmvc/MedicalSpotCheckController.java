@@ -24,6 +24,7 @@ import com.glaf.core.security.LoginContext;
 import com.glaf.core.util.*;
 import com.glaf.heathcare.bean.MedicalSpotCheckEvaluateBean;
 import com.glaf.heathcare.bean.MedicalSpotCheckExcelImporter;
+import com.glaf.heathcare.bean.MedicalSpotCheckExcelImporterV2;
 import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExaminationDef;
 import com.glaf.heathcare.domain.MedicalSpotCheck;
@@ -94,7 +95,7 @@ public class MedicalSpotCheckController {
 
 	/**
 	 * @param request
-	 * @param modelMap
+	 * @param response
 	 * @param mFile
 	 * @return
 	 */
@@ -127,6 +128,195 @@ public class MedicalSpotCheckController {
 				area.setOrganizationLevelColIndex(index++);
 				area.setOrganizationPropertyColIndex(index++);
 				area.setOrganizationTerritoryColIndex(index++);
+				areas.add(area);
+				request.setCharacterEncoding("UTF-8");
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter writer = null;
+				try {
+					if (StringUtils.isEmpty(checkId)) {
+						checkId = UUID32.generateShortUuid();
+						MedicalExaminationDef medicalExaminationDef = new MedicalExaminationDef();
+						medicalExaminationDef.setTenantId(loginContext.getTenantId());
+						medicalExaminationDef.setTitle(request.getParameter("title"));
+						if (StringUtils.isEmpty(medicalExaminationDef.getTitle())) {
+							medicalExaminationDef.setTitle("无主题" + DateUtils.getDate(new java.util.Date()));
+						}
+						medicalExaminationDef.setType(request.getParameter("type"));
+						medicalExaminationDef.setCheckDate(RequestUtils.getDate(request, "checkDate"));
+						medicalExaminationDef.setRemark(request.getParameter("remark"));
+						medicalExaminationDef.setEnableFlag("Y");
+
+						if (medicalExaminationDef.getCheckDate() != null) {
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(medicalExaminationDef.getCheckDate());
+							int year = calendar.get(Calendar.YEAR);
+							int month = calendar.get(Calendar.MONTH) + 1;
+							medicalExaminationDef.setYear(year);
+							medicalExaminationDef.setMonth(month);
+							medicalExaminationDef.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+						}
+						medicalExaminationDef.setCreateBy(loginContext.getActorId());
+						this.medicalExaminationDefService.save(medicalExaminationDef);
+					}
+
+					String str = null;
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						str = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, checkId,
+								areas, mFile.getInputStream());
+					} else {
+						str = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, checkId,
+								areas, mFile.getInputStream());
+					}
+
+					if (str != null && str.length() > 0) {
+						writer = response.getWriter();
+						writer.write(str);
+						writer.flush();
+					} else {
+						writer = response.getWriter();
+						writer.write("<br>没有记录导入。");
+						writer.flush();
+					}
+				} catch (Exception ex) {
+					logger.error(ex);
+				} finally {
+					if (writer != null) {
+						writer.close();
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @param mFile
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/doImport2", method = RequestMethod.POST)
+	public void doImport2(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		String checkId = request.getParameter("checkId");
+		String type = request.getParameter("type");
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			if (StringUtils.isNotEmpty(type)) {
+				MedicalSpotCheckExcelImporterV2 bean = new MedicalSpotCheckExcelImporterV2();
+				List<MedicalSpotCheckXlsArea> areas = new ArrayList<MedicalSpotCheckXlsArea>();
+				MedicalSpotCheckXlsArea area = new MedicalSpotCheckXlsArea();
+				int index = 0;
+				area.setStartRow(1);
+				area.setEndRow(5000);
+				area.setOrganizationColIndex(index++);
+				area.setGradeColIndex(index++);
+				area.setNameColIndex(index++);
+				area.setSexColIndex(index++);
+				area.setBirthdayColIndex(index++);
+				area.setCheckDateColIndex(index++);
+				area.setNationColIndex(index++);
+				area.setWeightColIndex(index++);
+				area.setHeightColIndex(index++);
+				area.setHemoglobinColIndex(index++);
+				area.setCityColIndex(index++);
+				area.setAreaColIndex(index++);
+				area.setOrganizationLevelColIndex(index++);
+				area.setOrganizationPropertyColIndex(index++);
+				area.setOrganizationTerritoryColIndex(index++);
+				areas.add(area);
+				request.setCharacterEncoding("UTF-8");
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter writer = null;
+				try {
+					if (StringUtils.isEmpty(checkId)) {
+						checkId = UUID32.generateShortUuid();
+						MedicalExaminationDef medicalExaminationDef = new MedicalExaminationDef();
+						medicalExaminationDef.setTenantId(loginContext.getTenantId());
+						medicalExaminationDef.setTitle(request.getParameter("title"));
+						if (StringUtils.isEmpty(medicalExaminationDef.getTitle())) {
+							medicalExaminationDef.setTitle("无主题" + DateUtils.getDate(new java.util.Date()));
+						}
+						medicalExaminationDef.setType(request.getParameter("type"));
+						medicalExaminationDef.setCheckDate(RequestUtils.getDate(request, "checkDate"));
+						medicalExaminationDef.setRemark(request.getParameter("remark"));
+						medicalExaminationDef.setEnableFlag("Y");
+
+						if (medicalExaminationDef.getCheckDate() != null) {
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(medicalExaminationDef.getCheckDate());
+							int year = calendar.get(Calendar.YEAR);
+							int month = calendar.get(Calendar.MONTH) + 1;
+							medicalExaminationDef.setYear(year);
+							medicalExaminationDef.setMonth(month);
+							medicalExaminationDef.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+						}
+						medicalExaminationDef.setCreateBy(loginContext.getActorId());
+						this.medicalExaminationDefService.save(medicalExaminationDef);
+					}
+
+					String str = null;
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						str = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, checkId,
+								areas, mFile.getInputStream());
+					} else {
+						str = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, checkId,
+								areas, mFile.getInputStream());
+					}
+
+					if (str != null && str.length() > 0) {
+						writer = response.getWriter();
+						writer.write(str);
+						writer.flush();
+					} else {
+						writer = response.getWriter();
+						writer.write("<br>没有记录导入。");
+						writer.flush();
+					}
+				} catch (Exception ex) {
+					logger.error(ex);
+				} finally {
+					if (writer != null) {
+						writer.close();
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @param mFile
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/doImport3", method = RequestMethod.POST)
+	public void doImport3(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		String checkId = request.getParameter("checkId");
+		String type = request.getParameter("type");
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			if (StringUtils.isNotEmpty(type)) {
+				MedicalSpotCheckExcelImporterV2 bean = new MedicalSpotCheckExcelImporterV2();
+				List<MedicalSpotCheckXlsArea> areas = new ArrayList<MedicalSpotCheckXlsArea>();
+				MedicalSpotCheckXlsArea area = new MedicalSpotCheckXlsArea();
+				int index = 0;
+				area.setStartRow(1);
+				area.setEndRow(5000);
+				area.setGradeColIndex(index++);
+				area.setNameColIndex(index++);
+				area.setSexColIndex(index++);
+				area.setBirthdayColIndex(index++);
+				area.setCheckDateColIndex(index++);
+				area.setWeightColIndex(index++);
+				area.setHeightColIndex(index++);
+				area.setHemoglobinColIndex(index++);
+				area.setEyesightLeftColIndex(index++);
+				area.setEyesightRightColIndex(index++);
 				areas.add(area);
 				request.setCharacterEncoding("UTF-8");
 				response.setCharacterEncoding("UTF-8");

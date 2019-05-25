@@ -41,7 +41,9 @@
 <tr>
 	<td colspan="2" height="40">
 	  <label for="file">请选择导入的儿童体检信息，必须是Excel格式（文件扩展名为xls）</label>&nbsp;&nbsp;
-      <br>您可以下载标准模板1<a href="${request.contextPath}/static/templates/examination1.xls"><span style="color:red;">spot.xls</span></a>用于导入数据。
+      <br>您可以下载标准模板1&nbsp;<a href="${request.contextPath}/static/templates/spot.xls"><span style="color:red;">spot.xls</span></a>用于导入数据。
+	  <br>您可以下载标准模板2&nbsp;<a href="${request.contextPath}/static/templates/spot2.xls"><span style="color:red;">spot2.xls</span></a>用于导入数据。
+	  <br>您可以下载标准模板3&nbsp;<a href="${request.contextPath}/static/templates/spot3.xls"><span style="color:red;">spot3.xls</span></a>用于导入数据。
 	</td>
 </tr>
 <tr>
@@ -71,6 +73,8 @@
 		<select id="tplType" name="tplType">
 		  <option value="">----请选择----</option>
 		  <option value="doImport">按第一套模板导入</option>
+		  <option value="doImport2">按第二套模板导入</option>
+		  <option value="doImport3">按第三套模板导入</option>
 	    </select>
     </td>
 </tr>

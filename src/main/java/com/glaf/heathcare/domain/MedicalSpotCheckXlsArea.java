@@ -111,6 +111,11 @@ public class MedicalSpotCheckXlsArea {
 	protected int ageOfTheMoonColIndex;
 
 	/**
+	 * 出生日期所在列
+	 */
+	protected int birthdayColIndex = -1;
+
+	/**
 	 * 体检日期所在列
 	 */
 	protected int checkDateColIndex = -1;
@@ -125,6 +130,10 @@ public class MedicalSpotCheckXlsArea {
 
 	public int getAreaColIndex() {
 		return areaColIndex;
+	}
+
+	public int getBirthdayColIndex() {
+		return birthdayColIndex;
 	}
 
 	public int getCheckDateColIndex() {
@@ -201,6 +210,10 @@ public class MedicalSpotCheckXlsArea {
 
 	public void setAreaColIndex(int areaColIndex) {
 		this.areaColIndex = areaColIndex;
+	}
+
+	public void setBirthdayColIndex(int birthdayColIndex) {
+		this.birthdayColIndex = birthdayColIndex;
 	}
 
 	public void setCheckDateColIndex(int checkDateColIndex) {

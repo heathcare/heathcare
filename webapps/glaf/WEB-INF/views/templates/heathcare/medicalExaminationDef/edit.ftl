@@ -119,7 +119,7 @@
 		<td width="20%" align="left">体检时间</td>
 		<td align="left">
 			<input id="checkDate" name="checkDate" type="text" 
-			       class="easyui-datebox x-text" style="width:100px;"
+			       class="easyui-datebox x-text" style="width:120px;"
 			       <#if medicalExaminationDef.checkDate?exists>
 				   value="${medicalExaminationDef.checkDate ? string('yyyy-MM-dd')}"
 				   </#if>
