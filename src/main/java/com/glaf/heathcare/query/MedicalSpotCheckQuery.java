@@ -30,6 +30,7 @@ public class MedicalSpotCheckQuery extends DataQuery {
 	protected String sex;
 	protected String nation;
 	protected String nationLike;
+	protected String nationNotLike;
 	protected Integer year;
 	protected Integer month;
 	protected Integer ageOfTheMoon;
@@ -184,6 +185,10 @@ public class MedicalSpotCheckQuery extends DataQuery {
 			}
 		}
 		return nationLike;
+	}
+
+	public String getNationNotLike() {
+		return nationNotLike;
 	}
 
 	public String getOrderBy() {
@@ -573,6 +578,10 @@ public class MedicalSpotCheckQuery extends DataQuery {
 
 	public void setNationLike(String nationLike) {
 		this.nationLike = nationLike;
+	}
+
+	public void setNationNotLike(String nationNotLike) {
+		this.nationNotLike = nationNotLike;
 	}
 
 	public void setOrganizationLevelLike(String organizationLevelLike) {

@@ -222,6 +222,16 @@ public class MedicalSpotCheckController {
 			query.tenantId(loginContext.getTenantId());
 		}
 
+		String nationLike = request.getParameter("nationLike");
+		if (StringUtils.isNotEmpty(nationLike)) {
+			if (StringUtils.equals("少数民族", nationLike)) {
+				query.setNationNotLike("%汉族%");
+				query.setNationLike(null);
+			} else {
+				query.nationLike(nationLike);
+			}
+		}
+
 		int heightLevel = RequestUtils.getInt(request, "heightLevel", -9);
 		if (heightLevel >= 0) {
 			query.setHeightLevelGreaterThanOrEqual(heightLevel);

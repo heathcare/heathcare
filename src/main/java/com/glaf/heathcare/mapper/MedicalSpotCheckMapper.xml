@@ -631,6 +631,10 @@
 			<if test="nationLike != null and nationLike != '' ">
 				and E.NATION_ like #{nationLike}
 			</if>
+			
+			<if test="nationNotLike != null and nationNotLike != '' ">
+				and E.NATION_ not like #{nationNotLike}
+			</if>
 
 			<if test="ageOfTheMoon != null">
 				and E.AGEOFTHEMOON_ = #{ageOfTheMoon}
