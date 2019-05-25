@@ -108,19 +108,6 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 		}
 	}
 
-	@Transactional
-	public void deleteByIds(String tenantId, List<String> ids) {
-		if (ids != null && !ids.isEmpty()) {
-			MedicalSpotCheckQuery query = new MedicalSpotCheckQuery();
-			query.setIds(ids);
-			if (StringUtils.isNotEmpty(query.getTenantId())) {
-				query.setTenantId(tenantId);
-				query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
-			}
-			medicalSpotCheckMapper.deleteMedicalSpotChecks(query);
-		}
-	}
-
 	public int count(MedicalSpotCheckQuery query) {
 		if (StringUtils.isNotEmpty(query.getTenantId())) {
 			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
@@ -128,12 +115,29 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 		return medicalSpotCheckMapper.getMedicalSpotCheckCount(query);
 	}
 
-	public List<MedicalSpotCheck> list(MedicalSpotCheckQuery query) {
-		if (StringUtils.isNotEmpty(query.getTenantId())) {
-			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
+	@Transactional
+	public void deleteByIds(String tenantId, List<String> ids) {
+		if (ids != null && !ids.isEmpty()) {
+			MedicalSpotCheckQuery query = new MedicalSpotCheckQuery();
+			query.setIds(ids);
+			if (StringUtils.isNotEmpty(tenantId)) {
+				query.setTenantId(tenantId);
+				query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+			}
+			medicalSpotCheckMapper.deleteMedicalSpotChecks(query);
 		}
-		List<MedicalSpotCheck> list = medicalSpotCheckMapper.getMedicalSpotChecks(query);
-		return list;
+	}
+
+	@Transactional
+	public void deleteSubject(String tenantId, String userId, String checkId) {
+		MedicalSpotCheckQuery query = new MedicalSpotCheckQuery();
+		query.setCreateBy(userId);
+		query.setCheckId(checkId);
+		if (StringUtils.isNotEmpty(tenantId)) {
+			query.setTenantId(tenantId);
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+		}
+		medicalSpotCheckMapper.deleteMedicalSpotCheckSubjects(query);
 	}
 
 	/**
@@ -163,15 +167,12 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 		return rows;
 	}
 
-	@Transactional
-	public void updateAll(String tenantId, List<MedicalSpotCheck> list) {
-		for (MedicalSpotCheck model : list) {
-			if (StringUtils.isNotEmpty(tenantId)) {
-				model.setTenantId(tenantId);
-				model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
-			}
-			medicalSpotCheckMapper.updateMedicalSpotCheck(model);
+	public List<MedicalSpotCheck> list(MedicalSpotCheckQuery query) {
+		if (StringUtils.isNotEmpty(query.getTenantId())) {
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
 		}
+		List<MedicalSpotCheck> list = medicalSpotCheckMapper.getMedicalSpotChecks(query);
+		return list;
 	}
 
 	@javax.annotation.Resource
@@ -184,19 +185,30 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 		this.idGenerator = idGenerator;
 	}
 
+	@javax.annotation.Resource
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
 	@javax.annotation.Resource(name = "com.glaf.heathcare.mapper.MedicalSpotCheckMapper")
 	public void setMedicalSpotCheckMapper(MedicalSpotCheckMapper medicalSpotCheckMapper) {
 		this.medicalSpotCheckMapper = medicalSpotCheckMapper;
 	}
 
 	@javax.annotation.Resource
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
-	@javax.annotation.Resource
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	@Transactional
+	public void updateAll(String tenantId, List<MedicalSpotCheck> list) {
+		for (MedicalSpotCheck model : list) {
+			if (StringUtils.isNotEmpty(tenantId)) {
+				model.setTenantId(tenantId);
+				model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+			}
+			medicalSpotCheckMapper.updateMedicalSpotCheck(model);
+		}
 	}
 
 }

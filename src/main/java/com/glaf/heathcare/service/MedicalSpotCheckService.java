@@ -37,6 +37,14 @@ public interface MedicalSpotCheckService {
 	 */
 	@Transactional
 	void deleteByIds(String tenantId, List<String> ids);
+	
+	/**
+	 * 根据主键删除多条记录
+	 * 
+	 * @return
+	 */
+	@Transactional
+	void deleteSubject(String tenantId, String userId, String checkId);
 
 	/**
 	 * 根据查询参数获取记录总数

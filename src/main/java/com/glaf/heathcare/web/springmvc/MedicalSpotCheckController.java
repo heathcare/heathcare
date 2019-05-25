@@ -93,6 +93,22 @@ public class MedicalSpotCheckController {
 		return ResponseUtils.responseResult(false);
 	}
 
+	@ResponseBody
+	@RequestMapping("/deleteSubject")
+	public byte[] deleteSubject(HttpServletRequest request, HttpServletResponse response) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		String checkId = request.getParameter("checkId");
+		if (StringUtils.isNotEmpty(checkId)) {
+			try {
+				medicalSpotCheckService.deleteSubject(loginContext.getTenantId(), loginContext.getActorId(), checkId);
+				return ResponseUtils.responseResult(true);
+			} catch (Exception ex) {
+				logger.error(ex);
+			}
+		}
+		return ResponseUtils.responseResult(false);
+	}
+
 	/**
 	 * @param request
 	 * @param response

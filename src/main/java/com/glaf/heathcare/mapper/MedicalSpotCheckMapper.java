@@ -40,6 +40,8 @@ public interface MedicalSpotCheckMapper {
 	void bulkInsertMedicalSpotCheck_oracle(List<MedicalSpotCheck> list);
 
 	void deleteMedicalSpotChecks(MedicalSpotCheckQuery query);
+	
+	void deleteMedicalSpotCheckSubjects(MedicalSpotCheckQuery query);
 
 	int getMedicalSpotCheckCount(MedicalSpotCheckQuery query);
 

@@ -254,6 +254,35 @@
 			});
 	}
 
+	function deleteSelection(){
+      var checkId = jQuery("#checkId").val();
+      if(checkId == ""){
+		  alert("请选择一个主题！");
+		  return;
+	  }
+      if(confirm("数据删除后无法恢复，确定执行删除操作吗？")){
+		jQuery.ajax({
+				   type: "POST",
+				   url: '${request.contextPath}/heathcare/medicalSpotCheck/deleteSubject?checkId='+checkId,
+				   dataType: 'json',
+				   error: function(data){
+					   alert('服务器处理错误！');
+				   },
+				   success: function(data){
+					   if(data != null && data.message != null){
+						   alert(data.message);
+					   } else {
+						   alert('操作成功完成！');
+					   }
+					   if(data.statusCode == 200){
+						   doSearch();
+					       //jQuery('#mydatagrid').datagrid('reload');
+					   }
+				   }
+			 });
+		  }
+	}
+
 	function execute(useMethod){
 	  var checkId = jQuery("#checkId").val();
       if(checkId == ""){
@@ -275,7 +304,8 @@
 						   alert('操作成功完成！');
 					   }
 					   if(data.statusCode == 200){
-					       jQuery('#mydatagrid').datagrid('reload');
+						   doSearch();
+					       //jQuery('#mydatagrid').datagrid('reload');
 					   }
 				   }
 			 });
@@ -377,6 +407,9 @@
 				<script type="text/javascript">
 				     document.getElementById("checkId").value="${checkId}";
 				</script>
+				&nbsp;
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
+		           onclick="javascript:deleteSelection();">删除</a> 
 			</td>
 			<td width="70%" align="left">
 				&nbsp;市&nbsp;
