@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -91,7 +92,15 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 		Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 		if (rows != null && !rows.isEmpty()) {
 			for (GrowthStandard gs : rows) {
-				gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				// gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				if (StringUtils.equals(gs.getType(), "4")) {
+					// int height = (int) Math.round(gs.getHeight());
+					String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
+					// logger.debug(key);
+					gsMap.put(key, gs);
+				} else {
+					gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				}
 			}
 		}
 
@@ -246,7 +255,15 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 				Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 				if (rows != null && !rows.isEmpty()) {
 					for (GrowthStandard gs : rows) {
-						gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						// gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						if (StringUtils.equals(gs.getType(), "4")) {
+							// int height = (int) Math.round(gs.getHeight());
+							String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
+							// logger.debug(key);
+							gsMap.put(key, gs);
+						} else {
+							gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						}
 					}
 				}
 
@@ -322,7 +339,15 @@ public class MedicalExaminationServiceImpl implements MedicalExaminationService 
 		Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 		if (rows != null && !rows.isEmpty()) {
 			for (GrowthStandard gs : rows) {
-				gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				// gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				if (StringUtils.equals(gs.getType(), "4")) {
+					// int height = (int) Math.round(gs.getHeight());
+					String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
+					// logger.debug(key);
+					gsMap.put(key, gs);
+				} else {
+					gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				}
 			}
 			MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 			helper.evaluate(gsMap, medicalExamination);

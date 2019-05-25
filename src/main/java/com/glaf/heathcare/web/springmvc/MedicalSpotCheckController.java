@@ -25,11 +25,14 @@ import com.glaf.core.util.*;
 import com.glaf.heathcare.bean.MedicalSpotCheckEvaluateBean;
 import com.glaf.heathcare.bean.MedicalSpotCheckExcelImporter;
 import com.glaf.heathcare.domain.GrowthStandard;
+import com.glaf.heathcare.domain.MedicalExaminationDef;
 import com.glaf.heathcare.domain.MedicalSpotCheck;
 import com.glaf.heathcare.domain.MedicalSpotCheckXlsArea;
 import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
+import com.glaf.heathcare.query.MedicalExaminationDefQuery;
 import com.glaf.heathcare.query.MedicalSpotCheckQuery;
 import com.glaf.heathcare.service.GrowthStandardService;
+import com.glaf.heathcare.service.MedicalExaminationDefService;
 import com.glaf.heathcare.service.MedicalSpotCheckService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -46,7 +49,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +69,8 @@ public class MedicalSpotCheckController {
 
 	protected MedicalSpotCheckService medicalSpotCheckService;
 
+	protected MedicalExaminationDefService medicalExaminationDefService;
+
 	public MedicalSpotCheckController() {
 
 	}
@@ -71,11 +78,12 @@ public class MedicalSpotCheckController {
 	@ResponseBody
 	@RequestMapping("/delete")
 	public byte[] delete(HttpServletRequest request, HttpServletResponse response) {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		String ids = request.getParameter("ids");
 		if (StringUtils.isNotEmpty(ids)) {
 			List<String> xids = StringTools.split(ids);
 			try {
-				medicalSpotCheckService.deleteByIds(xids);
+				medicalSpotCheckService.deleteByIds(loginContext.getTenantId(), xids);
 				return ResponseUtils.responseResult(true);
 			} catch (Exception ex) {
 				logger.error(ex);
@@ -90,9 +98,11 @@ public class MedicalSpotCheckController {
 	 * @param mFile
 	 * @return
 	 */
+	@ResponseBody
 	@RequestMapping(value = "/doImport", method = RequestMethod.POST)
-	public ModelAndView doImport(HttpServletRequest request, ModelMap modelMap,
+	public void doImport(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("file") MultipartFile mFile) throws IOException {
+		String checkId = request.getParameter("checkId");
 		String type = request.getParameter("type");
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		if (mFile != null && !mFile.isEmpty()) {
@@ -100,40 +110,82 @@ public class MedicalSpotCheckController {
 				MedicalSpotCheckExcelImporter bean = new MedicalSpotCheckExcelImporter();
 				List<MedicalSpotCheckXlsArea> areas = new ArrayList<MedicalSpotCheckXlsArea>();
 				MedicalSpotCheckXlsArea area = new MedicalSpotCheckXlsArea();
+				int index = 0;
 				area.setStartRow(1);
 				area.setEndRow(5000);
-				area.setAgeOfTheMoonColIndex(1);
-				area.setNationColIndex(2);
-				area.setHemoglobinColIndex(3);
-				area.setWeightColIndex(4);
-				area.setHeightColIndex(5);
-				area.setCityColIndex(6);
-				area.setAreaColIndex(7);
-				area.setOrganizationColIndex(8);
-				area.setSexColIndex(9);
-				area.setGradeColIndex(10);
+				area.setOrganizationColIndex(index++);
+				area.setGradeColIndex(index++);
+				area.setNameColIndex(index++);
+				area.setSexColIndex(index++);
+				area.setAgeOfTheMoonColIndex(index++);
+				area.setNationColIndex(index++);
+				area.setWeightColIndex(index++);
+				area.setHeightColIndex(index++);
+				area.setHemoglobinColIndex(index++);
+				area.setCityColIndex(index++);
+				area.setAreaColIndex(index++);
+				area.setOrganizationLevelColIndex(index++);
+				area.setOrganizationPropertyColIndex(index++);
+				area.setOrganizationTerritoryColIndex(index++);
 				areas.add(area);
-				String checkId = null;
+				request.setCharacterEncoding("UTF-8");
+				response.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter writer = null;
 				try {
-					// semaphore2.acquire();
-					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
-						checkId = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, areas,
-								mFile.getInputStream());
-					} else {
-						checkId = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, areas,
-								mFile.getInputStream());
+					if (StringUtils.isEmpty(checkId)) {
+						checkId = UUID32.generateShortUuid();
+						MedicalExaminationDef medicalExaminationDef = new MedicalExaminationDef();
+						medicalExaminationDef.setTenantId(loginContext.getTenantId());
+						medicalExaminationDef.setTitle(request.getParameter("title"));
+						if (StringUtils.isEmpty(medicalExaminationDef.getTitle())) {
+							medicalExaminationDef.setTitle("无主题" + DateUtils.getDate(new java.util.Date()));
+						}
+						medicalExaminationDef.setType(request.getParameter("type"));
+						medicalExaminationDef.setCheckDate(RequestUtils.getDate(request, "checkDate"));
+						medicalExaminationDef.setRemark(request.getParameter("remark"));
+						medicalExaminationDef.setEnableFlag("Y");
+
+						if (medicalExaminationDef.getCheckDate() != null) {
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(medicalExaminationDef.getCheckDate());
+							int year = calendar.get(Calendar.YEAR);
+							int month = calendar.get(Calendar.MONTH) + 1;
+							medicalExaminationDef.setYear(year);
+							medicalExaminationDef.setMonth(month);
+							medicalExaminationDef.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+						}
+						medicalExaminationDef.setCreateBy(loginContext.getActorId());
+						this.medicalExaminationDefService.save(medicalExaminationDef);
 					}
-					request.setAttribute("type", type);
-					request.setAttribute("checkId", checkId);
+
+					String str = null;
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						str = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, checkId,
+								areas, mFile.getInputStream());
+					} else {
+						str = bean.importData(loginContext.getTenantId(), loginContext.getActorId(), type, checkId,
+								areas, mFile.getInputStream());
+					}
+
+					if (str != null && str.length() > 0) {
+						writer = response.getWriter();
+						writer.write(str);
+						writer.flush();
+					} else {
+						writer = response.getWriter();
+						writer.write("<br>没有记录导入。");
+						writer.flush();
+					}
 				} catch (Exception ex) {
 					logger.error(ex);
 				} finally {
-					// semaphore2.release();
+					if (writer != null) {
+						writer.close();
+					}
 				}
 			}
 		}
-
-		return this.list(request, modelMap);
 	}
 
 	@RequestMapping("/execute")
@@ -141,9 +193,10 @@ public class MedicalSpotCheckController {
 	public byte[] execute(HttpServletRequest request) throws IOException {
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
 		MedicalSpotCheckEvaluateBean bean = new MedicalSpotCheckEvaluateBean();
+		String checkId = request.getParameter("checkId");
 		String useMethod = request.getParameter("useMethod");
 		try {
-			bean.execute(loginContext.getActorId(), useMethod);
+			bean.execute(loginContext.getTenantId(), loginContext.getActorId(), checkId, useMethod);
 			return ResponseUtils.responseResult(true);
 		} catch (Exception ex) {
 			logger.error(ex);
@@ -178,6 +231,11 @@ public class MedicalSpotCheckController {
 			}
 		}
 
+		int weightLevel = RequestUtils.getInt(request, "weightLevel", -9);
+		if (weightLevel != -9) {
+			query.setWeightLevel(weightLevel);
+		}
+
 		int start = 0;
 		int limit = 10;
 		String orderName = null;
@@ -198,73 +256,70 @@ public class MedicalSpotCheckController {
 		}
 
 		JSONObject result = new JSONObject();
-		int total = medicalSpotCheckService.getMedicalSpotCheckCountByQueryCriteria(query);
-		if (total > 0) {
-			result.put("code", 0);
-			result.put("total", total);
-			result.put("totalCount", total);
-			result.put("totalRecords", total);
-			result.put("start", start);
-			result.put("startIndex", start);
-			result.put("limit", limit);
-			result.put("pageSize", limit);
+		try {
+			int total = medicalSpotCheckService.getMedicalSpotCheckCountByQueryCriteria(query);
+			if (total > 0) {
+				result.put("code", 0);
+				result.put("total", total);
+				result.put("totalCount", total);
+				result.put("totalRecords", total);
+				result.put("start", start);
+				result.put("startIndex", start);
+				result.put("limit", limit);
+				result.put("pageSize", limit);
 
-			if (StringUtils.isNotEmpty(orderName)) {
-				query.setSortOrder(orderName);
-				if (StringUtils.equals(order, "desc")) {
-					query.setSortOrder(" desc ");
-				}
-			}
-
-			List<MedicalSpotCheck> list = medicalSpotCheckService.getMedicalSpotChecksByQueryCriteria(start, limit,
-					query);
-			if (list != null && !list.isEmpty()) {
-				List<GrowthStandard> standards = growthStandardService.getAllGrowthStandards();
-				Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
-				if (standards != null && !standards.isEmpty()) {
-					for (GrowthStandard gs : standards) {
-						if (StringUtils.equals(gs.getType(), "4")) {
-							int height = (int) Math.round(gs.getHeight());
-							gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
-						} else {
-							gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
-						}
+				if (StringUtils.isNotEmpty(orderName)) {
+					query.setSortOrder(orderName);
+					if (StringUtils.equals(order, "desc")) {
+						query.setSortOrder(" desc ");
 					}
 				}
 
-				String useMethod = request.getParameter("useMethod");
-				MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
+				List<MedicalSpotCheck> list = medicalSpotCheckService.getMedicalSpotChecksByQueryCriteria(start, limit,
+						query);
+				if (list != null && !list.isEmpty()) {
+					List<GrowthStandard> standards = growthStandardService.getAllGrowthStandards();
+					Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
+					if (standards != null && !standards.isEmpty()) {
+						for (GrowthStandard gs : standards) {
+							if (StringUtils.equals(gs.getType(), "4")) {
+								// int height = (int) Math.round(gs.getHeight());
+								String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
+								// logger.debug(key);
+								gsMap.put(key, gs);
+							} else {
+								gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+							}
+						}
+					}
+
+					String useMethod = request.getParameter("useMethod");
+					MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
+					JSONArray rowsJSON = new JSONArray();
+					for (MedicalSpotCheck exam : list) {
+						if (exam.getAgeOfTheMoon() > 0 && exam.getHeight() > 0 && exam.getWeight() > 0) {
+							if (StringUtils.equals(useMethod, "prctile")) {
+								helper.evaluateByPrctile(gsMap, exam);
+							} else {
+								helper.evaluate(gsMap, exam);
+							}
+						}
+						JSONObject rowJSON = exam.toJsonObject();
+						rowJSON.put("id", exam.getId());
+						rowJSON.put("startIndex", ++start);
+						rowsJSON.add(rowJSON);
+					}
+					result.put("rows", rowsJSON);
+				}
+			} else {
 				JSONArray rowsJSON = new JSONArray();
-				for (MedicalSpotCheck exam : list) {
-					if (exam.getAgeOfTheMoon() > 0 && exam.getHeight() > 0 && exam.getWeight() > 0) {
-						if (StringUtils.contains(exam.getSex(), "男")) {
-							exam.setSex("1");
-						} else {
-							exam.setSex("0");
-						}
-						if (StringUtils.equals(useMethod, "prctile")) {
-							helper.evaluateByPrctile(gsMap, exam);
-						} else {
-							helper.evaluate(gsMap, exam);
-						}
-					}
-					JSONObject rowJSON = exam.toJsonObject();
-					if (StringUtils.contains(exam.getSex(), "1")) {
-						rowJSON.put("sex", "男");
-					} else {
-						rowJSON.put("sex", "女");
-					}
-					rowJSON.put("id", exam.getId());
-					rowJSON.put("startIndex", ++start);
-					rowsJSON.add(rowJSON);
-				}
 				result.put("rows", rowsJSON);
+				result.put("total", total);
+				result.put("code", 0);
 			}
-		} else {
-			JSONArray rowsJSON = new JSONArray();
-			result.put("rows", rowsJSON);
-			result.put("total", total);
-			result.put("code", 0);
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			logger.error(ex);
 		}
 		return result.toJSONString().getBytes("UTF-8");
 	}
@@ -272,6 +327,17 @@ public class MedicalSpotCheckController {
 	@RequestMapping
 	public ModelAndView list(HttpServletRequest request, ModelMap modelMap) {
 		RequestUtils.setRequestParameterToAttribute(request);
+
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+
+		MedicalExaminationDefQuery query = new MedicalExaminationDefQuery();
+		if (loginContext.isSystemAdministrator()) {
+			query.tenantId("sys");
+		} else {
+			query.tenantId(loginContext.getTenantId());
+		}
+		List<MedicalExaminationDef> list = medicalExaminationDefService.list(query);
+		request.setAttribute("examDefs", list);
 
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
@@ -286,6 +352,11 @@ public class MedicalSpotCheckController {
 		this.growthStandardService = growthStandardService;
 	}
 
+	@javax.annotation.Resource(name = "com.glaf.heathcare.service.medicalExaminationDefService")
+	public void setMedicalExaminationDefService(MedicalExaminationDefService medicalExaminationDefService) {
+		this.medicalExaminationDefService = medicalExaminationDefService;
+	}
+
 	@javax.annotation.Resource(name = "com.glaf.heathcare.service.medicalSpotCheckService")
 	public void setMedicalSpotCheckService(MedicalSpotCheckService medicalSpotCheckService) {
 		this.medicalSpotCheckService = medicalSpotCheckService;
@@ -296,9 +367,16 @@ public class MedicalSpotCheckController {
 		RequestUtils.setRequestParameterToAttribute(request);
 
 		LoginContext loginContext = RequestUtils.getLoginContext(request);
-		if (loginContext.isSystemAdministrator()) {
 
+		MedicalExaminationDefQuery query = new MedicalExaminationDefQuery();
+		if (loginContext.isSystemAdministrator()) {
+			query.tenantId("sys");
+		} else {
+			query.tenantId(loginContext.getTenantId());
 		}
+		List<MedicalExaminationDef> list = medicalExaminationDefService.list(query);
+		request.setAttribute("examDefs", list);
+
 		String view = request.getParameter("view");
 		if (StringUtils.isNotEmpty(view)) {
 			return new ModelAndView(view, modelMap);

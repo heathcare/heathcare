@@ -8,20 +8,29 @@
 
     function getLink(){
 	    var link_ = "${request.contextPath}/heathcare/medicalSpotCheck/json?q=1";
+		var checkId = jQuery("#checkId").val();
+		link_ = link_+"&checkId="+checkId;
+
 		if(jQuery("#cityLike").val() != ""){
-           link_ = link_+"&cityLike="+jQuery("#cityLike").val();
+           link_ = link_+"&cityLike="+jQuery("#cityLike").val().trim();
 	    }
 		if(jQuery("#areaLike").val() != ""){
-           link_ = link_+"&areaLike="+jQuery("#areaLike").val();
+           link_ = link_+"&areaLike="+jQuery("#areaLike").val().trim();
+	    }
+		if(jQuery("#nationLike").val() != ""){
+           link_ = link_+"&nationLike="+jQuery("#nationLike").val().trim();
 	    }
 		if(jQuery("#organizationLike").val() != ""){
-           link_ = link_+"&organizationLike="+jQuery("#organizationLike").val();
+           link_ = link_+"&organizationLike="+jQuery("#organizationLike").val().trim();
 	    }
 		if(jQuery("#sex").val() != ""){
            link_ = link_+"&sex="+jQuery("#sex").val();
 	    }
-		if(jQuery("#heightLevel").val() != ""){
+		if(jQuery("#heightLevel").val() != null && jQuery("#heightLevel").val() != ""){
            link_ = link_+"&heightLevel="+jQuery("#heightLevel").val();
+	    }
+		if(jQuery("#weightLevel").val() != null && jQuery("#weightLevel").val() != ""){
+           link_ = link_+"&weightLevel="+jQuery("#weightLevel").val();
 	    }
 		return link_;
     }
@@ -41,19 +50,20 @@
 				singleSelect: true,
 				idField: 'id',
 				columns:[[
-				        {title:'序号', field:'startIndex', width:60, sortable:false},
-						{title:'姓名',field:'name', width:90, sortable:true},
-						{title:'性别',field:'sex', width:60, sortable:true},
-						{title:'月龄',field:'ageOfTheMoonString', width:90, sortable:true, align:'right'},
-						{title:'民族',field:'nation', width:90, sortable:true},
-						{title:'身高',field:'height', width:60, sortable:true, align:'right'},
-						{title:'身高评价',field:'heightEvaluateHtml', width:120, sortable:true},
-						{title:'体重',field:'weight', width:60, sortable:true, align:'right'},
-						{title:'体重评价',field:'weightEvaluateHtml', width:120, sortable:true},
-						{title:'血红蛋白Hb', field:'hemoglobin', width:120, align:"center", sortable:true},
-						{title:'市',field:'city', width:120, sortable:true},
-						{title:'区/县',field:'area', width:120, sortable:true},
-						{title:'园所名称',field:'organization', width:180, sortable:true},
+				        {title:'序号', field:'startIndex', width:50, sortable:false},
+						{title:'姓名', field:'name', width:60, sortable:true},
+						{title:'性别', field:'sex', width:50, sortable:true, formatter:formatterSex},
+						{title:'月龄', field:'ageOfTheMoonString', width:70, sortable:true, align:'right'},
+						{title:'民族', field:'nation', width:60, sortable:true},
+						{title:'身高', field:'height', width:60, sortable:true, align:'right'},
+						{title:'身高评价', field:'heightEvaluateHtml', width:100, sortable:true},
+						{title:'体重', field:'weight', width:60, sortable:true, align:'right'},
+						{title:'体重评价', field:'weightEvaluateHtml', width:100, sortable:true},
+						{title:'血红蛋白Hb', field:'hemoglobin', width:100, align:"center", sortable:true},
+						{title:'市', field:'city', width:120, sortable:true},
+						{title:'区/县', field:'area', width:120, sortable:true},
+						{title:'园所名称', field:'organization', width:180, sortable:true},
+						{title:'园所性质', field:'organizationProperty', width:90, sortable:true},
 						{title:'功能键', field:'functionKey',width:90, formatter:formatterKeys}
 				]],
 				rownumbers: false,
@@ -87,6 +97,14 @@
 			}
 	});
 
+
+    function formatterSex(val, row){
+		if(val == "1"){
+			return "男";
+		} else {
+            return "女";
+		}
+	}
 
 	function formatterKeys(val, row){
 		var str = "<a href='javascript:deleteRow(\""+row.id+"\");'>删除</a>";
@@ -221,7 +239,8 @@
 	}
 
 	function showImport(){
-        var link='${request.contextPath}/heathcare/medicalSpotCheck/showImport?type=spotM';
+		var checkId = jQuery("#checkId").val();
+        var link='${request.contextPath}/heathcare/medicalSpotCheck/showImport?type=spotM&checkId='+checkId;
 		    layer.open({
 			  type: 2,
 			  maxmin: true,
@@ -236,10 +255,15 @@
 	}
 
 	function execute(useMethod){
+	  var checkId = jQuery("#checkId").val();
+      if(checkId == ""){
+		  alert("请选择一个主题！");
+		  return;
+	  }
 	  if(confirm("确定执行统计操作吗？")){
 		jQuery.ajax({
 				   type: "POST",
-				   url: '${request.contextPath}/heathcare/medicalSpotCheck/execute?useMethod='+useMethod,
+				   url: '${request.contextPath}/heathcare/medicalSpotCheck/execute?useMethod='+useMethod+'&checkId='+checkId,
 				   dataType: 'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
@@ -265,49 +289,118 @@
 		loadGridData(link);
 	}
 
+    function getNowFormatDate() {
+		var date = new Date();
+		var seperator1 = "";
+		var seperator2 = "";
+		var month = date.getMonth() + 1;
+		var strDate = date.getDate();
+		if (month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if (strDate >= 0 && strDate <= 9) {
+			strDate = "0" + strDate;
+		}
+		var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate+ "" + date.getHours() + seperator2 + date.getMinutes()+ seperator2 + date.getSeconds();
+		return currentdate;
+    }
+
+	function doExport(){
+		var sex = jQuery("#sex").val();
+		var checkId = jQuery("#checkId").val();
+		var nationLike = jQuery("#nationLike").val();
+		var areaLike = jQuery("#areaLike").val();
+		var cityLike = jQuery("#cityLike").val();
+		var checkType = jQuery("#checkType").val();
+		var organizationLike = jQuery("#organizationLike").val();
+        
+		if(checkId == ""){
+			alert("请选择一个主题！");
+			return;
+		}
+
+		if(sex == ""){
+			alert("请选择男生或女生！");
+			return;
+		}
+
+        if(checkType == ""){
+			alert("请选择导出类型！");
+			return;
+		}
+		
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotal&useExt=Y&checkType="+checkType;
+		link = link + "&sex="+sex+"&time="+getNowFormatDate()+"&megerFlag=Y&checkId="+checkId;
+
+		if(organizationLike != ""){
+			link = link + "&organizationLike=" + organizationLike.trim();
+		}
+		if(cityLike != ""){
+			link = link  + "&cityLike=" + cityLike.trim();
+		}
+		if(areaLike != ""){
+			link = link  + "&areaLike=" + areaLike.trim();
+		}
+		if(nationLike != ""){
+			link = link  + "&nationLike=" + nationLike.trim();
+		}
+
+        window.open(link);
+	}
+
 </script>
 </head>
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north',split:false, border:true" style="height:68px" class="toolbar-backgroud"> 
+   <div data-options="region:'north',split:false, border:true" style="height:95px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 	 <form id="iForm" name="iForm" method="post" action="">
 	  <table width="100%" align="left">
 		<tbody>
 		 <tr>
-		    <td width="40%" align="left">
-				<img src="${request.contextPath}/static/images/window.png">
-				&nbsp;<span class="x_content_title">体格抽样检查列表</span>
+		    <td width="30%" align="left">
+				&nbsp;<img src="${request.contextPath}/static/images/window.png">&nbsp;
+				<span class="x_content_title">体检列表</span>
+			    <br>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_upload'"
 				   onclick="javascript:showImport();">导入</a>  
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sys'" 
 				   onclick="javascript:execute('deviation');">按离差法统计</a>
-				<!-- <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-sys'" 
-				   onclick="javascript:execute('prctile');">按百分位法统计</a> -->
-				<!-- <a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
-				   onclick="javascript:deleteSelections();">删除</a> -->
-			</td>
-			<td width="60%" align="left">
-				&nbsp;市&nbsp;
-				<input type="text" id="cityLike" name="cityLike" value="${cityLike}" size="20" 
-					   class="x-search-text" style="width:90px;">
-			    &nbsp;区/县&nbsp;
-				<input type="text" id="areaLike" name="areaLike" value="${areaLike}" size="20" 
-					   class="x-search-text" style="width:90px;">
-			    &nbsp;园所&nbsp;
-				<input type="text" id="organizationLike" name="organizationLike" value="${organizationLike}" size="20" 
-					   class="x-search-text" style="width:120px;">
-				<br>
-				&nbsp;性别&nbsp;
-				<select id="sex" name="sex" onchange="javascript:doSearch();">
-					<option value="">--请选择--</option>
-					<option value="女">女生</option>
-					<option value="男">男生</option>
+				<br>&nbsp;&nbsp;&nbsp;&nbsp;
+				<select id="checkId" name="checkId" onchange="javascript:doSearch();">
+					<option value="" selected>----请选择----</option>
+					<#list examDefs as row>
+					<option value="${row.checkId}">${row.title}</option>
+					</#list>
 				</select>
 				<script type="text/javascript">
-					document.getElementById("sex").value="${sex}";
+				     document.getElementById("checkId").value="${checkId}";
 				</script>
+			</td>
+			<td width="70%" align="left">
+				&nbsp;市&nbsp;
+				<input type="text" id="cityLike" name="cityLike" value="${cityLike}" size="20" 
+					   class="x-search-text" style="width:80px;">
+			    &nbsp;区/县&nbsp;
+				<input type="text" id="areaLike" name="areaLike" value="${areaLike}" size="20" 
+					   class="x-search-text" style="width:80px;">
+			    &nbsp;民族&nbsp;
+				<input type="text" id="nationLike" name="nationLike" value="${nationLike}" size="20" 
+					   class="x-search-text" style="width:60px;">
+				&nbsp;园所&nbsp;
+				<input type="text" id="organizationLike" name="organizationLike" value="${organizationLike}" size="20" 
+					   class="x-search-text" style="width:100px;">
+				&nbsp;等级&nbsp;
+				<input type="text" id="organizationLevelLike" name="organizationLevelLike" value="${organizationLevelLike}" 
+				       size="20" class="x-search-text" style="width:80px;">
+			    <br>
+				&nbsp;性质&nbsp;
+				<input type="text" id="organizationPropertyLike" name="organizationPropertyLike" 
+				       value="${organizationPropertyLike}" size="20" class="x-search-text" style="width:80px;">
+				&nbsp;地域&nbsp;
+				<input type="text" id="organizationTerritoryLike" name="organizationTerritoryLike" 
+				       value="${organizationTerritoryLike}" size="20" class="x-search-text" style="width:80px;">
 				&nbsp;身高评价&nbsp;
 				<select id="heightLevel" name="heightLevel" onchange="javascript:doSearch();">
 					<option value="-9">--请选择--</option>
@@ -318,6 +411,43 @@
 				<script type="text/javascript">
 					document.getElementById("heightLevel").value="${heightLevel}";
 				</script>
+				&nbsp;体重评价&nbsp;
+				<select id="weightLevel" name="weightLevel" onchange="javascript:doSearch();">
+					<option value="-9">--请选择--</option>
+					<option value="0">正常</option>
+					<option value="1">超重</option>
+					<option value="2">肥胖</option>
+					<option value="3">重度肥胖</option>
+					<option value="-1">偏瘦</option>
+					<option value="-2">低体重</option>
+					<option value="-3">消瘦</option>
+				</select>
+				<script type="text/javascript">
+					document.getElementById("weightLevel").value="${weightLevel}";
+				</script>
+				&nbsp;&nbsp;
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"
+				   onclick="javascript:doSearch();">查找</a>
+				<br>
+				&nbsp;性别&nbsp;
+				<select id="sex" name="sex" onchange="javascript:doSearch();">
+					<option value="">--请选择--</option>
+					<option value="0">女生</option>
+					<option value="1">男生</option>
+				</select>
+				<script type="text/javascript">
+					document.getElementById("sex").value="${sex}";
+				</script>
+				&nbsp;导出类型&nbsp;
+				<select id="checkType" name="checkType">
+					<option value="">--请选择--</option>
+					<option value="H/A">H/A年龄别身高</option>
+					<option value="W/A">W/A年龄别体重</option>
+					<!-- <option value="W/H">W/H身高别体重</option> -->
+				</select>
+				<script type="text/javascript">
+					document.getElementById("checkType").value="${checkType}";
+				</script>
 				<!-- <select id="useMethod" name="useMethod" onchange="javascript:doSearch();">
 					<option value="">--请选择--</option>
 					<option value="deviation">离差法</option>
@@ -326,8 +456,9 @@
 				<script type="text/javascript">
 					document.getElementById("useMethod").value="${useMethod}";
 				</script> -->
-				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-search'"
-				   onclick="javascript:doSearch();">查找</a>
+				&nbsp;&nbsp;
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
+				   onclick="javascript:doExport();">导出</a>
 			</td>
 		</tr>
 	   </tbody>

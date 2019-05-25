@@ -140,7 +140,8 @@ public class MedicalExaminationDefController {
 		if (loginContext.isTenantAdmin() || loginContext.getRoles().contains("HealthPhysician")) {
 			query.tenantId(loginContext.getTenantId());
 		} else {
-			return result.toJSONString().getBytes();
+			query.tenantId(loginContext.getTenantId());
+			query.createBy(loginContext.getActorId());
 		}
 
 		int start = 0;

@@ -37,7 +37,7 @@ import com.glaf.heathcare.service.MedicalSpotCheckService;
 public class MedicalSpotCheckEvaluateBean {
 	protected static final Log logger = LogFactory.getLog(MedicalSpotCheckEvaluateBean.class);
 
-	public void execute(String userId, String method) {
+	public void execute(String tenantId, String userId, String checkId, String method) {
 		GrowthStandardService growthStandardService = ContextFactory
 				.getBean("com.glaf.heathcare.service.growthStandardService");
 		MedicalSpotCheckService medicalSpotCheckService = ContextFactory
@@ -47,7 +47,11 @@ public class MedicalSpotCheckEvaluateBean {
 		List<MedicalSpotCheck> exams = null;
 		try {
 			MedicalSpotCheckQuery query2 = new MedicalSpotCheckQuery();
+			if (tenantId != null) {
+				query2.tenantId(tenantId);
+			}
 			query2.actorId(userId);
+			query2.checkId(checkId);
 			exams = medicalSpotCheckService.list(query2);
 			if (exams != null && !exams.isEmpty()) {
 				List<GrowthStandard> standards = growthStandardService.getAllGrowthStandards();
@@ -55,8 +59,8 @@ public class MedicalSpotCheckEvaluateBean {
 				if (standards != null && !standards.isEmpty()) {
 					for (GrowthStandard gs : standards) {
 						if (StringUtils.equals(gs.getType(), "4")) {
-							int height = (int) Math.round(gs.getHeight());
-							gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+							// int height = (int) Math.round(gs.getHeight());
+							gsMap.put(gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 						} else {
 							gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 						}
@@ -78,7 +82,7 @@ public class MedicalSpotCheckEvaluateBean {
 						}
 					}
 				}
-				medicalSpotCheckService.updateAll(exams);
+				medicalSpotCheckService.updateAll(tenantId, exams);
 			}
 		} catch (Exception ex) {
 			logger.error(ex);

@@ -68,6 +68,12 @@ public class MedicalSpotCheckTotalModel {
 
 	protected int positive3DQty;
 
+	protected int recordTotal;
+
+	protected double isoStdValue;
+
+	protected double totalValue;
+
 	protected List<ItemValue> negative3DList = new ArrayList<ItemValue>();
 
 	protected List<ItemValue> negative2DList = new ArrayList<ItemValue>();
@@ -81,6 +87,8 @@ public class MedicalSpotCheckTotalModel {
 	protected List<ItemValue> positive2DList = new ArrayList<ItemValue>();
 
 	protected List<ItemValue> positive3DList = new ArrayList<ItemValue>();
+
+	protected List<SevenLevelMethod> childrenList = new ArrayList<SevenLevelMethod>();
 
 	public MedicalSpotCheckTotalModel() {
 
@@ -126,6 +134,14 @@ public class MedicalSpotCheckTotalModel {
 		ItemValue m = new ItemValue();
 		m.setValue(value);
 		positive3DList.add(m);
+	}
+
+	public void addRecord() {
+		recordTotal++;
+	}
+
+	public void addTotla(double value) {
+		totalValue += value;
 	}
 
 	public int getAgeOfTheMoon() {
@@ -184,6 +200,10 @@ public class MedicalSpotCheckTotalModel {
 		return avgString;
 	}
 
+	public List<SevenLevelMethod> getChildrenList() {
+		return childrenList;
+	}
+
 	public double getCnDiffValue() {
 		return cnDiffValue;
 	}
@@ -195,6 +215,15 @@ public class MedicalSpotCheckTotalModel {
 			return cnDiffValueString;
 		}
 		return "";
+	}
+
+	public double getIsoStdValue() {
+		return isoStdValue;
+	}
+
+	public String getIsoStdValueString() {
+		isoStdValue = Math.round(isoStdValue * 10D) / 10D;
+		return String.valueOf(isoStdValue);
 	}
 
 	public List<ItemValue> getNegative1DList() {
@@ -210,6 +239,13 @@ public class MedicalSpotCheckTotalModel {
 		return negative1DQty;
 	}
 
+	public String getNegative1DQtyString() {
+		if (getNegative1DQty() > 0) {
+			return String.valueOf(getNegative1DQty());
+		}
+		return "";
+	}
+
 	public List<ItemValue> getNegative2DList() {
 		return negative2DList;
 	}
@@ -221,6 +257,13 @@ public class MedicalSpotCheckTotalModel {
 			}
 		}
 		return negative2DQty;
+	}
+
+	public String getNegative2DQtyString() {
+		if (getNegative2DQty() > 0) {
+			return String.valueOf(getNegative2DQty());
+		}
+		return "";
 	}
 
 	public List<ItemValue> getNegative3DList() {
@@ -236,7 +279,18 @@ public class MedicalSpotCheckTotalModel {
 		return negative3DQty;
 	}
 
-	public int getNomalQty() {
+	public String getNegative3DQtyString() {
+		if (getNegative3DQty() > 0) {
+			return String.valueOf(getNegative3DQty());
+		}
+		return "";
+	}
+
+	public List<ItemValue> getNormalList() {
+		return normalList;
+	}
+
+	public int getNormalQty() {
 		if (normalQty == 0) {
 			if (normalList.size() > 0) {
 				normalQty = normalList.size();
@@ -245,8 +299,11 @@ public class MedicalSpotCheckTotalModel {
 		return normalQty;
 	}
 
-	public List<ItemValue> getNormalList() {
-		return normalList;
+	public String getNormalQtyString() {
+		if (getNormalQty() > 0) {
+			return String.valueOf(getNormalQty());
+		}
+		return "";
 	}
 
 	public List<ItemValue> getPositive1DList() {
@@ -262,6 +319,13 @@ public class MedicalSpotCheckTotalModel {
 		return positive1DQty;
 	}
 
+	public String getPositive1DQtyString() {
+		if (getPositive1DQty() > 0) {
+			return String.valueOf(getPositive1DQty());
+		}
+		return "";
+	}
+
 	public List<ItemValue> getPositive2DList() {
 		return positive2DList;
 	}
@@ -273,6 +337,13 @@ public class MedicalSpotCheckTotalModel {
 			}
 		}
 		return positive2DQty;
+	}
+
+	public String getPositive2DQtyString() {
+		if (getPositive2DQty() > 0) {
+			return String.valueOf(getPositive2DQty());
+		}
+		return "";
 	}
 
 	public List<ItemValue> getPositive3DList() {
@@ -288,6 +359,21 @@ public class MedicalSpotCheckTotalModel {
 		return positive3DQty;
 	}
 
+	public String getPositive3DQtyString() {
+		if (getPositive3DQty() > 0) {
+			return String.valueOf(getPositive3DQty());
+		}
+		return "";
+	}
+
+	public int getRecordTotal() {
+		return recordTotal;
+	}
+
+	public double getTotalValue() {
+		return totalValue;
+	}
+
 	public double getWhoDiffValue() {
 		return whoDiffValue;
 	}
@@ -295,7 +381,11 @@ public class MedicalSpotCheckTotalModel {
 	public String getWhoDiffValueString() {
 		if (whoDiffValue != 0) {
 			whoDiffValue = Math.round(whoDiffValue * 10D) / 10D;
-			whoDiffValueString = String.valueOf(whoDiffValue);
+			if (whoDiffValue > 0) {
+				whoDiffValueString = "+" + String.valueOf(whoDiffValue);
+			} else {
+				whoDiffValueString = String.valueOf(whoDiffValue);
+			}
 			return whoDiffValueString;
 		}
 		return "";
@@ -309,8 +399,16 @@ public class MedicalSpotCheckTotalModel {
 		this.avg = avg;
 	}
 
+	public void setChildrenList(List<SevenLevelMethod> childrenList) {
+		this.childrenList = childrenList;
+	}
+
 	public void setCnDiffValue(double cnDiffValue) {
 		this.cnDiffValue = cnDiffValue;
+	}
+
+	public void setIsoStdValue(double isoStdValue) {
+		this.isoStdValue = isoStdValue;
 	}
 
 	public void setNegative1DList(List<ItemValue> negative1dList) {
@@ -367,6 +465,14 @@ public class MedicalSpotCheckTotalModel {
 
 	public void setPositive3DQty(int positive3dQty) {
 		positive3DQty = positive3dQty;
+	}
+
+	public void setRecordTotal(int recordTotal) {
+		this.recordTotal = recordTotal;
+	}
+
+	public void setTotalValue(double totalValue) {
+		this.totalValue = totalValue;
 	}
 
 	public void setWhoDiffValue(double whoDiffValue) {

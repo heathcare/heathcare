@@ -155,7 +155,15 @@ public class TriphopathiaItemServiceImpl implements TriphopathiaItemService {
 		Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 		if (rows != null && !rows.isEmpty()) {
 			for (GrowthStandard gs : rows) {
-				gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				//gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				if (StringUtils.equals(gs.getType(), "4")) {
+					// int height = (int) Math.round(gs.getHeight());
+					String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
+					//logger.debug(key);
+					gsMap.put(key, gs);
+				} else {
+					gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+				}
 			}
 		}
 		if (triphopathiaItem.getHeight() > 0 && triphopathiaItem.getWeight() > 0) {

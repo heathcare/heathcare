@@ -20,6 +20,7 @@ package com.glaf.heathcare.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,13 +38,14 @@ import com.glaf.core.util.Tools;
 import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalSpotCheck;
 import com.glaf.heathcare.domain.MedicalSpotCheckTotalModel;
+import com.glaf.heathcare.domain.SevenLevelMethod;
 import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.MedicalSpotCheckQuery;
 import com.glaf.heathcare.service.GrowthStandardService;
 import com.glaf.heathcare.service.MedicalSpotCheckService;
 
-public class MedicalSpotCheckPreprocessor implements IReportPreprocessor {
-	protected final static Log logger = LogFactory.getLog(MedicalSpotCheckPreprocessor.class);
+public class MedicalSpotCheckPreprocessorV2 implements IReportPreprocessor {
+	protected final static Log logger = LogFactory.getLog(MedicalSpotCheckPreprocessorV2.class);
 
 	protected GrowthStandardService growthStandardService;
 
@@ -76,14 +78,14 @@ public class MedicalSpotCheckPreprocessor implements IReportPreprocessor {
 		query.actorId(Authentication.getAuthenticatedActorId());
 
 		List<MedicalSpotCheck> list = getMedicalSpotCheckService().list(query);
-		logger.debug("list:" + list);
+		// logger.debug("list:" + list);
 		if (list != null && !list.isEmpty()) {
 			List<GrowthStandard> standards = getGrowthStandardService().getAllGrowthStandards();
 			Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 			if (standards != null && !standards.isEmpty()) {
 				for (GrowthStandard gs : standards) {
 					if (StringUtils.equals(gs.getType(), "4")) {
-						//int height = (int) Math.round(gs.getHeight());
+						// int height = (int) Math.round(gs.getHeight());
 						gsMap.put(gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 					} else {
 						gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
@@ -134,15 +136,21 @@ public class MedicalSpotCheckPreprocessor implements IReportPreprocessor {
 					if (StringUtils.equals(checkType, "H/A")) {// H/A年龄别身高
 						String key = exam.getAgeOfTheMoon() + "_" + exam.getSex() + "_2";
 						GrowthStandard gs = gsMap.get(key);
-						model.setIsoStdValue(gs.getMedian());// 中位数
+						if (gs != null) {
+							model.setIsoStdValue(gs.getMedian());// 中位数
+						}
 					} else if (StringUtils.equals(checkType, "W/A")) {// W/A年龄别体重
 						String key = exam.getAgeOfTheMoon() + "_" + exam.getSex() + "_3";
 						GrowthStandard gs = gsMap.get(key);
-						model.setIsoStdValue(gs.getMedian());// 中位数
+						if (gs != null) {
+							model.setIsoStdValue(gs.getMedian());// 中位数
+						}
 					} else if (StringUtils.equals(checkType, "W/H")) {// W/H身高别体重
 						String key = exam.getAgeOfTheMoon() + "_" + exam.getSex() + "_4";
 						GrowthStandard gs = gsMap.get(key);
-						model.setIsoStdValue(gs.getMedian());// 中位数
+						if (gs != null) {
+							model.setIsoStdValue(gs.getMedian());// 中位数
+						}
 					}
 				}
 
@@ -226,38 +234,38 @@ public class MedicalSpotCheckPreprocessor implements IReportPreprocessor {
 					switch (exam.getWeightHeightLevel()) {
 					case -3:
 						model.addRecord();
-						model.addTotla(exam.getWeightHeightPercent());
-						model.addNegative3D(exam.getWeightHeightPercent());
+						model.addTotla(exam.getWeight());
+						model.addNegative3D(exam.getWeight());
 						break;
 					case -2:
 						model.addRecord();
-						model.addTotla(exam.getWeightHeightPercent());
-						model.addNegative2D(exam.getWeightHeightPercent());
+						model.addTotla(exam.getWeight());
+						model.addNegative2D(exam.getWeight());
 						break;
 					case -1:
 						model.addRecord();
-						model.addTotla(exam.getWeightHeightPercent());
-						model.addNegative1D(exam.getWeightHeightPercent());
+						model.addTotla(exam.getWeight());
+						model.addNegative1D(exam.getWeight());
 						break;
 					case 1:
 						model.addRecord();
-						model.addTotla(exam.getWeightHeightPercent());
-						model.addPositive1D(exam.getWeightHeightPercent());
+						model.addTotla(exam.getWeight());
+						model.addPositive1D(exam.getWeight());
 						break;
 					case 2:
 						model.addRecord();
-						model.addTotla(exam.getWeightHeightPercent());
-						model.addPositive2D(exam.getWeightHeightPercent());
+						model.addTotla(exam.getWeight());
+						model.addPositive2D(exam.getWeight());
 						break;
 					case 3:
 						model.addRecord();
-						model.addTotla(exam.getWeightHeightPercent());
-						model.addPositive3D(exam.getWeightHeightPercent());
+						model.addTotla(exam.getWeight());
+						model.addPositive3D(exam.getWeight());
 						break;
 					default:
 						model.addRecord();
-						model.addTotla(exam.getWeightHeightPercent());
-						model.addNormal(exam.getWeightHeightPercent());
+						model.addTotla(exam.getWeight());
+						model.addNormal(exam.getWeight());
 						break;
 					}
 				}
@@ -274,6 +282,103 @@ public class MedicalSpotCheckPreprocessor implements IReportPreprocessor {
 						rows.add(model);
 					}
 				}
+
+				for (MedicalSpotCheckTotalModel model : rows) {
+					int maxRow = 0;
+					if (model.getNegative3DList().size() > 0) {
+						maxRow = model.getNegative3DList().size();
+						Collections.sort(model.getNegative3DList());
+					}
+					if (model.getNegative2DList().size() > maxRow) {
+						maxRow = model.getNegative2DList().size();
+						Collections.sort(model.getNegative2DList());
+					}
+					if (model.getNegative1DList().size() > maxRow) {
+						maxRow = model.getNegative1DList().size();
+						Collections.sort(model.getNegative1DList());
+					}
+					if (model.getNormalList().size() > maxRow) {
+						maxRow = model.getNormalList().size();
+						Collections.sort(model.getNormalList());
+					}
+					if (model.getPositive1DList().size() > maxRow) {
+						maxRow = model.getPositive1DList().size();
+						Collections.sort(model.getPositive1DList());
+					}
+					if (model.getPositive2DList().size() > maxRow) {
+						maxRow = model.getPositive2DList().size();
+						Collections.sort(model.getPositive2DList());
+					}
+					if (model.getPositive3DList().size() > maxRow) {
+						maxRow = model.getPositive3DList().size();
+						Collections.sort(model.getPositive3DList());
+					}
+					if (maxRow > 0) {
+						List<SevenLevelMethod> childrenList = new ArrayList<SevenLevelMethod>();
+						for (int i = 0; i < maxRow; i++) {
+							SevenLevelMethod m = new SevenLevelMethod();
+							childrenList.add(m);
+						}
+						model.setChildrenList(childrenList);
+
+						if (model.getNegative3DList().size() > 0) {
+							int len = model.getNegative3DList().size();
+							for (int i = 0; i < len; i++) {
+								model.getChildrenList().get(i)
+										.setNegative3D(model.getNegative3DList().get(i).getValue());
+							}
+						}
+
+						if (model.getNegative2DList().size() > 0) {
+							int len = model.getNegative2DList().size();
+							for (int i = 0; i < len; i++) {
+								model.getChildrenList().get(i)
+										.setNegative2D(model.getNegative2DList().get(i).getValue());
+							}
+						}
+
+						if (model.getNegative1DList().size() > 0) {
+							int len = model.getNegative1DList().size();
+							for (int i = 0; i < len; i++) {
+								model.getChildrenList().get(i)
+										.setNegative1D(model.getNegative1DList().get(i).getValue());
+							}
+						}
+
+						if (model.getNormalList().size() > 0) {
+							int len = model.getNormalList().size();
+							for (int i = 0; i < len; i++) {
+								model.getChildrenList().get(i).setNormal(model.getNormalList().get(i).getValue());
+							}
+						}
+
+						if (model.getPositive1DList().size() > 0) {
+							int len = model.getPositive1DList().size();
+							for (int i = 0; i < len; i++) {
+								model.getChildrenList().get(i)
+										.setPositive1D(model.getPositive1DList().get(i).getValue());
+							}
+						}
+
+						if (model.getPositive2DList().size() > 0) {
+							int len = model.getPositive2DList().size();
+							for (int i = 0; i < len; i++) {
+								model.getChildrenList().get(i)
+										.setPositive2D(model.getPositive2DList().get(i).getValue());
+							}
+						}
+
+						if (model.getPositive3DList().size() > 0) {
+							int len = model.getPositive3DList().size();
+							for (int i = 0; i < len; i++) {
+								model.getChildrenList().get(i)
+										.setPositive3D(model.getPositive3DList().get(i).getValue());
+							}
+						}
+
+					}
+				}
+
 				parameter.put("dataList", rows);
 				logger.debug("dataList size:" + rows.size());
 			}

@@ -60,6 +60,87 @@ public class CellMergeHandler implements WorkbookHandler {
 		return null;
 	}
 
+	public void mergeHorizontal(Workbook wb) {
+		int sheetCnt = wb.getNumberOfSheets();
+		for (int i = 0; i < sheetCnt; i++) {
+			Sheet sheet = wb.getSheetAt(i);
+			int rows = sheet.getLastRowNum();
+			logger.debug("行记录数:" + (rows + 1));
+			Row row = null;
+			Cell cell = null;
+			Cell tmpCell = null;
+			int endCol = 0;
+			Map<String, Integer> mergeMap = new HashMap<String, Integer>();
+			for (int rowIndex = 0; rowIndex <= rows; rowIndex++) {
+				row = sheet.getRow(rowIndex);
+				// logger.debug("rowIndex:" + rowIndex);
+				if (row == null) {
+					continue;
+				}
+				int cols = row.getLastCellNum();
+				for (int colIndex = 0; colIndex < cols; colIndex++) {
+					cell = row.getCell(colIndex);
+					if (cell == null) {
+						continue;
+					}
+					if (mergeMap.get(rowIndex + "_" + colIndex) != null) {
+						continue;
+					}
+					endCol = colIndex;
+					if (cell.getCellComment() != null) {
+						String value = cell.getStringCellValue();
+						if (StringUtils.contains(cell.getCellComment().getString().getString(), "mergeCellHorz")) {
+							// logger.debug(rowIndex + "行" + colIndex + "列读取到合并注释:"
+							// + cell.getCellComment().getString().getString());
+							endCol = colIndex;
+							boolean mergeFlag = false;
+							while (endCol < cols) {
+								tmpCell = row.getCell(++endCol);
+								String nextVal = getCellValue(tmpCell);
+								if (nextVal == null) {
+									--endCol;
+									break;
+								}
+								if (StringUtils.equals(nextVal, value)) {
+									mergeFlag = true;
+									mergeMap.put(rowIndex + "_" + colIndex, colIndex);
+									mergeMap.put(rowIndex + "_" + endCol, endCol);
+									// logger.debug("endCol:" + endCol);
+								} else {
+									--endCol;
+									break;
+								}
+							}
+							if (mergeFlag) {
+								// logger.debug("准备合并单元格值:" + value);
+								try {
+									String ikey = rowIndex + "_" + endCol;
+									int newColIndex = endCol;
+									if (mergeMap.get(ikey) != null) {
+										newColIndex = mergeMap.get(ikey);
+									}
+									// logger.debug("startRow:" + rowIndex + "->endRow:" + rowIndex);
+									// logger.debug("startCol:" + colIndex + "->endCol:" + newColIndex);
+									// Thread.sleep(20);
+									CellRangeAddress region = new CellRangeAddress(rowIndex, rowIndex, colIndex,
+											newColIndex);
+									sheet.addMergedRegion(region);
+									if (StringUtils.equals(cell.getCellComment().getString().getString().trim(),
+											"mergeCellHorz")) {
+										cell.removeCellComment();
+									}
+								} catch (Exception ex) {
+									// e.printStackTrace();
+									logger.error("merged region error", ex);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public void mergeHorizontal(Workbook wb, ExportApp exportApp) {
 		int sheetCnt = wb.getNumberOfSheets();
 		for (int i = 0; i < sheetCnt; i++) {
@@ -131,6 +212,101 @@ public class CellMergeHandler implements WorkbookHandler {
 									}
 								} catch (Exception ex) {
 									// e.printStackTrace();
+									logger.error("merged region error", ex);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void mergeVertical(Workbook wb) {
+		int sheetCnt = wb.getNumberOfSheets();
+		for (int i = 0; i < sheetCnt; i++) {
+			Sheet sheet = wb.getSheetAt(i);
+			int rows = sheet.getLastRowNum();
+			logger.debug("行记录数:" + (rows + 1));
+			Row row = null;
+			Row tmpRow = null;
+			Cell cell = null;
+			int endRow = 0;
+			int[] rowBreaks = sheet.getRowBreaks();
+			List<Integer> breaks = new ArrayList<Integer>();
+			if (rowBreaks != null && rowBreaks.length > 0) {
+				for (int xbreak : rowBreaks) {
+					breaks.add(xbreak);
+				}
+			}
+			Map<String, Integer> mergeMap = new HashMap<String, Integer>();
+			for (int rowIndex = 0; rowIndex <= rows; rowIndex++) {
+				if (breaks.contains(rowIndex)) {// 遇到分页符，跳过
+					logger.debug(">>>>跳过分页符:" + rowIndex);
+					continue;
+				}
+				row = sheet.getRow(rowIndex);
+				// logger.debug("rowIndex:" + rowIndex);
+				endRow = rowIndex;
+				if (row == null) {
+					continue;
+				}
+				int cols = row.getLastCellNum();
+				for (int colIndex = 0; colIndex < cols; colIndex++) {
+					cell = row.getCell(colIndex);
+					if (cell == null) {
+						continue;
+					}
+					if (mergeMap.get(rowIndex + "_" + colIndex) != null) {
+						continue;
+					}
+					if (cell.getCellComment() != null) {
+						String value = cell.getStringCellValue();
+						if (StringUtils.contains(cell.getCellComment().getString().getString(), "mergeCell")) {
+							// logger.debug(rowIndex + "行" + colIndex + "列读取到合并注释:"
+							// + cell.getCellComment().getString().getString());
+							endRow = rowIndex;
+							boolean mergeFlag = false;
+							while (endRow < rows) {
+								if (breaks.contains(endRow)) {// 遇到分页符，跳过
+									logger.debug(">>>>@跳过分页符:" + endRow);
+									break;
+								}
+								tmpRow = sheet.getRow(++endRow);
+								String nextVal = getCellValue(tmpRow, colIndex);
+								if (nextVal == null) {
+									--endRow;
+									break;
+								}
+								if (StringUtils.equals(nextVal, value)) {
+									mergeFlag = true;
+									mergeMap.put(rowIndex + "_" + colIndex, colIndex);
+									mergeMap.put(endRow + "_" + colIndex, colIndex);
+								} else {
+									--endRow;
+									break;
+								}
+							}
+							if (mergeFlag) {
+								// logger.debug("准备合并单元格值:" + value);
+								try {
+									String ikey = rowIndex + "_" + colIndex;
+									int newColIndex = colIndex;
+									if (mergeMap.get(ikey) != null) {
+										newColIndex = mergeMap.get(ikey);
+									}
+									// logger.debug("rowIndex:" + rowIndex + "->endRow:" + endRow);
+									// logger.debug("colIndex:" + colIndex + "->newColIndex:" + newColIndex);
+									// Thread.sleep(20);
+									CellRangeAddress region = new CellRangeAddress(rowIndex, endRow, colIndex,
+											newColIndex);
+									sheet.addMergedRegion(region);
+									if (StringUtils.equals(cell.getCellComment().getString().getString().trim(),
+											"mergeCell")) {
+										cell.removeCellComment();
+									}
+								} catch (Exception ex) {
+									// ex.printStackTrace();
 									logger.error("merged region error", ex);
 								}
 							}

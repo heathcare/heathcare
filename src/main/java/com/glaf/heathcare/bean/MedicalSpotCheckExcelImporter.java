@@ -35,7 +35,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ExcelUtils;
-import com.glaf.core.util.UUID32;
+
 import com.glaf.heathcare.domain.MedicalSpotCheck;
 import com.glaf.heathcare.domain.MedicalSpotCheckXlsArea;
 import com.glaf.heathcare.service.MedicalSpotCheckService;
@@ -43,12 +43,12 @@ import com.glaf.heathcare.service.MedicalSpotCheckService;
 public class MedicalSpotCheckExcelImporter {
 	protected final static Log logger = LogFactory.getLog(MedicalSpotCheckExcelImporter.class);
 
-	public String importData(String tenantId, String userId, String type, List<MedicalSpotCheckXlsArea> areas,
-			java.io.InputStream inputStream) {
+	public String importData(String tenantId, String userId, String type, String checkId,
+			List<MedicalSpotCheckXlsArea> areas, java.io.InputStream inputStream) {
 		logger.debug("----------------MedicalSpotCheckExcelImporter------------------");
 		MedicalSpotCheckService medicalSpotCheckService = ContextFactory
 				.getBean("com.glaf.heathcare.service.medicalSpotCheckService");
-
+		StringBuilder buffer = new StringBuilder();
 		Workbook wb = null;
 		Row row = null;
 		Cell cell = null;
@@ -61,7 +61,6 @@ public class MedicalSpotCheckExcelImporter {
 		try {
 			wb = WorkbookFactory.create(inputStream);
 
-			String checkId = UUID32.generateShortUuid();
 			List<MedicalSpotCheck> exams = new ArrayList<MedicalSpotCheck>();
 			int ordinal = 0;
 			for (MedicalSpotCheckXlsArea area : areas) {
@@ -89,8 +88,12 @@ public class MedicalSpotCheckExcelImporter {
 
 									MedicalSpotCheck exam = new MedicalSpotCheck();
 
+									if (StringUtils.contains(sexValue, "男")) {
+										exam.setSex("1");
+									} else {
+										exam.setSex("0");
+									}
 									exam.setType(type);
-									exam.setSex(sexValue);
 									exam.setAgeOfTheMoonString(ageValue);
 
 									if (ageValue.length() == 5) {
@@ -122,6 +125,30 @@ public class MedicalSpotCheckExcelImporter {
 										if (cell != null) {
 											cellValue = ExcelUtils.getCellValue(cell);
 											exam.setOrganization(cellValue);
+										}
+									}
+
+									if (area.getOrganizationLevelColIndex() != -1) {
+										cell = row.getCell(area.getOrganizationLevelColIndex());
+										if (cell != null) {
+											cellValue = ExcelUtils.getCellValue(cell);
+											exam.setOrganizationLevel(cellValue);
+										}
+									}
+
+									if (area.getOrganizationPropertyColIndex() != -1) {
+										cell = row.getCell(area.getOrganizationPropertyColIndex());
+										if (cell != null) {
+											cellValue = ExcelUtils.getCellValue(cell);
+											exam.setOrganizationProperty(cellValue);
+										}
+									}
+
+									if (area.getOrganizationTerritoryColIndex() != -1) {
+										cell = row.getCell(area.getOrganizationTerritoryColIndex());
+										if (cell != null) {
+											cellValue = ExcelUtils.getCellValue(cell);
+											exam.setOrganizationTerritory(cellValue);
 										}
 									}
 
@@ -205,6 +232,7 @@ public class MedicalSpotCheckExcelImporter {
 											}
 										}
 									}
+									exam.setCheckId(checkId);
 									exam.setTenantId(tenantId);
 									exam.setCreateBy(userId);
 									exam.setOrdinal(++ordinal);
@@ -212,17 +240,24 @@ public class MedicalSpotCheckExcelImporter {
 								}
 							}
 						} catch (Exception ex) {
+							buffer.append("<br><div style='color:red;'>")
+									.append((rowIndex + 1) + "行记录数据有误:" + ex.getMessage()).append("</div>");
+							logger.error((rowIndex + 1) + "行记录数据有误！");
 							logger.error(ex);
 						}
 					}
 				}
 			}
 
-			if (exams.size() > 0) {
-				medicalSpotCheckService.bulkInsert(exams);
+			if (exams.size() > 0 && buffer.length() == 0) {
+				logger.debug("本次准备导入数据条数:" + exams.size());
+				medicalSpotCheckService.bulkInsert(tenantId, exams);
+				buffer.append("<br><div style='color:green;'>导入成功！</div>");
+				buffer.append("<br><div style='color:green;'>导入数据条数:" + exams.size() + "</div>");
 			}
-			return checkId;
+			return buffer.toString();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new RuntimeException(ex);
 		} finally {
 			if (wb != null) {

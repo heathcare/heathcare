@@ -17,7 +17,7 @@
  */
 package com.glaf.heathcare.domain;
 
-public class ItemValue implements java.io.Serializable {
+public class ItemValue implements java.io.Serializable, java.lang.Comparable<ItemValue> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +27,26 @@ public class ItemValue implements java.io.Serializable {
 
 	public ItemValue() {
 
+	}
+
+	@Override
+	public int compareTo(ItemValue o) {
+		if (o == null) {
+			return -1;
+		}
+
+		ItemValue field = o;
+
+		double val = this.value - field.getValue();
+
+		int ret = 0;
+
+		if (val > 0) {
+			ret = 1;
+		} else if (val < 0) {
+			ret = -1;
+		}
+		return ret;
 	}
 
 	public String getName() {

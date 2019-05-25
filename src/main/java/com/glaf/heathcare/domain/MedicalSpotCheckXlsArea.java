@@ -86,6 +86,21 @@ public class MedicalSpotCheckXlsArea {
 	protected int organizationColIndex = -1;
 
 	/**
+	 * 机构等级所在列
+	 */
+	protected int organizationLevelColIndex = -1;
+
+	/**
+	 * 机构性质所在列
+	 */
+	protected int organizationPropertyColIndex = -1;
+
+	/**
+	 * 机构地域
+	 */
+	protected int organizationTerritoryColIndex = -1;
+
+	/**
 	 * 班级所在列
 	 */
 	protected int gradeColIndex = -1;
@@ -156,6 +171,18 @@ public class MedicalSpotCheckXlsArea {
 		return organizationColIndex;
 	}
 
+	public int getOrganizationLevelColIndex() {
+		return organizationLevelColIndex;
+	}
+
+	public int getOrganizationPropertyColIndex() {
+		return organizationPropertyColIndex;
+	}
+
+	public int getOrganizationTerritoryColIndex() {
+		return organizationTerritoryColIndex;
+	}
+
 	public int getSexColIndex() {
 		return sexColIndex;
 	}
@@ -218,6 +245,18 @@ public class MedicalSpotCheckXlsArea {
 
 	public void setOrganizationColIndex(int organizationColIndex) {
 		this.organizationColIndex = organizationColIndex;
+	}
+
+	public void setOrganizationLevelColIndex(int organizationLevelColIndex) {
+		this.organizationLevelColIndex = organizationLevelColIndex;
+	}
+
+	public void setOrganizationPropertyColIndex(int organizationPropertyColIndex) {
+		this.organizationPropertyColIndex = organizationPropertyColIndex;
+	}
+
+	public void setOrganizationTerritoryColIndex(int organizationTerritoryColIndex) {
+		this.organizationTerritoryColIndex = organizationTerritoryColIndex;
 	}
 
 	public void setSexColIndex(int sexColIndex) {

@@ -43,7 +43,48 @@ public class RemoveCommentHandler implements WorkbookHandler {
 			Cell cell = null;
 			for (int rowIndex = 0; rowIndex <= rows; rowIndex++) {
 				row = sheet.getRow(rowIndex);
-				//logger.debug("rowIndex:" + rowIndex);
+				// logger.debug("rowIndex:" + rowIndex);
+				if (row == null) {
+					continue;
+				}
+				int cols = row.getLastCellNum();
+				for (int colIndex = 0; colIndex < cols; colIndex++) {
+					cell = row.getCell(colIndex);
+					if (cell == null) {
+						continue;
+					}
+					if (cell.getCellComment() != null) {
+						if (StringUtils.contains(cell.getCellComment().getString().getString(), "mergeCell")) {
+							cell.removeCellComment();
+						} else if (StringUtils.contains(cell.getCellComment().getString().getString(),
+								"mergeCellHorz")) {
+							cell.removeCellComment();
+						} else if (StringUtils.contains(cell.getCellComment().getString().getString(),
+								"pageFooterBorder")) {
+							cell.removeCellComment();
+						} else if (StringUtils.contains(cell.getCellComment().getString().getString(), "xe:rh{")) {
+							cell.removeCellComment();
+						} else if (StringUtils.contains(cell.getCellComment().getString().getString(), "xe:ph{")) {
+							cell.removeCellComment();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void removeComment(Workbook wb) {
+		logger.debug("----------------------RemoveCommentHandler-------------------");
+		int sheetCnt = wb.getNumberOfSheets();
+		for (int i = 0; i < sheetCnt; i++) {
+			Sheet sheet = wb.getSheetAt(i);
+			int rows = sheet.getLastRowNum();
+			logger.debug("行记录数:" + (rows + 1));
+			Row row = null;
+			Cell cell = null;
+			for (int rowIndex = 0; rowIndex <= rows; rowIndex++) {
+				row = sheet.getRow(rowIndex);
+				// logger.debug("rowIndex:" + rowIndex);
 				if (row == null) {
 					continue;
 				}

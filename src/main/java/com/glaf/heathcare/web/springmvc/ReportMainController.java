@@ -43,6 +43,7 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jxls.common.Context;
 import org.jxls.transform.poi.PoiTransformer;
@@ -71,6 +72,9 @@ import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.GradeInfoService;
+import com.glaf.jxls.ext.JxlsBuilder;
+import com.glaf.matrix.export.handler.CellMergeHandler;
+import com.glaf.matrix.export.handler.RemoveCommentHandler;
 import com.glaf.report.bean.ReportContainer;
 import com.glaf.report.data.ReportDefinition;
 
@@ -155,11 +159,14 @@ public class ReportMainController {
 				}
 			}
 			data = rdf.getData();
+			String useExt = request.getParameter("useExt");
+			String megerFlag = request.getParameter("megerFlag");
 			String outputFormat = request.getParameter("outputFormat");
 			int precision = RequestUtils.getInt(request, "precision", 2);
 			IReportPreprocessor reportPreprocessor = null;
 			Workbook workbook = null;
 			InputStream is = null;
+			BufferedInputStream bis = null;
 			PrintWriter writer = null;
 			ByteArrayInputStream bais = null;
 			ByteArrayOutputStream baos = null;
@@ -212,13 +219,40 @@ public class ReportMainController {
 					context2.putVar(key, value);
 				}
 
-				org.jxls.util.JxlsHelper.getInstance().processTemplate(is, bos, context2);
+				ZipSecureFile.setMinInflateRatio(-1.0d);// 延迟解析比率
+
+				if (StringUtils.equals(useExt, "Y")) {
+					JxlsBuilder jxlsBuilder = JxlsBuilder.getBuilder(is).out(bos).putAll(params);
+					jxlsBuilder.putVar("_ignoreImageMiss", Boolean.valueOf(true));
+					jxlsBuilder.build();
+				} else {
+					org.jxls.util.JxlsHelper.getInstance().processTemplate(is, bos, context2);
+				}
 				IOUtils.closeQuietly(is);
 				IOUtils.closeQuietly(bais);
 
 				bos.flush();
 				baos.flush();
 				data = baos.toByteArray();
+
+				if (StringUtils.equals(megerFlag, "Y")) {
+					bais = new ByteArrayInputStream(data);
+					bis = new BufferedInputStream(bais);
+
+					workbook = org.apache.poi.ss.usermodel.WorkbookFactory.create(bis);
+
+					CellMergeHandler cellMergeHandler = new CellMergeHandler();
+					cellMergeHandler.mergeVertical(workbook);
+					RemoveCommentHandler removeCommentHandler = new RemoveCommentHandler();
+					removeCommentHandler.removeComment(workbook);
+
+					baos = new ByteArrayOutputStream();
+					bos = new BufferedOutputStream(baos);
+					workbook.write(bos);
+					bos.flush();
+					baos.flush();
+					data = baos.toByteArray();
+				}
 
 				if (StringUtils.equals(outputFormat, "html")) {
 					request.setCharacterEncoding("UTF-8");
@@ -254,6 +288,7 @@ public class ReportMainController {
 			} finally {
 				data = null;
 				IOUtils.closeQuietly(is);
+				IOUtils.closeQuietly(bis);
 				IOUtils.closeQuietly(bais);
 				IOUtils.closeQuietly(baos);
 				IOUtils.closeQuietly(bos);

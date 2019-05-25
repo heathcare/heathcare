@@ -45,6 +45,27 @@
 	</td>
 </tr>
 <tr>
+	<td width="20%" align="left">选择一个主题</td>
+	<td align="left">
+         <select id="checkId" name="checkId">
+			<option value="" selected>----请选择----</option>
+			<#list examDefs as row>
+			<option value="${row.checkId}">${row.title}</option>
+			</#list>
+         </select>
+		 <script type="text/javascript">
+			 document.getElementById("checkId").value="${checkId}";
+		</script>
+	</td>
+</tr>
+<tr>
+	<td width="20%" align="left">新建主题</td>
+	<td align="left">
+        <input id="title" name="title" type="text" 
+			   class="easyui-validatebox x-text" style="width:320px;"/>
+	</td>
+</tr>
+<tr>
 	<td height="30">导入模板</td>
 	<td>
 		<select id="tplType" name="tplType">

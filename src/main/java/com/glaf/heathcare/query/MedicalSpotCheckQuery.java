@@ -24,10 +24,12 @@ import com.glaf.core.query.DataQuery;
 public class MedicalSpotCheckQuery extends DataQuery {
 	private static final long serialVersionUID = 1L;
 	protected List<String> ids;
+	protected String checkId;
 	protected String gradeNameLike;
 	protected String personId;
 	protected String sex;
 	protected String nation;
+	protected String nationLike;
 	protected Integer year;
 	protected Integer month;
 	protected Integer ageOfTheMoon;
@@ -37,11 +39,16 @@ public class MedicalSpotCheckQuery extends DataQuery {
 	protected Integer heightLevelLessThanOrEqual;
 	protected Integer weightLevelGreaterThanOrEqual;
 	protected Integer weightLevelLessThanOrEqual;
+	protected Integer weightLevel;
 	protected String provinceLike;
 	protected String cityLike;
 	protected String areaLike;
 	protected String organizationLike;
+	protected String organizationLevelLike;
+	protected String organizationPropertyLike;
+	protected String organizationTerritoryLike;
 	protected String type;
+	protected String tableSuffix;
 
 	public MedicalSpotCheckQuery() {
 
@@ -79,6 +86,14 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalSpotCheckQuery checkId(String checkId) {
+		if (checkId == null) {
+			throw new RuntimeException("checkId is null");
+		}
+		this.checkId = checkId;
+		return this;
+	}
+
 	public MedicalSpotCheckQuery cityLike(String cityLike) {
 		if (cityLike == null) {
 			throw new RuntimeException("cityLike is null");
@@ -109,6 +124,10 @@ public class MedicalSpotCheckQuery extends DataQuery {
 			}
 		}
 		return areaLike;
+	}
+
+	public String getCheckId() {
+		return checkId;
 	}
 
 	public String getCityLike() {
@@ -153,6 +172,18 @@ public class MedicalSpotCheckQuery extends DataQuery {
 
 	public String getNation() {
 		return nation;
+	}
+
+	public String getNationLike() {
+		if (nationLike != null && nationLike.trim().length() > 0) {
+			if (!nationLike.startsWith("%")) {
+				nationLike = "%" + nationLike;
+			}
+			if (!nationLike.endsWith("%")) {
+				nationLike = nationLike + "%";
+			}
+		}
+		return nationLike;
 	}
 
 	public String getOrderBy() {
@@ -282,6 +313,18 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return orderBy;
 	}
 
+	public String getOrganizationLevelLike() {
+		if (organizationLevelLike != null && organizationLevelLike.trim().length() > 0) {
+			if (!organizationLevelLike.startsWith("%")) {
+				organizationLevelLike = "%" + organizationLevelLike;
+			}
+			if (!organizationLevelLike.endsWith("%")) {
+				organizationLevelLike = organizationLevelLike + "%";
+			}
+		}
+		return organizationLevelLike;
+	}
+
 	public String getOrganizationLike() {
 		if (organizationLike != null && organizationLike.trim().length() > 0) {
 			if (!organizationLike.startsWith("%")) {
@@ -292,6 +335,30 @@ public class MedicalSpotCheckQuery extends DataQuery {
 			}
 		}
 		return organizationLike;
+	}
+
+	public String getOrganizationPropertyLike() {
+		if (organizationPropertyLike != null && organizationPropertyLike.trim().length() > 0) {
+			if (!organizationPropertyLike.startsWith("%")) {
+				organizationPropertyLike = "%" + organizationPropertyLike;
+			}
+			if (!organizationPropertyLike.endsWith("%")) {
+				organizationPropertyLike = organizationPropertyLike + "%";
+			}
+		}
+		return organizationPropertyLike;
+	}
+
+	public String getOrganizationTerritoryLike() {
+		if (organizationTerritoryLike != null && organizationTerritoryLike.trim().length() > 0) {
+			if (!organizationTerritoryLike.startsWith("%")) {
+				organizationTerritoryLike = "%" + organizationTerritoryLike;
+			}
+			if (!organizationTerritoryLike.endsWith("%")) {
+				organizationTerritoryLike = organizationTerritoryLike + "%";
+			}
+		}
+		return organizationTerritoryLike;
 	}
 
 	public String getPersonId() {
@@ -314,8 +381,19 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return sex;
 	}
 
+	public String getTableSuffix() {
+		if (tableSuffix == null) {
+			tableSuffix = "";
+		}
+		return tableSuffix;
+	}
+
 	public String getType() {
 		return type;
+	}
+
+	public Integer getWeightLevel() {
+		return weightLevel;
 	}
 
 	public Integer getWeightLevelGreaterThanOrEqual() {
@@ -389,11 +467,43 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalSpotCheckQuery nationLike(String nationLike) {
+		if (nationLike == null) {
+			throw new RuntimeException("nation is null");
+		}
+		this.nationLike = nationLike;
+		return this;
+	}
+
+	public MedicalSpotCheckQuery organizationLevelLike(String organizationLevelLike) {
+		if (organizationLevelLike == null) {
+			throw new RuntimeException("organizationLevel is null");
+		}
+		this.organizationLevelLike = organizationLevelLike;
+		return this;
+	}
+
 	public MedicalSpotCheckQuery organizationLike(String organizationLike) {
 		if (organizationLike == null) {
 			throw new RuntimeException("organization is null");
 		}
 		this.organizationLike = organizationLike;
+		return this;
+	}
+
+	public MedicalSpotCheckQuery organizationPropertyLike(String organizationPropertyLike) {
+		if (organizationPropertyLike == null) {
+			throw new RuntimeException("organizationProperty is null");
+		}
+		this.organizationPropertyLike = organizationPropertyLike;
+		return this;
+	}
+
+	public MedicalSpotCheckQuery organizationTerritoryLike(String organizationTerritoryLike) {
+		if (organizationTerritoryLike == null) {
+			throw new RuntimeException("organizationTerritory is null");
+		}
+		this.organizationTerritoryLike = organizationTerritoryLike;
 		return this;
 	}
 
@@ -429,6 +539,10 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		this.areaLike = areaLike;
 	}
 
+	public void setCheckId(String checkId) {
+		this.checkId = checkId;
+	}
+
 	public void setCityLike(String cityLike) {
 		this.cityLike = cityLike;
 	}
@@ -457,8 +571,24 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		this.nation = nation;
 	}
 
+	public void setNationLike(String nationLike) {
+		this.nationLike = nationLike;
+	}
+
+	public void setOrganizationLevelLike(String organizationLevelLike) {
+		this.organizationLevelLike = organizationLevelLike;
+	}
+
 	public void setOrganizationLike(String organizationLike) {
 		this.organizationLike = organizationLike;
+	}
+
+	public void setOrganizationPropertyLike(String organizationPropertyLike) {
+		this.organizationPropertyLike = organizationPropertyLike;
+	}
+
+	public void setOrganizationTerritoryLike(String organizationTerritoryLike) {
+		this.organizationTerritoryLike = organizationTerritoryLike;
 	}
 
 	public void setPersonId(String personId) {
@@ -473,8 +603,16 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		this.sex = sex;
 	}
 
+	public void setTableSuffix(String tableSuffix) {
+		this.tableSuffix = tableSuffix;
+	}
+
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public void setWeightLevel(Integer weightLevel) {
+		this.weightLevel = weightLevel;
 	}
 
 	public void setWeightLevelGreaterThanOrEqual(Integer weightLevelGreaterThanOrEqual) {
@@ -497,11 +635,27 @@ public class MedicalSpotCheckQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalSpotCheckQuery tableSuffix(String tableSuffix) {
+		if (tableSuffix == null) {
+			throw new RuntimeException("tableSuffix is null");
+		}
+		this.tableSuffix = tableSuffix;
+		return this;
+	}
+
 	public MedicalSpotCheckQuery type(String type) {
 		if (type == null) {
 			throw new RuntimeException("type is null");
 		}
 		this.type = type;
+		return this;
+	}
+
+	public MedicalSpotCheckQuery weightLevel(Integer weightLevel) {
+		if (weightLevel == null) {
+			throw new RuntimeException("weightLevel is null");
+		}
+		this.weightLevel = weightLevel;
 		return this;
 	}
 

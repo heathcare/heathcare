@@ -22,8 +22,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.glaf.core.base.DataRequest;
-import com.glaf.core.base.DataRequest.FilterDescriptor;
 import com.glaf.core.domain.ColumnDefinition;
 import com.glaf.core.domain.TableDefinition;
 import com.glaf.core.util.DBUtils;
@@ -225,33 +223,6 @@ public class ActualRepastPersonDomainFactory {
 			DBUtils.alterTable(tableDefinition);
 		}
 		return tableDefinition;
-	}
-
-	public static void processDataRequest(DataRequest dataRequest) {
-		if (dataRequest != null) {
-			if (dataRequest.getFilter() != null) {
-				if (dataRequest.getFilter().getField() != null) {
-					dataRequest.getFilter().setColumn(columnMap.get(dataRequest.getFilter().getField()));
-					dataRequest.getFilter().setJavaType(javaTypeMap.get(dataRequest.getFilter().getField()));
-				}
-
-				List<FilterDescriptor> filters = dataRequest.getFilter().getFilters();
-				for (FilterDescriptor filter : filters) {
-					filter.setParent(dataRequest.getFilter());
-					if (filter.getField() != null) {
-						filter.setColumn(columnMap.get(filter.getField()));
-						filter.setJavaType(javaTypeMap.get(filter.getField()));
-					}
-
-					List<FilterDescriptor> subFilters = filter.getFilters();
-					for (FilterDescriptor f : subFilters) {
-						f.setColumn(columnMap.get(f.getField()));
-						f.setJavaType(javaTypeMap.get(f.getField()));
-						f.setParent(filter);
-					}
-				}
-			}
-		}
 	}
 
 	private ActualRepastPersonDomainFactory() {

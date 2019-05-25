@@ -398,8 +398,8 @@
 
 	<report id="MedicalSpotCheckTotal">
 	    <templateType>jxls2</templateType>
-		<templateFile>conf/report/templates/MedicalSpotCheckTotal.xls</templateFile>
-		<prepareClass>com.glaf.heathcare.tenant.MedicalSpotCheckPreprocessor</prepareClass>
+		<templateFile>conf/report/templates/MedicalSpotCheckTotal4.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV2</prepareClass>
 	</report>
 
 </reports>

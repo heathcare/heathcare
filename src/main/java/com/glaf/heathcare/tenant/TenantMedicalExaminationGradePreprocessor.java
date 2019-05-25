@@ -118,8 +118,8 @@ public class TenantMedicalExaminationGradePreprocessor implements IReportPreproc
 					if (standards != null && !standards.isEmpty()) {
 						for (GrowthStandard std : standards) {
 							if (StringUtils.equals(std.getType(), "4")) {
-								int height = (int) Math.round(std.getHeight());
-								gsMap.put(height + "_" + std.getSex() + "_" + std.getType(), std);
+								//int height = (int) Math.round(std.getHeight());
+								gsMap.put(std.getHeight() + "_" + std.getSex() + "_" + std.getType(), std);
 							} else {
 								gsMap.put(std.getAgeOfTheMoon() + "_" + std.getSex() + "_" + std.getType(), std);
 							}

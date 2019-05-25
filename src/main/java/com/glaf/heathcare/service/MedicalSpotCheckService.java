@@ -28,7 +28,7 @@ import com.glaf.heathcare.query.*;
 public interface MedicalSpotCheckService {
 
 	@Transactional
-	void bulkInsert(List<MedicalSpotCheck> list);
+	void bulkInsert(String tenantId, List<MedicalSpotCheck> list);
 
 	/**
 	 * 根据主键删除多条记录
@@ -36,7 +36,7 @@ public interface MedicalSpotCheckService {
 	 * @return
 	 */
 	@Transactional
-	void deleteByIds(List<String> ids);
+	void deleteByIds(String tenantId, List<String> ids);
 
 	/**
 	 * 根据查询参数获取记录总数
@@ -59,16 +59,7 @@ public interface MedicalSpotCheckService {
 	 */
 	List<MedicalSpotCheck> list(MedicalSpotCheckQuery query);
 
-	/**
-	 * 保存一条记录
-	 * 
-	 * @return
-	 */
 	@Transactional
-	void save(MedicalSpotCheck medicalSpotCheck);
-
-
-	@Transactional
-	void updateAll(List<MedicalSpotCheck> list);
+	void updateAll(String tenantId, List<MedicalSpotCheck> list);
 
 }

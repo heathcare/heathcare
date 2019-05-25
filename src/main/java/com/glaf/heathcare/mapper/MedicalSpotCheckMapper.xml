@@ -10,6 +10,7 @@
 		<id property="id" column="ID_" jdbcType="VARCHAR" />
 		<result property="tenantId" column="TENANTID_"
 			jdbcType="VARCHAR" />
+		<result property="checkId" column="CHECKID_" jdbcType="VARCHAR" />
 		<result property="gradeName" column="GRADENAME_"
 			jdbcType="VARCHAR" />
 		<result property="personId" column="PERSONID_"
@@ -58,6 +59,12 @@
 		<result property="area" column="AREA_" jdbcType="VARCHAR" />
 		<result property="organization" column="ORGANIZATION_"
 			jdbcType="VARCHAR" />
+		<result property="organizationLevel"
+			column="ORGANIZATIONLEVEL_" jdbcType="VARCHAR" />
+		<result property="organizationProperty"
+			column="ORGANIZATIONPROPERTY_" jdbcType="VARCHAR" />
+		<result property="organizationTerritory"
+			column="ORGANIZATIONTERRITORY_" jdbcType="VARCHAR" />
 		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
 		<result property="ordinal" column="ORDINAL_" jdbcType="INTEGER" />
 		<result property="checkDate" column="CHECKDATE_"
@@ -71,11 +78,14 @@
 
 	<insert id="insertMedicalSpotCheck"
 		parameterType="com.glaf.heathcare.domain.MedicalSpotCheck">
-		insert into HEALTH_MEDICAL_SPOT_CHECK
+		insert into HEALTH_MEDICAL_SPOT_CHECK${tableSuffix}
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
 			<if test="tenantId != null">
 				,TENANTID_
+			</if>
+			<if test="checkId != null">
+				,CHECKID_
 			</if>
 			<if test="gradeName != null">
 				,GRADENAME_
@@ -164,6 +174,15 @@
 			<if test="organization != null">
 				,ORGANIZATION_
 			</if>
+			<if test="organizationLevel != null">
+				,ORGANIZATIONLEVEL_
+			</if>
+			<if test="organizationProperty != null">
+				,ORGANIZATIONPROPERTY_
+			</if>
+			<if test="organizationTerritory != null">
+				,ORGANIZATIONTERRITORY_
+			</if>
 			<if test="type != null">
 				,TYPE_
 			</if>
@@ -185,6 +204,9 @@
 			#{id, jdbcType=VARCHAR}
 			<if test="tenantId != null">
 				,#{tenantId, jdbcType=VARCHAR}
+			</if>
+			<if test="checkId != null">
+				,#{checkId, jdbcType=VARCHAR}
 			</if>
 			<if test="gradeName != null">
 				,#{gradeName, jdbcType=VARCHAR}
@@ -273,6 +295,15 @@
 			<if test="organization != null">
 				,#{organization, jdbcType=VARCHAR}
 			</if>
+			<if test="organizationLevel != null">
+				,#{organizationLevel, jdbcType=VARCHAR}
+			</if>
+			<if test="organizationProperty != null">
+				,#{organizationProperty, jdbcType=VARCHAR}
+			</if>
+			<if test="organizationTerritory != null">
+				,#{organizationTerritory, jdbcType=VARCHAR}
+			</if>
 			<if test="type != null">
 				,#{type, jdbcType=VARCHAR}
 			</if>
@@ -293,10 +324,11 @@
 
 
 	<insert id="bulkInsertMedicalSpotCheck"
-		parameterType="java.util.List">
-		insert into HEALTH_MEDICAL_SPOT_CHECK (
+		parameterType="com.glaf.core.base.ListModel">
+		insert into HEALTH_MEDICAL_SPOT_CHECK${tableSuffix} (
 		ID_
 		,TENANTID_
+		,CHECKID_
 		,GRADENAME_
 		,PERSONID_
 		,NAME_
@@ -326,6 +358,9 @@
 		,CITY_
 		,AREA_
 		,ORGANIZATION_
+		,ORGANIZATIONLEVEL_
+		,ORGANIZATIONPROPERTY_
+		,ORGANIZATIONTERRITORY_
 		,TYPE_
 		,ORDINAL_
 		,CHECKDATE_
@@ -337,6 +372,7 @@
 			(
 			#{medicalSpotCheck.id, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.tenantId, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.checkId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.gradeName, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.personId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.name, jdbcType=VARCHAR}
@@ -368,6 +404,9 @@
 			,#{medicalSpotCheck.area,
 			jdbcType=VARCHAR}
 			,#{medicalSpotCheck.organization, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organizationLevel, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organizationProperty, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organizationTerritory, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.type, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.ordinal, jdbcType=INTEGER}
 			,#{medicalSpotCheck.checkDate, jdbcType=TIMESTAMP}
@@ -383,9 +422,10 @@
 		INSERT ALL
 		<foreach collection="list" item="medicalSpotCheck"
 			index="index">
-			insert into HEALTH_MEDICAL_SPOT_CHECK (
+			insert into HEALTH_MEDICAL_SPOT_CHECK${tableSuffix} (
 			ID_
 			,TENANTID_
+			,CHECKID_
 			,GRADENAME_
 			,PERSONID_
 			,NAME_
@@ -415,6 +455,9 @@
 			,CITY_
 			,AREA_
 			,ORGANIZATION_
+			,ORGANIZATIONLEVEL_
+			,ORGANIZATIONPROPERTY_
+			,ORGANIZATIONTERRITORY_
 			,TYPE_
 			,ORDINAL_
 			,CHECKDATE_
@@ -423,7 +466,9 @@
 			) values (
 			#{medicalSpotCheck.id,
 			jdbcType=VARCHAR}
-			,#{medicalSpotCheck.tenantId, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.tenantId,
+			jdbcType=VARCHAR}
+			,#{medicalSpotCheck.checkId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.gradeName, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.personId, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.name,
@@ -456,6 +501,9 @@
 			,#{medicalSpotCheck.area,
 			jdbcType=VARCHAR}
 			,#{medicalSpotCheck.organization, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organizationLevel, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organizationProperty, jdbcType=VARCHAR}
+			,#{medicalSpotCheck.organizationTerritory, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.type, jdbcType=VARCHAR}
 			,#{medicalSpotCheck.ordinal, jdbcType=INTEGER}
 			,#{medicalSpotCheck.checkDate, jdbcType=TIMESTAMP}
@@ -469,7 +517,7 @@
 
 	<update id="updateMedicalSpotCheck"
 		parameterType="com.glaf.heathcare.domain.MedicalSpotCheck">
-		update HEALTH_MEDICAL_SPOT_CHECK
+		update HEALTH_MEDICAL_SPOT_CHECK${tableSuffix}
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
 			<if test="heightLevel != null">
@@ -514,7 +562,7 @@
 
 	<delete id="deleteMedicalSpotChecks"
 		parameterType="com.glaf.heathcare.query.MedicalSpotCheckQuery">
-		delete from HEALTH_MEDICAL_SPOT_CHECK
+		delete from HEALTH_MEDICAL_SPOT_CHECK${tableSuffix}
 		where (
 		ID_ IN
 		<foreach item="x_id" index="index" collection="ids" open="("
@@ -551,13 +599,17 @@
 
 	<sql id="selectMedicalSpotChecksSql">
 
-		from HEALTH_MEDICAL_SPOT_CHECK E
+		from HEALTH_MEDICAL_SPOT_CHECK${tableSuffix} E
 
 		<where>
 			1 = 1
 
 			<if test="tenantId != null and tenantId != '' ">
 				and E.TENANTID_ = #{tenantId}
+			</if>
+
+			<if test="checkId != null and checkId != '' ">
+				and E.CHECKID_ = #{checkId}
 			</if>
 
 			<if test="gradeNameLike != null and gradeNameLike != '' ">
@@ -576,12 +628,8 @@
 				and E.NATION_ = #{nation}
 			</if>
 
-			<if test="year != null">
-				and E.YEAR_ = #{year}
-			</if>
-
-			<if test="month != null">
-				and E.MONTH_ = #{month}
+			<if test="nationLike != null and nationLike != '' ">
+				and E.NATION_ like #{nationLike}
 			</if>
 
 			<if test="ageOfTheMoon != null">
@@ -604,6 +652,10 @@
 			<if test="heightLevelGreaterThanOrEqual != null">
 				and E.HEIGHTLEVEL_ &gt;=
 				#{heightLevelGreaterThanOrEqual}
+			</if>
+
+			<if test="weightLevel != null">
+				and E.WEIGHTLEVEL_ = #{weightLevel}
 			</if>
 
 			<if test="weightLevelLessThanOrEqual != null">
@@ -629,6 +681,21 @@
 
 			<if test="organizationLike != null and organizationLike != '' ">
 				and E.ORGANIZATION_ like #{organizationLike}
+			</if>
+
+			<if
+				test="organizationLevelLike != null and organizationLevelLike != '' ">
+				and E.ORGANIZATIONLEVEL_ like #{organizationLevelLike}
+			</if>
+
+			<if
+				test="organizationPropertyLike != null and organizationPropertyLike != '' ">
+				and E.ORGANIZATIONPROPERTY_ like #{organizationPropertyLike}
+			</if>
+
+			<if
+				test="organizationTerritoryLike != null and organizationTerritoryLike != '' ">
+				and E.ORGANIZATIONTERRITORY_ like #{organizationTerritoryLike}
 			</if>
 
 			<if test="type != null and type != '' ">

@@ -21,6 +21,8 @@ package com.glaf.heathcare.mapper;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+
+import com.glaf.core.base.ListModel;
 import com.glaf.heathcare.domain.*;
 import com.glaf.heathcare.query.*;
 
@@ -33,7 +35,7 @@ import com.glaf.heathcare.query.*;
 @Component("com.glaf.heathcare.mapper.MedicalSpotCheckMapper")
 public interface MedicalSpotCheckMapper {
 
-	void bulkInsertMedicalSpotCheck(List<MedicalSpotCheck> list);
+	void bulkInsertMedicalSpotCheck(ListModel listModel);
 
 	void bulkInsertMedicalSpotCheck_oracle(List<MedicalSpotCheck> list);
 

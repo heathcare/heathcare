@@ -51,6 +51,12 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 	protected String tenantId;
 
 	/**
+	 * 检查编号
+	 */
+	@Column(name = "CHECKID_", length = 50)
+	protected String checkId;
+
+	/**
 	 * 班级名称
 	 */
 	@Column(name = "GRADENAME_", length = 100)
@@ -238,6 +244,24 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 	protected String organization;
 
 	/**
+	 * 机构等级
+	 */
+	@Column(name = "ORGANIZATIONLEVEL_", length = 250)
+	protected String organizationLevel;
+
+	/**
+	 * 机构性质
+	 */
+	@Column(name = "ORGANIZATIONPROPERTY_", length = 250)
+	protected String organizationProperty;
+
+	/**
+	 * 机构地域
+	 */
+	@Column(name = "ORGANIZATIONTERRITORY_", length = 250)
+	protected String organizationTerritory;
+
+	/**
 	 * 类型
 	 */
 	@Column(name = "TYPE_", length = 50)
@@ -268,6 +292,9 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATETIME_")
 	protected Date createTime;
+
+	@javax.persistence.Transient
+	protected String tableSuffix;
 
 	public MedicalSpotCheck() {
 
@@ -341,6 +368,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 			return DateUtils.getDateTime(this.checkDate);
 		}
 		return "";
+	}
+
+	public String getCheckId() {
+		return checkId;
 	}
 
 	public String getCity() {
@@ -418,6 +449,18 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 		return this.organization;
 	}
 
+	public String getOrganizationLevel() {
+		return organizationLevel;
+	}
+
+	public String getOrganizationProperty() {
+		return organizationProperty;
+	}
+
+	public String getOrganizationTerritory() {
+		return organizationTerritory;
+	}
+
 	public String getPersonId() {
 		return personId;
 	}
@@ -428,6 +471,13 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 
 	public String getSex() {
 		return this.sex;
+	}
+
+	public String getTableSuffix() {
+		if (tableSuffix == null) {
+			tableSuffix = "";
+		}
+		return tableSuffix;
 	}
 
 	public String getTenantId() {
@@ -522,6 +572,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 		this.checkDate = checkDate;
 	}
 
+	public void setCheckId(String checkId) {
+		this.checkId = checkId;
+	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
@@ -590,6 +644,18 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 		this.organization = organization;
 	}
 
+	public void setOrganizationLevel(String organizationLevel) {
+		this.organizationLevel = organizationLevel;
+	}
+
+	public void setOrganizationProperty(String organizationProperty) {
+		this.organizationProperty = organizationProperty;
+	}
+
+	public void setOrganizationTerritory(String organizationTerritory) {
+		this.organizationTerritory = organizationTerritory;
+	}
+
 	public void setPersonId(String personId) {
 		this.personId = personId;
 	}
@@ -600,6 +666,10 @@ public class MedicalSpotCheck implements Serializable, JSONable, IMedicalEvaluat
 
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	public void setTableSuffix(String tableSuffix) {
+		this.tableSuffix = tableSuffix;
 	}
 
 	public void setTenantId(String tenantId) {

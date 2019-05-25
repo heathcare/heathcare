@@ -29,8 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.glaf.core.id.*;
+import com.glaf.core.base.ListModel;
 import com.glaf.core.dao.*;
 import com.glaf.core.jdbc.DBConnectionFactory;
+import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.util.*;
 
 import com.glaf.heathcare.mapper.*;
@@ -58,23 +60,33 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 	}
 
 	@Transactional
-	public void bulkInsert(List<MedicalSpotCheck> list) {
-		for (MedicalSpotCheck medicalSpotCheck : list) {
-			if (StringUtils.isEmpty(medicalSpotCheck.getId())) {
-				medicalSpotCheck.setId(UUID32.generateShortUuid());
+	public void bulkInsert(String tenantId, List<MedicalSpotCheck> list) {
+		for (MedicalSpotCheck model : list) {
+			if (StringUtils.isEmpty(model.getId())) {
+				model.setId(UUID32.generateShortUuid());
+			}
+			if (StringUtils.isNotEmpty(tenantId)) {
+				model.setTenantId(tenantId);
+				model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
 			}
 		}
 
 		int batch_size = 50;
 		List<MedicalSpotCheck> rows = new ArrayList<MedicalSpotCheck>(batch_size);
 
-		for (MedicalSpotCheck bean : list) {
-			rows.add(bean);
+		for (MedicalSpotCheck model : list) {
+			rows.add(model);
 			if (rows.size() > 0 && rows.size() % batch_size == 0) {
 				if (StringUtils.equals(DBUtils.ORACLE, DBConnectionFactory.getDatabaseType())) {
 					medicalSpotCheckMapper.bulkInsertMedicalSpotCheck_oracle(rows);
 				} else {
-					medicalSpotCheckMapper.bulkInsertMedicalSpotCheck(rows);
+					// medicalSpotCheckMapper.bulkInsertMedicalSpotCheck(rows);
+					ListModel listModel = new ListModel();
+					if (StringUtils.isNotEmpty(tenantId)) {
+						listModel.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+					}
+					listModel.setList(rows);
+					medicalSpotCheckMapper.bulkInsertMedicalSpotCheck(listModel);
 				}
 				rows.clear();
 			}
@@ -84,26 +96,42 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 			if (StringUtils.equals(DBUtils.ORACLE, DBConnectionFactory.getDatabaseType())) {
 				medicalSpotCheckMapper.bulkInsertMedicalSpotCheck_oracle(rows);
 			} else {
-				medicalSpotCheckMapper.bulkInsertMedicalSpotCheck(rows);
+				// medicalSpotCheckMapper.bulkInsertMedicalSpotCheck(rows);
+				ListModel listModel = new ListModel();
+				if (StringUtils.isNotEmpty(tenantId)) {
+					listModel.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+				}
+				listModel.setList(rows);
+				medicalSpotCheckMapper.bulkInsertMedicalSpotCheck(listModel);
 			}
 			rows.clear();
 		}
 	}
 
 	@Transactional
-	public void deleteByIds(List<String> ids) {
+	public void deleteByIds(String tenantId, List<String> ids) {
 		if (ids != null && !ids.isEmpty()) {
 			MedicalSpotCheckQuery query = new MedicalSpotCheckQuery();
 			query.setIds(ids);
+			if (StringUtils.isNotEmpty(query.getTenantId())) {
+				query.setTenantId(tenantId);
+				query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+			}
 			medicalSpotCheckMapper.deleteMedicalSpotChecks(query);
 		}
 	}
 
 	public int count(MedicalSpotCheckQuery query) {
+		if (StringUtils.isNotEmpty(query.getTenantId())) {
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
+		}
 		return medicalSpotCheckMapper.getMedicalSpotCheckCount(query);
 	}
 
 	public List<MedicalSpotCheck> list(MedicalSpotCheckQuery query) {
+		if (StringUtils.isNotEmpty(query.getTenantId())) {
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
+		}
 		List<MedicalSpotCheck> list = medicalSpotCheckMapper.getMedicalSpotChecks(query);
 		return list;
 	}
@@ -114,6 +142,9 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 	 * @return
 	 */
 	public int getMedicalSpotCheckCountByQueryCriteria(MedicalSpotCheckQuery query) {
+		if (StringUtils.isNotEmpty(query.getTenantId())) {
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
+		}
 		return medicalSpotCheckMapper.getMedicalSpotCheckCount(query);
 	}
 
@@ -124,23 +155,21 @@ public class MedicalSpotCheckServiceImpl implements MedicalSpotCheckService {
 	 */
 	public List<MedicalSpotCheck> getMedicalSpotChecksByQueryCriteria(int start, int pageSize,
 			MedicalSpotCheckQuery query) {
+		if (StringUtils.isNotEmpty(query.getTenantId())) {
+			query.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(query.getTenantId())));
+		}
 		RowBounds rowBounds = new RowBounds(start, pageSize);
 		List<MedicalSpotCheck> rows = sqlSessionTemplate.selectList("getMedicalSpotChecks", query, rowBounds);
 		return rows;
 	}
 
 	@Transactional
-	public void save(MedicalSpotCheck medicalSpotCheck) {
-		if (StringUtils.isEmpty(medicalSpotCheck.getId())) {
-			medicalSpotCheck.setId(UUID32.generateShortUuid());
-
-			medicalSpotCheckMapper.insertMedicalSpotCheck(medicalSpotCheck);
-		}
-	}
-
-	@Transactional
-	public void updateAll(List<MedicalSpotCheck> list) {
+	public void updateAll(String tenantId, List<MedicalSpotCheck> list) {
 		for (MedicalSpotCheck model : list) {
+			if (StringUtils.isNotEmpty(tenantId)) {
+				model.setTenantId(tenantId);
+				model.setTableSuffix(String.valueOf(IdentityFactory.getTenantHash(tenantId)));
+			}
 			medicalSpotCheckMapper.updateMedicalSpotCheck(model);
 		}
 	}

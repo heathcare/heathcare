@@ -17,15 +17,20 @@
  */
 package com.glaf.heathcare.util;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.glaf.core.base.DataRequest;
-import com.glaf.core.base.DataRequest.FilterDescriptor;
+import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.ColumnDefinition;
+import com.glaf.core.domain.Database;
 import com.glaf.core.domain.TableDefinition;
+import com.glaf.core.jdbc.DBConnectionFactory;
+import com.glaf.core.service.IDatabaseService;
 import com.glaf.core.util.DBUtils;
+import com.glaf.core.util.JdbcUtils;
 
 /**
  * 
@@ -43,6 +48,7 @@ public class MedicalSpotCheckDomainFactory {
 	static {
 		columnMap.put("id", "ID_");
 		columnMap.put("tenantId", "TENANTID_");
+		columnMap.put("checkId", "CHECKID_");
 		columnMap.put("gradeName", "GRADENAME_");
 		columnMap.put("personId", "PERSONID_");
 		columnMap.put("name", "NAME_");
@@ -55,6 +61,9 @@ public class MedicalSpotCheckDomainFactory {
 		columnMap.put("weight", "WEIGHT_");
 		columnMap.put("weightLevel", "WEIGHTLEVEL_");
 		columnMap.put("weightEvaluate", "WEIGHTEVALUATE_");
+		columnMap.put("weightHeight", "WEIGHTHEIGHT_");
+		columnMap.put("weightHeightEvaluate", "WEIGHTHEIGHTEVALUATE_");
+		columnMap.put("weightHeightLevel", "WEIGHTHEIGHTLEVEL_");
 		columnMap.put("weightHeightPercent", "WEIGHTHEIGHTPERCENT_");
 		columnMap.put("bmi", "BMI_");
 		columnMap.put("bmiIndex", "BMIINDEX_");
@@ -70,6 +79,10 @@ public class MedicalSpotCheckDomainFactory {
 		columnMap.put("city", "CITY_");
 		columnMap.put("area", "AREA_");
 		columnMap.put("organization", "ORGANIZATION_");
+		columnMap.put("organizationLevel", "ORGANIZATIONLEVEL_");
+		columnMap.put("organizationProperty", "ORGANIZATIONPROPERTY_");
+		columnMap.put("organizationTerritory", "ORGANIZATIONTERRITORY_");
+		columnMap.put("ordinal", "ORDINAL_");
 		columnMap.put("type", "TYPE_");
 		columnMap.put("checkDate", "CHECKDATE_");
 		columnMap.put("createBy", "CREATEBY_");
@@ -77,6 +90,7 @@ public class MedicalSpotCheckDomainFactory {
 
 		javaTypeMap.put("id", "String");
 		javaTypeMap.put("tenantId", "String");
+		javaTypeMap.put("checkId", "String");
 		javaTypeMap.put("gradeName", "String");
 		javaTypeMap.put("personId", "String");
 		javaTypeMap.put("name", "String");
@@ -89,6 +103,9 @@ public class MedicalSpotCheckDomainFactory {
 		javaTypeMap.put("weight", "Double");
 		javaTypeMap.put("weightLevel", "Integer");
 		javaTypeMap.put("weightEvaluate", "String");
+		javaTypeMap.put("weightHeight", "Double");
+		javaTypeMap.put("weightHeightEvaluate", "String");
+		javaTypeMap.put("weightHeightLevel", "Double");
 		javaTypeMap.put("weightHeightPercent", "Double");
 		javaTypeMap.put("bmi", "Double");
 		javaTypeMap.put("bmiIndex", "Double");
@@ -104,10 +121,102 @@ public class MedicalSpotCheckDomainFactory {
 		javaTypeMap.put("city", "String");
 		javaTypeMap.put("area", "String");
 		javaTypeMap.put("organization", "String");
+		javaTypeMap.put("organizationLevel", "String");
+		javaTypeMap.put("organizationProperty", "String");
+		javaTypeMap.put("organizationTerritory", "String");
 		javaTypeMap.put("type", "String");
+		javaTypeMap.put("ordinal", "Integer");
 		javaTypeMap.put("checkDate", "Date");
 		javaTypeMap.put("createBy", "String");
 		javaTypeMap.put("createTime", "Date");
+	}
+
+	public static void alterTables(long databaseId) {
+		TableDefinition tableDefinition = null;
+		Connection conn = null;
+		Statement statement = null;
+		Database database = null;
+		try {
+			if (databaseId > 0) {
+				IDatabaseService databaseService = ContextFactory.getBean("databaseService");
+				database = databaseService.getDatabaseById(databaseId);
+			}
+
+			if (database != null) {
+				conn = DBConnectionFactory.getConnection(database.getName());
+			} else {
+				conn = DBConnectionFactory.getConnection();
+			}
+
+			conn.setAutoCommit(false);
+			for (int i = 0; i < com.glaf.core.util.Constants.TABLE_PARTITION; i++) {
+				tableDefinition = getTableDefinition(TABLENAME + i);
+				DBUtils.alterTable(conn, tableDefinition);
+			}
+			conn.commit();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			JdbcUtils.close(statement);
+			JdbcUtils.close(conn);
+		}
+	}
+
+	public static TableDefinition createTable() {
+		TableDefinition tableDefinition = getTableDefinition(TABLENAME);
+		if (!DBUtils.tableExists(TABLENAME)) {
+			DBUtils.createTable(tableDefinition);
+		} else {
+			DBUtils.alterTable(tableDefinition);
+		}
+		return tableDefinition;
+	}
+
+	public static TableDefinition createTable(String tableName) {
+		TableDefinition tableDefinition = getTableDefinition(tableName);
+		if (!DBUtils.tableExists(tableName)) {
+			DBUtils.createTable(tableDefinition);
+		} else {
+			DBUtils.alterTable(tableDefinition);
+		}
+		return tableDefinition;
+	}
+
+	public static void createTables(long databaseId) {
+		String sqlStatement = null;
+		TableDefinition tableDefinition = null;
+
+		Connection conn = null;
+		Statement statement = null;
+		Database database = null;
+		try {
+			if (databaseId > 0) {
+				IDatabaseService databaseService = ContextFactory.getBean("databaseService");
+				database = databaseService.getDatabaseById(databaseId);
+			}
+
+			if (database != null) {
+				conn = DBConnectionFactory.getConnection(database.getName());
+			} else {
+				conn = DBConnectionFactory.getConnection();
+			}
+
+			String dbType = DBConnectionFactory.getDatabaseType(conn);
+			conn.setAutoCommit(false);
+			for (int i = 0; i < com.glaf.core.util.Constants.TABLE_PARTITION; i++) {
+				tableDefinition = getTableDefinition(TABLENAME + i);
+				sqlStatement = DBUtils.getCreateTableScript(dbType, tableDefinition);
+				statement = conn.createStatement();
+				statement.executeUpdate(sqlStatement);
+				JdbcUtils.close(statement);
+			}
+			conn.commit();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			JdbcUtils.close(statement);
+			JdbcUtils.close(conn);
+		}
 	}
 
 	public static Map<String, String> getColumnMap() {
@@ -141,6 +250,13 @@ public class MedicalSpotCheckDomainFactory {
 		tenantId.setJavaType("String");
 		tenantId.setLength(50);
 		tableDefinition.addColumn(tenantId);
+
+		ColumnDefinition checkId = new ColumnDefinition();
+		checkId.setName("checkId");
+		checkId.setColumnName("CHECKID_");
+		checkId.setJavaType("String");
+		checkId.setLength(50);
+		tableDefinition.addColumn(checkId);
 
 		ColumnDefinition gradeName = new ColumnDefinition();
 		gradeName.setName("gradeName");
@@ -220,6 +336,25 @@ public class MedicalSpotCheckDomainFactory {
 		weightEvaluate.setJavaType("String");
 		weightEvaluate.setLength(200);
 		tableDefinition.addColumn(weightEvaluate);
+
+		ColumnDefinition weightHeight = new ColumnDefinition();
+		weightHeight.setName("weightHeight");
+		weightHeight.setColumnName("WEIGHTHEIGHT_");
+		weightHeight.setJavaType("Double");
+		tableDefinition.addColumn(weightHeight);
+
+		ColumnDefinition weightHeightEvaluate = new ColumnDefinition();
+		weightHeightEvaluate.setName("weightHeightEvaluate");
+		weightHeightEvaluate.setColumnName("WEIGHTHEIGHTEVALUATE_");
+		weightHeightEvaluate.setJavaType("String");
+		weightHeightEvaluate.setLength(200);
+		tableDefinition.addColumn(weightHeightEvaluate);
+
+		ColumnDefinition weightHeightLevel = new ColumnDefinition();
+		weightHeightLevel.setName("weightHeightLevel");
+		weightHeightLevel.setColumnName("WEIGHTHEIGHTLEVEL_");
+		weightHeightLevel.setJavaType("Double");
+		tableDefinition.addColumn(weightHeightLevel);
 
 		ColumnDefinition weightHeightPercent = new ColumnDefinition();
 		weightHeightPercent.setName("weightHeightPercent");
@@ -317,6 +452,33 @@ public class MedicalSpotCheckDomainFactory {
 		organization.setLength(250);
 		tableDefinition.addColumn(organization);
 
+		ColumnDefinition organizationLevel = new ColumnDefinition();
+		organizationLevel.setName("organizationLevel");
+		organizationLevel.setColumnName("ORGANIZATIONLEVEL_");
+		organizationLevel.setJavaType("String");
+		organizationLevel.setLength(250);
+		tableDefinition.addColumn(organizationLevel);
+
+		ColumnDefinition organizationProperty = new ColumnDefinition();
+		organizationProperty.setName("organizationProperty");
+		organizationProperty.setColumnName("ORGANIZATIONPROPERTY_");
+		organizationProperty.setJavaType("String");
+		organizationProperty.setLength(250);
+		tableDefinition.addColumn(organizationProperty);
+
+		ColumnDefinition organizationTerritory = new ColumnDefinition();
+		organizationTerritory.setName("organizationTerritory");
+		organizationTerritory.setColumnName("ORGANIZATIONTERRITORY_");
+		organizationTerritory.setJavaType("String");
+		organizationTerritory.setLength(250);
+		tableDefinition.addColumn(organizationTerritory);
+
+		ColumnDefinition ordinal = new ColumnDefinition();
+		ordinal.setName("ordinal");
+		ordinal.setColumnName("ORDINAL_");
+		ordinal.setJavaType("Integer");
+		tableDefinition.addColumn(ordinal);
+
 		ColumnDefinition type = new ColumnDefinition();
 		type.setName("type");
 		type.setColumnName("TYPE_");
@@ -344,53 +506,6 @@ public class MedicalSpotCheckDomainFactory {
 		tableDefinition.addColumn(createTime);
 
 		return tableDefinition;
-	}
-
-	public static TableDefinition createTable() {
-		TableDefinition tableDefinition = getTableDefinition(TABLENAME);
-		if (!DBUtils.tableExists(TABLENAME)) {
-			DBUtils.createTable(tableDefinition);
-		} else {
-			DBUtils.alterTable(tableDefinition);
-		}
-		return tableDefinition;
-	}
-
-	public static TableDefinition createTable(String tableName) {
-		TableDefinition tableDefinition = getTableDefinition(tableName);
-		if (!DBUtils.tableExists(tableName)) {
-			DBUtils.createTable(tableDefinition);
-		} else {
-			DBUtils.alterTable(tableDefinition);
-		}
-		return tableDefinition;
-	}
-
-	public static void processDataRequest(DataRequest dataRequest) {
-		if (dataRequest != null) {
-			if (dataRequest.getFilter() != null) {
-				if (dataRequest.getFilter().getField() != null) {
-					dataRequest.getFilter().setColumn(columnMap.get(dataRequest.getFilter().getField()));
-					dataRequest.getFilter().setJavaType(javaTypeMap.get(dataRequest.getFilter().getField()));
-				}
-
-				List<FilterDescriptor> filters = dataRequest.getFilter().getFilters();
-				for (FilterDescriptor filter : filters) {
-					filter.setParent(dataRequest.getFilter());
-					if (filter.getField() != null) {
-						filter.setColumn(columnMap.get(filter.getField()));
-						filter.setJavaType(javaTypeMap.get(filter.getField()));
-					}
-
-					List<FilterDescriptor> subFilters = filter.getFilters();
-					for (FilterDescriptor f : subFilters) {
-						f.setColumn(columnMap.get(f.getField()));
-						f.setJavaType(javaTypeMap.get(f.getField()));
-						f.setParent(filter);
-					}
-				}
-			}
-		}
 	}
 
 	private MedicalSpotCheckDomainFactory() {

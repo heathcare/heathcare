@@ -46,6 +46,7 @@ import com.glaf.heathcare.util.GoodsPurchaseDomainFactory;
 import com.glaf.heathcare.util.GoodsPurchasePlanDomainFactory;
 import com.glaf.heathcare.util.GoodsStockDomainFactory;
 import com.glaf.heathcare.util.MealFeeCountDomainFactory;
+import com.glaf.heathcare.util.MedicalSpotCheckDomainFactory;
 import com.glaf.heathcare.util.PersonAbsenceDomainFactory;
 import com.glaf.matrix.data.util.DataFileDomainFactory;
 
@@ -208,6 +209,18 @@ public class DietaryConfigController {
 
 				try {
 					MealFeeCountDomainFactory.alterTables(databaseId);
+				} catch (Throwable ex) {
+					logger.error(ex);
+				}
+
+				try {
+					MedicalSpotCheckDomainFactory.createTables(databaseId);
+				} catch (Throwable ex) {
+					logger.error(ex);
+				}
+
+				try {
+					MedicalSpotCheckDomainFactory.alterTables(databaseId);
 				} catch (Throwable ex) {
 					logger.error(ex);
 				}

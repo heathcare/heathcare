@@ -133,8 +133,8 @@ public class PhysicalGrowthCountBean {
 						if (standards != null && !standards.isEmpty()) {
 							for (GrowthStandard gs : standards) {
 								if (StringUtils.equals(gs.getType(), "4")) {
-									int height = (int) Math.round(gs.getHeight());
-									gsMap.put(height + "_" + gs.getSex() + "_" + gs.getType(), gs);
+									//int height = (int) Math.round(gs.getHeight());
+									gsMap.put(gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								} else {
 									gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								}

@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.domain.GrowthStandard;
@@ -35,6 +37,7 @@ import com.glaf.heathcare.domain.IMedicalEvaluate;
 import com.glaf.heathcare.domain.Person;
 
 public class MedicalExaminationEvaluateHelper {
+	protected final static Log logger = LogFactory.getLog(MedicalExaminationEvaluateHelper.class);
 
 	/**
 	 * 均值离差法
@@ -131,10 +134,23 @@ public class MedicalExaminationEvaluateHelper {
 			}
 		}
 
+		// select * from HEALTH_GROWTH_STANDARD where type_ = '4' and sex_ = '1' order
+		// by height_ asc ;
 		if (medicalExamination.getWeight() > 0 && medicalExamination.getHeight() > 0) {
-			int height = (int) Math.round(medicalExamination.getHeight());
+			double height = medicalExamination.getHeight();
+			// logger.debug("" + height * 10 % 10);
+			if (height * 10 % 10 >= 8) {
+				height = Math.ceil(height);
+			} else if (height * 10 % 10 <= 2) {
+				height = Math.floor(height);
+			} else {
+				height = Math.round(height + 0.25);
+			}
+			// logger.debug(medicalExamination.getHeight() + " -> height:" + height);
 			double weight = medicalExamination.getWeight();
-			GrowthStandard gs = gsMap.get(height + "_" + medicalExamination.getSex() + "_4");// W/H身高别体重
+			String key = height + "_" + medicalExamination.getSex() + "_4";// W/H身高别体重
+			// logger.debug(key);
+			GrowthStandard gs = gsMap.get(key);
 			if (gs != null) {
 				if (weight > gs.getThreeDSDeviation()) {
 					medicalExamination.setWeightHeightLevel(3);
@@ -172,6 +188,8 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination
 							.setWeightHeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 				}
+			} else {
+				logger.warn("无匹配身高的体重值！");
 			}
 		}
 
@@ -300,7 +318,17 @@ public class MedicalExaminationEvaluateHelper {
 		}
 
 		if (medicalExamination.getWeight() > 0 && medicalExamination.getHeight() > 0) {
-			int height = (int) Math.round(medicalExamination.getHeight());
+			// int height = (int) Math.round(medicalExamination.getHeight());
+			// double height = Math.round(medicalExamination.getHeight() * 10) / 10;
+			double height = medicalExamination.getHeight();
+			// logger.debug("" + height * 10 % 10);
+			if (height * 10 % 10 >= 8) {
+				height = Math.ceil(height);
+			} else if (height * 10 % 10 <= 2) {
+				height = Math.floor(height);
+			} else {
+				height = Math.round(height + 0.25);
+			}
 			double weight = medicalExamination.getWeight();
 			GrowthStandard gs = gsMap.get(height + "_" + medicalExamination.getSex() + "_4");// W/A身高别体重
 			if (gs != null) {

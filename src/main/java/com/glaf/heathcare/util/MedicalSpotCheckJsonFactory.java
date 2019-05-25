@@ -39,6 +39,9 @@ public class MedicalSpotCheckJsonFactory {
 		if (jsonObject.containsKey("tenantId")) {
 			model.setTenantId(jsonObject.getString("tenantId"));
 		}
+		if (jsonObject.containsKey("checkId")) {
+			model.setCheckId(jsonObject.getString("checkId"));
+		}
 		if (jsonObject.containsKey("gradeName")) {
 			model.setGradeName(jsonObject.getString("gradeName"));
 		}
@@ -126,6 +129,15 @@ public class MedicalSpotCheckJsonFactory {
 		if (jsonObject.containsKey("organization")) {
 			model.setOrganization(jsonObject.getString("organization"));
 		}
+		if (jsonObject.containsKey("organizationLevel")) {
+			model.setOrganizationLevel(jsonObject.getString("organizationLevel"));
+		}
+		if (jsonObject.containsKey("organizationProperty")) {
+			model.setOrganizationProperty(jsonObject.getString("organizationProperty"));
+		}
+		if (jsonObject.containsKey("organizationTerritory")) {
+			model.setOrganizationTerritory(jsonObject.getString("organizationTerritory"));
+		}
 		if (jsonObject.containsKey("type")) {
 			model.setType(jsonObject.getString("type"));
 		}
@@ -153,6 +165,9 @@ public class MedicalSpotCheckJsonFactory {
 
 		if (model.getTenantId() != null) {
 			jsonObject.put("tenantId", model.getTenantId());
+		}
+		if (model.getCheckId() != null) {
+			jsonObject.put("checkId", model.getCheckId());
 		}
 		if (model.getGradeName() != null) {
 			jsonObject.put("gradeName", model.getGradeName());
@@ -226,6 +241,15 @@ public class MedicalSpotCheckJsonFactory {
 		}
 		if (model.getOrganization() != null) {
 			jsonObject.put("organization", model.getOrganization());
+		}
+		if (model.getOrganizationLevel() != null) {
+			jsonObject.put("organizationLevel", model.getOrganizationLevel());
+		}
+		if (model.getOrganizationProperty() != null) {
+			jsonObject.put("organizationProperty", model.getOrganizationProperty());
+		}
+		if (model.getOrganizationTerritory() != null) {
+			jsonObject.put("organizationTerritory", model.getOrganizationTerritory());
 		}
 		if (model.getType() != null) {
 			jsonObject.put("type", model.getType());
@@ -256,6 +280,9 @@ public class MedicalSpotCheckJsonFactory {
 		if (model.getTenantId() != null) {
 			jsonObject.put("tenantId", model.getTenantId());
 		}
+		if (model.getCheckId() != null) {
+			jsonObject.put("checkId", model.getCheckId());
+		}
 		if (model.getGradeName() != null) {
 			jsonObject.put("gradeName", model.getGradeName());
 		}
@@ -328,6 +355,15 @@ public class MedicalSpotCheckJsonFactory {
 		}
 		if (model.getOrganization() != null) {
 			jsonObject.put("organization", model.getOrganization());
+		}
+		if (model.getOrganizationLevel() != null) {
+			jsonObject.put("organizationLevel", model.getOrganizationLevel());
+		}
+		if (model.getOrganizationProperty() != null) {
+			jsonObject.put("organizationProperty", model.getOrganizationProperty());
+		}
+		if (model.getOrganizationTerritory() != null) {
+			jsonObject.put("organizationTerritory", model.getOrganizationTerritory());
 		}
 		if (model.getType() != null) {
 			jsonObject.put("type", model.getType());
