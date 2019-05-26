@@ -124,53 +124,53 @@ public class MedicalSpotCheckTotalModel {
 		if (size > 0) {
 			int index = 0;
 			for (ItemValue val : negative3DList) {
-				buffer.append(val.getValue()).append(" | ");
-				index++;
 				if (index > 0 && index % 5 == 0) {
 					buffer.append(FileUtils.newline);
 				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
 			}
 			for (ItemValue val : negative2DList) {
-				buffer.append(val.getValue()).append(" | ");
-				index++;
 				if (index > 0 && index % 5 == 0) {
 					buffer.append(FileUtils.newline);
 				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
 			}
 			for (ItemValue val : negative1DList) {
-				buffer.append(val.getValue()).append(" | ");
-				index++;
 				if (index > 0 && index % 5 == 0) {
 					buffer.append(FileUtils.newline);
 				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
 			}
 			for (ItemValue val : normalList) {
-				buffer.append(val.getValue()).append(" | ");
-				index++;
 				if (index > 0 && index % 5 == 0) {
 					buffer.append(FileUtils.newline);
 				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
 			}
 			for (ItemValue val : positive1DList) {
-				buffer.append(val.getValue()).append(" | ");
-				index++;
 				if (index > 0 && index % 5 == 0) {
 					buffer.append(FileUtils.newline);
 				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
 			}
 			for (ItemValue val : positive2DList) {
-				buffer.append(val.getValue()).append(" | ");
-				index++;
 				if (index > 0 && index % 5 == 0) {
 					buffer.append(FileUtils.newline);
 				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
 			}
 			for (ItemValue val : positive3DList) {
-				buffer.append(val.getValue()).append(" | ");
-				index++;
 				if (index > 0 && index % 5 == 0) {
 					buffer.append(FileUtils.newline);
 				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
 			}
 		}
 		return buffer.toString();
