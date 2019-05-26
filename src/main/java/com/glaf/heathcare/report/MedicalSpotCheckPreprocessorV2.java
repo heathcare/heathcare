@@ -131,6 +131,7 @@ public class MedicalSpotCheckPreprocessorV2 implements IReportPreprocessor {
 				MedicalSpotCheckTotalModel model = totalMap.get(exam.getAgeOfTheMoon());
 				if (model == null) {
 					model = new MedicalSpotCheckTotalModel();
+					model.setMin(10000);
 					model.setAgeOfTheMoon(exam.getAgeOfTheMoon());
 					totalMap.put(exam.getAgeOfTheMoon(), model);
 					if (StringUtils.equals(checkType, "H/A")) {// H/A年龄别身高
@@ -155,6 +156,12 @@ public class MedicalSpotCheckPreprocessorV2 implements IReportPreprocessor {
 				}
 
 				if (StringUtils.equals(checkType, "W/A")) {// W/A年龄别体重
+					if (model.getMax() < exam.getWeight()) {
+						model.setMax(exam.getWeight());
+					}
+					if (model.getMin() > exam.getWeight()) {
+						model.setMin(exam.getWeight());
+					}
 					switch (exam.getWeightLevel()) {
 					case -3:
 						model.addRecord();
@@ -193,6 +200,12 @@ public class MedicalSpotCheckPreprocessorV2 implements IReportPreprocessor {
 						break;
 					}
 				} else if (StringUtils.equals(checkType, "H/A")) {// H/A年龄别身高
+					if (model.getMax() < exam.getHeight()) {
+						model.setMax(exam.getHeight());
+					}
+					if (model.getMin() > exam.getHeight()) {
+						model.setMin(exam.getHeight());
+					}
 					switch (exam.getHeightLevel()) {
 					case -3:
 						model.addRecord();
@@ -231,6 +244,12 @@ public class MedicalSpotCheckPreprocessorV2 implements IReportPreprocessor {
 						break;
 					}
 				} else if (StringUtils.equals(checkType, "W/H")) {// W/H身高别体重
+					if (model.getMax() < exam.getWeight()) {
+						model.setMax(exam.getWeight());
+					}
+					if (model.getMin() > exam.getWeight()) {
+						model.setMin(exam.getWeight());
+					}
 					switch (exam.getWeightHeightLevel()) {
 					case -3:
 						model.addRecord();

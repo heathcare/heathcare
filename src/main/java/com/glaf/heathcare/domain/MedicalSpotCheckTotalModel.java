@@ -21,6 +21,8 @@ package com.glaf.heathcare.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.glaf.core.util.FileUtils;
+
 public class MedicalSpotCheckTotalModel {
 
 	/**
@@ -32,6 +34,20 @@ public class MedicalSpotCheckTotalModel {
 	 * 月龄
 	 */
 	protected String ageOfTheMoonString;
+
+	/**
+	 * 最大值
+	 */
+	protected double max;
+
+	protected String maxString;
+
+	/**
+	 * 最小值
+	 */
+	protected double min;
+
+	protected String minString;
 
 	/**
 	 * 平均值
@@ -68,11 +84,18 @@ public class MedicalSpotCheckTotalModel {
 
 	protected int positive3DQty;
 
+	/**
+	 * 样本个数
+	 */
 	protected int recordTotal;
 
 	protected double isoStdValue;
 
+	protected double cnStdValue;
+
 	protected double totalValue;
+
+	protected String sample;
 
 	protected List<ItemValue> negative3DList = new ArrayList<ItemValue>();
 
@@ -92,6 +115,69 @@ public class MedicalSpotCheckTotalModel {
 
 	public MedicalSpotCheckTotalModel() {
 
+	}
+
+	public String getSample() {
+		StringBuilder buffer = new StringBuilder();
+		int size = negative3DList.size() + negative2DList.size() + negative1DList.size() + normalList.size()
+				+ positive1DList.size() + positive2DList.size() + positive3DList.size();
+		if (size > 0) {
+			int index = 0;
+			for (ItemValue val : negative3DList) {
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+			}
+			for (ItemValue val : negative2DList) {
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+			}
+			for (ItemValue val : negative1DList) {
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+			}
+			for (ItemValue val : normalList) {
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+			}
+			for (ItemValue val : positive1DList) {
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+			}
+			for (ItemValue val : positive2DList) {
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+			}
+			for (ItemValue val : positive3DList) {
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+			}
+		}
+		return buffer.toString();
+	}
+
+	public void setSample(String sample) {
+		this.sample = sample;
 	}
 
 	public void addNegative1D(double value) {
@@ -224,6 +310,28 @@ public class MedicalSpotCheckTotalModel {
 	public String getIsoStdValueString() {
 		isoStdValue = Math.round(isoStdValue * 10D) / 10D;
 		return String.valueOf(isoStdValue);
+	}
+
+	public double getMax() {
+		return max;
+	}
+
+	public String getMaxString() {
+		if (max > 0) {
+			return String.valueOf(max);
+		}
+		return "";
+	}
+
+	public double getMin() {
+		return min;
+	}
+
+	public String getMinString() {
+		if (min > 0) {
+			return String.valueOf(min);
+		}
+		return "";
 	}
 
 	public List<ItemValue> getNegative1DList() {
@@ -409,6 +517,14 @@ public class MedicalSpotCheckTotalModel {
 
 	public void setIsoStdValue(double isoStdValue) {
 		this.isoStdValue = isoStdValue;
+	}
+
+	public void setMax(double max) {
+		this.max = max;
+	}
+
+	public void setMin(double min) {
+		this.min = min;
 	}
 
 	public void setNegative1DList(List<ItemValue> negative1dList) {

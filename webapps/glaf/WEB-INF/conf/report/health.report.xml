@@ -402,4 +402,10 @@
 		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV2</prepareClass>
 	</report>
 
+	<report id="MedicalSpotCheckTotal5">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalSpotCheckTotal5.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV2</prepareClass>
+	</report>
+
 </reports>

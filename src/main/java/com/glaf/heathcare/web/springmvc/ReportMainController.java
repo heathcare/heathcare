@@ -75,6 +75,7 @@ import com.glaf.heathcare.service.GradeInfoService;
 import com.glaf.jxls.ext.JxlsBuilder;
 import com.glaf.matrix.export.handler.CellMergeHandler;
 import com.glaf.matrix.export.handler.RemoveCommentHandler;
+import com.glaf.matrix.export.handler.RowHeightAdjustHandler;
 import com.glaf.report.bean.ReportContainer;
 import com.glaf.report.data.ReportDefinition;
 
@@ -243,6 +244,10 @@ public class ReportMainController {
 
 					CellMergeHandler cellMergeHandler = new CellMergeHandler();
 					cellMergeHandler.mergeVertical(workbook);
+
+					RowHeightAdjustHandler rowHeightAdjustHandler = new RowHeightAdjustHandler();
+					rowHeightAdjustHandler.processWorkbook(workbook);
+					
 					RemoveCommentHandler removeCommentHandler = new RemoveCommentHandler();
 					removeCommentHandler.removeComment(workbook);
 
