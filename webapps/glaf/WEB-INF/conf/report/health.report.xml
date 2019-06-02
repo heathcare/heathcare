@@ -408,4 +408,10 @@
 		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV2</prepareClass>
 	</report>
 
+	<report id="MedicalSpotCheckTotalV3">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalSpotCheckTotalV32.xls</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV3</prepareClass>
+	</report>
+
 </reports>

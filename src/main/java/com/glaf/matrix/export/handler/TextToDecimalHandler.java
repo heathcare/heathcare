@@ -32,6 +32,50 @@ import com.glaf.matrix.export.domain.ExportApp;
 public class TextToDecimalHandler implements WorkbookHandler {
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+	public void processWorkbook(Workbook wb) {
+		logger.debug("----------------------TextToDecimalHandler-------------------");
+		int sheetCnt = wb.getNumberOfSheets();
+		Row row = null;
+		Cell cell = null;
+		for (int i = 0; i < sheetCnt; i++) {
+			Sheet sheet = wb.getSheetAt(i);
+			sheet.setAutobreaks(false);
+			int rows = sheet.getLastRowNum();
+			for (int rowIndex = 0; rowIndex <= rows; rowIndex++) {
+				row = sheet.getRow(rowIndex);
+				// logger.debug("rowIndex:" + rowIndex);
+				if (row == null) {
+					continue;
+				}
+				int cols = row.getLastCellNum();
+				for (int colIndex = 0; colIndex < cols; colIndex++) {
+					cell = row.getCell(colIndex);
+					if (cell == null) {
+						continue;
+					}
+					if (cell.getCellComment() != null) {
+						String str = cell.getCellComment().getString().getString();
+						// logger.debug("读取到注释:" + str);
+						if (str != null) {
+							if (StringUtils.contains(str.trim(), "xe:decimal")) {
+								try {
+									String cellVal = ExcelUtils.getCellValue(cell);
+									if (StringUtils.isNotEmpty(cellVal)) {
+										double doubleVal = Double.parseDouble(cellVal);
+										// cell.setCellType(CellType.NUMERIC);
+										cell.setCellValue(doubleVal);
+									}
+								} catch (java.lang.Throwable ex) {
+									// ignore exception
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	public void processWorkbook(Workbook wb, ExportApp exportApp) {
 		logger.debug("----------------------TextToDecimalHandler-------------------");

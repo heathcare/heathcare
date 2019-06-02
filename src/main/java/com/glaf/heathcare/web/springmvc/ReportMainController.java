@@ -76,6 +76,7 @@ import com.glaf.jxls.ext.JxlsBuilder;
 import com.glaf.matrix.export.handler.CellMergeHandler;
 import com.glaf.matrix.export.handler.RemoveCommentHandler;
 import com.glaf.matrix.export.handler.RowHeightAdjustHandler;
+import com.glaf.matrix.export.handler.TextToDecimalHandler;
 import com.glaf.report.bean.ReportContainer;
 import com.glaf.report.data.ReportDefinition;
 
@@ -247,6 +248,9 @@ public class ReportMainController {
 
 					RowHeightAdjustHandler rowHeightAdjustHandler = new RowHeightAdjustHandler();
 					rowHeightAdjustHandler.processWorkbook(workbook);
+					
+					//TextToDecimalHandler textToDecimalHandler = new TextToDecimalHandler();
+					//textToDecimalHandler.processWorkbook(workbook);
 					
 					RemoveCommentHandler removeCommentHandler = new RemoveCommentHandler();
 					removeCommentHandler.removeComment(workbook);

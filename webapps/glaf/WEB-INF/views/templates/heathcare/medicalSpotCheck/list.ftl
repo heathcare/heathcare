@@ -421,6 +421,43 @@
         window.open(link);
 	}
 
+	function doExport3(){
+		var sex = jQuery("#sex").val();
+		var checkId = jQuery("#checkId").val();
+		var nationLike = jQuery("#nationLike").val();
+		var areaLike = jQuery("#areaLike").val();
+		var cityLike = jQuery("#cityLike").val();
+		var organizationLike = jQuery("#organizationLike").val();
+        
+		if(checkId == ""){
+			alert("请选择一个主题！");
+			return;
+		}
+
+		if(sex == ""){
+			alert("请选择男生或女生！");
+			return;
+		}
+
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotalV3&useExt=Y";
+		link = link + "&sex="+sex+"&time="+getNowFormatDate()+"&megerFlag=Y&checkId="+checkId;
+
+		if(organizationLike != ""){
+			link = link + "&organizationLike=" + organizationLike.trim();
+		}
+		if(cityLike != ""){
+			link = link  + "&cityLike=" + cityLike.trim();
+		}
+		if(areaLike != ""){
+			link = link  + "&areaLike=" + areaLike.trim();
+		}
+		if(nationLike != ""){
+			link = link  + "&nationLike=" + nationLike.trim();
+		}
+
+        window.open(link);
+	}
+
 </script>
 </head>
 <body style="margin:1px;">  
@@ -537,6 +574,8 @@
 				   onclick="javascript:doExport();">导出</a>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
 				   onclick="javascript:doExport2();">分析表</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
+				   onclick="javascript:doExport3();">体格评价表</a>
 			</td>
 		</tr>
 	   </tbody>
