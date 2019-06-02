@@ -439,7 +439,7 @@
 			return;
 		}
 
-		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotalV3&useExt=Y";
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotalV35&useExt=Y";
 		link = link + "&sex="+sex+"&time="+getNowFormatDate()+"&megerFlag=Y&checkId="+checkId;
 
 		if(organizationLike != ""){

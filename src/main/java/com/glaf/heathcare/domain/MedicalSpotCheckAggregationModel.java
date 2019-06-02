@@ -75,7 +75,13 @@ public class MedicalSpotCheckAggregationModel {
 	}
 
 	public String getAgeOfTheMoonString() {
-		return ageOfTheMoonString;
+		if (ageOfTheMoon > 0) {
+			int year = ageOfTheMoon / 12;
+			int month = ageOfTheMoon % 12;
+			ageOfTheMoonString = year + "岁" + month + "月";
+			return ageOfTheMoonString;
+		}
+		return "";
 	}
 
 	public MedicalSpotCheckTotalModel getModel1() {

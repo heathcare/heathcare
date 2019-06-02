@@ -44,6 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jxls.common.Context;
 import org.jxls.transform.poi.PoiTransformer;
@@ -248,13 +249,16 @@ public class ReportMainController {
 
 					RowHeightAdjustHandler rowHeightAdjustHandler = new RowHeightAdjustHandler();
 					rowHeightAdjustHandler.processWorkbook(workbook);
-					
-					//TextToDecimalHandler textToDecimalHandler = new TextToDecimalHandler();
-					//textToDecimalHandler.processWorkbook(workbook);
-					
+
+					TextToDecimalHandler textToDecimalHandler = new TextToDecimalHandler();
+					textToDecimalHandler.processWorkbook(workbook);
+
 					RemoveCommentHandler removeCommentHandler = new RemoveCommentHandler();
 					removeCommentHandler.removeComment(workbook);
 
+					FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+					evaluator.evaluateAll();
+					
 					baos = new ByteArrayOutputStream();
 					bos = new BufferedOutputStream(baos);
 					workbook.write(bos);
@@ -281,6 +285,9 @@ public class ReportMainController {
 					writer.flush();
 				} else {
 					String filename = "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls";
+					if (rdf.getTemplateFile().endsWith(".xlsx")) {
+						filename = "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xlsx";
+					}
 					if (StringUtils.isNotEmpty(rdf.getExportFilename())) {
 						filename = rdf.getExportFilename();
 						params.put("yyyyMMdd", DateUtils.getDateTime("yyyyMMdd", new Date()));
