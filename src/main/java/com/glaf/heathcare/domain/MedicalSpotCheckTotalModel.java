@@ -117,69 +117,6 @@ public class MedicalSpotCheckTotalModel {
 
 	}
 
-	public String getSample() {
-		StringBuilder buffer = new StringBuilder();
-		int size = negative3DList.size() + negative2DList.size() + negative1DList.size() + normalList.size()
-				+ positive1DList.size() + positive2DList.size() + positive3DList.size();
-		if (size > 0) {
-			int index = 0;
-			for (ItemValue val : negative3DList) {
-				if (index > 0 && index % 5 == 0) {
-					buffer.append(FileUtils.newline);
-				}
-				buffer.append(val.getValue()).append(" | ");
-				index++;
-			}
-			for (ItemValue val : negative2DList) {
-				if (index > 0 && index % 5 == 0) {
-					buffer.append(FileUtils.newline);
-				}
-				buffer.append(val.getValue()).append(" | ");
-				index++;
-			}
-			for (ItemValue val : negative1DList) {
-				if (index > 0 && index % 5 == 0) {
-					buffer.append(FileUtils.newline);
-				}
-				buffer.append(val.getValue()).append(" | ");
-				index++;
-			}
-			for (ItemValue val : normalList) {
-				if (index > 0 && index % 5 == 0) {
-					buffer.append(FileUtils.newline);
-				}
-				buffer.append(val.getValue()).append(" | ");
-				index++;
-			}
-			for (ItemValue val : positive1DList) {
-				if (index > 0 && index % 5 == 0) {
-					buffer.append(FileUtils.newline);
-				}
-				buffer.append(val.getValue()).append(" | ");
-				index++;
-			}
-			for (ItemValue val : positive2DList) {
-				if (index > 0 && index % 5 == 0) {
-					buffer.append(FileUtils.newline);
-				}
-				buffer.append(val.getValue()).append(" | ");
-				index++;
-			}
-			for (ItemValue val : positive3DList) {
-				if (index > 0 && index % 5 == 0) {
-					buffer.append(FileUtils.newline);
-				}
-				buffer.append(val.getValue()).append(" | ");
-				index++;
-			}
-		}
-		return buffer.toString();
-	}
-
-	public void setSample(String sample) {
-		this.sample = sample;
-	}
-
 	public void addNegative1D(double value) {
 		ItemValue m = new ItemValue();
 		m.setValue(value);
@@ -222,8 +159,8 @@ public class MedicalSpotCheckTotalModel {
 		positive3DList.add(m);
 	}
 
-	public void addRecord() {
-		recordTotal++;
+	public synchronized void addRecord() {
+		++recordTotal;
 	}
 
 	public void addTotla(double value) {
@@ -478,6 +415,65 @@ public class MedicalSpotCheckTotalModel {
 		return recordTotal;
 	}
 
+	public String getSample() {
+		StringBuilder buffer = new StringBuilder();
+		int size = negative3DList.size() + negative2DList.size() + negative1DList.size() + normalList.size()
+				+ positive1DList.size() + positive2DList.size() + positive3DList.size();
+		if (size > 0) {
+			int index = 0;
+			for (ItemValue val : negative3DList) {
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+			}
+			for (ItemValue val : negative2DList) {
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+			}
+			for (ItemValue val : negative1DList) {
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+			}
+			for (ItemValue val : normalList) {
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+			}
+			for (ItemValue val : positive1DList) {
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+			}
+			for (ItemValue val : positive2DList) {
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+			}
+			for (ItemValue val : positive3DList) {
+				if (index > 0 && index % 5 == 0) {
+					buffer.append(FileUtils.newline);
+				}
+				buffer.append(val.getValue()).append(" | ");
+				index++;
+			}
+		}
+		return buffer.toString();
+	}
+
 	public double getTotalValue() {
 		return totalValue;
 	}
@@ -585,6 +581,10 @@ public class MedicalSpotCheckTotalModel {
 
 	public void setRecordTotal(int recordTotal) {
 		this.recordTotal = recordTotal;
+	}
+
+	public void setSample(String sample) {
+		this.sample = sample;
 	}
 
 	public void setTotalValue(double totalValue) {
