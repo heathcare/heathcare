@@ -20,6 +20,8 @@ package com.glaf.heathcare.domain;
 
 public class MedicalSpotCheckAggregationModel {
 
+	protected String key;
+
 	/**
 	 * 月龄
 	 */
@@ -84,6 +86,10 @@ public class MedicalSpotCheckAggregationModel {
 		return "";
 	}
 
+	public String getKey() {
+		return key;
+	}
+
 	public MedicalSpotCheckTotalModel getModel1() {
 		return model1;
 	}
@@ -135,6 +141,10 @@ public class MedicalSpotCheckAggregationModel {
 
 	public void setAgeOfTheMoonString(String ageOfTheMoonString) {
 		this.ageOfTheMoonString = ageOfTheMoonString;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	public void setModel1(MedicalSpotCheckTotalModel model1) {

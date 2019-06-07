@@ -414,4 +414,22 @@
 		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV3</prepareClass>
 	</report>
 
+	<report id="MedicalSpotCheckTotalV42">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalSpotCheckTotalV42.xlsx</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV4</prepareClass>
+	</report>
+
+	<report id="MedicalSpotCheckTotalV5">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalSpotCheckTotalV52.xlsx</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV5</prepareClass>
+	</report>
+
+	<report id="MedicalSpotCheckTotalV6">
+	    <templateType>jxls2</templateType>
+		<templateFile>conf/report/templates/MedicalSpotCheckTotalV62.xlsx</templateFile>
+		<prepareClass>com.glaf.heathcare.report.MedicalSpotCheckPreprocessorV6</prepareClass>
+	</report>
+
 </reports>

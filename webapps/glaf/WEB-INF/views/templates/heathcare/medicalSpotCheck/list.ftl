@@ -458,12 +458,117 @@
         window.open(link);
 	}
 
+	function doExport4(){
+		var sex = jQuery("#sex").val();
+		var checkId = jQuery("#checkId").val();
+		var nationLike = jQuery("#nationLike").val();
+		var areaLike = jQuery("#areaLike").val();
+		var cityLike = jQuery("#cityLike").val();
+		var organizationLike = jQuery("#organizationLike").val();
+        
+		if(checkId == ""){
+			alert("请选择一个主题！");
+			return;
+		}
+
+		if(sex == ""){
+			alert("请选择男生或女生！");
+			return;
+		}
+
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotalV42&useExt=Y";
+		link = link + "&sex="+sex+"&time="+getNowFormatDate()+"&megerFlag=Y&checkId="+checkId;
+
+		if(organizationLike != ""){
+			link = link + "&organizationLike=" + organizationLike.trim();
+		}
+		if(cityLike != ""){
+			link = link  + "&cityLike=" + cityLike.trim();
+		}
+		if(areaLike != ""){
+			link = link  + "&areaLike=" + areaLike.trim();
+		}
+		if(nationLike != ""){
+			link = link  + "&nationLike=" + nationLike.trim();
+		}
+
+        window.open(link);
+	}
+
+	function doExport5(){
+		var sex = jQuery("#sex").val();
+		var checkId = jQuery("#checkId").val();
+		var nationLike = jQuery("#nationLike").val();
+		var areaLike = jQuery("#areaLike").val();
+		var cityLike = jQuery("#cityLike").val();
+		var organizationLike = jQuery("#organizationLike").val();
+        
+		if(checkId == ""){
+			alert("请选择一个主题！");
+			return;
+		}
+
+		if(sex == ""){
+			alert("请选择男生或女生！");
+			return;
+		}
+
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotalV5&useExt=Y";
+		link = link + "&sex="+sex+"&time="+getNowFormatDate()+"&megerFlag=Y&checkId="+checkId;
+
+		if(cityLike != ""){
+			link = link  + "&cityLike=" + cityLike.trim();
+		}
+		if(areaLike != ""){
+			link = link  + "&areaLike=" + areaLike.trim();
+		}
+		if(nationLike != ""){
+			link = link  + "&nationLike=" + nationLike.trim();
+		}
+
+        window.open(link);
+	}
+
+	function doExport6(){
+		var sex = jQuery("#sex").val();
+		var checkId = jQuery("#checkId").val();
+		var nationLike = jQuery("#nationLike").val();
+		var areaLike = jQuery("#areaLike").val();
+		var cityLike = jQuery("#cityLike").val();
+		var organizationLike = jQuery("#organizationLike").val();
+        
+		if(checkId == ""){
+			alert("请选择一个主题！");
+			return;
+		}
+
+		if(sex == ""){
+			alert("请选择男生或女生！");
+			return;
+		}
+
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotalV6&useExt=Y";
+		link = link + "&sex="+sex+"&time="+getNowFormatDate()+"&megerFlag=Y&checkId="+checkId;
+
+		if(organizationLike != ""){
+			link = link + "&organizationLike=" + organizationLike.trim();
+		}
+		if(cityLike != ""){
+			link = link  + "&cityLike=" + cityLike.trim();
+		}
+		if(areaLike != ""){
+			link = link  + "&areaLike=" + areaLike.trim();
+		}
+
+        window.open(link);
+	}
+
 </script>
 </head>
 <body style="margin:1px;">  
 <div style="margin:0;"></div>  
 <div class="easyui-layout" data-options="fit:true">  
-   <div data-options="region:'north',split:false, border:true" style="height:95px" class="toolbar-backgroud"> 
+   <div data-options="region:'north',split:false, border:true" style="height:125px" class="toolbar-backgroud"> 
     <div style="margin:4px;"> 
 	 <form id="iForm" name="iForm" method="post" action="">
 	  <table width="100%" align="left">
@@ -576,6 +681,13 @@
 				   onclick="javascript:doExport2();">分析表</a>
 				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
 				   onclick="javascript:doExport3();">体格评价表</a>
+				<br>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
+				   onclick="javascript:doExport4();">体格评价统计表</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
+				   onclick="javascript:doExport5();">体格评价统计总表</a>
+				<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
+				   onclick="javascript:doExport6();">体格评价统计总表（按民族）</a>
 			</td>
 		</tr>
 	   </tbody>
