@@ -129,13 +129,13 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 				}
 
 				MedicalSpotCheckTotalModel m1 = model.getModel1();
-				this.populate(exam, m1, "W/A");
+				this.populate(exam, m1, "W/A");// W/A年龄别体重
 
 				MedicalSpotCheckTotalModel m2 = model.getModel2();
-				this.populate(exam, m2, "H/A");
+				this.populate(exam, m2, "H/A");// H/A年龄别身高
 
 				MedicalSpotCheckTotalModel m3 = model.getModel2();
-				this.populate(exam, m3, "W/H");
+				this.populate(exam, m3, "W/H");// W/H身高别体重
 
 				totalMap.put(exam.getNation(), model);
 			}
