@@ -142,7 +142,7 @@ public class MedicalExaminationEvaluateHelper {
 			// logger.debug(medicalExamination.getHeight() + " -> height:" + height);
 			double weight = medicalExamination.getWeight();
 			String key = HeightUtils.expectStringValue(height) + "_" + medicalExamination.getSex() + "_4";// W/H身高别体重
-			logger.debug(key);
+			// logger.debug(key);
 			GrowthStandard gs = gsMap.get(key);
 			if (gs != null) {
 				if (weight > gs.getThreeDSDeviation()) {
