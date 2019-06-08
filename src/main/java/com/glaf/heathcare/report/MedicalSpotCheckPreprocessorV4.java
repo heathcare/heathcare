@@ -41,6 +41,7 @@ import com.glaf.heathcare.helper.MedicalExaminationEvaluateHelper;
 import com.glaf.heathcare.query.MedicalSpotCheckQuery;
 import com.glaf.heathcare.service.GrowthStandardService;
 import com.glaf.heathcare.service.MedicalSpotCheckService;
+import com.glaf.heathcare.util.HeightUtils;
 
 public class MedicalSpotCheckPreprocessorV4 implements IReportPreprocessor {
 	protected final static Log logger = LogFactory.getLog(MedicalSpotCheckPreprocessorV4.class);
@@ -144,9 +145,12 @@ public class MedicalSpotCheckPreprocessorV4 implements IReportPreprocessor {
 				parameter.put("sex", "女生");
 			}
 
-			Map<Integer, SevenLevelMethodQuantity> totalMap = new TreeMap<Integer, SevenLevelMethodQuantity>();
+			Map<Double, SevenLevelMethodQuantity> totalMap = new TreeMap<Double, SevenLevelMethodQuantity>();
 			for (MedicalSpotCheck exam : list) {
-				int key = (int) Math.round(exam.getHeight());
+				//int key = (int) Math.round(exam.getHeight());
+				double height = exam.getHeight();
+				height = HeightUtils.expectValue(height);
+				double key = height;
 				SevenLevelMethodQuantity model = totalMap.get(key);
 				if (model == null) {
 					model = new SevenLevelMethodQuantity();

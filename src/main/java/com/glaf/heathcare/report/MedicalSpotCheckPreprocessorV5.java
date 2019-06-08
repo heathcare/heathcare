@@ -85,13 +85,15 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 			if (standards != null && !standards.isEmpty()) {
 				for (GrowthStandard gs : standards) {
 					if (StringUtils.equals(gs.getType(), "4")) {
-						// int height = (int) Math.round(gs.getHeight());
-						gsMap.put(gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
+						gsMap.put(key, gs);
+						//logger.debug("key=" + key);
 					} else {
 						gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 					}
 				}
 			}
+			// logger.debug("gsMap:"+gsMap);
 			String useMethod = ParamUtils.getString(parameter, "useMethod");
 			MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
 			for (MedicalSpotCheck exam : list) {
@@ -131,7 +133,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 				MedicalSpotCheckTotalModel m2 = model.getModel2();
 				this.populate(exam, m2, "H/A");// H/A年龄别身高
 
-				MedicalSpotCheckTotalModel m3 = model.getModel2();
+				MedicalSpotCheckTotalModel m3 = model.getModel3();
 				this.populate(exam, m3, "W/H");// W/H身高别体重
 
 				totalMap.put(exam.getOrganization(), model);
