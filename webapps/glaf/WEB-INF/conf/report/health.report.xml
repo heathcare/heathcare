@@ -144,18 +144,21 @@
 
 	<report id="MedicalExaminationCount">
 	    <templateType>jxls2</templateType>
+		<exportFilename>班级幼儿体格评价汇总表.xls</exportFilename>
 		<templateFile>conf/report/templates/MedicalExaminationCount.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.report.MedicalExaminationCountPreprocessor</prepareClass>
 	</report>
 
 	<report id="TenantMedicalExaminationCount">
 	    <templateType>jxls2</templateType>
+		<exportFilename>班级幼儿体格评价汇总表.xls</exportFilename>
 		<templateFile>conf/report/templates/MedicalExaminationCount.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationCountPreprocessor</prepareClass>
 	</report>
 
 	<report id="MedicalExaminationSicknessPositiveSign">
 	    <templateType>jxls2</templateType>
+		<exportFilename>全园幼儿五官测评班级汇总表.xls</exportFilename>
 		<templateFile>conf/report/templates/MedicalExaminationSicknessPositiveSign.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationGradeCountPreprocessor</prepareClass>
 	</report>
@@ -373,6 +376,7 @@
 
 	<report id="MedicalExaminationPersonExport">
 	    <templateType>jxls2</templateType>
+		<exportFilename>全园幼儿超重与肥胖汇总表.xls</exportFilename>
 		<templateFile>conf/report/templates/MedicalExaminationPersonExport.xls</templateFile>
 		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationPersonExportPreprocessor</prepareClass>
 	</report>
@@ -392,7 +396,8 @@
 
 	<report id="TenantMedicalExaminationGradeCount">
 	    <templateType>jxls2</templateType>
-		<templateFile>conf/report/templates/MedicalExaminationStatistics.xls</templateFile>
+		<exportFilename>全园幼儿体格评价班级汇总表.xlsx</exportFilename>
+		<templateFile>conf/report/templates/MedicalExaminationStatistics.xlsx</templateFile>
 		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationGradeCountPreprocessor</prepareClass>
 	</report>
 

@@ -101,6 +101,8 @@ public class TenantReportMainController {
 		params.put("tenantId", tenantId);
 		params.put("tableSuffix", IdentityFactory.getTenantHash(tenantId));
 
+		ReportContainer.getContainer().reload();
+
 		String reportId = request.getParameter("reportId");
 		ReportDefinition rdf = ReportContainer.getContainer().getReportDefinition(reportId);
 
@@ -128,7 +130,7 @@ public class TenantReportMainController {
 				if (tenant != null) {
 					params.put("orgName", tenant.getName());
 					params.put("tenant", tenant);
-					
+
 					MedicalExaminationEvaluateCountBean bean = new MedicalExaminationEvaluateCountBean();
 					bean.execute(tenantId);
 				}
@@ -157,6 +159,7 @@ public class TenantReportMainController {
 				ZipSecureFile.setMinInflateRatio(-1.0d);// 延迟解析比率
 
 				if (StringUtils.equals(useExt, "Y")) {
+					// logger.debug("rpt params:" + params);
 					JxlsBuilder jxlsBuilder = JxlsBuilder.getBuilder(is).out(bos).putAll(params);
 					jxlsBuilder.putVar("_ignoreImageMiss", Boolean.valueOf(true));
 					jxlsBuilder.build();
@@ -170,6 +173,7 @@ public class TenantReportMainController {
 				bos.flush();
 				baos.flush();
 				bytes = baos.toByteArray();
+				
 				if (StringUtils.equals(outputFormat, "html")) {
 					request.setCharacterEncoding("UTF-8");
 					response.setCharacterEncoding("UTF-8");
@@ -189,6 +193,9 @@ public class TenantReportMainController {
 					writer.flush();
 				} else {
 					String filename = "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls";
+					if (rdf.getTemplateFile().endsWith(".xlsx")) {
+						filename = "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xlsx";
+					}
 					if (StringUtils.isNotEmpty(rdf.getExportFilename())) {
 						filename = rdf.getExportFilename();
 						params.put("yyyyMMdd", DateUtils.getDateTime("yyyyMMdd", new Date()));
@@ -197,7 +204,8 @@ public class TenantReportMainController {
 
 						filename = ExpressionTools.evaluate(filename, params);
 					}
-					ResponseUtils.download(request, response, data, filename);
+					logger.debug("export filename:" + filename);
+					ResponseUtils.download(request, response, bytes, filename);
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();

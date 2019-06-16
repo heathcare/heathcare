@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.glaf.core.config.Environment;
 import com.glaf.core.context.ContextFactory;
@@ -45,6 +47,8 @@ import com.glaf.heathcare.service.MedicalExaminationEvaluateService;
 import com.glaf.heathcare.service.PersonService;
 
 public class TenantMedicalExaminationPersonExportPreprocessor implements IReportPreprocessor {
+
+	protected static final Log logger = LogFactory.getLog(TenantMedicalExaminationPersonExportPreprocessor.class);
 
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {
@@ -81,7 +85,7 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 		q.type(type);
 		q.weightGreaterThanStd("true");
 		q.weightLevelGreaterThanOrEqual(1);
-		q.weightOffsetPercentGreaterThanOrEqual(10.0);
+		// q.weightOffsetPercentGreaterThanOrEqual(10.0);
 
 		if (params.get("gradeId") != null && StringUtils.isNotEmpty(ParamUtils.getString(params, "gradeId"))) {
 			q.gradeId(ParamUtils.getString(params, "gradeId"));
@@ -114,7 +118,9 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 			com.glaf.core.config.Environment.setCurrentSystemName(systemName);
 		}
 
+		// logger.debug("--------list:"+list);
 		if (list != null && !list.isEmpty()) {
+			logger.debug("--------------------exam eval size:" + list.size());
 			Map<String, Person> personMap = new HashMap<String, Person>();
 			if (persons != null && !persons.isEmpty()) {
 				for (Person p : persons) {
@@ -186,6 +192,10 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 				params.put("param1", param1);
 				params.put("param2", param2);
 				params.put("param3", param3);
+				params.put("param4", "");
+
+				logger.debug("rows1 size:" + rows1.size());
+				logger.debug("rows2 size:" + rows2.size());
 
 				if (checkDate != null) {
 					params.put("checkDate", DateUtils.getDate(checkDate));

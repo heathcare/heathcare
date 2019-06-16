@@ -562,7 +562,7 @@
 			alert("请选择月份！");
 			return;
 		}
-		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationPersonExport&ts=${ts}&type=${type}";
+		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationPersonExport&ts=${ts}&type=${type}&useExt=Y";
 		if(year != ""){
 			link = link + "&year=" + year;
 		}
