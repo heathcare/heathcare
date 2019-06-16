@@ -169,7 +169,7 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 
 							GrowthStandard std = gsMap.get(key);
 							if (std != null && std.getMedian() > 0) {
-								logger.debug("---->标准体重:" + std.getMedian());
+								// logger.debug("---->标准体重:" + std.getMedian());
 								me.setStdWeight(std.getMedian());
 								me.setWeightOffsetPercent((me.getWeight() - std.getMedian()) / std.getMedian() * 100);
 							}

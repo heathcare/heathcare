@@ -182,7 +182,7 @@ public class MedicalExaminationEvaluateHelper {
 							.setWeightHeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 				}
 			} else {
-				logger.warn("无匹配身高的体重值！");
+				// logger.warn("无匹配身高的体重值！");
 			}
 		}
 
