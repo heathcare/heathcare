@@ -597,13 +597,13 @@
 		           onclick="javascript:deleteSelection();">删除</a> 
 			</td>
 			<td width="70%" align="left">
-				&nbsp;市&nbsp;
+				&nbsp;市&nbsp;&nbsp;&nbsp;
 				<input type="text" id="cityLike" name="cityLike" value="${cityLike}" size="20" 
 					   class="x-search-text" style="width:80px;">
 			    &nbsp;区/县&nbsp;
 				<input type="text" id="areaLike" name="areaLike" value="${areaLike}" size="20" 
 					   class="x-search-text" style="width:80px;">
-			    &nbsp;民族&nbsp;
+			    &nbsp;民族&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="text" id="nationLike" name="nationLike" value="${nationLike}" size="20" 
 					   class="x-search-text" style="width:60px;">
 				&nbsp;园所&nbsp;
@@ -616,7 +616,7 @@
 				&nbsp;性质&nbsp;
 				<input type="text" id="organizationPropertyLike" name="organizationPropertyLike" 
 				       value="${organizationPropertyLike}" size="20" class="x-search-text" style="width:80px;">
-				&nbsp;地域&nbsp;
+				&nbsp;地域&nbsp;&nbsp;
 				<input type="text" id="organizationTerritoryLike" name="organizationTerritoryLike" 
 				       value="${organizationTerritoryLike}" size="20" class="x-search-text" style="width:80px;">
 				&nbsp;身高评价&nbsp;

@@ -39,6 +39,7 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -64,7 +65,9 @@ import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ExcelToHtml;
 import com.glaf.core.util.RequestUtils;
 import com.glaf.core.util.ResponseUtils;
+import com.glaf.heathcare.bean.MedicalExaminationEvaluateCountBean;
 import com.glaf.heathcare.report.IReportPreprocessor;
+import com.glaf.jxls.ext.JxlsBuilder;
 import com.glaf.report.bean.ReportContainer;
 import com.glaf.report.data.ReportDefinition;
 
@@ -110,6 +113,7 @@ public class TenantReportMainController {
 			ByteArrayOutputStream baos = null;
 			BufferedOutputStream bos = null;
 			IReportPreprocessor reportPreprocessor = null;
+			String useExt = request.getParameter("useExt");
 			String outputFormat = request.getParameter("outputFormat");
 			int precision = RequestUtils.getInt(request, "precision", 2);
 			try {
@@ -124,6 +128,9 @@ public class TenantReportMainController {
 				if (tenant != null) {
 					params.put("orgName", tenant.getName());
 					params.put("tenant", tenant);
+					
+					MedicalExaminationEvaluateCountBean bean = new MedicalExaminationEvaluateCountBean();
+					bean.execute(tenantId);
 				}
 
 				if (StringUtils.isNotEmpty(rdf.getPrepareClass())) {
@@ -147,7 +154,16 @@ public class TenantReportMainController {
 					context2.putVar(key, value);
 				}
 
-				org.jxls.util.JxlsHelper.getInstance().processTemplate(is, bos, context2);
+				ZipSecureFile.setMinInflateRatio(-1.0d);// 延迟解析比率
+
+				if (StringUtils.equals(useExt, "Y")) {
+					JxlsBuilder jxlsBuilder = JxlsBuilder.getBuilder(is).out(bos).putAll(params);
+					jxlsBuilder.putVar("_ignoreImageMiss", Boolean.valueOf(true));
+					jxlsBuilder.build();
+				} else {
+					org.jxls.util.JxlsHelper.getInstance().processTemplate(is, bos, context2);
+				}
+
 				IOUtils.closeQuietly(is);
 				IOUtils.closeQuietly(bais);
 
@@ -173,7 +189,7 @@ public class TenantReportMainController {
 					writer.flush();
 				} else {
 					String filename = "export" + DateUtils.getNowYearMonthDayHHmmss() + ".xls";
-					if(StringUtils.isNotEmpty(rdf.getExportFilename())) {
+					if (StringUtils.isNotEmpty(rdf.getExportFilename())) {
 						filename = rdf.getExportFilename();
 						params.put("yyyyMMdd", DateUtils.getDateTime("yyyyMMdd", new Date()));
 						params.put("yyyyMMddHHmm", DateUtils.getDateTime("yyyyMMddHHmm", new Date()));

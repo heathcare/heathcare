@@ -54,7 +54,7 @@
 <tr>
 	<td width="20%" height="60">体检日期</td>
 	<td>
-	<input id="checkDate" name="checkDate" type="text" class="easyui-datebox x-text" style="width:100px;">
+	<input id="checkDate" name="checkDate" type="text" class="easyui-datebox x-text" style="width:120px;">
 	&nbsp;(提示：如果Excel中未录入体检日期，可以在这里统一指定。)
 	</td>
 </tr>

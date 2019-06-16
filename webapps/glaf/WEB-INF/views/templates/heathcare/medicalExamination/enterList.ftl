@@ -705,8 +705,7 @@
 					   onclick="javascript:deleteSelections();">删除</a> 
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_upload'"
 					   onclick="javascript:showImp();">导入</a>
-					</#if>
-				    <br>
+					</#if>				    
 					&nbsp;&nbsp;&nbsp;&nbsp;班级&nbsp;
 					<select id="gradeId" name="gradeId" onchange="switchXY();">
 						<option value="">--请选择--</option>
@@ -719,6 +718,7 @@
 					<script type="text/javascript">
 						document.getElementById("gradeId").value="${gradeId}";
 					</script>
+					<br>
 				    &nbsp;年份&nbsp;&nbsp;
 					<select id="year" name="year" onchange="switchXY();">
 						<option value="">--请选择--</option>
@@ -726,6 +726,7 @@
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
 						<option value="2018">2018</option>
+						<option value="2019">2019</option>
 					</select>
 					<script type="text/javascript">
 						document.getElementById("year").value="${year}";
@@ -752,7 +753,7 @@
 					&nbsp;身高评价&nbsp;&nbsp;
 					<select id="heightLevel" name="heightLevel" onchange="switchXY();">
 						<option value="">--请选择--</option>
-						<option value="0">正常</option>
+						<option value="9">正常</option>
 						<option value="-1">生长迟缓</option>
 					</select>
 					<script type="text/javascript">

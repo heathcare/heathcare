@@ -113,7 +113,7 @@ public class MedicalExaminationTbxExcelImporter {
 		try {
 			wb = WorkbookFactory.create(inputStream);
 
-			String checkId = UUID32.getUUID();
+			String checkId = UUID32.generateShortUuid();
 			List<MedicalExamination> exams = new ArrayList<MedicalExamination>();
 
 			for (MedicalExaminationXlsArea area : areas) {
@@ -147,6 +147,9 @@ public class MedicalExaminationTbxExcelImporter {
 									exam.setName(person.getName().trim());
 									exam.setBirthday(person.getBirthday());
 									exam.setSex(person.getSex());
+
+									String gradeId = gradeMap.get(gradeValue);
+									exam.setGradeId(gradeId);
 
 									cell = row.getCell(area.getHeightColIndex());
 									if (cell != null) {
@@ -213,6 +216,7 @@ public class MedicalExaminationTbxExcelImporter {
 			}
 
 			if (exams.size() > 0) {
+				logger.debug("准备导入体检数据:" + exams.size());
 				medicalExaminationService.bulkInsert(exams);
 			}
 			return checkId;

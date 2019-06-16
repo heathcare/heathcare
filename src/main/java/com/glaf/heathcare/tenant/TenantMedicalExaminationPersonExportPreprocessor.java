@@ -103,8 +103,10 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 			database = databaseService.getDatabaseByMapping("etl");
 			if (database != null) {
 				Environment.setCurrentSystemName(database.getName());
+				list = medicalExaminationEvaluateService.list(q);
+			} else {
+				list = medicalExaminationEvaluateService.list(q);
 			}
-			list = medicalExaminationEvaluateService.list(q);
 		} catch (Exception ex) {
 			// ex.printStackTrace();
 			throw new RuntimeException(ex);

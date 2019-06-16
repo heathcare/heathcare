@@ -790,7 +790,7 @@ public class MedicalExaminationController {
 		}
 
 		int heightLevel = RequestUtils.getInt(request, "heightLevel");
-		if (heightLevel >= 0) {
+		if (heightLevel == 9) {
 			query.heightLevelGreaterThanOrEqual(heightLevel);
 		}
 		if (heightLevel < 0) {
@@ -850,6 +850,7 @@ public class MedicalExaminationController {
 					limit, query);
 
 			if (list != null && !list.isEmpty()) {
+				logger.debug("exam list size:" + list.size());
 				JSONArray rowsJSON = new JSONArray();
 
 				result.put("rows", rowsJSON);
@@ -872,11 +873,11 @@ public class MedicalExaminationController {
 				Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 				if (list4 != null && !list4.isEmpty()) {
 					for (GrowthStandard gs : list4) {
-						//gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						// gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 						if (StringUtils.equals(gs.getType(), "4")) {
 							// int height = (int) Math.round(gs.getHeight());
 							String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
-							//logger.debug(key);
+							// logger.debug(key);
 							gsMap.put(key, gs);
 						} else {
 							gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
@@ -1259,11 +1260,11 @@ public class MedicalExaminationController {
 				Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 				if (list4 != null && !list4.isEmpty()) {
 					for (GrowthStandard gs : list4) {
-						//gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						// gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 						if (StringUtils.equals(gs.getType(), "4")) {
 							// int height = (int) Math.round(gs.getHeight());
 							String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
-							//logger.debug(key);
+							// logger.debug(key);
 							gsMap.put(key, gs);
 						} else {
 							gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
@@ -1353,7 +1354,7 @@ public class MedicalExaminationController {
 		}
 
 		int heightLevel = RequestUtils.getInt(request, "heightLevel");
-		if (heightLevel >= 0) {
+		if (heightLevel == 9) {
 			query.heightLevelGreaterThanOrEqual(heightLevel);
 		}
 		if (heightLevel < 0) {
@@ -1417,11 +1418,11 @@ public class MedicalExaminationController {
 				Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
 				if (list4 != null && !list4.isEmpty()) {
 					for (GrowthStandard gs : list4) {
-						//gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+						// gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 						if (StringUtils.equals(gs.getType(), "4")) {
 							// int height = (int) Math.round(gs.getHeight());
 							String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
-							//logger.debug(key);
+							// logger.debug(key);
 							gsMap.put(key, gs);
 						} else {
 							gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);

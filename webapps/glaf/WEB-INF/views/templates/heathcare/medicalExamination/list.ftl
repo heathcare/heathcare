@@ -452,6 +452,7 @@
 		var gradeId = jQuery("#gradeId").val();
 		var year = jQuery("#year").val();
         var month = jQuery("#month").val();
+		var sex = jQuery("#sex").val();
 		var link="${contextPath}/heathcare/tenantReportMain/exportXls?reportId=MedicalExaminationSicknessPositiveSign&checkId=${checkId}&ts=${ts}&type=${type}";
 		if(gradeId != ""){
 			link = link + "&gradeId=" + gradeId;
@@ -463,7 +464,7 @@
 			link = link  + "&month=" + month;
 		}
 		if(sex != ""){
-			link = link  + "&sex=" + sex;
+			//link = link  + "&sex=" + sex;
 		}
         window.open(link);
     }
@@ -658,7 +659,7 @@
 			<input type="hidden" id="type" name="type" value="${type}">
 			<table>
 			  <tr>
-				<td width="65%" valign="top">
+				<td width="70%" valign="top">
 					<img src="${contextPath}/static/images/window.png">
 					&nbsp;<span class="x_content_title">体格检查列表</span>
 					<#if hasWritePermission>
@@ -671,7 +672,6 @@
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_upload'"
 					   onclick="javascript:showImp();">导入</a>
 					</#if>
-					<br>
 					&nbsp;&nbsp;&nbsp;&nbsp;班级&nbsp;
 					<select id="gradeId" name="gradeId" onchange="switchXY();">
 						<option value="">--请选择--</option>
@@ -684,6 +684,7 @@
 					<script type="text/javascript">
 						document.getElementById("gradeId").value="${gradeId}";
 					</script>
+					<br>
 				    &nbsp;年份&nbsp;&nbsp;
 					<select id="year" name="year" onchange="switchXY();">
 						<option value="">--请选择--</option>
@@ -691,6 +692,7 @@
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
 						<option value="2018">2018</option>
+						<option value="2019">2019</option>
 					</select>
 					<script type="text/javascript">
 						document.getElementById("year").value="${year}";
@@ -717,14 +719,14 @@
 					&nbsp;身高评价&nbsp;&nbsp;
 					<select id="heightLevel" name="heightLevel" onchange="switchXY();">
 						<option value="">--请选择--</option>
-						<option value="0">正常</option>
+						<option value="9">正常</option>
 						<option value="-1">生长迟缓</option>
 					</select>
 					<script type="text/javascript">
 						document.getElementById("heightLevel").value="${heightLevel}";
 					</script>
 				</td>
-				<td width="35%">
+				<td width="30%">
 				    &nbsp;&nbsp;
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'" 
 					   onclick="javascript:exportXls();">统计结果</a>

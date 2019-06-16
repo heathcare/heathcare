@@ -69,6 +69,7 @@ import com.glaf.core.util.ResponseUtils;
 import com.glaf.core.util.StringTools;
 import com.glaf.core.util.Tools;
 import com.glaf.core.util.ZipUtils;
+import com.glaf.heathcare.bean.MedicalExaminationEvaluateCountBean;
 import com.glaf.heathcare.domain.GradeInfo;
 import com.glaf.heathcare.query.GradeInfoQuery;
 import com.glaf.heathcare.report.IReportPreprocessor;
@@ -186,6 +187,9 @@ public class ReportMainController {
 				if (tenant != null) {
 					params.put("orgName", tenant.getName());
 					params.put("tenant", tenant);
+					
+					MedicalExaminationEvaluateCountBean bean = new MedicalExaminationEvaluateCountBean();
+					bean.execute(tenantId);
 				}
 
 				String gradeId = request.getParameter("gradeId");
