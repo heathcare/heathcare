@@ -457,9 +457,6 @@
 			<if test="heightEvaluate != null">
 				HEIGHTEVALUATE_ = #{heightEvaluate, jdbcType=VARCHAR},
 			</if>
-			<if test="stdWeight != null">
-				STDWEIGHT_ = #{stdWeight, jdbcType=DOUBLE},
-			</if>
 			<if test="weightOffsetPercent != null">
 				WEIGHTOFFSETPERCENT_ = #{weightOffsetPercent,
 				jdbcType=DOUBLE},
@@ -636,6 +633,10 @@
 
 			<if test="weightGreaterThanOrEqual != null">
 				and E.WEIGHT_ &gt;= #{weightGreaterThanOrEqual}
+			</if>
+			
+			<if test="weightHeightLevelGreaterThanOrEqual != null">
+				and E.WEIGHTHEIGHTLEVEL_ &gt;= #{weightHeightLevelGreaterThanOrEqual}
 			</if>
 
 			<if test="weightLessThanOrEqual != null">

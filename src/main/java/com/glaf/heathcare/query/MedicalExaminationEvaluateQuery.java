@@ -41,10 +41,14 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 	protected String heightEvaluateLike;
 	protected String weightGreaterThanStd;
 	protected Double weightGreaterThanOrEqual;
+	protected String weightHeightGreaterThanStd;
+	protected Double weightHeightGreaterThanOrEqual;
 	protected Double weightLessThanOrEqual;
 	protected Integer weightLevel;
 	protected Integer weightLevelGreaterThanOrEqual;
+	protected Integer weightHeightLevelGreaterThanOrEqual;
 	protected Integer weightLevelLessThanOrEqual;
+	protected Integer weightHeightLevelLessThanOrEqual;
 	protected String weightEvaluate;
 	protected String weightEvaluateLike;
 	protected Double weightOffsetPercentGreaterThanOrEqual;
@@ -132,6 +136,10 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 		return this;
 	}
 
+	public Long getAreaId() {
+		return areaId;
+	}
+
 	public Long getBatchId() {
 		return batchId;
 	}
@@ -146,6 +154,10 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 
 	public String getCheckId() {
 		return checkId;
+	}
+
+	public Long getCityId() {
+		return cityId;
 	}
 
 	public Date getCreateTimeGreaterThanOrEqual() {
@@ -299,6 +311,10 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 		return personIds;
 	}
 
+	public Long getProvinceId() {
+		return provinceId;
+	}
+
 	public String getSex() {
 		return sex;
 	}
@@ -333,6 +349,18 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 
 	public String getWeightGreaterThanStd() {
 		return weightGreaterThanStd;
+	}
+
+	public Double getWeightHeightGreaterThanOrEqual() {
+		return weightHeightGreaterThanOrEqual;
+	}
+
+	public String getWeightHeightGreaterThanStd() {
+		return weightHeightGreaterThanStd;
+	}
+
+	public Integer getWeightHeightLevelLessThanOrEqual() {
+		return weightHeightLevelLessThanOrEqual;
 	}
 
 	public Double getWeightHeightPercentGreaterThanOrEqual() {
@@ -516,6 +544,10 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 		return this;
 	}
 
+	public void setAreaId(Long areaId) {
+		this.areaId = areaId;
+	}
+
 	public void setBatchId(Long batchId) {
 		this.batchId = batchId;
 	}
@@ -530,6 +562,10 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 
 	public void setCheckId(String checkId) {
 		this.checkId = checkId;
+	}
+
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
 	}
 
 	public void setCreateTimeGreaterThanOrEqual(Date createTimeGreaterThanOrEqual) {
@@ -596,6 +632,10 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 		this.personIds = personIds;
 	}
 
+	public void setProvinceId(Long provinceId) {
+		this.provinceId = provinceId;
+	}
+
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
@@ -622,6 +662,18 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 
 	public void setWeightGreaterThanStd(String weightGreaterThanStd) {
 		this.weightGreaterThanStd = weightGreaterThanStd;
+	}
+
+	public void setWeightHeightGreaterThanOrEqual(Double weightHeightGreaterThanOrEqual) {
+		this.weightHeightGreaterThanOrEqual = weightHeightGreaterThanOrEqual;
+	}
+
+	public void setWeightHeightGreaterThanStd(String weightHeightGreaterThanStd) {
+		this.weightHeightGreaterThanStd = weightHeightGreaterThanStd;
+	}
+
+	public void setWeightHeightLevelLessThanOrEqual(Integer weightHeightLevelLessThanOrEqual) {
+		this.weightHeightLevelLessThanOrEqual = weightHeightLevelLessThanOrEqual;
 	}
 
 	public void setWeightHeightPercentGreaterThanOrEqual(Double weightHeightPercentGreaterThanOrEqual) {
@@ -728,6 +780,30 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 		return this;
 	}
 
+	public MedicalExaminationEvaluateQuery weightHeightGreaterThanOrEqual(Double weightHeightGreaterThanOrEqual) {
+		if (weightHeightGreaterThanOrEqual == null) {
+			throw new RuntimeException("weightHeight is null");
+		}
+		this.weightHeightGreaterThanOrEqual = weightHeightGreaterThanOrEqual;
+		return this;
+	}
+
+	public MedicalExaminationEvaluateQuery weightHeightGreaterThanStd(String weightHeightGreaterThanStd) {
+		if (weightHeightGreaterThanStd == null) {
+			throw new RuntimeException("weightHeightGreaterThanStd is null");
+		}
+		this.weightHeightGreaterThanStd = weightHeightGreaterThanStd;
+		return this;
+	}
+
+	public MedicalExaminationEvaluateQuery weightHeightLevelLessThanOrEqual(Integer weightHeightLevelLessThanOrEqual) {
+		if (weightHeightLevelLessThanOrEqual == null) {
+			throw new RuntimeException("weightHeightLevel is null");
+		}
+		this.weightHeightLevelLessThanOrEqual = weightHeightLevelLessThanOrEqual;
+		return this;
+	}
+
 	public MedicalExaminationEvaluateQuery weightHeightPercentGreaterThanOrEqual(
 			Double weightHeightPercentGreaterThanOrEqual) {
 		if (weightHeightPercentGreaterThanOrEqual == null) {
@@ -767,6 +843,23 @@ public class MedicalExaminationEvaluateQuery extends DataQuery {
 			throw new RuntimeException("weightLevel is null");
 		}
 		this.weightLevelGreaterThanOrEqual = weightLevelGreaterThanOrEqual;
+		return this;
+	}
+
+	public Integer getWeightHeightLevelGreaterThanOrEqual() {
+		return weightHeightLevelGreaterThanOrEqual;
+	}
+
+	public void setWeightHeightLevelGreaterThanOrEqual(Integer weightHeightLevelGreaterThanOrEqual) {
+		this.weightHeightLevelGreaterThanOrEqual = weightHeightLevelGreaterThanOrEqual;
+	}
+
+	public MedicalExaminationEvaluateQuery weightHeightLevelGreaterThanOrEqual(
+			Integer weightHeightLevelGreaterThanOrEqual) {
+		if (weightHeightLevelGreaterThanOrEqual == null) {
+			throw new RuntimeException("weightHeightLevel is null");
+		}
+		this.weightHeightLevelGreaterThanOrEqual = weightHeightLevelGreaterThanOrEqual;
 		return this;
 	}
 

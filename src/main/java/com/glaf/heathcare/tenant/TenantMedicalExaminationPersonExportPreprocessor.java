@@ -36,6 +36,7 @@ import com.glaf.core.util.DateUtils;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.heathcare.bean.MedicalExaminationEvaluateBean;
 import com.glaf.heathcare.domain.GradeInfo;
+import com.glaf.heathcare.domain.GrowthStandard;
 import com.glaf.heathcare.domain.MedicalExaminationEvaluate;
 import com.glaf.heathcare.domain.Person;
 import com.glaf.heathcare.query.GradeInfoQuery;
@@ -43,8 +44,10 @@ import com.glaf.heathcare.query.MedicalExaminationEvaluateQuery;
 import com.glaf.heathcare.query.PersonQuery;
 import com.glaf.heathcare.report.IReportPreprocessor;
 import com.glaf.heathcare.service.GradeInfoService;
+import com.glaf.heathcare.service.GrowthStandardService;
 import com.glaf.heathcare.service.MedicalExaminationEvaluateService;
 import com.glaf.heathcare.service.PersonService;
+import com.glaf.heathcare.util.HeightUtils;
 
 public class TenantMedicalExaminationPersonExportPreprocessor implements IReportPreprocessor {
 
@@ -53,6 +56,8 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 	@Override
 	public void prepare(Tenant tenant, Map<String, Object> params) {
 		IDatabaseService databaseService = ContextFactory.getBean("databaseService");
+		GrowthStandardService growthStandardService = ContextFactory
+				.getBean("com.glaf.heathcare.service.growthStandardService");
 		GradeInfoService gradeInfoService = ContextFactory.getBean("com.glaf.heathcare.service.gradeInfoService");
 		PersonService personService = ContextFactory.getBean("com.glaf.heathcare.service.personService");
 		MedicalExaminationEvaluateService medicalExaminationEvaluateService = ContextFactory
@@ -83,8 +88,8 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 		q.year(year);
 		q.month(month);
 		q.type(type);
-		q.weightGreaterThanStd("true");
-		q.weightLevelGreaterThanOrEqual(1);
+		q.weightHeightGreaterThanStd("true");
+		q.weightHeightLevelGreaterThanOrEqual(1);
 		// q.weightOffsetPercentGreaterThanOrEqual(10.0);
 
 		if (params.get("gradeId") != null && StringUtils.isNotEmpty(ParamUtils.getString(params, "gradeId"))) {
@@ -128,6 +133,19 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 				}
 			}
 
+			List<GrowthStandard> standards = growthStandardService.getAllGrowthStandards();
+			Map<String, GrowthStandard> gsMap = new HashMap<String, GrowthStandard>();
+			if (standards != null && !standards.isEmpty()) {
+				for (GrowthStandard gs : standards) {
+					if (StringUtils.equals(gs.getType(), "4")) {
+						// int height = (int) Math.round(gs.getHeight());
+						gsMap.put(gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+					} else {
+						gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
+					}
+				}
+			}
+
 			List<MedicalExaminationEvaluate> rows1 = new ArrayList<MedicalExaminationEvaluate>();
 			List<MedicalExaminationEvaluate> rows2 = new ArrayList<MedicalExaminationEvaluate>();
 			List<MedicalExaminationEvaluate> rows3 = new ArrayList<MedicalExaminationEvaluate>();
@@ -145,12 +163,24 @@ public class TenantMedicalExaminationPersonExportPreprocessor implements IReport
 						if (StringUtils.equals(g.getId(), me.getGradeId())) {
 							me.setGradeName(g.getName());
 							me.setSortNo(++sortNo);
+
+							double height = me.getHeight();
+							String key = HeightUtils.expectStringValue(height) + "_" + me.getSex() + "_4";
+
+							GrowthStandard std = gsMap.get(key);
+							if (std != null && std.getMedian() > 0) {
+								logger.debug("---->标准体重:" + std.getMedian());
+								me.setStdWeight(std.getMedian());
+								me.setWeightOffsetPercent((me.getWeight() - std.getMedian()) / std.getMedian() * 100);
+							}
+
 							if (StringUtils.equals(me.getSex(), "1")) {
 								me.setSex("男");
 							} else {
 								me.setSex("女");
 							}
-							switch (me.getWeightLevel()) {
+
+							switch (me.getWeightHeightLevel()) {
 							case 1:
 								param1 = param1 + 1;
 								break;

@@ -305,6 +305,9 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable, IMedi
 	}
 
 	public double getBmi() {
+		if (bmi > 0) {
+			bmi = Math.round(bmi * 10D) / 10D;
+		}
 		return this.bmi;
 	}
 
@@ -411,6 +414,9 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable, IMedi
 	}
 
 	public double getStdWeight() {
+		if (stdWeight > 0) {
+			stdWeight = Math.round(stdWeight * 10D) / 10D;
+		}
 		return stdWeight;
 	}
 
@@ -450,9 +456,7 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable, IMedi
 	}
 
 	public double getWeightHeightPercent() {
-		if (weightHeightPercent > 0) {
-			weightHeightPercent = Math.round(weightHeightPercent * 100D) / 100D;
-		}
+		weightHeightPercent = Math.round(weightHeightPercent * 100D) / 100D;
 		return this.weightHeightPercent;
 	}
 
@@ -461,9 +465,7 @@ public class MedicalExaminationEvaluate implements Serializable, JSONable, IMedi
 	}
 
 	public double getWeightOffsetPercent() {
-		if (weightOffsetPercent > 0) {
-			weightOffsetPercent = Math.round(weightOffsetPercent * 100D) / 100D;
-		}
+		weightOffsetPercent = Math.round(weightOffsetPercent * 100D) / 100D;
 		return weightOffsetPercent;
 	}
 

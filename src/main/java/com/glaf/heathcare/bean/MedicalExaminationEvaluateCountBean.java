@@ -61,6 +61,7 @@ import com.glaf.heathcare.service.MedicalExaminationCountService;
 import com.glaf.heathcare.service.MedicalExaminationEvaluateService;
 import com.glaf.heathcare.service.MedicalExaminationService;
 import com.glaf.heathcare.service.PersonService;
+import com.glaf.heathcare.util.HeightUtils;
 import com.glaf.heathcare.util.MedicalExaminationCountDomainFactory;
 import com.glaf.heathcare.util.MedicalExaminationEvaluateDomainFactory;
 import com.glaf.heathcare.util.MedicalExaminationGradeCountDomainFactory;
@@ -161,7 +162,7 @@ public class MedicalExaminationEvaluateCountBean {
 						if (standards != null && !standards.isEmpty()) {
 							for (GrowthStandard gs : standards) {
 								if (StringUtils.equals(gs.getType(), "4")) {
-									//int height = (int) Math.round(gs.getHeight());
+									// int height = (int) Math.round(gs.getHeight());
 									gsMap.put(gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 								} else {
 									gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
@@ -190,6 +191,17 @@ public class MedicalExaminationEvaluateCountBean {
 								model.setBirthday(person.getBirthday());
 								model.setSex(person.getSex());
 
+								double height = exam.getHeight();
+								String key = HeightUtils.expectStringValue(height) + "_" + exam.getSex() + "_4";
+
+								GrowthStandard std = gsMap.get(key);
+								if (std != null) {
+									// logger.debug("标准体重:" + std.getMedian());
+									model.setStdWeight(std.getMedian());
+								} else {
+									// logger.debug("无标准值key:" + key);
+								}
+
 								rows.add(model);
 							}
 						}
@@ -215,11 +227,11 @@ public class MedicalExaminationEvaluateCountBean {
 									 */
 									Map<String, Integer> personCountMap = gradePersonRelationService
 											.getPersonCountMap(tenantId, cnt.getYear(), cnt.getMonth());
-                                    List<IMedicalEvaluate> rowsx = new ArrayList<IMedicalEvaluate>();
-									for(MedicalExamination exam:exams) {
+									List<IMedicalEvaluate> rowsx = new ArrayList<IMedicalEvaluate>();
+									for (MedicalExamination exam : exams) {
 										rowsx.add(exam);
 									}
-                                    list = helper.populate(tenantId, cnt.getYear(), cnt.getMonth(), cnt.getType(),
+									list = helper.populate(tenantId, cnt.getYear(), cnt.getMonth(), cnt.getType(),
 											grades, persons, rowsx, standards, personCountMap);
 									if (list != null && !list.isEmpty()) {
 										for (MedicalExaminationCount model : list) {

@@ -97,7 +97,7 @@ public class MedicalExaminationEvaluateHelper {
 			if (gs != null) {
 				if (weight > gs.getThreeDSDeviation()) {
 					medicalExamination.setWeightLevel(3);
-					medicalExamination.setWeightEvaluate("严重肥胖");
+					medicalExamination.setWeightEvaluate("重度肥胖");
 					medicalExamination
 							.setWeightEvaluateHtml("<span style='color:#ff0000; font:bold 12px 微软雅黑;'>严重肥胖</span>");
 				} else if (weight > gs.getTwoDSDeviation() && weight <= gs.getThreeDSDeviation()) {

@@ -101,7 +101,7 @@ public class TenantReportMainController {
 		params.put("tenantId", tenantId);
 		params.put("tableSuffix", IdentityFactory.getTenantHash(tenantId));
 
-		ReportContainer.getContainer().reload();
+		//ReportContainer.getContainer().reload();
 
 		String reportId = request.getParameter("reportId");
 		ReportDefinition rdf = ReportContainer.getContainer().getReportDefinition(reportId);
