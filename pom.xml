@@ -814,7 +814,7 @@
         <dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
-			<version>5.1.6.RELEASE</version>
+			<version>5.1.7.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>

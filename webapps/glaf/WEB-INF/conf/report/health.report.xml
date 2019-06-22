@@ -376,8 +376,8 @@
 
 	<report id="MedicalExaminationPersonExport">
 	    <templateType>jxls2</templateType>
-		<exportFilename>全园幼儿超重与肥胖汇总表.xls</exportFilename>
-		<templateFile>conf/report/templates/MedicalExaminationPersonExport.xls</templateFile>
+		<exportFilename>全园幼儿超重与肥胖汇总表.xlsx</exportFilename>
+		<templateFile>conf/report/templates/MedicalExaminationPersonExport.xlsx</templateFile>
 		<prepareClass>com.glaf.heathcare.tenant.TenantMedicalExaminationPersonExportPreprocessor</prepareClass>
 	</report>
 

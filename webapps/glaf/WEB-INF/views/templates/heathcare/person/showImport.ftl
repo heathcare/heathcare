@@ -58,6 +58,7 @@
 	<option value="doImport2">按第二套模板导入</option>
 	<option value="doImport3">按三套模板导入</option>
 	<option value="doImportTbx">按TBN模板导入</option>
+	<option value="doImportTbx2">按TBN体检模板导入</option>
 </select>
 <br><br>
 <input type="file" id="file" name="file" size="50" class="input-file"> 

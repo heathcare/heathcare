@@ -124,7 +124,7 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination.setWeightLevel(-1);
 					medicalExamination.setWeightEvaluate("偏瘦");
 					medicalExamination
-							.setWeightEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>低体重</span>");
+							.setWeightEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>偏瘦</span>");
 				} else {
 					medicalExamination.setWeightLevel(0);
 					medicalExamination.setWeightEvaluate("正常");
@@ -222,7 +222,7 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination.setBmiIndex(-1);
 					medicalExamination.setBmiEvaluate("偏瘦");
 					medicalExamination
-							.setBmiEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>低体重</span>");
+							.setBmiEvaluateHtml("<span style='color:#ff9900; font:bold 12px 微软雅黑;'>偏瘦</span>");
 				} else {
 					medicalExamination.setBmiIndex(0);
 					medicalExamination.setBmiEvaluate("正常");

@@ -162,6 +162,23 @@
 		});
 	}
 
+	function importXls(){
+        var link="${contextPath}/heathcare/person/showImport";
+		jQuery.layer({
+			type: 2,
+			maxmin: true,
+			shadeClose: true,
+			title: "导入记录",
+			closeBtn: [0, true],
+			shade: [0.8, '#000'],
+			border: [10, 0.3, '#000'],
+			offset: ['20px',''],
+			fadeIn: 100,
+			area: ['880px', (jQuery(window).height() - 50) +'px'],
+            iframe: {src: link}
+		}); 
+	}
+
 	function editLinkman(personId){
 	    var link="${contextPath}/heathcare/personLinkman?personId="+personId;
 		jQuery.layer({
@@ -555,12 +572,16 @@
 				<td>
 					&nbsp;<img src="${contextPath}/static/images/window.png">
 					&nbsp;<span class="x_content_title">学生信息列表</span>
+					<#if privilege_write == true>
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
 					   onclick="javascript:addNew();">新增</a>
+					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
+					   onclick="javascript:importXls();">导入</a>
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"
 					   onclick="javascript:editSelected();">修改</a>  
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-remove'"
 					   onclick="javascript:deleteSelections();">删除</a>
+					</#if>
 					<#if privilege_export == true>
 					<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon_export_xls'"
 	                   onclick="javascript:doExport1();">导出</a>

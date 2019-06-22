@@ -56,6 +56,7 @@ import com.glaf.heathcare.bean.PersonAndLinkmanXlsImporter;
 import com.glaf.heathcare.bean.PersonAndLinkmanXlsxImporter;
 import com.glaf.heathcare.bean.PersonSimpleXlsImporter;
 import com.glaf.heathcare.bean.PersonSimpleXlsxImporter;
+import com.glaf.heathcare.bean.PersonTbxExaminationExcelImporter;
 import com.glaf.heathcare.bean.PersonTbxExcelImporter;
 import com.glaf.heathcare.converter.HaizgStudentConverter;
 import com.glaf.heathcare.converter.TBNStudentConverter;
@@ -353,6 +354,47 @@ public class PersonController {
 		return this.list(request, modelMap);
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param modelMap
+	 * @param mFile
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/doImportTbx2", method = RequestMethod.POST)
+	public ModelAndView doImportTbx2(HttpServletRequest request, ModelMap modelMap,
+			@RequestParam("file") MultipartFile mFile) throws IOException {
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+		if (mFile != null && !mFile.isEmpty()) {
+			String tenantId = request.getParameter("tenantId");
+			PersonTbxExaminationExcelImporter importer = new PersonTbxExaminationExcelImporter();
+			try {
+				semaphore2.acquire();
+				if (loginContext.isSystemAdministrator()) {
+					if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+						importer.doImport(tenantId, mFile.getInputStream());
+					} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+						importer.doImport(tenantId, mFile.getInputStream());
+					}
+				} else {
+					if (loginContext.isTenantAdmin()) {
+						if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xlsx")) {
+							importer.doImport(loginContext.getTenantId(), mFile.getInputStream());
+						} else if (StringUtils.endsWithIgnoreCase(mFile.getOriginalFilename(), ".xls")) {
+							importer.doImport(loginContext.getTenantId(), mFile.getInputStream());
+						}
+					}
+				}
+			} catch (Exception ex) {
+				logger.error(ex);
+			} finally {
+				semaphore2.release();
+			}
+		}
+		return this.list(request, modelMap);
+	}
+
 	@RequestMapping("/edit")
 	public ModelAndView edit(HttpServletRequest request, ModelMap modelMap) {
 		RequestUtils.setRequestParameterToAttribute(request);
@@ -545,6 +587,18 @@ public class PersonController {
 
 		List<GradeInfo> list = gradeInfoService.getGradeInfosByTenantId(loginContext.getTenantId());
 		request.setAttribute("gradeInfos", list);
+
+		boolean privilege_write = false;
+		if (loginContext.isSystemAdministrator() || loginContext.getRoles().contains("TenantAdmin")
+				|| loginContext.getRoles().contains("HealthPhysician") || loginContext.getRoles().contains("Teacher")) {
+			privilege_write = true;
+		} else {
+			if (loginContext.isTenantAdmin()) {
+				privilege_write = true;
+			}
+		}
+
+		request.setAttribute("privilege_write", privilege_write);
 
 		List<String> charList = new ArrayList<String>();
 		for (int i = 65; i < 91; i++) {

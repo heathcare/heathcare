@@ -166,7 +166,7 @@
 			       class="easyui-numberbox  x-text" precision="1" style="width:60px; text-align:right;"
 				   value="${medicalExamination.height}"/>&nbsp;(厘米cm)
 		</td>
-		<td width="12%" align="left">身高评价</td>
+		<td width="12%" align="left">年龄别身高</td>
 		<td width="38%" align="left">
             <input id="heightEvaluate" name="heightEvaluate" type="text"
 			       class="easyui-validatebox  x-readonly" style="width:180px" readonly
@@ -180,7 +180,7 @@
 			       class="easyui-numberbox x-text" precision="1" style="width:60px; text-align:right;"
 				   value="${medicalExamination.weight}"/>&nbsp;(千克kg)
 		</td>
-		<td width="12%" align="left">体重评价</td>
+		<td width="12%" align="left">年龄别体重</td>
 		<td width="38%" align="left">
             <input id="weightEvaluate" name="weightEvaluate" type="text" 
 			       class="easyui-validatebox x-readonly" style="width:180px" readonly
@@ -194,11 +194,11 @@
 			       class="easyui-numberbox x-text x-readonly" precision="2" style="width:60px; text-align:right;" readonly
 				   value="${medicalExamination.bmi}"/>
 		</td>
-		<td width="12%" align="left">综合评价</td>
+		<td width="12%" align="left">身高别体重</td>
 		<td align="left">
-			 <input id="bmiEvaluate" name="bmiEvaluate" type="text" 
+			 <input id="weightHeightEvaluate" name="weightHeightEvaluate" type="text" 
 			        class="easyui-validatebox x-readonly" style="width:180px" readonly
-				    value="${medicalExamination.bmiEvaluate}"/>
+				    value="${medicalExamination.weightHeightEvaluate}"/>
 		</td>
 	</tr>
 	<tr>

@@ -389,8 +389,13 @@ public class MedicalExaminationJsonFactory {
 		if (model.getWeightEvaluateHtml() != null) {
 			jsonObject.put("weightEvaluateHtml", model.getWeightEvaluateHtml());
 		}
+		
+		jsonObject.put("weightHeightLevel", model.getWeightHeightLevel());
 		if (model.getWeightHeightEvaluate() != null) {
 			jsonObject.put("weightHeightEvaluate", model.getWeightHeightEvaluate());
+		}
+		if (model.getWeightHeightEvaluateHtml() != null) {
+			jsonObject.put("weightHeightEvaluateHtml", model.getWeightHeightEvaluateHtml());
 		}
 		jsonObject.put("weightHeightLevel", model.getWeightHeightLevel());
 		jsonObject.put("weightHeightPercent", model.getWeightHeightPercent());
@@ -642,10 +647,18 @@ public class MedicalExaminationJsonFactory {
 		if (model.getWeightHeightEvaluate() != null) {
 			jsonObject.put("weightHeightEvaluate", model.getWeightHeightEvaluate());
 		}
-		jsonObject.put("weightHeightLevel", model.getWeightHeightLevel());
 		if (model.getWeightEvaluateHtml() != null) {
 			jsonObject.put("weightEvaluateHtml", model.getWeightEvaluateHtml());
 		}
+		
+		jsonObject.put("weightHeightLevel", model.getWeightHeightLevel());
+		if (model.getWeightHeightEvaluate() != null) {
+			jsonObject.put("weightHeightEvaluate", model.getWeightHeightEvaluate());
+		}
+		if (model.getWeightHeightEvaluateHtml() != null) {
+			jsonObject.put("weightHeightEvaluateHtml", model.getWeightHeightEvaluateHtml());
+		}
+		
 		jsonObject.put("weightHeightPercent", model.getWeightHeightPercent());
 		jsonObject.put("bmi", model.getBmi());
 		jsonObject.put("bmiIndex", model.getBmiIndex());

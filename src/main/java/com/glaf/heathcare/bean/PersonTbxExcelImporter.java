@@ -71,7 +71,7 @@ public class PersonTbxExcelImporter {
 				for (int colIndex = 0; colIndex < cells; colIndex++) {
 					Cell cell = row.getCell(colIndex);
 					if (cell != null) {
-						cellValue = ExcelUtils.getStringOrDateValue(cell, 0);
+						cellValue = ExcelUtils.getCellValue(cell);
 						if (cellValue == null) {
 							cellValue = "";
 						}
