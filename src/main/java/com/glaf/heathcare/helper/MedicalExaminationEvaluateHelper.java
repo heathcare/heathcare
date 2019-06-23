@@ -87,6 +87,10 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination
 							.setHeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 				}
+			} else {
+				medicalExamination.setHeightLevel(0);
+				medicalExamination.setHeightEvaluate("正常");
+				medicalExamination.setHeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 			}
 		}
 
@@ -131,6 +135,10 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination
 							.setWeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 				}
+			} else {
+				medicalExamination.setWeightLevel(0);
+				medicalExamination.setWeightEvaluate("正常");
+				medicalExamination.setWeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 			}
 		}
 

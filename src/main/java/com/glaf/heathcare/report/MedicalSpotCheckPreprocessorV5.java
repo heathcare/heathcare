@@ -88,7 +88,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 					if (StringUtils.equals(gs.getType(), "4")) {
 						String key = gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType();
 						gsMap.put(key, gs);
-						//logger.debug("key=" + key);
+						// logger.debug("key=" + key);
 					} else {
 						gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 					}
@@ -282,7 +282,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addNegative2D(exam.getHeight());
 				model.setNegative2DQty(model.getNegative2DQty() + 1);
-				logger.debug("************************************");
+				// logger.debug("************************************");
 				break;
 			case -1:
 				model.addRecord();
@@ -301,7 +301,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addPositive1D(exam.getHeight());
 				model.setPositive1DQty(model.getPositive1DQty() + 1);
-				logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+				// logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 				break;
 			case 2:
 				model.addRecord();

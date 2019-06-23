@@ -276,11 +276,6 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public int getNegative1DQty() {
-		if (negative1DQty == 0) {
-			if (negative1DList.size() > 0) {
-				negative1DQty = negative1DList.size();
-			}
-		}
 		return negative1DQty;
 	}
 
@@ -296,11 +291,6 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public int getNegative2DQty() {
-		if (negative2DQty == 0) {
-			if (negative2DList.size() > 0) {
-				negative2DQty = negative2DList.size();
-			}
-		}
 		return negative2DQty;
 	}
 
@@ -316,11 +306,6 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public int getNegative3DQty() {
-		if (negative3DQty == 0) {
-			if (negative3DList.size() > 0) {
-				negative3DQty = negative3DList.size();
-			}
-		}
 		return negative3DQty;
 	}
 
@@ -336,11 +321,6 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public int getNormalQty() {
-		if (normalQty == 0) {
-			if (normalList.size() > 0) {
-				normalQty = normalList.size();
-			}
-		}
 		return normalQty;
 	}
 
@@ -356,11 +336,6 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public int getPositive1DQty() {
-		if (positive1DQty == 0) {
-			if (positive1DList.size() > 0) {
-				positive1DQty = positive1DList.size();
-			}
-		}
 		return positive1DQty;
 	}
 
@@ -376,11 +351,6 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public int getPositive2DQty() {
-		if (positive2DQty == 0) {
-			if (positive2DList.size() > 0) {
-				positive2DQty = positive2DList.size();
-			}
-		}
 		return positive2DQty;
 	}
 
@@ -396,11 +366,6 @@ public class MedicalSpotCheckTotalModel {
 	}
 
 	public int getPositive3DQty() {
-		if (positive3DQty == 0) {
-			if (positive3DList.size() > 0) {
-				positive3DQty = positive3DList.size();
-			}
-		}
 		return positive3DQty;
 	}
 

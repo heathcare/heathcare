@@ -96,6 +96,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 			}
 			String useMethod = ParamUtils.getString(parameter, "useMethod");
 			MedicalExaminationEvaluateHelper helper = new MedicalExaminationEvaluateHelper();
+			int total = 0;
 			for (MedicalSpotCheck exam : list) {
 				if (exam.getAgeOfTheMoon() > 0 && exam.getHeight() > 0 && exam.getWeight() > 0) {
 					if (StringUtils.contains(exam.getSex(), "1")) {
@@ -108,8 +109,11 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 					} else {
 						helper.evaluate(gsMap, exam);
 					}
+					total++;
 				}
 			}
+
+			logger.debug("合法记录总数:" + total);
 
 			String sex = ParamUtils.getString(parameter, "sex");
 			if (StringUtils.equals(sex, "1")) {
@@ -272,7 +276,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addNegative2D(exam.getHeight());
 				model.setNegative2DQty(model.getNegative2DQty() + 1);
-				logger.debug("************************************");
+				// logger.debug("************************************");
 				break;
 			case -1:
 				model.addRecord();
@@ -291,7 +295,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addPositive1D(exam.getHeight());
 				model.setPositive1DQty(model.getPositive1DQty() + 1);
-				logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+				// logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 				break;
 			case 2:
 				model.addRecord();
