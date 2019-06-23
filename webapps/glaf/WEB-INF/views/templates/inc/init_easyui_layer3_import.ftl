@@ -1,6 +1,6 @@
 <#include "/inc/include.ftl"/>
 
-<link rel="stylesheet" type="text/css" href="${contextPath}/static/plugins/layer3/skin/default/layer.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/static/plugins/layer3/theme/default/layer.css" />
 <link rel="stylesheet" type="text/css" href="${contextPath}/static/plugins/easyui/themes/blue/easyui.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}/static/plugins/ztree/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" type="text/css" href="${contextPath}/static/css/core.css?v3"/>

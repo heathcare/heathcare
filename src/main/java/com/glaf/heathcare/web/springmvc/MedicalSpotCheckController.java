@@ -459,9 +459,14 @@ public class MedicalSpotCheckController {
 
 		int pageNo = ParamUtils.getInt(params, "page");
 		limit = ParamUtils.getInt(params, "rows");
+		if (limit == 0) {
+			limit = ParamUtils.getInt(params, "limit");
+		}
 		start = (pageNo - 1) * limit;
 		orderName = ParamUtils.getString(params, "sortName");
 		order = ParamUtils.getString(params, "sortOrder");
+
+		String uiType = request.getParameter("uiType");
 
 		if (start < 0) {
 			start = 0;
@@ -476,6 +481,7 @@ public class MedicalSpotCheckController {
 			int total = medicalSpotCheckService.getMedicalSpotCheckCountByQueryCriteria(query);
 			if (total > 0) {
 				result.put("code", 0);
+				result.put("count", total);
 				result.put("total", total);
 				result.put("totalCount", total);
 				result.put("totalRecords", total);
@@ -525,11 +531,20 @@ public class MedicalSpotCheckController {
 						rowJSON.put("startIndex", ++start);
 						rowsJSON.add(rowJSON);
 					}
-					result.put("rows", rowsJSON);
+					if (StringUtils.equals(uiType, "layui")) {
+						result.put("data", rowsJSON);
+					} else {
+						result.put("rows", rowsJSON);
+					}
 				}
 			} else {
 				JSONArray rowsJSON = new JSONArray();
-				result.put("rows", rowsJSON);
+				if (StringUtils.equals(uiType, "layui")) {
+					result.put("data", rowsJSON);
+				} else {
+					result.put("rows", rowsJSON);
+				}
+				result.put("count", total);
 				result.put("total", total);
 				result.put("code", 0);
 			}
@@ -538,6 +553,29 @@ public class MedicalSpotCheckController {
 			logger.error(ex);
 		}
 		return result.toJSONString().getBytes("UTF-8");
+	}
+
+	@RequestMapping("/layui")
+	public ModelAndView layui(HttpServletRequest request, ModelMap modelMap) {
+		RequestUtils.setRequestParameterToAttribute(request);
+
+		LoginContext loginContext = RequestUtils.getLoginContext(request);
+
+		MedicalExaminationDefQuery query = new MedicalExaminationDefQuery();
+		if (loginContext.isSystemAdministrator()) {
+			query.tenantId("sys");
+		} else {
+			query.tenantId(loginContext.getTenantId());
+		}
+		List<MedicalExaminationDef> list = medicalExaminationDefService.list(query);
+		request.setAttribute("examDefs", list);
+
+		String view = request.getParameter("view");
+		if (StringUtils.isNotEmpty(view)) {
+			return new ModelAndView(view, modelMap);
+		}
+
+		return new ModelAndView("/heathcare/medicalSpotCheck/layui_list", modelMap);
 	}
 
 	@RequestMapping

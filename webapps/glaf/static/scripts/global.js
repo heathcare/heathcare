@@ -106,6 +106,20 @@ function openMMWin(link, parent) {
 	openWindow(link, parent, x, y, x_width, x_height);
 }
 
+function openMiniWin(link, parent) {
+	var x = 180;
+	var y = 65;
+	if (is_ie) {
+		// x=document.body.scrollLeft+event.clientX-event.offsetX-50;
+		// y=document.body.scrollTop+event.clientY-event.offsetY-50;
+	}
+	// var x_height = Math.floor(window.screen.height * 0.72);
+	// var x_width = Math.floor(window.screen.width*0.58);
+	x_height = 425;
+	x_width = 525;
+	openWindow(link, parent, x, y, x_width, x_height);
+}
+
 function selectProvince(elementId) {
 	var link = contextPath + "/district/json?parentId=0";
 	jQuery.getJSON(link, function(data) {

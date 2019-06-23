@@ -241,7 +241,7 @@
 	function showImport(){
 		var checkId = jQuery("#checkId").val();
         var link='${request.contextPath}/heathcare/medicalSpotCheck/showImport?type=spotM&checkId='+checkId;
-		    layer.open({
+		layer.open({
 			  type: 2,
 			  maxmin: true,
 			  shadeClose: true,
