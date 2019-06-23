@@ -18,8 +18,8 @@
 
 package com.glaf.heathcare.domain;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.glaf.core.util.FileUtils;
 
@@ -97,21 +97,21 @@ public class MedicalSpotCheckTotalModel {
 
 	protected String sample;
 
-	protected List<ItemValue> negative3DList = new ArrayList<ItemValue>();
+	protected List<ItemValue> negative3DList = new CopyOnWriteArrayList<ItemValue>();
 
-	protected List<ItemValue> negative2DList = new ArrayList<ItemValue>();
+	protected List<ItemValue> negative2DList = new CopyOnWriteArrayList<ItemValue>();
 
-	protected List<ItemValue> negative1DList = new ArrayList<ItemValue>();
+	protected List<ItemValue> negative1DList = new CopyOnWriteArrayList<ItemValue>();
 
-	protected List<ItemValue> normalList = new ArrayList<ItemValue>();
+	protected List<ItemValue> normalList = new CopyOnWriteArrayList<ItemValue>();
 
-	protected List<ItemValue> positive1DList = new ArrayList<ItemValue>();
+	protected List<ItemValue> positive1DList = new CopyOnWriteArrayList<ItemValue>();
 
-	protected List<ItemValue> positive2DList = new ArrayList<ItemValue>();
+	protected List<ItemValue> positive2DList = new CopyOnWriteArrayList<ItemValue>();
 
-	protected List<ItemValue> positive3DList = new ArrayList<ItemValue>();
+	protected List<ItemValue> positive3DList = new CopyOnWriteArrayList<ItemValue>();
 
-	protected List<SevenLevelMethod> childrenList = new ArrayList<SevenLevelMethod>();
+	protected List<SevenLevelMethod> childrenList = new CopyOnWriteArrayList<SevenLevelMethod>();
 
 	public MedicalSpotCheckTotalModel() {
 
@@ -523,28 +523,28 @@ public class MedicalSpotCheckTotalModel {
 		this.min = min;
 	}
 
-	public void setNegative1DList(List<ItemValue> negative1dList) {
-		negative1DList = negative1dList;
+	public void setNegative1DList(List<ItemValue> negative1DList) {
+		this.negative1DList = negative1DList;
 	}
 
-	public void setNegative1DQty(int negative1dQty) {
-		negative1DQty = negative1dQty;
+	public void setNegative1DQty(int negative1DQty) {
+		this.negative1DQty = negative1DQty;
 	}
 
-	public void setNegative2DList(List<ItemValue> negative2dList) {
-		negative2DList = negative2dList;
+	public void setNegative2DList(List<ItemValue> negative2DList) {
+		this.negative2DList = negative2DList;
 	}
 
-	public void setNegative2DQty(int negative2dQty) {
-		negative2DQty = negative2dQty;
+	public void setNegative2DQty(int negative2DQty) {
+		this.negative2DQty = negative2DQty;
 	}
 
-	public void setNegative3DList(List<ItemValue> negative3dList) {
-		negative3DList = negative3dList;
+	public void setNegative3DList(List<ItemValue> negative3DList) {
+		this.negative3DList = negative3DList;
 	}
 
-	public void setNegative3DQty(int negative3dQty) {
-		negative3DQty = negative3dQty;
+	public void setNegative3DQty(int negative3DQty) {
+		this.negative3DQty = negative3DQty;
 	}
 
 	public void setNormalList(List<ItemValue> normalList) {
@@ -555,28 +555,28 @@ public class MedicalSpotCheckTotalModel {
 		this.normalQty = normalQty;
 	}
 
-	public void setPositive1DList(List<ItemValue> positive1dList) {
-		positive1DList = positive1dList;
+	public void setPositive1DList(List<ItemValue> positive1DList) {
+		this.positive1DList = positive1DList;
 	}
 
-	public void setPositive1DQty(int positive1dQty) {
-		positive1DQty = positive1dQty;
+	public void setPositive1DQty(int positive1DQty) {
+		this.positive1DQty = positive1DQty;
 	}
 
-	public void setPositive2DList(List<ItemValue> positive2dList) {
-		positive2DList = positive2dList;
+	public void setPositive2DList(List<ItemValue> positive2DList) {
+		this.positive2DList = positive2DList;
 	}
 
-	public void setPositive2DQty(int positive2dQty) {
-		positive2DQty = positive2dQty;
+	public void setPositive2DQty(int positive2DQty) {
+		this.positive2DQty = positive2DQty;
 	}
 
-	public void setPositive3DList(List<ItemValue> positive3dList) {
-		positive3DList = positive3dList;
+	public void setPositive3DList(List<ItemValue> positive3DList) {
+		this.positive3DList = positive3DList;
 	}
 
-	public void setPositive3DQty(int positive3dQty) {
-		positive3DQty = positive3dQty;
+	public void setPositive3DQty(int positive3DQty) {
+		this.positive3DQty = positive3DQty;
 	}
 
 	public void setRecordTotal(int recordTotal) {

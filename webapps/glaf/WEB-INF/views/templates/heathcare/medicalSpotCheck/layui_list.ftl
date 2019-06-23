@@ -297,6 +297,7 @@
     function showImportXy(){
 		var checkId = jQuery("#checkId").val();
         var link='${request.contextPath}/heathcare/medicalSpotCheck/showImport?type=spotM&checkId='+checkId;
+		/**
 		layui.use('layer', function(){
 		  //var layer = layui.layer;
 		  layer.open({
@@ -310,6 +311,7 @@
 			  content: [link, 'no']
 			});
 		});
+		**/
 		openMiniWin(link, this);
 	}
 
@@ -324,8 +326,8 @@
 <table>
  <tr style="margin-top:2px; height:38px; line-height:38px; ">
 	<td align="left">
-	    &nbsp;<img src="${request.contextPath}/static/images/window.png">&nbsp;
-			<span class="x_content_title">体检信息列表</span></td>
+	    &nbsp;<img src="${request.contextPath}/static/images/window.png">&nbsp;<span class="x_content_title">体检信息列表</span>
+	</td>
 	<td align="left">
 	    &nbsp;<select id="checkId" name="checkId" onchange="javascript:doSearch();">
 					<option value="" selected>----请选择----</option>
@@ -509,19 +511,19 @@ layui.use('table', function(){
     ,cols: [[
 	  {type:'checkbox'},
       {field:'startIndex', width:80, title: '序号', sort: true},
-      {field:'name', width:80, title: '姓名'},
-      {field:'sex', width:80, title: '性别', templet: '#switchSexTpl', sort: true},
-      {field:'ageOfTheMoonString', width:80, title: '月龄', sort:true},
+      {field:'name', width:80, title: '姓名', align:"center"},
+      {field:'sex', width:80, title: '性别', align:"center", templet: '#switchSexTpl', sort: true},
+      {field:'ageOfTheMoonString', width:90, title: '月龄', align:"center", sort:true},
       {title:'民族', field:'nation', width:80, sort:true},
 	  {title:'身高', field:'height', width:80, sort:true, align:'right'},
-	  {title:'身高评价', field:'heightEvaluateHtml', width:100, sort:true},
+	  {title:'身高评价', field:'heightEvaluateHtml', width:100, align:"center", sort:true},
 	  {title:'体重', field:'weight', width:80, sort:true, align:'right'},
-	  {title:'体重评价', field:'weightEvaluateHtml', width:100, sort:true},
-	  {title:'血红蛋白Hb', field:'hemoglobin', width:100, align:"center", sort:true},
+	  {title:'体重评价', field:'weightEvaluateHtml', width:100, align:"center", sort:true},
+	  {title:'血红蛋白Hb', field:'hemoglobin', width:110, align:"center", sort:true},
 	  {title:'市', field:'city', width:120, sort:true},
 	  {title:'区/县', field:'area', width:120, sort:true},
-	  {title:'园所名称', field:'organization', width:180, sort:true},
-	  {title:'园所性质', field:'organizationProperty', width:90, sort:true},
+	  {title:'园所名称', field:'organization', width:250, sort:true},
+	  {title:'园所性质', field:'organizationProperty', width:100, align:"center", sort:true},
 	  {title:'功能键', fixed: 'right', toolbar: '#my_function_bar', width:80}
     ]]
     

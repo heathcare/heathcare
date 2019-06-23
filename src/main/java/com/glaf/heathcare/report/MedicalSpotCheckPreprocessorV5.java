@@ -71,6 +71,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 	 * @param params 参数
 	 */
 	public void prepare(Tenant tenant, Map<String, Object> parameter) {
+		logger.debug("--------------------MedicalSpotCheckPreprocessorV5--------");
 		logger.debug("parameter:" + parameter);
 		MedicalSpotCheckQuery query = new MedicalSpotCheckQuery();
 		Tools.populate(query, parameter);
@@ -192,26 +193,24 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 				model.addTotla(exam.getWeight());
 				model.addPositive1D(exam.getWeight());
 				model.setPositive1DQty(model.getPositive1DQty() + 1);
-				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			case 2:
 				model.addRecord();
 				model.addTotla(exam.getWeight());
 				model.addPositive2D(exam.getWeight());
 				model.setPositive2DQty(model.getPositive2DQty() + 1);
-				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			case 3:
 				model.addRecord();
 				model.addTotla(exam.getWeight());
 				model.addPositive3D(exam.getWeight());
 				model.setPositive3DQty(model.getPositive3DQty() + 1);
-				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			default:
 				model.addRecord();
 				model.setRecordTotal(model.getRecordTotal() + 1);
 				model.addTotla(exam.getWeight());
+				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			}
 		} else if (StringUtils.equals(checkType, "H/A")) {// H/A年龄别身高
@@ -267,6 +266,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 			default:
 				model.addRecord();
 				model.addTotla(exam.getHeight());
+				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			}
 		} else if (StringUtils.equals(checkType, "W/H")) {// W/H身高别体重
@@ -282,6 +282,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addNegative2D(exam.getHeight());
 				model.setNegative2DQty(model.getNegative2DQty() + 1);
+				logger.debug("************************************");
 				break;
 			case -1:
 				model.addRecord();
@@ -300,6 +301,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addPositive1D(exam.getHeight());
 				model.setPositive1DQty(model.getPositive1DQty() + 1);
+				logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 				break;
 			case 2:
 				model.addRecord();
@@ -316,6 +318,7 @@ public class MedicalSpotCheckPreprocessorV5 implements IReportPreprocessor {
 			default:
 				model.addRecord();
 				model.addTotla(exam.getHeight());
+				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			}
 		}

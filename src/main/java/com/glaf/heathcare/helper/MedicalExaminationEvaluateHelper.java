@@ -156,8 +156,8 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination.setWeightHeightEvaluateHtml(
 							"<span style='color:#ff6666; font:bold 12px 微软雅黑;'>中度肥胖</span>");
 				} else if (weight > gs.getOneDSDeviation() && weight <= gs.getTwoDSDeviation()) {
-					medicalExamination.setWeightLevel(1);
-					medicalExamination.setWeightEvaluate("轻度肥胖");
+					medicalExamination.setWeightHeightLevel(1);
+					medicalExamination.setWeightHeightEvaluate("轻度肥胖");
 					medicalExamination.setWeightHeightEvaluateHtml(
 							"<span style='color:#ff9900; font:bold 12px 微软雅黑;'>轻度肥胖</span>");
 				} else if (weight < gs.getNegativeThreeDSDeviation()) {
@@ -166,8 +166,8 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination
 							.setWeightHeightEvaluateHtml("<span style='color:#ff6666; font:bold 12px 微软雅黑;'>消瘦</span>");
 				} else if (weight < gs.getNegativeTwoDSDeviation() && weight >= gs.getNegativeThreeDSDeviation()) {
-					medicalExamination.setWeightLevel(-2);
-					medicalExamination.setWeightEvaluate("体重低下");
+					medicalExamination.setWeightHeightLevel(-2);
+					medicalExamination.setWeightHeightEvaluate("体重低下");
 					medicalExamination.setWeightHeightEvaluateHtml(
 							"<span style='color:#ff9900; font:bold 12px 微软雅黑;'>体重低下</span>");
 				} else if (weight < gs.getNegativeOneDSDeviation() && weight >= gs.getNegativeTwoDSDeviation()) {
@@ -182,7 +182,11 @@ public class MedicalExaminationEvaluateHelper {
 							.setWeightHeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 				}
 			} else {
-				// logger.warn("无匹配身高的体重值！");
+				logger.warn(key + "无匹配身高的体重值！");
+				medicalExamination.setWeightHeightLevel(0);
+				medicalExamination.setWeightHeightEvaluate("正常");
+				medicalExamination
+						.setWeightHeightEvaluateHtml("<span style='color:#339933; font:bold 12px 微软雅黑;'>正常</span>");
 			}
 		}
 
@@ -336,8 +340,8 @@ public class MedicalExaminationEvaluateHelper {
 					medicalExamination
 							.setWeightHeightEvaluateHtml("<span style='color:#ff6666; font:bold 12px 微软雅黑;'>消瘦</span>");
 				} else if (weight < gs.getPercent15() && weight >= gs.getPercent3()) {
-					medicalExamination.setWeightLevel(-2);
-					medicalExamination.setWeightEvaluate("低体重");
+					medicalExamination.setWeightHeightLevel(-2);
+					medicalExamination.setWeightHeightEvaluate("低体重");
 					medicalExamination.setWeightHeightEvaluateHtml(
 							"<span style='color:#ff9900; font:bold 12px 微软雅黑;'>低体重</span>");
 				} else {

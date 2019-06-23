@@ -71,6 +71,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 	 * @param params 参数
 	 */
 	public void prepare(Tenant tenant, Map<String, Object> parameter) {
+		logger.debug("--------------------MedicalSpotCheckPreprocessorV6--------");
 		logger.debug("parameter:" + parameter);
 		MedicalSpotCheckQuery query = new MedicalSpotCheckQuery();
 		Tools.populate(query, parameter);
@@ -86,6 +87,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 				for (GrowthStandard gs : standards) {
 					if (StringUtils.equals(gs.getType(), "4")) {
 						// int height = (int) Math.round(gs.getHeight());
+						// logger.debug(gs.getHeight());
 						gsMap.put(gs.getHeight() + "_" + gs.getSex() + "_" + gs.getType(), gs);
 					} else {
 						gsMap.put(gs.getAgeOfTheMoon() + "_" + gs.getSex() + "_" + gs.getType(), gs);
@@ -157,12 +159,6 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 
 	protected void populate(MedicalSpotCheck exam, MedicalSpotCheckTotalModel model, String checkType) {
 		if (StringUtils.equals(checkType, "W/A")) {// W/A年龄别体重
-			if (model.getMax() < exam.getWeight()) {
-				model.setMax(exam.getWeight());
-			}
-			if (model.getMin() > exam.getWeight()) {
-				model.setMin(exam.getWeight());
-			}
 			switch (exam.getWeightLevel()) {
 			case -3:
 				model.addRecord();
@@ -193,35 +189,27 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 				model.addTotla(exam.getWeight());
 				model.addPositive1D(exam.getWeight());
 				model.setPositive1DQty(model.getPositive1DQty() + 1);
-				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			case 2:
 				model.addRecord();
 				model.addTotla(exam.getWeight());
 				model.addPositive2D(exam.getWeight());
 				model.setPositive2DQty(model.getPositive2DQty() + 1);
-				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			case 3:
 				model.addRecord();
 				model.addTotla(exam.getWeight());
 				model.addPositive3D(exam.getWeight());
 				model.setPositive3DQty(model.getPositive3DQty() + 1);
-				model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			default:
 				model.addRecord();
 				model.setRecordTotal(model.getRecordTotal() + 1);
 				model.addTotla(exam.getWeight());
+				// model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			}
 		} else if (StringUtils.equals(checkType, "H/A")) {// H/A年龄别身高
-			if (model.getMax() < exam.getHeight()) {
-				model.setMax(exam.getHeight());
-			}
-			if (model.getMin() > exam.getHeight()) {
-				model.setMin(exam.getHeight());
-			}
 			switch (exam.getHeightLevel()) {
 			case -3:
 				model.addRecord();
@@ -268,6 +256,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 			default:
 				model.addRecord();
 				model.addTotla(exam.getHeight());
+				// model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			}
 		} else if (StringUtils.equals(checkType, "W/H")) {// W/H身高别体重
@@ -283,6 +272,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addNegative2D(exam.getHeight());
 				model.setNegative2DQty(model.getNegative2DQty() + 1);
+				logger.debug("************************************");
 				break;
 			case -1:
 				model.addRecord();
@@ -301,6 +291,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 				model.addTotla(exam.getHeight());
 				model.addPositive1D(exam.getHeight());
 				model.setPositive1DQty(model.getPositive1DQty() + 1);
+				logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 				break;
 			case 2:
 				model.addRecord();
@@ -317,6 +308,7 @@ public class MedicalSpotCheckPreprocessorV6 implements IReportPreprocessor {
 			default:
 				model.addRecord();
 				model.addTotla(exam.getHeight());
+				// model.setNormalQty(model.getNormalQty() + 1);
 				break;
 			}
 		}
