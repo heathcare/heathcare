@@ -294,6 +294,40 @@
         window.open(link);
 	}
 
+	function doExport8(groupByField){
+		var sex = jQuery("#sex").val();
+		var checkId = jQuery("#checkId").val();
+		var nationLike = jQuery("#nationLike").val();
+		var areaLike = jQuery("#areaLike").val();
+		var cityLike = jQuery("#cityLike").val();
+		var organizationLike = jQuery("#organizationLike").val();
+        
+		if(checkId == ""){
+			layer.alert("请选择一个主题！");
+			return;
+		}
+
+		if(sex == ""){
+			layer.alert("请选择男生或女生！");
+			return;
+		}
+
+		var link="${contextPath}/heathcare/reportMain/exportXls?reportId=MedicalSpotCheckTotalV8&useExt=Y";
+		link = link + "&sex="+sex+"&time="+getNowFormatDate()+"&megerFlag=Y&checkId="+checkId+"&groupByField="+groupByField;
+
+		if(organizationLike != ""){
+			link = link + "&organizationLike=" + organizationLike;
+		}
+		if(cityLike != ""){
+			link = link  + "&cityLike=" + cityLike;
+		}
+		if(areaLike != ""){
+			link = link  + "&areaLike=" + areaLike;
+		}
+
+        window.open(link);
+	}
+
     function showImportXy(){
 		var checkId = jQuery("#checkId").val();
         var link='${request.contextPath}/heathcare/medicalSpotCheck/showImport?type=spotM&checkId='+checkId;
@@ -460,13 +494,19 @@
 	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport3();">体格评价表</button>
 	</td>
 	<td align="left">
-	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport4();">体格评价统计表</button>
+	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport4();">统计表</button>
 	</td>
 	<td align="left">
-	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport5();">体格评价统计总表</button>
+	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport5();">统计总表</button>
 	</td>
 	<td align="left">
-	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport6();">体格评价统计总表（按民族）</button>
+	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport6();">统计总表（按民族）</button>
+	</td>
+	<td align="left">
+	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport8('organizationLevel');">统计总表（按等级）</button>
+	</td>
+	<td align="left">
+	   &nbsp;<button class="layui-btn layui-btn-sm" onclick="javascript:doExport8('city');">统计总表（按地市）</button>
 	</td>
   </tr>
  </table> 
@@ -523,7 +563,9 @@ layui.use('table', function(){
 	  {title:'市', field:'city', width:120, sort:true},
 	  {title:'区/县', field:'area', width:120, sort:true},
 	  {title:'园所名称', field:'organization', width:250, sort:true},
-	  {title:'园所性质', field:'organizationProperty', width:100, align:"center", sort:true},
+	  {title:'等级', field:'organizationLevel', width:100, align:"center", sort:true},
+	  {title:'性质', field:'organizationProperty', width:100, align:"center", sort:true},
+	  {title:'地域', field:'organizationTerritory', width:100, align:"center", sort:true},
 	  {title:'功能键', fixed: 'right', toolbar: '#my_function_bar', width:80}
     ]]
     
