@@ -208,25 +208,6 @@
 			<artifactId>base64</artifactId>
 			<version>2.3.9</version>
 		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.61</version>
-			<type>jar</type>
-		</dependency>
-        <dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcpkix-jdk15on</artifactId>
-			<version>1.61</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcmail-jdk15on</artifactId>
-			<version>1.61</version>
-			<type>jar</type>
-		</dependency>
-
 		<!--JAVA脚本语句执行工具 -->
 		<dependency>
 			<groupId>bsf</groupId>
@@ -482,19 +463,16 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>1.62</version>
-			<type>jar</type>
 		</dependency>
-		<dependency>
+        <dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 			<version>1.62</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcmail-jdk15on</artifactId>
 			<version>1.62</version>
-			<type>jar</type>
 		</dependency>
 		<!-- 跨域请求工具 -->
 		<dependency>
