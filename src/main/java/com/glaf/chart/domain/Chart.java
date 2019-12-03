@@ -181,6 +181,12 @@ public class Chart implements Serializable, JSONable {
 	protected String mapping;
 
 	/**
+	 * 语句编号
+	 */
+	@Column(name = "STATEMENTID_", length = 50)
+	protected String statementId;
+
+	/**
 	 * X坐标标签
 	 */
 	@Column(name = "COORDINATEX_", length = 100)
@@ -542,6 +548,10 @@ public class Chart implements Serializable, JSONable {
 		return seriesDataJson;
 	}
 
+	public String getStatementId() {
+		return statementId;
+	}
+
 	public double getStepScale() {
 		return stepScale;
 	}
@@ -776,6 +786,10 @@ public class Chart implements Serializable, JSONable {
 
 	public void setSeriesDataJson(String seriesDataJson) {
 		this.seriesDataJson = seriesDataJson;
+	}
+
+	public void setStatementId(String statementId) {
+		this.statementId = statementId;
 	}
 
 	public void setStepScale(double stepScale) {

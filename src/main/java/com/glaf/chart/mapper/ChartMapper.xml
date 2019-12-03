@@ -4,66 +4,90 @@
 
 <mapper namespace="com.glaf.chart.mapper.ChartMapper">
 
-	<resultMap id="chartResultMap" type="com.glaf.chart.domain.Chart">
+	<resultMap id="chartResultMap"
+		type="com.glaf.chart.domain.Chart">
 		<id property="id" column="ID_" jdbcType="VARCHAR" />
 		<result property="nodeId" column="NODEID_" jdbcType="BIGINT" />
-		<result property="datasetIds" column="DATASETIDS_" jdbcType="VARCHAR" />
+		<result property="datasetIds" column="DATASETIDS_"
+			jdbcType="VARCHAR" />
 		<result property="secondDatasetIds" column="SECOND_DATASETIDS_"
 			jdbcType="VARCHAR" />
 		<result property="thirdDatasetIds" column="THIRD_DATASETIDS_"
 			jdbcType="VARCHAR" />
-		<result property="queryIds" column="QUERYIDS_" jdbcType="VARCHAR" />
-		<result property="querySQL" column="QUERYSQL_" jdbcType="VARCHAR" />
+		<result property="queryIds" column="QUERYIDS_"
+			jdbcType="VARCHAR" />
+		<result property="querySQL" column="QUERYSQL_"
+			jdbcType="VARCHAR" />
+		<result property="statementId" column="STATEMENTID_"
+			jdbcType="VARCHAR" />
 		<result property="subject" column="SUBJECT_" jdbcType="VARCHAR" />
-		<result property="chartName" column="CHARTNAME_" jdbcType="VARCHAR" />
-		<result property="chartType" column="CHARTTYPE_" jdbcType="VARCHAR" />
+		<result property="chartName" column="CHARTNAME_"
+			jdbcType="VARCHAR" />
+		<result property="chartType" column="CHARTTYPE_"
+			jdbcType="VARCHAR" />
 		<result property="secondChartType" column="SECOND_CHARTTYPE_"
 			jdbcType="VARCHAR" />
 		<result property="thirdChartType" column="THIRD_CHARTTYPE_"
 			jdbcType="VARCHAR" />
-		<result property="chartFont" column="CHARTFONT_" jdbcType="VARCHAR" />
+		<result property="chartFont" column="CHARTFONT_"
+			jdbcType="VARCHAR" />
 		<result property="chartFontSize" column="CHARTFONTSIZE_"
 			jdbcType="INTEGER" />
-		<result property="chartTitle" column="CHARTTITLE_" jdbcType="VARCHAR" />
+		<result property="chartTitle" column="CHARTTITLE_"
+			jdbcType="VARCHAR" />
 		<result property="chartSubTitle" column="CHARTSUBTITLE_"
 			jdbcType="VARCHAR" />
 		<result property="chartTitleFont" column="CHARTTITLEFONT_"
 			jdbcType="VARCHAR" />
-		<result property="chartTitleFontSize" column="CHARTTITLEFONTSIZE_"
+		<result property="chartTitleFontSize"
+			column="CHARTTITLEFONTSIZE_" jdbcType="INTEGER" />
+		<result property="chartSubTitleFontSize"
+			column="CHARTSUBTITLEFONTSIZE_" jdbcType="INTEGER" />
+		<result property="chartWidth" column="CHARTWIDTH_"
 			jdbcType="INTEGER" />
-		<result property="chartSubTitleFontSize" column="CHARTSUBTITLEFONTSIZE_"
+		<result property="chartHeight" column="CHARTHEIGHT_"
 			jdbcType="INTEGER" />
-		<result property="chartWidth" column="CHARTWIDTH_" jdbcType="INTEGER" />
-		<result property="chartHeight" column="CHARTHEIGHT_" jdbcType="INTEGER" />
 		<result property="mapping" column="MAPPING_" jdbcType="VARCHAR" />
-		<result property="imageType" column="IMAGETYPE_" jdbcType="VARCHAR" />
+		<result property="imageType" column="IMAGETYPE_"
+			jdbcType="VARCHAR" />
 		<result property="theme" column="THEME_" jdbcType="VARCHAR" />
 		<result property="legend" column="LEGEND_" jdbcType="VARCHAR" />
 		<result property="tooltip" column="TOOLTIP_" jdbcType="VARCHAR" />
-		<result property="coordinateX" column="COORDINATEX_" jdbcType="VARCHAR" />
-		<result property="coordinateY" column="COORDINATEY_" jdbcType="VARCHAR" />
-		<result property="secondCoordinateX" column="SECOND_COORDINATEX_"
+		<result property="coordinateX" column="COORDINATEX_"
 			jdbcType="VARCHAR" />
-		<result property="secondCoordinateY" column="SECOND_COORDINATEY_"
+		<result property="coordinateY" column="COORDINATEY_"
 			jdbcType="VARCHAR" />
+		<result property="secondCoordinateX"
+			column="SECOND_COORDINATEX_" jdbcType="VARCHAR" />
+		<result property="secondCoordinateY"
+			column="SECOND_COORDINATEY_" jdbcType="VARCHAR" />
 		<result property="plotOrientation" column="PLOTORIENTATION_"
 			jdbcType="VARCHAR" />
 		<result property="enable3DFlag" column="ENABLE3DFLAG_"
 			jdbcType="VARCHAR" />
-		<result property="enableFlag" column="ENABLEFLAG_" jdbcType="VARCHAR" />
+		<result property="enableFlag" column="ENABLEFLAG_"
+			jdbcType="VARCHAR" />
 		<result property="gradientFlag" column="GRADIENTFLAG_"
 			jdbcType="VARCHAR" />
-		<result property="databaseId" column="DATABASEID_" jdbcType="BIGINT" />
-		<result property="maxRowCount" column="MAXROWCOUNT_" jdbcType="INTEGER" />
-		<result property="maxScale" column="MAXSCALE_" jdbcType="DOUBLE" />
-		<result property="minScale" column="MINSCALE_" jdbcType="DOUBLE" />
-		<result property="stepScale" column="STEPSCALE_" jdbcType="DOUBLE" />
-		<result property="createDate" column="CREATEDATE_" jdbcType="TIMESTAMP" />
-		<result property="createBy" column="CREATEBY_" jdbcType="VARCHAR" />
+		<result property="databaseId" column="DATABASEID_"
+			jdbcType="BIGINT" />
+		<result property="maxRowCount" column="MAXROWCOUNT_"
+			jdbcType="INTEGER" />
+		<result property="maxScale" column="MAXSCALE_"
+			jdbcType="DOUBLE" />
+		<result property="minScale" column="MINSCALE_"
+			jdbcType="DOUBLE" />
+		<result property="stepScale" column="STEPSCALE_"
+			jdbcType="DOUBLE" />
+		<result property="createDate" column="CREATEDATE_"
+			jdbcType="TIMESTAMP" />
+		<result property="createBy" column="CREATEBY_"
+			jdbcType="VARCHAR" />
 	</resultMap>
 
 
-	<insert id="insertChart" parameterType="com.glaf.chart.domain.Chart">
+	<insert id="insertChart"
+		parameterType="com.glaf.chart.domain.Chart">
 		insert into SYS_CHART
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			ID_
@@ -84,6 +108,9 @@
 			</if>
 			<if test="querySQL != null">
 				,QUERYSQL_
+			</if>
+			<if test="statementId != null">
+				,STATEMENTID_
 			</if>
 			<if test="subject != null">
 				,SUBJECT_
@@ -210,6 +237,9 @@
 			<if test="querySQL != null">
 				,#{querySQL, jdbcType=VARCHAR}
 			</if>
+			<if test="statementId != null">
+				,#{statementId, jdbcType=VARCHAR}
+			</if>
 			<if test="subject != null">
 				,#{subject, jdbcType=VARCHAR}
 			</if>
@@ -316,7 +346,8 @@
 	</insert>
 
 
-	<update id="updateChart" parameterType="com.glaf.chart.domain.Chart">
+	<update id="updateChart"
+		parameterType="com.glaf.chart.domain.Chart">
 		update SYS_CHART
 		set
 		<trim prefix="" suffix="" suffixOverrides=",">
@@ -335,6 +366,9 @@
 			</if>
 			<if test="queryIds != null">
 				QUERYIDS_ = #{queryIds, jdbcType=VARCHAR},
+			</if>
+			<if test="statementId != null">
+				STATEMENTID_ = #{statementId, jdbcType=VARCHAR},
 			</if>
 			<if test="querySQL != null">
 				QUERYSQL_ = #{querySQL, jdbcType=VARCHAR},
@@ -452,7 +486,8 @@
 	</delete>
 
 
-	<delete id="deleteCharts" parameterType="com.glaf.chart.query.ChartQuery">
+	<delete id="deleteCharts"
+		parameterType="com.glaf.chart.query.ChartQuery">
 		delete from SYS_CHART
 		where (
 		ID_ IN
@@ -464,12 +499,14 @@
 	</delete>
 
 
-	<select id="getChartById" parameterType="string" resultMap="chartResultMap">
+	<select id="getChartById" parameterType="string"
+		resultMap="chartResultMap">
 		select * from SYS_CHART where ID_ = #{id}
 	</select>
 
 
-	<select id="getCharts" parameterType="com.glaf.chart.query.ChartQuery"
+	<select id="getCharts"
+		parameterType="com.glaf.chart.query.ChartQuery"
 		resultMap="chartResultMap">
 		select E.*
 		<include refid="selectChartsSql" />
@@ -479,8 +516,8 @@
 	</select>
 
 
-	<select id="getChartCount" parameterType="com.glaf.chart.query.ChartQuery"
-		resultType="int">
+	<select id="getChartCount"
+		parameterType="com.glaf.chart.query.ChartQuery" resultType="int">
 		select count(*)
 		<include refid="selectChartsSql" />
 	</select>
