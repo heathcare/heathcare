@@ -24,7 +24,7 @@
     $('#container').highcharts({
         chart: {
             type: 'bar'
-			<#if chart.enable3DFlag == '1'>
+			<#if chart.enable3DFlag == '1' >
 			,margin: 75
 			,options3d: {
                 enabled: true,
@@ -92,7 +92,7 @@ $(document).ready(function(){
 	$("button.btn").click(function(){
 		var theme = $(this).attr("theme");
 		if(theme != null) {
-		    window.location.href="${contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
+		    window.location.href="${request.contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
 		}
     });
 });

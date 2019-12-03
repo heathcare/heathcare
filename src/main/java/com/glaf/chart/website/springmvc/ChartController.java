@@ -236,7 +236,7 @@ public class ChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/mychart/showChart", modelMap);
+		return new ModelAndView("/mychart/showChart", modelMap);
 	}
 
 	@ResponseBody

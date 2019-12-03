@@ -165,7 +165,7 @@ public class ChartCombinationController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/combination/edit", modelMap);
+		return new ModelAndView("/chart/combination/edit", modelMap);
 	}
 
 	@RequestMapping("/json")
@@ -274,7 +274,7 @@ public class ChartCombinationController {
 			return new ModelAndView(view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/combination/list", modelMap);
+		return new ModelAndView("/chart/combination/list", modelMap);
 	}
 
 	@RequestMapping("/preview")
@@ -407,7 +407,7 @@ public class ChartCombinationController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/combination/" + chartCombination.getType(), modelMap);
+		return new ModelAndView("/chart/combination/" + chartCombination.getType(), modelMap);
 	}
 
 	@RequestMapping("/query")
@@ -421,7 +421,7 @@ public class ChartCombinationController {
 		if (StringUtils.isNotEmpty(x_view)) {
 			return new ModelAndView(x_view, modelMap);
 		}
-		return new ModelAndView("/matrix/chart/combination/query", modelMap);
+		return new ModelAndView("/chart/combination/query", modelMap);
 	}
 
 	 
@@ -550,7 +550,7 @@ public class ChartCombinationController {
 			return new ModelAndView(x_view);
 		}
 
-		return new ModelAndView("/matrix/chart/combination/view");
+		return new ModelAndView("/chart/combination/view");
 	}
 
 }

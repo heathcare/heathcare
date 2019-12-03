@@ -10,48 +10,7 @@
 } 
 </style>
 <script type="text/javascript">
-
-  /**
-   var setting = {
-			async: {
-				enable: true,
-				url:"${contextPath}/rs/tree/treeJson?nodeCode=report_category",
-				dataFilter: filter
-			},
-			callback: {
-				onClick: zTreeOnClick
-			}
-		};
   
-  	function filter(treeId, parentNode, childNodes) {
-		if (!childNodes) return null;
-		for (var i=0, l=childNodes.length; i<l; i++) {
-			childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
-			childNodes[i].icon="${contextPath}/static/images/basic.gif";
-		}
-		return childNodes;
-	}
-
-
-    function zTreeOnClick(event, treeId, treeNode, clickFlag) {
-		jQuery("#nodeId").val(treeNode.id);
-		loadMxData('${contextPath}/chart/json?nodeId='+treeNode.id);
-	}
-
-	function loadMxData(url){
-		  jQuery.get(url+'&randnum='+Math.floor(Math.random()*1000000),{qq:'xx'},function(data){
-		      //var text = JSON.stringify(data); 
-              //alert(text);
-			  jQuery('#mydatagrid').datagrid('loadData', data);
-			  //jQuery('#mydatagrid').datagrid('load',getMxObjArray(jQuery("#iForm").serializeArray()));
-		  },'json');
-	}
-
-    jQuery(document).ready(function(){
-			jQuery.fn.zTree.init(jQuery("#myTree"), setting);
-	});
-
-  **/
 		jQuery(function(){
 			jQuery('#mydatagrid').datagrid({
 				width:1000,
@@ -61,7 +20,7 @@
 				nowrap: false,
 				striped: true,
 				collapsible:true,
-				url:'${contextPath}/chart/json',
+				url:'${request.contextPath}/chart/json',
 				remoteSort: false,
 				singleSelect:true,
 				idField:'id',
@@ -78,6 +37,13 @@
 				rownumbers:false,
 				onDblClickRow: onRowClick 
 			});
+
+			var p = jQuery('#mydatagrid').datagrid('getPager');
+			jQuery(p).pagination({
+				onBeforeRefresh:function(){
+					alert('before refresh');
+				}
+			});
 		});
 
 		 function formatterKeys(val, row){
@@ -86,8 +52,8 @@
 	    }
 
 		function editRow(id){
-			var link = "${contextPath}/chart/edit?chartId="+id;
-			jQuery.layer({
+			var link = "${request.contextPath}/chart/edit?chartId="+id;
+				jQuery.layer({
 					type: 2,
 					maxmin: true,
 					shadeClose: true,
@@ -103,8 +69,8 @@
 		}
 
 		function viewChart(id){
-			var link = "${contextPath}/chart/showChart?chartId="+id;
-			jQuery.layer({
+			var link = "${request.contextPath}/chart/showChart?chartId="+id;
+				jQuery.layer({
 					type: 2,
 					maxmin: true,
 					shadeClose: true,
@@ -120,7 +86,7 @@
 		}
 
 		function onRowClick(rowIndex, row){
-           // window.open('${contextPath}/chart/edit?chartId='+row.id);
+           // window.open('${request.contextPath}/chart/edit?chartId='+row.id);
 		   editRow(row.id);
 		}
 
@@ -178,25 +144,7 @@
 		}
 
 		function create(){	
-			var nodeId = jQuery("#nodeId").val();
-			if(nodeId==null || nodeId=='' ){
-			    // alert("请在左边选择分类类型！");
-			    // return;
-		    }
-			var link = "${contextPath}/chart/edit?nodeId="+nodeId;
-			jQuery.layer({
-					type: 2,
-					maxmin: true,
-					shadeClose: true,
-					title: "编辑图表信息",
-					closeBtn: [0, true],
-					shade: [0.8, '#000'],
-					border: [10, 0.3, '#000'],
-					offset: ['20px',''],
-					fadeIn: 100,
-					area: ['1080px', (jQuery(window).height() - 50) +'px'],
-					iframe: {src: link}
-				});
+			location.href="${request.contextPath}/chart/edit?nodeId=0";
 		}
 
 		function editSelected(){
@@ -207,22 +155,9 @@
 			}
 			var selected = jQuery('#mydatagrid').datagrid('getSelected');
 			if (selected ){
-			    //location.href="${contextPath}/chart/edit?chartId="+selected.id;
-				var link = "${contextPath}/chart/edit?chartId="+selected.id;
-				//window.open(link);
-				jQuery.layer({
-					type: 2,
-					maxmin: true,
-					shadeClose: true,
-					title: "编辑图表信息",
-					closeBtn: [0, true],
-					shade: [0.8, '#000'],
-					border: [10, 0.3, '#000'],
-					offset: ['20px',''],
-					fadeIn: 100,
-					area: ['1080px', (jQuery(window).height() - 50) +'px'],
-					iframe: {src: link}
-				});
+			    //location.href="${request.contextPath}/chart/edit?chartId="+selected.id;
+				var link = "${request.contextPath}/chart/edit?chartId="+selected.id;
+				window.open(link);
 			}
 		}
 
@@ -234,7 +169,7 @@
 			}
 			var selected = jQuery('#mydatagrid').datagrid('getSelected');
 			if (selected ){
-			  location.href="${contextPath}/chart/edit?chartId="+selected.id;
+			  location.href="${request.contextPath}/chart/edit?chartId="+selected.id;
 			}
 		}
 
@@ -248,7 +183,7 @@
 			  var chartIds = ids.join(',');
 			  jQuery.ajax({
 				   type: "POST",
-				   url: '${contextPath}/rs/chart/deleteAll?chartIds='+chartIds,
+				   url: '${request.contextPath}/rs/chart/deleteAll?chartIds='+chartIds,
 				   dataType:  'json',
 				   error: function(data){
 					   alert('服务器处理错误！');
@@ -294,7 +229,7 @@
 		var params = jQuery("#iForm").formSerialize();
         jQuery.ajax({
                     type: "POST",
-                    url: '${contextPath}/chart/json',
+                    url: '${request.contextPath}/chart/json',
                     dataType: 'json',
 				    data: params,
                     error: function(data){
@@ -312,20 +247,11 @@
 <div style="margin:0;"></div>  
 <input type="hidden" id="nodeId" name="nodeId" value="" >
 <div class="easyui-layout" data-options="fit:true">  
-    <!-- <div data-options="region:'west',split:true" style="width:180px;">
-	  <div class="easyui-layout" data-options="fit:true">  
-           
-			 <div data-options="region:'center',border:false">
-			    <ul id="myTree" class="ztree"></ul>  
-			 </div> 
-			 
-        </div>  
-	</div>  -->
    <div data-options="region:'center'"> 
 	<div class="easyui-layout" data-options="fit:true">  
-	   <div data-options="region:'north', split:false, border:true" style="height:42px" class="toolbar-backgroud"> 
-		<div style="margin:4px;"> 
-		<span class="x_content_title">&nbsp;<img src="${contextPath}/static/images/window.png">&nbsp;图表定义列表</span>
+	   <div data-options="region:'north',split:true,border:true" style="height:40px"> 
+		<div class="toolbar-backgroud"> 
+		<span class="x_content_title">图表定义列表</span>
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-add'" 
 		   onclick="javascript:create();">新增</a>  
 		<a href="#" class="easyui-linkbutton" data-options="plain:true, iconCls:'icon-edit'"

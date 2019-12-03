@@ -75,8 +75,8 @@ import com.glaf.matrix.data.domain.SqlDefinition;
 import com.glaf.matrix.data.query.SqlDefinitionQuery;
 import com.glaf.matrix.data.service.SqlDefinitionService;
 
-@Controller("/matrix/chart")
-@RequestMapping("/matrix/chart")
+@Controller("/chart")
+@RequestMapping("/chart")
 public class ChartController {
 	protected static final Log logger = LogFactory.getLog(ChartController.class);
 
@@ -148,7 +148,7 @@ public class ChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/chart_tree", modelMap);
+		return new ModelAndView("/chart/chart_tree", modelMap);
 	}
 
 	@RequestMapping("/checkSQL")
@@ -285,7 +285,7 @@ public class ChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/chooseQuery", modelMap);
+		return new ModelAndView("/chart/chooseQuery", modelMap);
 	}
 
 	@RequestMapping("/delete")
@@ -467,7 +467,7 @@ public class ChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/edit", modelMap);
+		return new ModelAndView("/chart/edit", modelMap);
 	}
 
 	@RequestMapping("/json")
@@ -557,7 +557,7 @@ public class ChartController {
 			return new ModelAndView(view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/list", modelMap);
+		return new ModelAndView("/chart/list", modelMap);
 	}
 
 	@RequestMapping("/query")
@@ -571,7 +571,7 @@ public class ChartController {
 		if (StringUtils.isNotEmpty(x_view)) {
 			return new ModelAndView(x_view, modelMap);
 		}
-		return new ModelAndView("/matrix/chart/query", modelMap);
+		return new ModelAndView("/chart/query", modelMap);
 	}
 
 	@RequestMapping("/queryTree")
@@ -583,7 +583,7 @@ public class ChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/query_tree", modelMap);
+		return new ModelAndView("/chart/query_tree", modelMap);
 	}
 
 	@ResponseBody
@@ -713,7 +713,7 @@ public class ChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/showChart", modelMap);
+		return new ModelAndView("/chart/showChart", modelMap);
 	}
 
 	@RequestMapping("/update")
@@ -766,7 +766,7 @@ public class ChartController {
 			return new ModelAndView(x_view);
 		}
 
-		return new ModelAndView("/matrix/chart/view");
+		return new ModelAndView("/chart/view");
 	}
 
 	@ResponseBody
@@ -781,13 +781,13 @@ public class ChartController {
 			if (chart != null) {
 				String url = "";
 				if (StringUtils.equals(chart.getImageType(), "png")) {
-					url = "/mx/matrix/chart/showChart";
+					url = "/mx/chart/showChart";
 				} else if (StringUtils.equals(chart.getImageType(), "highcharts")) {
-					url = "/mx/matrix/chart/highcharts/showChart";
+					url = "/mx/chart/highcharts/showChart";
 				} else if (StringUtils.equals(chart.getImageType(), "kendo")) {
-					url = "/mx/matrix/chart/kendo/showChart";
+					url = "/mx/chart/kendo/showChart";
 				} else if (StringUtils.equals(chart.getImageType(), "echarts")) {
-					url = "/mx/matrix/chart/echarts/showChart";
+					url = "/mx/chart/echarts/showChart";
 				}
 				if (StringUtils.isNotEmpty(url)) {
 					url = url + "?chartId=" + chart.getId();

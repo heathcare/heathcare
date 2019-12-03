@@ -44,8 +44,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-pool2.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/commons-validator.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/cors-filter.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/curator-client.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/curator-framework.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/dom4j.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/druid.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/ehcache.jar"/>
@@ -146,7 +144,6 @@
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/xmlbeans.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jansi.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls-core.jar"/>
-	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls-jexcel.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls-poi.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls-reader.jar"/>
 	<classpathentry kind="lib" path="webapps/glaf/WEB-INF/lib/jxls.jar"/>

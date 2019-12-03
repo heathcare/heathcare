@@ -489,21 +489,21 @@ public class EChartsController {
 		}
 
 		if (StringUtils.equalsIgnoreCase(chartType, "bar")) {
-			String x_view = "/matrix/mychart/echarts/bar";
+			String x_view = "/mychart/echarts/bar";
 			if (StringUtils.isNotEmpty(x_view)) {
 				return new ModelAndView(x_view, modelMap);
 			}
 		}
 
 		if (StringUtils.equalsIgnoreCase(chartType, "pie")) {
-			String x_view = "/matrix/mychart/echarts/pie";
+			String x_view = "/mychart/echarts/pie";
 			if (StringUtils.isNotEmpty(x_view)) {
 				return new ModelAndView(x_view, modelMap);
 			}
 		}
 
 		if (StringUtils.equalsIgnoreCase(chartType, "donut")) {
-			String x_view = "/matrix/mychart/echarts/donut";
+			String x_view = "/mychart/echarts/donut";
 			if (StringUtils.isNotEmpty(x_view)) {
 				return new ModelAndView(x_view, modelMap);
 			}
@@ -514,7 +514,7 @@ public class EChartsController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/mychart/echarts/chart", modelMap);
+		return new ModelAndView("/mychart/echarts/chart", modelMap);
 	}
 
 }

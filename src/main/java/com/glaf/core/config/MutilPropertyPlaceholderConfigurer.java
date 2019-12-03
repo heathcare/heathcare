@@ -25,14 +25,16 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 
 /**
  * 可以按照不同的运行模式启用相应的配置
  * 
  */
-public class MutilPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer implements InitializingBean {
+public class MutilPropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport implements InitializingBean {
 
 	protected static final Log LOG = LogFactory.getLog(MutilPropertyPlaceholderConfigurer.class);
 
@@ -55,16 +57,6 @@ public class MutilPropertyPlaceholderConfigurer extends PropertyPlaceholderConfi
 	 */
 	public String getMode() {
 		return properties.getProperty(RUN_MODE);
-	}
-
-	/**
-	 * 开放此方法给需要的业务
-	 * 
-	 * @param key
-	 * @return
-	 */
-	public String getProperty(String key) {
-		return resolvePlaceholder(key, properties);
 	}
 
 	@Override
@@ -105,5 +97,10 @@ public class MutilPropertyPlaceholderConfigurer extends PropertyPlaceholderConfi
 		}
 		logger.debug(properties);
 		return properties;
+	}
+
+	@Override
+	protected void processProperties(ConfigurableListableBeanFactory arg0, Properties arg1) throws BeansException {
+
 	}
 }

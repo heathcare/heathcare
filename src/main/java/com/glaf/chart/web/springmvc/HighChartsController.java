@@ -48,8 +48,8 @@ import com.glaf.core.config.ViewProperties;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 
-@Controller("/matrix/chart/highcharts")
-@RequestMapping("/matrix/chart/highcharts")
+@Controller("/chart/highcharts")
+@RequestMapping("/chart/highcharts")
 public class HighChartsController {
 	protected static final Log logger = LogFactory.getLog(HighChartsController.class);
 
@@ -360,29 +360,29 @@ public class HighChartsController {
 			request.setAttribute("jsonArray", result.toJSONString());
 
 			if (StringUtils.equalsIgnoreCase(chartType, "pie")) {
-				return new ModelAndView("/matrix/chart/highcharts/pie", modelMap);
+				return new ModelAndView("/chart/highcharts/pie", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "donut")) {
-				return new ModelAndView("/matrix/chart/highcharts/donut", modelMap);
+				return new ModelAndView("/chart/highcharts/donut", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "funnel")) {
-				return new ModelAndView("/matrix/chart/highcharts/funnel", modelMap);
+				return new ModelAndView("/chart/highcharts/funnel", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "gauge")) {
-				return new ModelAndView("/matrix/chart/highcharts/gauge", modelMap);
+				return new ModelAndView("/chart/highcharts/gauge", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "line")) {
-				return new ModelAndView("/matrix/chart/highcharts/line", modelMap);
+				return new ModelAndView("/chart/highcharts/line", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "radarLine")) {
-				return new ModelAndView("/matrix/chart/highcharts/radarLine", modelMap);
+				return new ModelAndView("/chart/highcharts/radarLine", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "area")) {
-				return new ModelAndView("/matrix/chart/highcharts/area", modelMap);
+				return new ModelAndView("/chart/highcharts/area", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "bar")) {
-				return new ModelAndView("/matrix/chart/highcharts/bar", modelMap);
+				return new ModelAndView("/chart/highcharts/bar", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "column")) {
-				return new ModelAndView("/matrix/chart/highcharts/column", modelMap);
+				return new ModelAndView("/chart/highcharts/column", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "column_line")) {
-				return new ModelAndView("/matrix/chart/highcharts/column_line", modelMap);
+				return new ModelAndView("/chart/highcharts/column_line", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "stacked_area")) {
-				return new ModelAndView("/matrix/chart/highcharts/stacked_area", modelMap);
+				return new ModelAndView("/chart/highcharts/stacked_area", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "stackedbar")) {
-				return new ModelAndView("/matrix/chart/highcharts/stackedbar", modelMap);
+				return new ModelAndView("/chart/highcharts/stackedbar", modelMap);
 			}
 		}
 		String x_view = ViewProperties.getString("highcharts.chart");
@@ -390,7 +390,7 @@ public class HighChartsController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/highcharts/chart", modelMap);
+		return new ModelAndView("/chart/highcharts/chart", modelMap);
 	}
 
 }

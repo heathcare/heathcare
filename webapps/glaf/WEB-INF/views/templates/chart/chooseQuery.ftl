@@ -1,13 +1,16 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>查询选择</title>
-<#include "/inc/init_easyui_import.ftl"/> 
+<#include "/inc/init_easyui_import.ftl"/>
+<script type="text/javascript" src="${request.contextPath}/static/scripts/framework.js"></script>
 <script language="javascript">
 
-    var contextPath = "${contextPath}";
+ var contextPath = "${contextPath}";
 
-    function addElement() {
+ function addElement() {
+
         var list = document.iForm.noselected;
         for (i = 0; i < list.length; i++) {
             if (list.options[i].selected) {
@@ -21,7 +24,7 @@
 
     }
 
-    function addToList(value, text) {
+ function addToList(value, text) {
         var list = document.iForm.selected;
         if (list.length > 0) {
             for (k = 0; k < list.length; k++) {
@@ -37,7 +40,7 @@
         list.options[len].text = text;
     }
 
-    function removeElement() {
+ function removeElement() {
         var list = document.iForm.selected;
 		var slist = document.iForm.noselected;
         if (list.length == 0 || list.selectedIndex < 0 || list.selectedIndex >= list.options.length)
@@ -57,41 +60,42 @@
         }
     }
 
+ 
 
-    function submitRequestX() {
-		var len=document.iForm.selected.length;
-		var result="";
-		for (var i=0;i<len;i++) {
-		  result=result+","+document.iForm.selected.options[i].value;
-		}
-		document.iForm.objectIds.value=result;
-		return true;
+  function submitRequestX() {
+    var len=document.iForm.selected.length;
+	var result="";
+	for (var i=0;i<len;i++) {
+      result=result+","+document.iForm.selected.options[i].value;
+    }
+    document.iForm.objectIds.value=result;
+	return true;
+  }
+
+ function doSelect() {
+	var parent_window = getOpener();
+	var x_roles = parent_window.document.getElementById("${elementId}");
+    var x_roles_name = parent_window.document.getElementById("${elementName}");
+
+    var len= document.iForm.selected.length;
+	var result = "";
+	var names = "";
+	for (var i=0;i<len;i++) {
+      result = result + document.iForm.selected.options[i].value;
+	  names = names + document.iForm.selected.options[i].text;
+	  if(i < (len - 1)){
+		  result = result + ",";
+		  names = names + ",";
+	   }
     }
 
-	function doSelect() {
-		var parent_window = getOpener();
-		var x_roles = parent_window.document.getElementById("${elementId}");
-		var x_roles_name = parent_window.document.getElementById("${elementName}");
+	x_roles.value = result;
+	x_roles_name.value = names;
+     
+	window.close();
+  }
 
-		var len= document.iForm.selected.length;
-		var result = "";
-		var names = "";
-		for (var i=0;i<len;i++) {
-		  result = result + document.iForm.selected.options[i].value;
-		  names = names + document.iForm.selected.options[i].text;
-		  if(i < (len - 1)){
-			  result = result + ",";
-			  names = names + ",";
-		   }
-		}
-
-		x_roles.value = result;
-		x_roles_name.value = names;
-		 
-		window.close();
-	}
-
-    function addToList2(list, value, text) {
+   function addToList2(list, value, text) {
         if (list.length > 0) {
             for (k = 0; k < list.length; k++) {
                 if (list.options[k].value == value) {
@@ -106,13 +110,13 @@
         list.options[len].text = text;
     }
 
-    function closeXY(){
-		if(window.opener != null){
-			window.close();
-		} else {
-			history.back();
-		}
-    }
+  function closeXY(){
+     if(window.opener != null){
+		 window.close();
+	 } else {
+        history.back();
+	 }
+  }
 
 </script>
 </head>
@@ -122,7 +126,7 @@
 <input type="hidden" name="objectIds"> 
 <div class="content-block" style="width: 685px;"> 
 <div class="x_content_title"><img
-	src="${contextPath}/static/images/window.png"
+	src="${request.contextPath}/static/images/window.png"
 	alt="查询选择">&nbsp;  查询选择</div>
 
 <fieldset class="x-fieldset" style="width: 95%;">
@@ -170,8 +174,6 @@
 
 <div align="center"><br />
  
- <input value=" 查询列表 " class=" btn" name="button" type="button"
-		onclick="javacsript:window.open('${contextPath}/dts/query');">
  <input value=" 确 定 " class=" btn btn-primary" name="button" type="button"
 		onclick="javacsript:doSelect();">
  <input value=" 关 闭 " class=" btn" name="close"

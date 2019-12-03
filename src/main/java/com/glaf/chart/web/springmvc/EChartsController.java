@@ -48,8 +48,8 @@ import com.glaf.core.config.ViewProperties;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 
-@Controller("/matrix/chart/echarts")
-@RequestMapping("/matrix/chart/echarts")
+@Controller("/chart/echarts")
+@RequestMapping("/chart/echarts")
 public class EChartsController {
 	protected static final Log logger = LogFactory.getLog(EChartsController.class);
 
@@ -468,21 +468,21 @@ public class EChartsController {
 		}
 
 		if (StringUtils.equalsIgnoreCase(chartType, "bar")) {
-			String x_view = "/matrix/chart/echarts/bar";
+			String x_view = "/chart/echarts/bar";
 			if (StringUtils.isNotEmpty(x_view)) {
 				return new ModelAndView(x_view, modelMap);
 			}
 		}
 
 		if (StringUtils.equalsIgnoreCase(chartType, "pie")) {
-			String x_view = "/matrix/chart/echarts/pie";
+			String x_view = "/chart/echarts/pie";
 			if (StringUtils.isNotEmpty(x_view)) {
 				return new ModelAndView(x_view, modelMap);
 			}
 		}
 
 		if (StringUtils.equalsIgnoreCase(chartType, "donut")) {
-			String x_view = "/matrix/chart/echarts/donut";
+			String x_view = "/chart/echarts/donut";
 			if (StringUtils.isNotEmpty(x_view)) {
 				return new ModelAndView(x_view, modelMap);
 			}
@@ -493,7 +493,7 @@ public class EChartsController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/echarts/chart", modelMap);
+		return new ModelAndView("/chart/echarts/chart", modelMap);
 	}
 
 }

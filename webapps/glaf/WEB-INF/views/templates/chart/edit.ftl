@@ -4,13 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>图表定义</title>
 <#include "/inc/init_easyui_import.ftl"/>
-<script type="text/javascript" src="${contextPath}/static/scripts/global.js"></script>
 <script type="text/javascript">
 
     function initData(){
-        	<#if  chart?exists >
-           // $('#iForm').form('load','${contextPath}/rs/chart/view/${chart.id}');
-        	</#if>
+        <#if chart?exists>
+           
+        </#if>
     }
 
     function checkForm(){
@@ -25,9 +24,7 @@
             return false;
         }
         if(jQuery("#chartTitle").val() == ''){
-            alert('图表主题是必须的！');
-            document.getElementById("chartTitle").focus();
-            return false;
+
         }
         if(jQuery("#chartType").val() == ''){
             alert('图表类型是必须的！');
@@ -45,14 +42,10 @@
             return false;
         }
         if(jQuery("#chartTitleFont").val() == ''){
-            alert('图表标题栏字体是必须的！');
-            document.getElementById("chartTitleFont").focus();
-            return false;
+
         }
         if(jQuery("#chartTitleFontSize").val() == ''){
-            alert('图表标题栏字体大小是必须的！');
-            document.getElementById("chartTitleFontSize").focus();
-            return false;
+  
         }
         if(jQuery("#chartWidth").val() == ''){
             alert('图表宽度是必须的！');
@@ -65,6 +58,14 @@
             return false;
         }
 
+        var queryIds = jQuery("#queryIds").val();
+        var querySQL = jQuery("#querySQL").val();
+
+        if( queryIds == ''  && querySQL=='' ){
+            alert('查询语句不能为空！');
+            return false;
+        }
+
         return true;
     }
 
@@ -73,7 +74,7 @@
             var params = jQuery("#iForm").formSerialize();
             jQuery.ajax({
 				type: "POST",
-				url: '${contextPath}/rs/chart/saveChart',
+				url: '${request.contextPath}/chart/saveChart',
 				data: params,
 				dataType: 'json',
 				error: function(data){
@@ -97,7 +98,7 @@
             var params = jQuery("#iForm").formSerialize();
             jQuery.ajax({
 				type: "POST",
-				url: '${contextPath}/rs/chart/saveChart',
+				url: '${request.contextPath}/chart/saveChart',
 				data: params,
 				dataType: 'json',
 				error: function(data){
@@ -114,88 +115,68 @@
          }
     }
 
+    function testSql(){
+        var querySQL = jQuery("#querySQL").val();
+        if( querySQL=='' ){
+            alert('查询语句不能为空！');
+            document.getElementById("querySQL").focus();
+            return;
+        }
+        var params = jQuery("#iForm").formSerialize();
+        jQuery.ajax({
+            type: "POST",
+            url: '${request.contextPath}/chart/checkSQL',
+            data: params,
+            dataType: 'json',
+            error: function(data){
+        		   alert('服务器处理错误！');
+            },
+            success: function(data){
+        		   if(data.message != null){
+                      alert(data.message);
+        		   } else {
+                      var text = JSON.stringify(data); 
+                      alert(text);
+        		   }
+            }
+         });
+    }
+
     function viewChart(){
         var databaseId = jQuery("#databaseId").val();
-        window.open('${contextPath}/chart/showChart?chartId=${chart.id}&databaseId='+databaseId);
+        window.open('${request.contextPath}/chart/showChart?chartId=${chart.id}&databaseId='+databaseId);
     }
 
     function viewHighCharts(){
         var databaseId = jQuery("#databaseId").val();
-        window.open('${contextPath}/chart/highcharts/showChart?chartId=${chart.id}&chooseThemes=true&databaseId='+databaseId);
+        window.open('${request.contextPath}/chart/highcharts/showChart?chartId=${chart.id}&chooseThemes=true&databaseId='+databaseId);
     }
 
     function viewECharts(){
        var databaseId = jQuery("#databaseId").val();
-        window.open('${contextPath}/chart/echarts/showChart?chartId=${chart.id}&chooseThemes=true&databaseId='+databaseId);
+        window.open('${request.contextPath}/chart/echarts/showChart?chartId=${chart.id}&chooseThemes=true&databaseId='+databaseId);
     }
 
     function viewKendoChart(){
        var databaseId = jQuery("#databaseId").val();
-       window.open('${contextPath}/chart/kendo/showChart?chartId=${chart.id}&chooseThemes=true&databaseId='+databaseId);
+       window.open('${request.contextPath}/chart/kendo/showChart?chartId=${chart.id}&chooseThemes=true&databaseId='+databaseId);
     }
 
     function openQx(){
         var selected = jQuery("#queryIds").val();
-        var link = '${contextPath}/sys/sql/definition/choose?elementId=queryIds&elementName=queryNames&nodeCode=report_category&selected='+selected;
+        var link = '${request.contextPath}/chart/queryTree?elementId=queryIds&elementName=queryNames&nodeCode=report_category&selected='+selected;
         var x=100;
         var y=100;
         if(is_ie) {
         	x=document.body.scrollLeft+event.clientX-event.offsetX-200;
         	y=document.body.scrollTop+event.clientY-event.offsetY-200;
         }
-        openWindow(link,self,x, y, 695, 480);
+        openWindow(link,self,x, y, 495, 480);
     }
 
-    function openDataSet(){
-        var link = '${contextPath}/chart/chartDatasetList?elementId=datasetIds&elementName=datasetNames&chartId=${chart.id}&xtype=1';
-        var x=100;
-        var y=100;
-        if(is_ie) {
-        	x=document.body.scrollLeft+event.clientX-event.offsetX-100;
-        	y=document.body.scrollTop+event.clientY-event.offsetY-100;
-        }
-       // openWindow(link,self,x, y, 995, 560);
-	   jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "选择数据集",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['920px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-    }
-
-    function openDataSet2(){
-        var link = '${contextPath}/chart/chartDatasetList?elementId=secondDatasetIds&elementName=dataset2Names&chartId=${chart.id}&xtype=2';
-        var x=100;
-        var y=100;
-        if(is_ie) {
-        	x=document.body.scrollLeft+event.clientX-event.offsetX-100;
-        	y=document.body.scrollTop+event.clientY-event.offsetY-100;
-        }
-        //openWindow(link,self,x, y, 995, 560);
-		jQuery.layer({
-			type: 2,
-			maxmin: true,
-			shadeClose: true,
-			title: "选择第二维度数据集",
-			closeBtn: [0, true],
-			shade: [0.8, '#000'],
-			border: [10, 0.3, '#000'],
-			offset: ['20px',''],
-			fadeIn: 100,
-			area: ['920px', (jQuery(window).height() - 50) +'px'],
-            iframe: {src: link}
-		});
-    }
-
+     
     function openQx2(){
-        var link = '${contextPath}/chart/chooseQuery?chartId=${chart.id}&elementId=queryIds&elementName=queryNames';
+        var link = '${request.contextPath}/chart/chooseQuery?chartId=${chart.id}&elementId=queryIds&elementName=queryNames';
         var x=100;
         var y=100;
         if(is_ie) {
@@ -227,30 +208,30 @@
 <body>
  <br/>
 	<div class="x_content_title"><img
-	src="${contextPath}/static/images/window.png"
+	src="${request.contextPath}/static/images/window.png"
 	alt="图表定义"> &nbsp;图表定义
 	</div>
  <br/>
-	 <form id="iForm" name="iForm" method="post">
-	    <input type="hidden" id="id" name="id" value="${chart.id}"/>
-	    <input type="hidden" id="chartId" name="chartId" value="${chart.id}"/>
-	    <table  style="width:900px;height:250px" align="center">
-		<tbody>
+<form id="iForm" name="iForm" method="post">
+<input type="hidden" id="id" name="id" value="${chart.id}"/>
+<input type="hidden" id="chartId" name="chartId" value="${chart.id}"/>
+  <table style="width:980px;" align="center">
+	<tbody>
 		<#if treeModels?exists>
         <tr>
         	<td width="12%" align="left"><label for="nodeId" >分类</label></td>
         	<td width="38%" align="left">
         	  <select id="nodeId" name="nodeId">
         		   <option value="">----请选择----</option>
-        		   <#list  treeModels as treeModel >
+        		   <#list treeModels as treeModel>
         		   <option value="${treeModel.id}">${treeModel.name}</option>
 					<#list  treeModel.children as child>
 					<option value="${child.id}">&nbsp;&nbsp;---->${child.name}</option>
-					  <#list  child.children as cd >
+					  <#list  child.children as cd>
 					  <option value="${cd.id}">&nbsp;&nbsp;&nbsp;&nbsp;-------->${cd.name}</option>
 						<#list  cd.children as c>
 						<option value="${c.id}">&nbsp;&nbsp;&nbsp;&nbsp;------------>${c.name}</option>
-						  <#list c.children as x>
+						  <#list  c.children as x>
 							<option value="${x.id}">&nbsp;&nbsp;&nbsp;&nbsp;---------------->${x.name}</option>
 						  </#list>
 						</#list>
@@ -271,7 +252,8 @@
         	 <td height="28"><label for="subject" >标题</label></td>
         	 <td colspan="3" height="28">
               <input id="subject" name="subject" class="span8 x-text" type="text"
-                     value="${chart.subject}" size="102"></input>
+                value="${chart.subject}" size="105"
+        	 ></input>
         	 </td>
          </tr>
 
@@ -291,12 +273,12 @@
         	 <td height="28">X坐标标签</td>
         	 <td height="28">
               <input id="coordinateX" name="coordinateX" class="span3 x-text" type="text"
-                     value="${chart.coordinateX}" size="30"></input>
+                value="${chart.coordinateX}" size="30"></input>
         	 </td>
         	 <td height="28">Y坐标标签</td>
         	 <td height="28">
               <input id="coordinateY" name="coordinateY" class="span3 x-text" type="text"
-                     value="${chart.coordinateY}" size="30"></input>
+                value="${chart.coordinateY}" size="30"></input>
         	 </td>
         </tr>
 
@@ -304,12 +286,12 @@
         	 <td height="28">第二轴X坐标标签</td>
         	 <td height="28">
               <input id="secondCoordinateX" name="secondCoordinateX" class="span3 x-text" type="text"
-                     value="${chart.secondCoordinateX}" size="30"></input>
+                value="${chart.secondCoordinateX}" size="30"></input>
         	 </td>
         	 <td height="28">第二轴Y坐标标签</td>
         	 <td height="28">
               <input id="secondCoordinateY" name="secondCoordinateY" class="span3 x-text" type="text"
-                     value="${chart.secondCoordinateY}" size="30"></input>
+                value="${chart.secondCoordinateY}" size="30"></input>
         	 </td>
         </tr>
 
@@ -317,23 +299,23 @@
         	 <td height="28">图表主题</td>
         	 <td height="28">
               <input id="chartTitle" name="chartTitle" class="span3 x-text" type="text"
-                     value="${chart.chartTitle}" size="30"></input>
+                value="${chart.chartTitle}" size="30" title="如果不输入，就不显示图表标题。"></input>
         	 </td>
            <td height="28">图表次标题</td>
         	 <td height="28">
               <input id="chartSubTitle" name="chartSubTitle" class="span3 x-text" type="text"
-                     value="${chart.chartSubTitle}" size="30"></input>
+                value="${chart.chartSubTitle}" size="30"></input>
         	 </td>
         </tr>
 
         <tr>
         	 <td height="28">图表宽度</td>
         	 <td height="28">
-                 <select id="chartWidth" name="chartWidth" value="${chart.chartWidth}" 
-               	        class="span2" style="height:20px; width:90px;">
-                     <#list scales as scale>
-					  <option value="${scale}">${scale}</option>
-					 </#list>
+                 <select id="chartWidth"  name="chartWidth" value="${chart.chartWidth}" 
+               	         class="span2" style="height:20px; width:90px;">
+				   <#list itemsW as item>
+                   <option value="${item}">${item}</option>
+				   </#list>
         		 </select>
         		 <script type="text/javascript">
                    $('#chartWidth').val('${chart.chartWidth}');
@@ -341,11 +323,11 @@
         	 </td>
         	 <td height="28">图表高度</td>
         	 <td height="28">
-                 <select id="chartHeight" name="chartHeight" value="${chart.chartHeight}" 
+                 <select id="chartHeight"  name="chartHeight" value="${chart.chartHeight}" 
                	         class="span2" style="height:20px; width:90px;">
-				    <#list scales as scale>
-					 <option value="${scale}">${scale}</option>
-					</#list>
+				    <#list itemsH as item>
+                    <option value="${item}">${item}</option>
+				    </#list>
         		 </select>
         		 <script type="text/javascript">
                    $('#chartHeight').val('${chart.chartHeight}');
@@ -481,7 +463,7 @@
 				   <option value="48">48</option>
         		 </select>
         		 <script type="text/javascript">
-                    $('#chartFontSize').val('${chart.chartFontSize}');
+               $('#chartFontSize').val('${chart.chartFontSize}');
         		 </script>
         	 </td>
         </tr>
@@ -491,13 +473,13 @@
         	 <td height="28">
         	   <select id="imageType" name="imageType" value="${chart.imageType}" class="span2" 
                  style="height:20px; width:90px;">
-        		<option value="png">JFreeCharts</option>
+        		<option value="jfreecharts">JFreeCharts</option>
         		<option value="kendo">KendoCharts</option>
         		<option value="echarts">ECharts</option>
         		<option value="highcharts">Highcharts</option>
         	   </select>
         	   <script type="text/javascript">
-                   $('#imageType').val('${chart.imageType}');
+               $('#imageType').val('${chart.imageType}');
         	   </script>
         	 </td>
         	 <td height="28">显示图例</td>
@@ -507,7 +489,7 @@
         		<option value="N">否</option>
         	   </select>
         	   <script type="text/javascript">
-                   $('#legend').val('${chart.legend}');
+                 $('#legend').val('${chart.legend}');
         	   </script>
         	 </td>
         </tr>
@@ -530,7 +512,7 @@
         		<option value="0">否</option>
         	  </select> (如果支持3D效果)
         	  <script type="text/javascript">
-                $('#enable3DFlag').val('${chart.enable3DFlag}');
+              $('#enable3DFlag').val('${chart.enable3DFlag}');
         	  </script>
         	 </td>
         </tr>
@@ -616,7 +598,7 @@
         	 <td height="28">
               <select id="databaseId" name="databaseId" style="height:20px; width:90px;">
                <option value="0" selected>系统默认</option>
-               <#list  databases as db>
+               <#list databases as db>
                <option value="${db.id}">${db.title}</option>
                </#list> 
               </select>
@@ -628,47 +610,32 @@
         	 <td height="28">&nbsp;</td>
         </tr>
 
-         <!-- <tr>
-        	 <td height="98">数据集</td>
-              <td colspan="3" height="98">
-                <input type="hidden" id="datasetIds" name="datasetIds" value="${chart.datasetIds}">
-                <textarea id="datasetNames" name="datasetNames" rows="12" cols="68" class="x-textarea"
-                          style="width:580px;height:80px;" onclick="javascript:openDataSet();"  
-                          readonly="true" >${datasetNames}</textarea>&nbsp;
-                <a href="#" onclick="javascript:openDataSet();">
-                <img src="${contextPath}/static/images/search_results.gif" border="0"
-                     title="如果图表需要多个数据集组成一个图表，请先建好数据集再选择。">
-                </a>
-        	 </td>
-        </tr> -->
-
-        <!-- <tr>
-        	 <td height="98">第二轴数据集</td>
-              <td colspan="3" height="98">
-				<input type="hidden" id="secondDatasetIds" name="secondDatasetIds" value="${chart.secondDatasetIds}">
-				<textarea id="dataset2Names" name="dataset2Names" rows="12" cols="68" class="x-textarea"
-				          style="width:580px;height:80px;" onclick="javascript:openDataSet2();"  
-				          readonly="true" >${dataset2Names}</textarea>&nbsp;
-				  <a href="#" onclick="javascript:openDataSet2();">
-				    <img src="${contextPath}/static/images/search_results.gif" border="0"
-				         title="如果图表需要多个数据集组成一个图表，请先建好数据集再选择。">
-				  </a>
-        	 </td>
-        </tr> -->
-
         <tr>
         	 <td height="98">组合查询</td>
               <td colspan="3" height="98">
 				<input type="hidden" id="queryIds" name="queryIds" value="${chart.queryIds}">
 				<textarea id="queryNames" name="queryNames" rows="12" cols="68" class="x-textarea"
-				          style="width:580px;height:80px;" onclick="javascript:openQx();"  
+				          style="font: 13px Consolas,Courier New,Arial; width:580px; height:80px;"
+						  onclick="javascript:openQx();"  
 				          readonly="true" >${queryNames}</textarea>&nbsp;
 				  <a href="#" onclick="javascript:openQx();">
-				     <img src="${contextPath}/static/images/search_results.gif" border="0"
+				     <img src="${request.contextPath}/static/images/search_results.gif" border="0"
 				          title="如果图表需要多个查询组成一个图表，请先建好查询数据再选择。">
 				  </a>
         	 </td>
         </tr>
+
+        <tr>
+        	 <td  height="98">查询语句</td>
+        	 <td colspan="3"  height="98">
+        	 <textarea id="querySQL" name="querySQL" rows="12" cols="68"  class="x-textarea" 
+			      style="font: 13px Consolas,Courier New,Arial; width:580px; height:250px;">${chart.querySQL}</textarea>
+        	 <br><br>
+             <br>饼图及环形图要有别名为category或c（分类）及doublevalue或v（数值）字段
+        	 <br>其他图要有别名为series或s（纵坐标），category或c（横坐标）及doublevalue或v（数值）字段
+        	 <br>注意：查询字段的别名要匹配并且小写！！
+        	 </td>
+	    </tr>
 
 	    <tr>
 		<td colspan="4" align="center">
@@ -679,6 +646,10 @@
 		&nbsp;
 		<input type="button" name="save" value="HighCharts图表" class="btn btnGray" onclick="javascript:viewHighCharts();" />
         &nbsp;
+		<input type="button" name="save" value="ECharts图表" class="btn btnGray" onclick="javascript:viewECharts();" />
+		&nbsp;
+		<input type="button" name="save" value="Kendo图表" class="btn btnGray" onclick="javascript:viewKendoChart();" />
+		&nbsp;
 		<input type="button" name="save" value="保存" class="btn btnGray" onclick="javascript:saveData();" />
 		&nbsp;
 		<input type="button" name="saveAs" value="另存" class="btn btnGray" onclick="javascript:saveAsData();" />

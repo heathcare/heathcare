@@ -48,8 +48,8 @@ import com.glaf.core.config.ViewProperties;
 import com.glaf.core.util.ParamUtils;
 import com.glaf.core.util.RequestUtils;
 
-@Controller("/matrix/chart/kendo")
-@RequestMapping("/matrix/chart/kendo")
+@Controller("/chart/kendo")
+@RequestMapping("/chart/kendo")
 public class KendouiChartController {
 	protected static final Log logger = LogFactory.getLog(KendouiChartController.class);
 
@@ -311,25 +311,25 @@ public class KendouiChartController {
 
 			request.setAttribute("jsonArray", result.toJSONString());
 			if (StringUtils.equalsIgnoreCase(chartType, "pie")) {
-				return new ModelAndView("/matrix/chart/kendo/pie", modelMap);
+				return new ModelAndView("/chart/kendo/pie", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "donut")) {
-				return new ModelAndView("/matrix/chart/kendo/donut", modelMap);
+				return new ModelAndView("/chart/kendo/donut", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "area")) {
-				return new ModelAndView("/matrix/chart/kendo/area", modelMap);
+				return new ModelAndView("/chart/kendo/area", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "bar")) {
-				return new ModelAndView("/matrix/chart/kendo/bar", modelMap);
+				return new ModelAndView("/chart/kendo/bar", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "column")) {
-				return new ModelAndView("/matrix/chart/kendo/column", modelMap);
+				return new ModelAndView("/chart/kendo/column", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "line")) {
-				return new ModelAndView("/matrix/chart/kendo/line", modelMap);
+				return new ModelAndView("/chart/kendo/line", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "radarLine")) {
-				return new ModelAndView("/matrix/chart/kendo/radarLine", modelMap);
+				return new ModelAndView("/chart/kendo/radarLine", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "funnel")) {
-				return new ModelAndView("/matrix/chart/kendo/funnel", modelMap);
+				return new ModelAndView("/chart/kendo/funnel", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "stacked_area")) {
-				return new ModelAndView("/matrix/chart/kendo/stacked_area", modelMap);
+				return new ModelAndView("/chart/kendo/stacked_area", modelMap);
 			} else if (StringUtils.equalsIgnoreCase(chartType, "stackedbar")) {
-				return new ModelAndView("/matrix/chart/kendo/stackedbar", modelMap);
+				return new ModelAndView("/chart/kendo/stackedbar", modelMap);
 			}
 		}
 		String x_view = ViewProperties.getString("kendo.chart");
@@ -337,7 +337,7 @@ public class KendouiChartController {
 			return new ModelAndView(x_view, modelMap);
 		}
 
-		return new ModelAndView("/matrix/chart/kendo/chart", modelMap);
+		return new ModelAndView("/chart/kendo/chart", modelMap);
 	}
 
 }
