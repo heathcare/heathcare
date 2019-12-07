@@ -26,7 +26,7 @@
 		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>5.2.2.RELEASE</spring.version>
-		<spring.batch.version>3.0.8.RELEASE</spring.batch.version>
+		<spring.batch.version>4.2.1.RELEASE</spring.batch.version>
 		<poi.version>4.1.1</poi.version>
 		<jxls.version>1.0.6</jxls.version>
 		<mybatis.version>3.4.6</mybatis.version>
@@ -229,7 +229,7 @@
 		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-core</artifactId>
-			<version>4.4.6</version>
+			<version>4.4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aliyun</groupId>
@@ -326,11 +326,6 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
@@ -410,7 +405,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-email</artifactId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.19</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
 			<version>1.4</version>
 		</dependency>
 		<dependency>
@@ -447,7 +447,7 @@
 		<dependency>
 			<groupId>com.ecwid.consul</groupId>
             <artifactId>consul-api</artifactId>
-            <version>1.4.2</version>
+            <version>1.4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>concurrent</groupId>
@@ -677,7 +677,7 @@
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
-			<version>3.10.2</version>
+			<version>3.11.2</version>
 		</dependency>
 		<!-- html解析器 -->
 		<dependency>
@@ -783,7 +783,7 @@
         <dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
-			<version>5.1.8.RELEASE</version>
+			<version>5.2.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -866,8 +866,8 @@
 		<!-- 邮箱工具 -->
 		<dependency>
 			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>
@@ -1016,7 +1016,7 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.8.0</version>
+			<version>6.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.auth0</groupId>
@@ -1041,7 +1041,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>3.14.2</version>
+			<version>4.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.zxing</groupId>
