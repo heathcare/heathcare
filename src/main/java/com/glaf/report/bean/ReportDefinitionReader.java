@@ -53,19 +53,14 @@ public class ReportDefinitionReader {
 			String templateFile = element.elementText("templateFile");
 			String templateType = element.elementText("templateType");
 			String prepareClass = element.elementText("prepareClass");
-			String exportFilename = element.elementText("exportFilename");
-			String title = element.elementText("title");
 			String perms = element.elementText("perms");
-			
 
 			ReportDefinition rdf = new ReportDefinition();
 			rdf.setReportId(reportId);
 			rdf.setTemplateId(templateId);
 			rdf.setTemplateFile(templateFile);
 			rdf.setTemplateType(templateType);
-			rdf.setTitle(title);
 			rdf.setPrepareClass(prepareClass);
-			rdf.setExportFilename(exportFilename);
 			rdf.setProperties(this.readProperties(element));
 			rdf.setPerms(perms);
 

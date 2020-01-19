@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.glaf.chart.domain.Chart;
-import com.glaf.chart.service.ChartService;
+import com.glaf.chart.service.IChartService;
 import com.glaf.chart.util.ChartCache;
 import com.glaf.core.base.ColumnModel;
 import com.glaf.core.base.Parameter;
@@ -43,25 +43,21 @@ import com.glaf.core.config.Environment;
 import com.glaf.core.config.SystemConfig;
 import com.glaf.core.context.ContextFactory;
 import com.glaf.core.domain.Database;
-
 import com.glaf.core.security.IdentityFactory;
 import com.glaf.core.security.LoginContext;
 import com.glaf.core.service.EntityService;
-import com.glaf.core.service.IDatabaseService;
-
 import com.glaf.core.service.ITableDataService;
 import com.glaf.core.service.ITablePageService;
 import com.glaf.core.util.QueryUtils;
 import com.glaf.core.util.StringTools;
+
 import com.glaf.matrix.data.domain.SqlDefinition;
 import com.glaf.matrix.data.service.SqlDefinitionService;
 
-public class ChartDataManager {
-	protected final static Log logger = LogFactory.getLog(ChartDataManager.class);
+public class ChartDataBean {
+	protected final static Log logger = LogFactory.getLog(ChartDataBean.class);
 
-	protected ChartService chartService;
-
-	protected IDatabaseService databaseService;
+	protected IChartService chartService;
 
 	protected EntityService entityService;
 
@@ -110,14 +106,13 @@ public class ChartDataManager {
 		LoginContext loginContext = IdentityFactory.getLoginContext(actorId);
 
 		String cacheKey = org.apache.commons.codec.digest.DigestUtils.md5Hex(buffer.toString());
-		// List<ColumnModel> columns = null;//
-		// ChartCache.get(loginContext.getTenantId(), cacheKey);
+		//List<ColumnModel> columns = null;// ChartCache.get(loginContext.getTenantId(), cacheKey);
 
-		// if (columns != null && !columns.isEmpty()) {
-		// chart.setColumns(columns);
-		// logger.debug("get chart data from guava cache.");
-		// return;
-		// }
+		//if (columns != null && !columns.isEmpty()) {
+		//	chart.setColumns(columns);
+		//	logger.debug("get chart data from guava cache.");
+		//	return;
+		//}
 
 		logger.debug("statementId:" + statementId);
 		logger.debug("params:" + params);
@@ -254,7 +249,7 @@ public class ChartDataManager {
 					logger.debug("rows size:" + chart.getColumns().size());
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				// ex.printStackTrace();
 				logger.error(ex);
 			} finally {
 				Environment.setCurrentSystemName(systemName);
@@ -273,41 +268,30 @@ public class ChartDataManager {
 		if (chart != null) {
 			TableModel rowMode = new TableModel();
 			String querySQL = null;
-			if (StringUtils.isNotEmpty(chart.getQuerySQL())) {
-				querySQL = chart.getQuerySQL();
-				this.fetchData(chart, rowMode, querySQL, paramMap, actorId);
-			} else if (StringUtils.isNotEmpty(chart.getQueryIds())) {
+			if (StringUtils.isNotEmpty(chart.getQueryIds())) {
 				List<String> queryIds = StringTools.split(chart.getQueryIds());
 				for (String queryId : queryIds) {
-					SqlDefinition queryDefinition = getSqlDefinitionService().getSqlDefinitionByCode(queryId);
-					if (queryDefinition != null && StringUtils.isNotEmpty(queryDefinition.getSql())) {
-						logger.debug("query title=" + queryDefinition.getTitle());
-						querySQL = queryDefinition.getSql();
+					SqlDefinition sqlDefinition = getSqlDefinitionService().getSqlDefinition(Long.parseLong(queryId));
+					if (sqlDefinition != null && StringUtils.isNotEmpty(sqlDefinition.getSql())) {
+						logger.debug("query title=" + sqlDefinition.getTitle());
+						querySQL = sqlDefinition.getSql();
 						this.fetchData(chart, rowMode, querySQL, paramMap, actorId);
 					}
 				}
 			} else if (StringUtils.isNotEmpty(chart.getStatementId())) {
 				this.fetchData(chart, chart.getStatementId(), paramMap, actorId);
 			}
-
 			logger.debug("columns size:" + chart.getColumns().size());
 		}
 
 		return chart;
 	}
 
-	public ChartService getChartService() {
+	public IChartService getChartService() {
 		if (chartService == null) {
 			chartService = ContextFactory.getBean("chartService");
 		}
 		return chartService;
-	}
-
-	public IDatabaseService getDatabaseService() {
-		if (databaseService == null) {
-			databaseService = ContextFactory.getBean("databaseService");
-		}
-		return databaseService;
 	}
 
 	public EntityService getEntityService() {
@@ -338,12 +322,8 @@ public class ChartDataManager {
 		return tablePageService;
 	}
 
-	public void setChartService(ChartService chartService) {
+	public void setChartService(IChartService chartService) {
 		this.chartService = chartService;
-	}
-
-	public void setDatabaseService(IDatabaseService databaseService) {
-		this.databaseService = databaseService;
 	}
 
 	public void setSqlDefinitionService(SqlDefinitionService sqlDefinitionService) {

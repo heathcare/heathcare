@@ -47,19 +47,13 @@ public class ReportDefinition implements java.io.Serializable {
 	protected String templateType;
 
 	/**
-	 * 标题
-	 */
-	protected String title;
-
-	/**
-	 * 导出文件名称
-	 */
-	protected String exportFilename;
-
-	/**
 	 * 预处理类
 	 */
 	protected String prepareClass;
+
+	protected String exportFilename;
+
+	protected String title;
 
 	/**
 	 * 权限点（或的关系），多个用半角的"|"分隔

@@ -25,7 +25,7 @@ import com.glaf.chart.domain.*;
 import com.glaf.chart.query.*;
 
 @Transactional(readOnly = true)
-public interface ChartService {
+public interface IChartService {
 
 	/**
 	 * 根据主键删除记录

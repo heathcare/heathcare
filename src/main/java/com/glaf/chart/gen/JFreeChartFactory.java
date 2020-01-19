@@ -43,28 +43,22 @@ public class JFreeChartFactory {
 			chartGen = new LineChartGen();
 		} else if ("line_sum".equals(chartType)) {
 			chartGen = new SummationLineChartGen();
-		} else if ("radarLine".equals(chartType)) {
-			chartGen = new RadarLineChartGen();
 		} else if ("bar".equals(chartType)) {
 			chartGen = new BarChartGen();
-		} else if ("bar_line".equals(chartType)) {
-			chartGen = new BarLineChartGen();
 		} else if ("bar_line_sum".equals(chartType)) {
 			chartGen = new BarSummationLineChartGen();
 		} else if ("column".equals(chartType)) {
 			chartGen = new ColumnChartGen();
-		} else if ("column_line".equals(chartType)) {
-			chartGen = new ColumnLineChartGen();
 		} else if ("column_line_sum".equals(chartType)) {
 			chartGen = new ColumnSummationLineChartGen();
+		} else if ("line_sum".equals(chartType)) {
+			chartGen = new SummationLineChartGen();
+		} else if ("radarLine".equals(chartType)) {
+			chartGen = new RadarLineChartGen();
 		} else if ("stackedbar".equals(chartType)) {
 			chartGen = new StackedBarChartGen();
-		} else if ("stackedbar_line".equals(chartType)) {
-			chartGen = new StackedBarLineChartGen();
 		} else if ("stackedbar_line_sum".equals(chartType)) {
 			chartGen = new StackedBarSummationLineChartGen();
-		} else {
-			chartGen = new ColumnChartGen();
 		}
 
 		try {
@@ -74,12 +68,15 @@ public class JFreeChartFactory {
 				while (e.hasMoreElements()) {
 					String name = (String) e.nextElement();
 					String value = props.getProperty(name);
-					if (StringUtils.equals(name, chartType) && StringUtils.isNotEmpty(value)
-							&& (value.length() > 0 && value.charAt(0) == '{') && value.endsWith("}")) {
+					if (StringUtils.equals(name, chartType)
+							&& StringUtils.isNotEmpty(value)
+							&& (value.length() > 0 && value.charAt(0) == '{')
+							&& value.endsWith("}")) {
 						JSONObject jsonObject = JSON.parseObject(value);
 						String className = jsonObject.getString("className");
 						if (StringUtils.isNotEmpty(className)) {
-							Object gen = ClassUtils.instantiateObject(className);
+							Object gen = ClassUtils
+									.instantiateObject(className);
 							if (gen instanceof ChartGen) {
 								chartGen = (ChartGen) gen;
 								break;

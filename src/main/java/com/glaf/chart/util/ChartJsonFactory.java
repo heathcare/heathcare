@@ -40,23 +40,11 @@ public class ChartJsonFactory {
 		if (jsonObject.containsKey("id")) {
 			model.setId(jsonObject.getString("id"));
 		}
-		if (jsonObject.containsKey("nodeId")) {
-			model.setNodeId(jsonObject.getLong("nodeId"));
-		}
-		if (jsonObject.containsKey("datasetIds")) {
-			model.setDatasetIds(jsonObject.getString("datasetIds"));
-		}
-		if (jsonObject.containsKey("secondDatasetIds")) {
-			model.setSecondDatasetIds(jsonObject.getString("secondDatasetIds"));
-		}
-		if (jsonObject.containsKey("thirdDatasetIds")) {
-			model.setThirdDatasetIds(jsonObject.getString("thirdDatasetIds"));
-		}
 		if (jsonObject.containsKey("queryIds")) {
 			model.setQueryIds(jsonObject.getString("queryIds"));
 		}
-		if (jsonObject.containsKey("querySQL")) {
-			model.setQuerySQL(jsonObject.getString("querySQL"));
+		if (jsonObject.containsKey("statementId")) {
+			model.setStatementId(jsonObject.getString("statementId"));
 		}
 		if (jsonObject.containsKey("subject")) {
 			model.setSubject(jsonObject.getString("subject"));
@@ -67,14 +55,11 @@ public class ChartJsonFactory {
 		if (jsonObject.containsKey("chartType")) {
 			model.setChartType(jsonObject.getString("chartType"));
 		}
-		if (jsonObject.containsKey("secondChartType")) {
-			model.setSecondChartType(jsonObject.getString("secondChartType"));
-		}
-		if (jsonObject.containsKey("thirdChartType")) {
-			model.setThirdChartType(jsonObject.getString("thirdChartType"));
-		}
 		if (jsonObject.containsKey("chartFont")) {
 			model.setChartFont(jsonObject.getString("chartFont"));
+		}
+		if (jsonObject.containsKey("chartFontSize")) {
+			model.setChartFontSize(jsonObject.getInteger("chartFontSize"));
 		}
 		if (jsonObject.containsKey("chartTitle")) {
 			model.setChartTitle(jsonObject.getString("chartTitle"));
@@ -91,6 +76,12 @@ public class ChartJsonFactory {
 		if (jsonObject.containsKey("chartSubTitleFontSize")) {
 			model.setChartSubTitleFontSize(jsonObject.getInteger("chartSubTitleFontSize"));
 		}
+		if (jsonObject.containsKey("chartWidth")) {
+			model.setChartWidth(jsonObject.getInteger("chartWidth"));
+		}
+		if (jsonObject.containsKey("chartHeight")) {
+			model.setChartHeight(jsonObject.getInteger("chartHeight"));
+		}
 		if (jsonObject.containsKey("legend")) {
 			model.setLegend(jsonObject.getString("legend"));
 		}
@@ -106,20 +97,11 @@ public class ChartJsonFactory {
 		if (jsonObject.containsKey("coordinateY")) {
 			model.setCoordinateY(jsonObject.getString("coordinateY"));
 		}
-		if (jsonObject.containsKey("secondCoordinateX")) {
-			model.setSecondCoordinateX(jsonObject.getString("secondCoordinateX"));
-		}
-		if (jsonObject.containsKey("secondCoordinateY")) {
-			model.setSecondCoordinateY(jsonObject.getString("secondCoordinateY"));
-		}
 		if (jsonObject.containsKey("plotOrientation")) {
 			model.setPlotOrientation(jsonObject.getString("plotOrientation"));
 		}
 		if (jsonObject.containsKey("imageType")) {
 			model.setImageType(jsonObject.getString("imageType"));
-		}
-		if (jsonObject.containsKey("theme")) {
-			model.setTheme(jsonObject.getString("theme"));
 		}
 		if (jsonObject.containsKey("enableFlag")) {
 			model.setEnableFlag(jsonObject.getString("enableFlag"));
@@ -127,23 +109,17 @@ public class ChartJsonFactory {
 		if (jsonObject.containsKey("enable3DFlag")) {
 			model.setEnable3DFlag(jsonObject.getString("enable3DFlag"));
 		}
-		if (jsonObject.containsKey("gradientFlag")) {
-			model.setGradientFlag(jsonObject.getString("gradientFlag"));
-		}
 		if (jsonObject.containsKey("databaseId")) {
 			model.setDatabaseId(jsonObject.getLong("databaseId"));
 		}
 		if (jsonObject.containsKey("maxRowCount")) {
 			model.setMaxRowCount(jsonObject.getInteger("maxRowCount"));
 		}
-		if (jsonObject.containsKey("maxScale")) {
-			model.setMaxScale(jsonObject.getDouble("maxScale"));
+		if (jsonObject.containsKey("createDate")) {
+			model.setCreateDate(jsonObject.getDate("createDate"));
 		}
-		if (jsonObject.containsKey("minScale")) {
-			model.setMinScale(jsonObject.getDouble("minScale"));
-		}
-		if (jsonObject.containsKey("stepScale")) {
-			model.setStepScale(jsonObject.getDouble("stepScale"));
+		if (jsonObject.containsKey("createBy")) {
+			model.setCreateBy(jsonObject.getString("createBy"));
 		}
 
 		return model;
@@ -165,20 +141,11 @@ public class ChartJsonFactory {
 		jsonObject.put("id", model.getId());
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
-		if (model.getDatasetIds() != null) {
-			jsonObject.put("datasetIds", model.getDatasetIds());
-		}
-		if (model.getSecondDatasetIds() != null) {
-			jsonObject.put("secondDatasetIds", model.getSecondDatasetIds());
-		}
-		if (model.getThirdDatasetIds() != null) {
-			jsonObject.put("thirdDatasetIds", model.getThirdDatasetIds());
-		}
 		if (model.getQueryIds() != null) {
 			jsonObject.put("queryIds", model.getQueryIds());
 		}
-		if (model.getQuerySQL() != null) {
-			jsonObject.put("querySQL", model.getQuerySQL());
+		if (model.getStatementId() != null) {
+			jsonObject.put("statementId", model.getStatementId());
 		}
 		if (model.getSubject() != null) {
 			jsonObject.put("subject", model.getSubject());
@@ -189,15 +156,10 @@ public class ChartJsonFactory {
 		if (model.getChartType() != null) {
 			jsonObject.put("chartType", model.getChartType());
 		}
-		if (model.getSecondChartType() != null) {
-			jsonObject.put("secondChartType", model.getSecondChartType());
-		}
-		if (model.getThirdChartType() != null) {
-			jsonObject.put("thirdChartType", model.getThirdChartType());
-		}
 		if (model.getChartFont() != null) {
 			jsonObject.put("chartFont", model.getChartFont());
 		}
+		jsonObject.put("chartFontSize", model.getChartFontSize());
 		if (model.getChartTitle() != null) {
 			jsonObject.put("chartTitle", model.getChartTitle());
 		}
@@ -207,10 +169,10 @@ public class ChartJsonFactory {
 		if (model.getChartTitleFont() != null) {
 			jsonObject.put("chartTitleFont", model.getChartTitleFont());
 		}
-		if (model.getChartTitleFontSize() != 0) {
+		if (model.getChartTitleFontSize() != null) {
 			jsonObject.put("chartTitleFontSize", model.getChartTitleFontSize());
 		}
-		if (model.getChartSubTitleFontSize() != 0) {
+		if (model.getChartSubTitleFontSize() != null) {
 			jsonObject.put("chartSubTitleFontSize", model.getChartSubTitleFontSize());
 		}
 		if (model.getLegend() != null) {
@@ -228,20 +190,11 @@ public class ChartJsonFactory {
 		if (model.getCoordinateY() != null) {
 			jsonObject.put("coordinateY", model.getCoordinateY());
 		}
-		if (model.getSecondCoordinateX() != null) {
-			jsonObject.put("secondCoordinateX", model.getSecondCoordinateX());
-		}
-		if (model.getSecondCoordinateY() != null) {
-			jsonObject.put("secondCoordinateY", model.getSecondCoordinateY());
-		}
 		if (model.getPlotOrientation() != null) {
 			jsonObject.put("plotOrientation", model.getPlotOrientation());
 		}
 		if (model.getImageType() != null) {
 			jsonObject.put("imageType", model.getImageType());
-		}
-		if (model.getTheme() != null) {
-			jsonObject.put("theme", model.getTheme());
 		}
 		if (model.getEnableFlag() != null) {
 			jsonObject.put("enableFlag", model.getEnableFlag());
@@ -249,16 +202,10 @@ public class ChartJsonFactory {
 		if (model.getEnable3DFlag() != null) {
 			jsonObject.put("enable3DFlag", model.getEnable3DFlag());
 		}
-		if (model.getGradientFlag() != null) {
-			jsonObject.put("gradientFlag", model.getGradientFlag());
-		}
+		jsonObject.put("chartWidth", model.getChartWidth());
+		jsonObject.put("chartHeight", model.getChartHeight());
 		jsonObject.put("databaseId", model.getDatabaseId());
-		jsonObject.put("nodeId", model.getNodeId());
 		jsonObject.put("maxRowCount", model.getMaxRowCount());
-		jsonObject.put("maxScale", model.getMaxScale());
-		jsonObject.put("minScale", model.getMinScale());
-		jsonObject.put("stepScale", model.getStepScale());
-
 		if (model.getCreateDate() != null) {
 			jsonObject.put("createDate", DateUtils.getDate(model.getCreateDate()));
 			jsonObject.put("createDate_date", DateUtils.getDate(model.getCreateDate()));
@@ -275,20 +222,11 @@ public class ChartJsonFactory {
 		jsonObject.put("id", model.getId());
 		jsonObject.put("_id_", model.getId());
 		jsonObject.put("_oid_", model.getId());
-		if (model.getDatasetIds() != null) {
-			jsonObject.put("datasetIds", model.getDatasetIds());
-		}
-		if (model.getSecondDatasetIds() != null) {
-			jsonObject.put("secondDatasetIds", model.getSecondDatasetIds());
-		}
-		if (model.getThirdDatasetIds() != null) {
-			jsonObject.put("thirdDatasetIds", model.getThirdDatasetIds());
-		}
 		if (model.getQueryIds() != null) {
 			jsonObject.put("queryIds", model.getQueryIds());
 		}
-		if (model.getQuerySQL() != null) {
-			jsonObject.put("querySQL", model.getQuerySQL());
+		if (model.getStatementId() != null) {
+			jsonObject.put("statementId", model.getStatementId());
 		}
 		if (model.getSubject() != null) {
 			jsonObject.put("subject", model.getSubject());
@@ -299,15 +237,10 @@ public class ChartJsonFactory {
 		if (model.getChartType() != null) {
 			jsonObject.put("chartType", model.getChartType());
 		}
-		if (model.getSecondChartType() != null) {
-			jsonObject.put("secondChartType", model.getSecondChartType());
-		}
-		if (model.getThirdChartType() != null) {
-			jsonObject.put("thirdChartType", model.getThirdChartType());
-		}
 		if (model.getChartFont() != null) {
 			jsonObject.put("chartFont", model.getChartFont());
 		}
+		jsonObject.put("chartFontSize", model.getChartFontSize());
 		if (model.getChartTitle() != null) {
 			jsonObject.put("chartTitle", model.getChartTitle());
 		}
@@ -317,10 +250,10 @@ public class ChartJsonFactory {
 		if (model.getChartTitleFont() != null) {
 			jsonObject.put("chartTitleFont", model.getChartTitleFont());
 		}
-		if (model.getChartTitleFontSize() != 0) {
+		if (model.getChartTitleFontSize() != null) {
 			jsonObject.put("chartTitleFontSize", model.getChartTitleFontSize());
 		}
-		if (model.getChartSubTitleFontSize() != 0) {
+		if (model.getChartSubTitleFontSize() != null) {
 			jsonObject.put("chartSubTitleFontSize", model.getChartSubTitleFontSize());
 		}
 		if (model.getLegend() != null) {
@@ -338,20 +271,11 @@ public class ChartJsonFactory {
 		if (model.getCoordinateY() != null) {
 			jsonObject.put("coordinateY", model.getCoordinateY());
 		}
-		if (model.getSecondCoordinateX() != null) {
-			jsonObject.put("secondCoordinateX", model.getSecondCoordinateX());
-		}
-		if (model.getSecondCoordinateY() != null) {
-			jsonObject.put("secondCoordinateY", model.getSecondCoordinateY());
-		}
 		if (model.getPlotOrientation() != null) {
 			jsonObject.put("plotOrientation", model.getPlotOrientation());
 		}
 		if (model.getImageType() != null) {
 			jsonObject.put("imageType", model.getImageType());
-		}
-		if (model.getTheme() != null) {
-			jsonObject.put("theme", model.getTheme());
 		}
 		if (model.getEnableFlag() != null) {
 			jsonObject.put("enableFlag", model.getEnableFlag());
@@ -359,16 +283,10 @@ public class ChartJsonFactory {
 		if (model.getEnable3DFlag() != null) {
 			jsonObject.put("enable3DFlag", model.getEnable3DFlag());
 		}
-		if (model.getGradientFlag() != null) {
-			jsonObject.put("gradientFlag", model.getGradientFlag());
-		}
+		jsonObject.put("chartWidth", model.getChartWidth());
+		jsonObject.put("chartHeight", model.getChartHeight());
 		jsonObject.put("databaseId", model.getDatabaseId());
-		jsonObject.put("nodeId", model.getNodeId());
 		jsonObject.put("maxRowCount", model.getMaxRowCount());
-		jsonObject.put("maxScale", model.getMaxScale());
-		jsonObject.put("minScale", model.getMinScale());
-		jsonObject.put("stepScale", model.getStepScale());
-
 		if (model.getCreateDate() != null) {
 			jsonObject.put("createDate", DateUtils.getDate(model.getCreateDate()));
 			jsonObject.put("createDate_date", DateUtils.getDate(model.getCreateDate()));

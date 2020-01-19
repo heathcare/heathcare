@@ -22,7 +22,7 @@ import java.awt.Font;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
-
+ 
 import org.apache.commons.lang3.StringUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartRenderingInfo;
@@ -43,19 +43,25 @@ public class ChartUtils {
 		try {
 			baos = new ByteArrayOutputStream();
 			bos = new BufferedOutputStream(baos);
-			java.awt.image.BufferedImage bi = chart.createBufferedImage(chartModel.getChartWidth(),
-					chartModel.getChartHeight());
+			java.awt.image.BufferedImage bi = chart.createBufferedImage(
+					chartModel.getChartWidth(), chartModel.getChartHeight());
 
-			if ("jpeg".equalsIgnoreCase(chartModel.getImageType())) {
-				EncoderUtil.writeBufferedImage(bi, "jpeg", bos);
-				ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-				ServletUtilities.saveChartAsJPEG(chart, chartModel.getChartWidth(), chartModel.getChartHeight(), info,
-						null);
-			} else {
-				EncoderUtil.writeBufferedImage(bi, "png", bos);
-				ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-				ServletUtilities.saveChartAsPNG(chart, chartModel.getChartWidth(), chartModel.getChartHeight(), info,
-						null);
+			if ("png".equalsIgnoreCase(chartModel.getImageType())) {
+				EncoderUtil.writeBufferedImage(bi, chartModel.getImageType(),
+						bos);
+				ChartRenderingInfo info = new ChartRenderingInfo(
+						new StandardEntityCollection());
+				ServletUtilities.saveChartAsPNG(chart,
+						chartModel.getChartWidth(),
+						chartModel.getChartHeight(), info, null);
+			} else if ("jpeg".equalsIgnoreCase(chartModel.getImageType())) {
+				EncoderUtil.writeBufferedImage(bi, chartModel.getImageType(),
+						bos);
+				ChartRenderingInfo info = new ChartRenderingInfo(
+						new StandardEntityCollection());
+				ServletUtilities.saveChartAsJPEG(chart,
+						chartModel.getChartWidth(),
+						chartModel.getChartHeight(), info, null);
 			}
 
 			bos.flush();
@@ -66,15 +72,16 @@ public class ChartUtils {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
-			IOUtils.closeQuietly(baos);
-			IOUtils.closeQuietly(bos);
+			IOUtils.closeStream(baos);
+			IOUtils.closeStream(bos);
 		}
 	}
 
-	public static void createChart(String path, Chart chartModel, JFreeChart chart) {
+	public static void createChart(String path, Chart chartModel,
+			JFreeChart chart) {
 		try {
-			java.awt.image.BufferedImage bi = chart.createBufferedImage(chartModel.getChartWidth(),
-					chartModel.getChartHeight());
+			java.awt.image.BufferedImage bi = chart.createBufferedImage(
+					chartModel.getChartWidth(), chartModel.getChartHeight());
 
 			String name = chartModel.getChartName();
 			if (StringUtils.isNotEmpty(chartModel.getMapping())) {
@@ -84,15 +91,19 @@ public class ChartUtils {
 			if ("png".equalsIgnoreCase(chartModel.getImageType())) {
 				EncoderUtil.writeBufferedImage(bi, chartModel.getImageType(),
 						new FileOutputStream(path + "/" + name + ".png"));
-				ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-				ServletUtilities.saveChartAsPNG(chart, chartModel.getChartWidth(), chartModel.getChartHeight(), info,
-						null);
+				ChartRenderingInfo info = new ChartRenderingInfo(
+						new StandardEntityCollection());
+				ServletUtilities.saveChartAsPNG(chart,
+						chartModel.getChartWidth(),
+						chartModel.getChartHeight(), info, null);
 			} else if ("jpeg".equalsIgnoreCase(chartModel.getImageType())) {
 				EncoderUtil.writeBufferedImage(bi, chartModel.getImageType(),
 						new FileOutputStream(path + "/" + name + ".jpg"));
-				ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-				ServletUtilities.saveChartAsJPEG(chart, chartModel.getChartWidth(), chartModel.getChartHeight(), info,
-						null);
+				ChartRenderingInfo info = new ChartRenderingInfo(
+						new StandardEntityCollection());
+				ServletUtilities.saveChartAsJPEG(chart,
+						chartModel.getChartWidth(),
+						chartModel.getChartHeight(), info, null);
 			}
 
 		} catch (Exception ex) {
@@ -105,19 +116,24 @@ public class ChartUtils {
 		// 创建主题样式
 		StandardChartTheme standardChartTheme = new StandardChartTheme("cn");
 		// 设置标题字体
-		if (chartModel.getChartTitleFont() != null && chartModel.getChartTitleFontSize() > 0) {
-			standardChartTheme.setExtraLargeFont(
-					new Font(chartModel.getChartTitleFont(), Font.BOLD, chartModel.getChartTitleFontSize()));
+		if (chartModel.getChartTitleFont() != null
+				&& chartModel.getChartTitleFontSize() != null
+				&& chartModel.getChartTitleFontSize() > 0) {
+			standardChartTheme.setExtraLargeFont(new Font(chartModel
+					.getChartTitleFont(), Font.BOLD, chartModel
+					.getChartTitleFontSize()));
 		} else {
 			standardChartTheme.setExtraLargeFont(new Font("宋体", Font.BOLD, 18));
 		}
-		if (chartModel.getChartFont() != null && chartModel.getChartFontSize() > 0) {
+		if (chartModel.getChartFont() != null
+				&& chartModel.getChartFontSize() > 0) {
 			// 设置图例的字体
 			standardChartTheme
-					.setRegularFont(new Font(chartModel.getChartFont(), Font.PLAIN, chartModel.getChartFontSize()));
+					.setRegularFont(new Font(chartModel.getChartFont(),
+							Font.PLAIN, chartModel.getChartFontSize()));
 			// 设置轴向的字体
-			standardChartTheme
-					.setLargeFont(new Font(chartModel.getChartFont(), Font.PLAIN, chartModel.getChartFontSize()));
+			standardChartTheme.setLargeFont(new Font(chartModel.getChartFont(),
+					Font.PLAIN, chartModel.getChartFontSize()));
 		} else {
 			// 设置图例的字体
 			standardChartTheme.setRegularFont(new Font("宋体", Font.PLAIN, 14));

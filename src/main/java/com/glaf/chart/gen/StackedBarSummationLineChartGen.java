@@ -68,8 +68,8 @@ public class StackedBarSummationLineChartGen implements ChartGen {
 		chartModel.setChartTitleFont("宋体");
 		chartModel.setChartTitleFontSize(72);
 		chartModel.setImageType("png");
-		chartModel.setChartName("stackedbar_line_sum");
-		chartModel.setChartType("stackedbar_line_sum");
+		chartModel.setChartName("stackedbar");
+		chartModel.setChartType("stackedbar");
 		chartModel.setCoordinateX("日期");
 		chartModel.setCoordinateY("量产");
 		java.util.Random rand = new java.util.Random();
