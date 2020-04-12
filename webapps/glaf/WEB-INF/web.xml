@@ -29,6 +29,10 @@
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
 
+	<listener>
+        <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+    </listener>
+
 	<!-- delegatingFilterProxy -->
 	<!-- <filter>
 		<filter-name>springSessionRepositoryFilter</filter-name>
