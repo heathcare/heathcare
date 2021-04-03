@@ -783,34 +783,34 @@
    <br>&nbsp;
    <table width="98%" height="98%" border="0">
    <tr>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x1" name="x1" style="width:380px; height:380px" frameborder="0" ></iframe>
 	</td>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x2" name="x2" style="width:380px; height:380px" frameborder="0"></iframe>
 	</td>
    </tr>
    <tr>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x3" name="x3" style="width:380px; height:380px" frameborder="0" ></iframe>
 	</td>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x4" name="x4" style="width:420px; height:480px" frameborder="0" ></iframe>
 	</td>
    </tr>
    <tr>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x5" name="x5" style="width:380px; height:380px" frameborder="0" ></iframe>
 	</td>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x6" name="x6" style="width:420px; height:480px" frameborder="0" ></iframe>
 	</td>
    </tr>
    <tr>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x7" name="x7" style="width:380px; height:380px" frameborder="0" ></iframe>
 	</td>
-	<td width="50%">
+	<td width="50%" valign="top">
 	    <iframe id="x8" name="x8" style="width:420px; height:480px" frameborder="0" ></iframe>
 	</td>
    </tr>
