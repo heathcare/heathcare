@@ -130,7 +130,7 @@ public class ServerEntityController {
 					String user = repository.getUser();
 					String password = SecurityUtils.decode(repository.getKey(), repository.getPassword());
 
-					DBConfiguration.addDataSourceProperties(name, dbType, host, port, serverEntityName, user, password);
+					//DBConfiguration.addDataSourceProperties(name, dbType, host, port, serverEntityName, user, password);
 					if (DBConnectionFactory.checkConnection(name)) {
 
 						repository.setVerify("Y");

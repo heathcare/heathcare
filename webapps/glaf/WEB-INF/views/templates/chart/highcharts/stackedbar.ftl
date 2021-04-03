@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,7 +38,7 @@
         title: {
             text: '${chart.chartTitle}'
         },
-		<#if chart.chartSubTitle?exists>
+		<#if chart.chartSubTitle?exists >
         subtitle: {
             text: '${chart.chartSubTitle}'
         },
@@ -100,7 +99,7 @@ $(document).ready(function(){
 	$("button.btn").click(function(){
 		var theme = $(this).attr("theme");
 		if(theme != null) {
-		    window.location.href="${request.contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
+		    window.location.href="${contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
 		}
     });
 });

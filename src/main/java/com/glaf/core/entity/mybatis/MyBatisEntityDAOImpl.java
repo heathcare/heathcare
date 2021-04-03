@@ -96,11 +96,11 @@ public class MyBatisEntityDAOImpl extends SqlSessionDaoSupport implements Entity
 		return getSqlSession().selectOne(statementId, parameterObject);
 	}
 
-	public void select(String statement, Object parameter, ResultHandler<?> handler) {
+	public void select(String statement, Object parameter, ResultHandler handler) {
 		getSqlSession().select(statement, parameter, handler);
 	}
 
-	public void select(String statement, Object parameter, RowBounds rowBounds, ResultHandler<?> handler) {
+	public void select(String statement, Object parameter, RowBounds rowBounds, ResultHandler handler) {
 		getSqlSession().select(statement, parameter, rowBounds, handler);
 	}
 

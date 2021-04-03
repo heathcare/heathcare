@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -46,6 +47,10 @@ public final class ConnectionProviderFactory {
 
 	private static final ConcurrentMap<String, ConnectionProvider> providerCache = new ConcurrentHashMap<String, ConnectionProvider>();
 
+	public static final String DRUID = "druid";
+
+	public static final String HIKARICP = "HikariCP";
+
 	private static final Set<String> SPECIAL_PROPERTIES;
 
 	static {
@@ -56,28 +61,22 @@ public final class ConnectionProviderFactory {
 		SPECIAL_PROPERTIES.add(DBConfiguration.JDBC_ISOLATION);
 		SPECIAL_PROPERTIES.add(DBConfiguration.JDBC_DRIVER);
 		SPECIAL_PROPERTIES.add(DBConfiguration.JDBC_USER);
+		SPECIAL_PROPERTIES.add(DBConfiguration.MAXACTIVE);
 	}
 
-	private static boolean druidConfigDefined(Properties properties) {
-		Iterator<?> iter = properties.keySet().iterator();
-		while (iter.hasNext()) {
-			String property = (String) iter.next();
-			if (property.startsWith("druid")) {
-				return true;
+	/**
+	 * 此方法会关闭全部连接数据源，请谨慎使用!!!
+	 */
+	public static void close() {
+		Set<Entry<String, ConnectionProvider>> entrySet = providerCache.entrySet();
+		for (Entry<String, ConnectionProvider> entry : entrySet) {
+			ConnectionProvider provider = entry.getValue();
+			try {
+				provider.close();
+			} catch (Exception ex) {
 			}
 		}
-		return false;
-	}
-
-	private static boolean hikariConfigDefined(Properties properties) {
-		Iterator<?> iter = properties.keySet().iterator();
-		while (iter.hasNext()) {
-			String property = (String) iter.next();
-			if (property.startsWith("hikari")) {
-				return true;
-			}
-		}
-		return false;
+		providerCache.clear();
 	}
 
 	protected static void closeAndCreate(Properties properties) {
@@ -93,28 +92,74 @@ public final class ConnectionProviderFactory {
 		providerCache.put(cacheKey, provider);
 	}
 
-	private static boolean druidProviderPresent() {
-		try {
-			ClassUtils.classForName("com.glaf.core.jdbc.connection.DruidConnectionProvider");
-		} catch (Exception e) {
-			log.warn(
-					"druid properties is specificed, but could not find com.glaf.core.jdbc.connection.DruidConnectionProvider from the classpath, "
-							+ "these properties are going to be ignored.");
-			return false;
+	@SuppressWarnings("rawtypes")
+	private static ConnectionProvider createCustomProvider(Properties properties, Map connectionProviderInjectionData) {
+		if (properties == null || properties.isEmpty()) {
+			return null;
 		}
-		return true;
+		log.debug("---------------------------ConnectionProvider create----------------");
+		ConnectionProvider provider = null;
+		String providerClass = properties.getProperty(DBConfiguration.JDBC_PROVIDER);
+		if (providerClass != null) {
+			provider = initializeConnectionProviderFromConfig(providerClass);
+		}
+		if (provider == null) {
+			provider = initializeConnectionProviderFromConfig(
+					"com.glaf.core.jdbc.connection.HikariCPConnectionProvider");
+		}
+
+		if (StringUtils.equals(properties.getProperty(DBConfiguration.JDBC_DRIVER), "org.sqlite.JDBC")) {
+			provider = initializeConnectionProviderFromConfig(
+					"com.glaf.core.jdbc.connection.HikariCPConnectionProvider");
+		} else if (StringUtils.equals(properties.getProperty(DBConfiguration.JDBC_DRIVER), "org.voltdb.jdbc.Driver")) {
+			provider = initializeConnectionProviderFromConfig("com.glaf.core.jdbc.connection.DruidConnectionProvider");
+		}
+
+		if (connectionProviderInjectionData != null && connectionProviderInjectionData.size() != 0) {
+			try {
+				BeanInfo info = Introspector.getBeanInfo(provider.getClass());
+				PropertyDescriptor[] descritors = info.getPropertyDescriptors();
+				int size = descritors.length;
+				for (int index = 0; index < size; index++) {
+					String propertyName = descritors[index].getName();
+					if (connectionProviderInjectionData.containsKey(propertyName)) {
+						Method method = descritors[index].getWriteMethod();
+						method.invoke(provider, new Object[] { connectionProviderInjectionData.get(propertyName) });
+					}
+				}
+			} catch (IntrospectionException e) {
+				throw new RuntimeException("Unable to inject objects into the connection provider", e);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("Unable to inject objects into the connection provider", e);
+			} catch (InvocationTargetException e) {
+				throw new RuntimeException("Unable to inject objects into the connection provider", e);
+			}
+		}
+		provider.configure(properties);
+		log.debug("---------------------------ConnectionProvider end----------------");
+		return provider;
 	}
 
-	private static boolean hikariProviderPresent() {
-		try {
-			ClassUtils.classForName("com.glaf.core.jdbc.connection.HikariCPConnectionProvider");
-		} catch (Exception e) {
-			log.warn(
-					"hikari properties is specificed, but could not find com.glaf.core.jdbc.connection.HikariCPConnectionProvider from the classpath, "
-							+ "these properties are going to be ignored.");
-			return false;
+	public static ConnectionProvider createCustomProvider(String providerType, Properties properties) {
+		if (properties == null || properties.isEmpty()) {
+			return null;
 		}
-		return true;
+		//String jdbcUrl = properties.getProperty(DBConfiguration.JDBC_URL);
+		//String user = properties.getProperty(DBConfiguration.JDBC_USER);
+		//String cacheKey = DigestUtils.md5Hex(jdbcUrl + "_" + user + "_" + providerType);
+		//if (providerCache.get(cacheKey) != null) {
+		//	return providerCache.get(cacheKey);
+		//}
+		if (StringUtils.equals(providerType, DRUID)) {
+			properties.setProperty(DBConfiguration.JDBC_PROVIDER,
+					"com.glaf.core.jdbc.connection.DruidConnectionProvider");
+		} else if (StringUtils.equals(providerType, HIKARICP)) {
+			properties.setProperty(DBConfiguration.JDBC_PROVIDER,
+					"com.glaf.core.jdbc.connection.HikariCPConnectionProvider");
+		}
+		ConnectionProvider provider = createCustomProvider(properties, null);
+		//providerCache.put(cacheKey, provider);
+		return provider;
 	}
 
 	public static ConnectionProvider createProvider(Properties properties) {
@@ -123,7 +168,7 @@ public final class ConnectionProviderFactory {
 		}
 		String jdbcUrl = properties.getProperty(DBConfiguration.JDBC_URL);
 		String user = properties.getProperty(DBConfiguration.JDBC_USER);
-		String cacheKey = DigestUtils.md5Hex(jdbcUrl + user);
+		String cacheKey = DigestUtils.md5Hex(jdbcUrl + "_" + user);
 		if (providerCache.get(cacheKey) != null) {
 			return providerCache.get(cacheKey);
 		}
@@ -142,11 +187,11 @@ public final class ConnectionProviderFactory {
 		String providerClass = properties.getProperty(DBConfiguration.JDBC_PROVIDER);
 		if (providerClass != null) {
 			provider = initializeConnectionProviderFromConfig(providerClass);
-		} else if (druidConfigDefined(properties) && druidProviderPresent()) {
-			provider = initializeConnectionProviderFromConfig("com.glaf.core.jdbc.connection.DruidConnectionProvider");
 		} else if (hikariConfigDefined(properties) && hikariProviderPresent()) {
 			provider = initializeConnectionProviderFromConfig(
 					"com.glaf.core.jdbc.connection.HikariCPConnectionProvider");
+		} else if (druidConfigDefined(properties) && druidProviderPresent()) {
+			provider = initializeConnectionProviderFromConfig("com.glaf.core.jdbc.connection.DruidConnectionProvider");
 		} else {
 			Properties props = DBConfiguration.getDefaultDataSourceProperties();
 			if (props != null) {
@@ -158,7 +203,8 @@ public final class ConnectionProviderFactory {
 		}
 
 		if (provider == null) {
-			provider = initializeConnectionProviderFromConfig("com.glaf.core.jdbc.connection.DruidConnectionProvider");
+			provider = initializeConnectionProviderFromConfig(
+					"com.glaf.core.jdbc.connection.HikariCPConnectionProvider");
 		}
 
 		if (StringUtils.equals(properties.getProperty(DBConfiguration.JDBC_DRIVER), "org.sqlite.JDBC")) {
@@ -206,6 +252,29 @@ public final class ConnectionProviderFactory {
 		return model;
 	}
 
+	private static boolean druidConfigDefined(Properties properties) {
+		Iterator<?> iter = properties.keySet().iterator();
+		while (iter.hasNext()) {
+			String property = (String) iter.next();
+			if (property.startsWith("druid")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean druidProviderPresent() {
+		try {
+			ClassUtils.classForName("com.glaf.core.jdbc.connection.DruidConnectionProvider");
+		} catch (Exception e) {
+			log.warn(
+					"druid properties is specificed, but could not find com.glaf.core.jdbc.connection.DruidConnectionProvider from the classpath, "
+							+ "these properties are going to be ignored.");
+			return false;
+		}
+		return true;
+	}
+
 	protected static Properties getConnectionProperties(Properties properties) {
 		Iterator<?> iter = properties.keySet().iterator();
 		Properties result = new Properties();
@@ -224,7 +293,34 @@ public final class ConnectionProviderFactory {
 		if (pwd != null) {
 			result.setProperty("password", pwd);
 		}
+		String maxActive = properties.getProperty(DBConfiguration.MAXACTIVE);
+		if (maxActive != null) {
+			result.setProperty("maxActive", maxActive);
+		}
 		return result;
+	}
+
+	private static boolean hikariConfigDefined(Properties properties) {
+		Iterator<?> iter = properties.keySet().iterator();
+		while (iter.hasNext()) {
+			String property = (String) iter.next();
+			if (property.startsWith("hikari")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean hikariProviderPresent() {
+		try {
+			ClassUtils.classForName("com.glaf.core.jdbc.connection.HikariCPConnectionProvider");
+		} catch (Exception e) {
+			log.warn(
+					"hikari properties is specificed, but could not find com.glaf.core.jdbc.connection.HikariCPConnectionProvider from the classpath, "
+							+ "these properties are going to be ignored.");
+			return false;
+		}
+		return true;
 	}
 
 	private static ConnectionProvider initializeConnectionProviderFromConfig(String providerClass) {

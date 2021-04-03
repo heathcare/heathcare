@@ -9,7 +9,7 @@
 <script type="text/javascript">
  $(function () {
 
-    <#if chart.gradientFlag == '1' >
+     
 	Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function(color) {
 		return {
 			radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
@@ -19,12 +19,12 @@
 			]
 		};
 	});
-	</#if>
+ 
 
     $('#container').highcharts({
         chart: {
             type: 'pie'
-			<#if chart.enable3DFlag == '1' >
+			<#if chart.enable3DFlag == '1'>
 			,options3d: {
                 enabled: true,
                 alpha: 35,
@@ -32,6 +32,14 @@
             }
 		    </#if>
         },
+		colors:[ 
+		          '#dd392d',
+                  '#007af4', 
+                  '#ffff00',
+                  '#ff00ff',  
+                  '#ff9933',  
+                  '#00cc33'
+                ],
         title: {
             text: '${chart.chartTitle}'
         },
@@ -50,12 +58,23 @@
                 depth: 45,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.name}'
+                    //format: '{point.name}'
+					formatter:function(){ 
+                        return '<b>'+this.point.name+'</b>:'+this.point.percentage.toFixed(1)+"%"; 
+                    }, 
+					color: 'black',
+					style: {
+					 font: '14px 微软雅黑'
+					},
+                    connectorWidth:0, 
+					connectorPadding:0, 
+					distance:-30
                 }
             }
         },
         series: [{
             name: '${chart.chartTitle}',
+			colorByPoint: true,
             data: ${pie_data}
         }]
  
@@ -68,7 +87,7 @@ $(document).ready(function(){
 	$("button.btn").click(function(){
 		var theme = $(this).attr("theme");
 		if(theme != null) {
-		    window.location.href="${request.contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
+		    window.location.href="${contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
 		}
     });
 });

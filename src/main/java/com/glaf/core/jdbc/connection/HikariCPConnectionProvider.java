@@ -110,11 +110,22 @@ public class HikariCPConnectionProvider implements ConnectionProvider {
 		try {
 			String validationQuery = properties.getProperty(ConnectionConstants.PROP_VALIDATIONQUERY);
 			Integer maximumPoolSize = PropertiesHelper.getInteger("hikari.maximumPoolSize", properties);
-			Integer connectionTimeout = PropertiesHelper.getInteger("hikari.connectionTimeout", properties);
+			// Integer connectionTimeout =
+			// PropertiesHelper.getInteger("hikari.connectionTimeout", properties);
+			Integer maxLifetime = PropertiesHelper.getInteger("hikari.maxLifetime", properties);
 
-			if (maximumPoolSize == null) {
-				maximumPoolSize = 100;
+			if (maximumPoolSize == null || maximumPoolSize == 0) {
+				maximumPoolSize = PropertiesHelper.getInteger(ConnectionConstants.PROP_MAXACTIVE, properties);
 			}
+			if (maximumPoolSize == null || maximumPoolSize == 0) {
+				maximumPoolSize = 8;// CPU核心数*2
+			}
+
+			if (maximumPoolSize > 64) {
+				maximumPoolSize = 64;// 最大32核心
+			}
+
+			log.debug("hikari maximumPoolSize:" + maximumPoolSize);
 
 			String dbUser = properties.getProperty(DBConfiguration.JDBC_USER);
 			String dbPassword = properties.getProperty(DBConfiguration.JDBC_PASSWORD);
@@ -134,16 +145,21 @@ public class HikariCPConnectionProvider implements ConnectionProvider {
 			config.setPassword(dbPassword);
 			config.setMaximumPoolSize(maximumPoolSize);
 			config.setDataSourceProperties(properties);
-			config.setAutoCommit(isAutoCommit);
+			config.setAutoCommit(true);
+
+			// if (connectionTimeout != null) {
+			// config.setConnectionTimeout(connectionTimeout);//某些驱动不支持！！！
+			// }
+
+			if (maxLifetime != null && maxLifetime > 0) {
+				config.setMaxLifetime(maxLifetime);
+			} else {
+				config.setMaxLifetime(1000L * 1800);// 1800秒，即30分钟，0.5小时
+			}
 
 			if (StringUtils.isNotEmpty(validationQuery)) {
 				config.setConnectionTestQuery(validationQuery);
 			}
-			if (connectionTimeout != null) {
-				config.setConnectionTimeout(connectionTimeout);
-			}
-
-			config.setMaxLifetime(1000L * 3600 * 8);
 
 			String isolationLevel = properties.getProperty(DBConfiguration.JDBC_ISOLATION);
 			if (isolationLevel == null) {

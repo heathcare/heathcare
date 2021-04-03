@@ -52,6 +52,8 @@ public class ConnectionDefinition implements java.io.Serializable, JSONable {
 
 	protected String password;
 
+	protected int maxActive;
+
 	protected String attribute;
 
 	protected boolean autoCommit;
@@ -100,6 +102,10 @@ public class ConnectionDefinition implements java.io.Serializable, JSONable {
 
 	public String getId() {
 		return id;
+	}
+
+	public int getMaxActive() {
+		return maxActive;
 	}
 
 	public String getName() {
@@ -181,6 +187,10 @@ public class ConnectionDefinition implements java.io.Serializable, JSONable {
 		this.id = id;
 	}
 
+	public void setMaxActive(int maxActive) {
+		this.maxActive = maxActive;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -226,8 +236,7 @@ public class ConnectionDefinition implements java.io.Serializable, JSONable {
 	}
 
 	public String toString() {
-		return "ConnectionDefinition [name=" + name + ", driver=" + driver
-				+ ", url=" + url + ", user=" + user + "]";
+		return "ConnectionDefinition [name=" + name + ", driver=" + driver + ", url=" + url + ", user=" + user + "]";
 	}
 
 }

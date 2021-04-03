@@ -122,12 +122,18 @@ public class DruidConnectionProvider implements ConnectionProvider {
 			String dbUser = properties.getProperty("jdbc.user");
 			String dbPassword = properties.getProperty("jdbc.password");
 
-			if (maxPoolSize == null) {
-				maxPoolSize = 100;
+			if (maxPoolSize == null || maxPoolSize == 0) {
+				maxPoolSize = 32;// CPU核心数*2
 			}
 
+			if (maxPoolSize > 64) {
+				maxPoolSize = 64;// 最大32核心
+			}
+
+			log.debug("druid maxPoolSize:" + maxPoolSize);
+
 			if (timeBetweenEvictionRuns == null) {
-				timeBetweenEvictionRuns = 60;
+				timeBetweenEvictionRuns = 20;
 			}
 
 			if (maxWait == null) {
@@ -144,6 +150,8 @@ public class DruidConnectionProvider implements ConnectionProvider {
 
 			ds = new DruidDataSource();
 
+			properties.remove("maxActive");
+
 			DruidDataSourceFactory.config(ds, properties);
 			ds.setConnectProperties(properties);
 			ds.setDriverClassName(jdbcDriverClass);
@@ -151,8 +159,8 @@ public class DruidConnectionProvider implements ConnectionProvider {
 			ds.setUsername(dbUser);
 			ds.setPassword(dbPassword);
 
-			ds.setInitialSize(initialSize == null ? 5 : initialSize);
-			ds.setMinIdle(minIdle == null ? 5 : minIdle);
+			ds.setInitialSize(initialSize == null ? 4 : initialSize);
+			ds.setMinIdle(minIdle == null ? 3 : minIdle);
 			ds.setMaxActive(maxPoolSize);
 			ds.setMaxWait(maxWait * 1000L);
 
@@ -170,7 +178,7 @@ public class DruidConnectionProvider implements ConnectionProvider {
 			}
 
 			ds.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRuns * 1000L);// 间隔多久才进行一次检测，检测需要关闭的空闲连接
-			ds.setMinEvictableIdleTimeMillis(1000L * 60L * 120L);// 配置一个连接在池中最小生存的时间，单位是毫秒
+			ds.setMinEvictableIdleTimeMillis(1000L * 600);// 配置一个连接在池中最小生存的时间，单位是毫秒
 
 			if (maxStatements != null) {
 				ds.setPoolPreparedStatements(true);
@@ -178,8 +186,8 @@ public class DruidConnectionProvider implements ConnectionProvider {
 				ds.setMaxPoolPreparedStatementPerConnectionSize(200);
 			}
 
-			ds.setRemoveAbandoned(false);// 对于长时间不使用的连接强制关闭 true/false
-			ds.setRemoveAbandonedTimeout(7200);// 超过120分钟开始关闭空闲连接
+			ds.setRemoveAbandoned(true);// 对于长时间不使用的连接强制关闭 true/false
+			ds.setRemoveAbandonedTimeout(600);// 超过10分钟开始关闭空闲连接
 			ds.setLogAbandoned(true);// 将当前关闭动作记录到日志
 
 			ds.init();

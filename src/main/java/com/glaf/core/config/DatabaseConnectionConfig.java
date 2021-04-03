@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.alibaba.druid.pool.DruidDataSource;
+
 import com.glaf.core.base.ConnectionDefinition;
 import com.glaf.core.config.DBConfiguration;
 import com.glaf.core.context.ContextFactory;
@@ -49,6 +49,7 @@ import com.glaf.core.service.IDatabaseService;
 import com.glaf.core.util.DBUtils;
 import com.glaf.core.util.JdbcUtils;
 import com.glaf.core.util.UUID32;
+import com.glaf.core.domain.ColumnDefinition;
 import com.glaf.core.domain.Database;
 import com.glaf.core.domain.util.DatabaseDomainFactory;
 
@@ -75,8 +76,20 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				conn.commit();
 			} else {
 				if (DBUtils.tableExists(conn, "SYS_DATABASE")) {
-					DBUtils.alterTable(conn, DatabaseDomainFactory.getTableDefinition());
-					conn.commit();
+					boolean updateSchema = true;
+					List<ColumnDefinition> columns = DBUtils.getColumnDefinitions(conn, "SYS_DATABASE");
+					if (columns != null && !columns.isEmpty()) {
+						for (ColumnDefinition column : columns) {
+							if (StringUtils.equalsIgnoreCase(column.getColumnName(), "MAXACTIVE_")) {
+								updateSchema = false;
+								break;
+							}
+						}
+					}
+					if (updateSchema) {
+						DBUtils.alterTable(conn, DatabaseDomainFactory.getTableDefinition());
+						conn.commit();
+					}
 				}
 			}
 			stmt = conn.createStatement();
@@ -97,7 +110,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 			pstmt.close();
 			conn.commit();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//// ex.printStackTrace();
 			logger.error("database checkAndInitToken error", ex);
 		} finally {
 			JdbcUtils.close(rs);
@@ -109,22 +122,31 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 
 	public boolean checkConfig(Database database) {
 		String name = database.getName();
-		String dbType = database.getType();
-		String host = database.getHost();
-		int port = database.getPort();
-		String databaseName = database.getDbname();
-		String user = database.getUser();
+		// if (DBConnectionFactory.checkConnection(name)) {
+		// return true;
+		// }
+
 		try {
-			String password = SecurityUtils.decode(database.getKey(), database.getPassword());
+			if (StringUtils.isEmpty(database.getKey()) || StringUtils.isEmpty(database.getPassword())) {
+				database = this.getDatabase(database.getId());
+			}
 			if (this.checkConnectionImmediately(database)) {
-				DBConfiguration.addDataSourceProperties(name, dbType, host, port, databaseName, user, password);
+				String dbType = database.getType();
+				String host = database.getHost();
+				int port = database.getPort();
+				String databaseName = database.getDbname();
+				String user = database.getUser();
+				String password = SecurityUtils.decode(database.getKey(), database.getPassword());
+				int maxActive = database.getMaxActive();
+				DBConfiguration.addDataSourceProperties(name, dbType, host, port, databaseName, user, password,
+						maxActive);
 				logger.debug("->name:" + name);
 				if (DBConnectionFactory.checkConnection(name)) {
 					return true;
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//// ex.printStackTrace();
 			logger.error(database.getTitle() + " config error", ex);
 		}
 		return false;
@@ -138,7 +160,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 		String user = connectionDefinition.getUser();
 		Connection connection = null;
 		HikariDataSource ds = null;
-		DruidDataSource bds = null;
+	 
 		try {
 			String password = connectionDefinition.getPassword();
 			Properties props = DBConfiguration.getTemplateProperties(dbType);
@@ -157,15 +179,17 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				logger.debug("driver:" + driver);
 				logger.debug("url:" + url);
 
-				boolean isSQLite = false;
-				if (StringUtils.startsWith(driver.trim(), "org.sqlite")) {
-					isSQLite = true;
+				boolean useHikari = false;
+				if (StringUtils.contains(url, "jdbc:sqlite:") || StringUtils.contains(url, "jdbc:mysql:")
+						|| StringUtils.contains(url, "jdbc:postgresql:")) {
+					useHikari = true;
 				}
-				if (isSQLite || "hikari".equals(System.getProperty("jdbc_pool_type"))) {
+				if (useHikari || "hikari".equals(System.getProperty("jdbc_pool_type"))) {
 					HikariConfig config = new HikariConfig();
 					config.setDriverClassName(driver);
 					config.setJdbcUrl(url);
 					config.setMaximumPoolSize(2);
+					// config.setConnectionTimeout(5000);
 					// config.setMaxLifetime(1000L * 30);
 					// config.setConnectionTimeout(5000L);
 					// config.setIdleTimeout(1000L * 20);
@@ -184,14 +208,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 						connection = ds.getConnection();
 					}
 				} else {
-					bds = new DruidDataSource();
-					bds.setInitialSize(1);
-					bds.setMaxActive(2);
-					bds.setDriverClassName(driver);
-					bds.setUrl(url);
-					bds.setUsername(user);
-					bds.setPassword(password);
-					connection = bds.getConnection();
+					 
 				}
 			}
 
@@ -199,7 +216,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				return true;
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//// ex.printStackTrace();
 			logger.error(connectionDefinition.getSubject() + " config error", ex);
 		} finally {
 			JdbcUtils.close(connection);
@@ -207,13 +224,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				ds.close();
 				ds = null;
 			}
-			if (bds != null) {
-				try {
-					bds.close();
-				} catch (Exception e) {
-				}
-				bds = null;
-			}
+		 
 		}
 		return false;
 	}
@@ -226,7 +237,6 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 		String user = database.getUser();
 		Connection connection = null;
 		HikariDataSource ds = null;
-		DruidDataSource bds = null;
 		try {
 			String password = SecurityUtils.decode(database.getKey(), database.getPassword());
 			Properties props = DBConfiguration.getTemplateProperties(dbType);
@@ -245,15 +255,17 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				logger.debug("driver:" + driver);
 				logger.debug("url:" + url);
 
-				boolean isSQLite = false;
-				if (StringUtils.startsWith(driver.trim(), "org.sqlite")) {
-					isSQLite = true;
+				boolean useHikari = false;
+				if (StringUtils.contains(url, "jdbc:sqlite:") || StringUtils.contains(url, "jdbc:mysql:")
+						|| StringUtils.contains(url, "jdbc:postgresql:")) {
+					useHikari = true;
 				}
-				if (isSQLite || "hikari".equals(System.getProperty("jdbc_pool_type"))) {
+				if (useHikari || "hikari".equals(System.getProperty("jdbc_pool_type"))) {
 					HikariConfig config = new HikariConfig();
 					config.setDriverClassName(driver);
 					config.setJdbcUrl(url);
 					config.setMaximumPoolSize(2);
+					// config.setConnectionTimeout(5000);
 					// config.setMaxLifetime(1000L * 30);
 					// config.setConnectionTimeout(5000L);
 					// config.setIdleTimeout(1000L * 20);
@@ -272,22 +284,16 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 						connection = ds.getConnection();
 					}
 				} else {
-					bds = new DruidDataSource();
-					bds.setInitialSize(1);
-					bds.setMaxActive(2);
-					bds.setDriverClassName(driver);
-					bds.setUrl(url);
-					bds.setUsername(user);
-					bds.setPassword(password);
-					connection = bds.getConnection();
+					 
 				}
+
 			}
 
 			if (connection != null) {
 				return true;
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//// ex.printStackTrace();
 			logger.error(database.getTitle() + " config error", ex);
 		} finally {
 			JdbcUtils.close(connection);
@@ -295,13 +301,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				ds.close();
 				ds = null;
 			}
-			if (bds != null) {
-				try {
-					bds.close();
-				} catch (Exception e) {
-				}
-				bds = null;
-			}
+			 
 		}
 		return false;
 	}
@@ -340,7 +340,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 		String user = database.getUser();
 		Connection connection = null;
 		HikariDataSource ds = null;
-		DruidDataSource bds = null;
+ 
 		try {
 			String password = SecurityUtils.decode(database.getKey(), database.getPassword());
 			Properties props = DBConfiguration.getTemplateProperties(dbType);
@@ -359,15 +359,17 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				logger.debug("driver:" + driver);
 				logger.debug("url:" + url);
 
-				boolean isSQLite = false;
-				if (StringUtils.startsWith(driver.trim(), "org.sqlite")) {
-					isSQLite = true;
+				boolean useHikari = false;
+				if (StringUtils.contains(url, "jdbc:sqlite:") || StringUtils.contains(url, "jdbc:mysql:")
+						|| StringUtils.contains(url, "jdbc:postgresql:")) {
+					useHikari = true;
 				}
-				if (isSQLite || "hikari".equals(System.getProperty("jdbc_pool_type"))) {
+				if (useHikari || "hikari".equals(System.getProperty("jdbc_pool_type"))) {
 					HikariConfig config = new HikariConfig();
 					config.setDriverClassName(driver);
 					config.setJdbcUrl(url);
 					config.setMaximumPoolSize(2);
+					// config.setConnectionTimeout(5000);
 					// config.setMaxLifetime(1000L * 30);
 					// config.setConnectionTimeout(5000L);
 					// config.setIdleTimeout(1000L * 20);
@@ -386,18 +388,10 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 						connection = ds.getConnection();
 					}
 				} else {
-					bds = new DruidDataSource();
-					bds.setInitialSize(1);
-					bds.setMaxActive(2);
-					bds.setDriverClassName(driver);
-					bds.setUrl(url);
-					bds.setUsername(user);
-					bds.setPassword(password);
-					connection = bds.getConnection();
+				 
 				}
 
 			}
-
 			if (connection != null) {
 				return connection;
 			}
@@ -429,6 +423,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 				model.setDatabase(rs.getString("DBNAME_"));
 				model.setUser(rs.getString("USER_"));
 				model.setPassword(pass);
+				//model.setMaxActive(rs.getInt("MAXACTIVE_"));
 				list.add(model);
 			}
 			rs.close();
@@ -436,7 +431,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 			rs = null;
 			stmt = null;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//// ex.printStackTrace();
 			logger.error("get databases error", ex);
 		} finally {
 			JdbcUtils.close(rs);
@@ -601,7 +596,7 @@ public class DatabaseConnectionConfig implements ConnectionConfig {
 			stmt.close();
 			conn.commit();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//// ex.printStackTrace();
 			logger.error("update database error", ex);
 		} finally {
 			JdbcUtils.close(stmt);

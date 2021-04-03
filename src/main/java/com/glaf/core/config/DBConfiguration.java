@@ -48,12 +48,12 @@ import com.glaf.core.el.ExpressionTools;
 import com.glaf.core.jdbc.DBConnectionFactory;
 import com.glaf.core.jdbc.connection.ConnectionConstants;
 import com.glaf.core.jdbc.datasource.MultiRoutingDataSource;
+import com.glaf.core.security.AESUtils;
+import com.glaf.core.security.RSAUtils;
 import com.glaf.core.util.Constants;
 import com.glaf.core.util.FileUtils;
 import com.glaf.core.util.Hex;
 import com.glaf.core.util.PropertiesUtils;
-import com.glaf.core.util.security.AESUtils;
-import com.glaf.core.util.security.RSAUtils;
 
 public class DBConfiguration {
 	protected static final Log logger = LogFactory.getLog(DBConfiguration.class);
@@ -95,6 +95,8 @@ public class DBConfiguration {
 
 	public static final String DATABASE_NAME = "databaseName";
 
+	public static final String MAXACTIVE = "maxActive";
+
 	public static final String SUBJECT = "subject";
 
 	protected static AtomicBoolean loading = new AtomicBoolean(false);
@@ -109,6 +111,7 @@ public class DBConfiguration {
 
 	protected static ConcurrentMap<String, String> dbTypes = new ConcurrentHashMap<String, String>();
 
+	protected static final String DM_DBMS = "DM DBMS";
 	static {
 		ISOLATION_LEVELS.put(new Integer(Connection.TRANSACTION_NONE), "NONE");
 		ISOLATION_LEVELS.put(new Integer(Connection.TRANSACTION_READ_UNCOMMITTED), "READ_UNCOMMITTED");
@@ -122,10 +125,8 @@ public class DBConfiguration {
 	/**
 	 * 添加数据源
 	 * 
-	 * @param name
-	 *            名称
-	 * @param props
-	 *            属性
+	 * @param name  名称
+	 * @param props 属性
 	 */
 	public static void addDataSourceProperties(String name, Properties props) {
 		if (!dataSourceProperties.containsKey(name)) {
@@ -140,7 +141,7 @@ public class DBConfiguration {
 					dataSourceProperties.put(name, conn);
 				}
 			} catch (Exception ex) {
-
+				//// ex.printStackTrace();
 			}
 		}
 	}
@@ -148,23 +149,32 @@ public class DBConfiguration {
 	/**
 	 * 添加数据源
 	 * 
-	 * @param name
-	 *            名称
-	 * @param dbType
-	 *            数据库类型
-	 * @param host
-	 *            主机
-	 * @param port
-	 *            端口
-	 * @param databaseName
-	 *            数据库名称
-	 * @param user
-	 *            用户名
-	 * @param password
-	 *            密码
+	 * @param name         名称
+	 * @param dbType       数据库类型
+	 * @param host         主机
+	 * @param port         端口
+	 * @param databaseName 数据库名称
+	 * @param user         用户名
+	 * @param password     密码
 	 */
 	public static void addDataSourceProperties(String name, String dbType, String host, int port, String databaseName,
 			String user, String password) {
+		addDataSourceProperties(name, dbType, host, port, databaseName, user, password, 8);
+	}
+
+	/**
+	 * 添加数据源
+	 * 
+	 * @param name         名称
+	 * @param dbType       数据库类型
+	 * @param host         主机
+	 * @param port         端口
+	 * @param databaseName 数据库名称
+	 * @param user         用户名
+	 * @param password     密码
+	 */
+	public static void addDataSourceProperties(String name, String dbType, String host, int port, String databaseName,
+			String user, String password, int maxActive) {
 		Properties props = getTemplateProperties(dbType);
 		if (props != null && !props.isEmpty()) {
 			Map<String, Object> context = new HashMap<String, Object>();
@@ -181,25 +191,21 @@ public class DBConfiguration {
 			logger.debug("name:" + name);
 			logger.debug("driver:" + driver);
 			logger.debug("url:" + url);
-			addDataSourceProperties(name, driver, url, user, password);
+			addDataSourceProperties(name, driver, url, user, password, maxActive);
 		}
 	}
 
 	/**
 	 * 添加数据源
 	 * 
-	 * @param name
-	 *            名称
-	 * @param driver
-	 *            驱动
-	 * @param url
-	 *            JDBC完整URL
-	 * @param user
-	 *            数据库用户名
-	 * @param password
-	 *            密码
+	 * @param name     名称
+	 * @param driver   驱动
+	 * @param url      JDBC完整URL
+	 * @param user     数据库用户名
+	 * @param password 密码
 	 */
-	public static void addDataSourceProperties(String name, String driver, String url, String user, String password) {
+	public static void addDataSourceProperties(String name, String driver, String url, String user, String password,
+			int maxActive) {
 		if (!dataSourceProperties.containsKey(name)) {
 			Properties props = new Properties();
 			props.put(JDBC_NAME, name);
@@ -212,6 +218,8 @@ public class DBConfiguration {
 				props.put(JDBC_PASSWORD, password);
 			}
 
+			props.put(MAXACTIVE, String.valueOf(maxActive));
+
 			String dbType = getDatabaseType(url);
 			if (StringUtils.equals(dbType, "postgresql")) {
 				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
@@ -222,7 +230,11 @@ public class DBConfiguration {
 			} else if (StringUtils.equals(dbType, "hbase")) {
 				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
 			} else if (StringUtils.equals(dbType, "oracle")) {
-				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 FROM dual ");
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 FROM DUAL ");
+			} else if (StringUtils.equals(dbType, "sap")) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 FROM DUAL ");
+			} else if (StringUtils.equals(dbType, DM_DBMS)) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
 			}
 
 			try {
@@ -236,7 +248,64 @@ public class DBConfiguration {
 					dataSourceProperties.put(name, conn);
 				}
 			} catch (Exception ex) {
+				//// ex.printStackTrace();
+			}
+		}
+	}
 
+	/**
+	 * 添加数据源
+	 * 
+	 * @param name     名称
+	 * @param url      JDBC完整URL
+	 * @param user     数据库用户名
+	 * @param password 密码
+	 */
+	public static void addDataSourceProperties(String name, String url, String user, String password, int maxActive) {
+		if (!dataSourceProperties.containsKey(name)) {
+			String driver = getDriver(url);
+			Properties props = new Properties();
+			props.put(JDBC_NAME, name);
+			props.put(JDBC_DRIVER, driver);
+			props.put(JDBC_URL, url);
+			if (user != null) {
+				props.put(JDBC_USER, user);
+			}
+			if (password != null) {
+				props.put(JDBC_PASSWORD, password);
+			}
+
+			props.put(MAXACTIVE, String.valueOf(maxActive));
+
+			String dbType = getDatabaseType(url);
+			if (StringUtils.equals(dbType, "postgresql")) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
+			} else if (StringUtils.equals(dbType, "sqlserver")) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
+			} else if (StringUtils.equals(dbType, "mysql")) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
+			} else if (StringUtils.equals(dbType, "hbase")) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
+			} else if (StringUtils.equals(dbType, "oracle")) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 FROM DUAL ");
+			} else if (StringUtils.equals(dbType, "sap")) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 FROM DUAL ");
+			} else if (StringUtils.equals(dbType, DM_DBMS)) {
+				props.put(ConnectionConstants.PROP_VALIDATIONQUERY, " SELECT 1 ");
+			}
+
+			try {
+				if (DBConnectionFactory.checkConnection(props)) {
+					MultiRoutingDataSource.addDataSource(name, props);
+					ConnectionDefinition conn = toConnectionDefinition(props);
+					conn.setUrl(url);
+					conn.setType(dbType);
+					dbTypes.put(name, dbType);
+					props.put(JDBC_TYPE, dbType);
+					dataSourceProperties.put(name, conn);
+				}
+			} catch (Exception ex) {
+				//// ex.printStackTrace();
 			}
 		}
 	}
@@ -284,7 +353,7 @@ public class DBConfiguration {
 	}
 
 	public static List<ConnectionDefinition> getConnectionDefinitions() {
-		List<ConnectionDefinition> rows = new java.util.ArrayList<ConnectionDefinition>();
+		List<ConnectionDefinition> rows = new ArrayList<ConnectionDefinition>();
 		Iterator<Entry<String, ConnectionDefinition>> iterator = dataSourceProperties.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<String, ConnectionDefinition> entry = iterator.next();
@@ -368,7 +437,7 @@ public class DBConfiguration {
 	}
 
 	public static Map<String, Dialect> getDatabaseDialects() {
-		Map<String, Dialect> dialects = new java.util.HashMap<String, Dialect>();
+		Map<String, Dialect> dialects = new HashMap<String, Dialect>();
 		logger.debug("dataSourceProperties:" + dataSourceProperties);
 		if (dataSourceProperties != null && !dataSourceProperties.isEmpty()) {
 			Iterator<Entry<String, ConnectionDefinition>> iterator = dataSourceProperties.entrySet().iterator();
@@ -395,6 +464,8 @@ public class DBConfiguration {
 					dialects.put(key, new DB2Dialect());
 				} else if (StringUtils.equals(dbType, "voltdb")) {
 					dialects.put(key, new VoltdbDialect());
+				} else if (StringUtils.equals(dbType, DM_DBMS)) {
+					dialects.put(key, new OracleDialect());
 				}
 			}
 		}
@@ -414,6 +485,8 @@ public class DBConfiguration {
 			dbType = "sqlserver";
 		} else if (StringUtils.contains(url, "jdbc:sqlserver:")) {
 			dbType = "sqlserver";
+		} else if (StringUtils.contains(url, "jdbc:sap:")) {
+			dbType = "sap";
 		} else if (StringUtils.contains(url, "jdbc:oracle:")) {
 			dbType = "oracle";
 		} else if (StringUtils.contains(url, "jdbc:db2:")) {
@@ -424,8 +497,32 @@ public class DBConfiguration {
 			dbType = "hbase";
 		} else if (StringUtils.contains(url, "jdbc:voltdb:")) {
 			dbType = "voltdb";
+		} else if (StringUtils.contains(url, "jdbc:dm:")) {
+			dbType = DM_DBMS;
 		}
 		return dbType;
+	}
+
+	public static String getDriver(String url) {
+		String driver = null;
+		if (StringUtils.contains(url, "jdbc:mysql:")) {
+			driver = "com.mysql.cj.jdbc.Driver";
+		} else if (StringUtils.contains(url, "jdbc:postgresql:")) {
+			driver = "org.postgresql.Driver";
+		} else if (StringUtils.contains(url, "jdbc:h2:")) {
+			driver = "org.h2.Driver";
+		} else if (StringUtils.contains(url, "jdbc:jtds:sqlserver:")) {
+			driver = "net.sourceforge.jtds.jdbc.Driver";
+		} else if (StringUtils.contains(url, "jdbc:sqlserver:")) {
+			driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		} else if (StringUtils.contains(url, "jdbc:oracle:")) {
+			driver = "oracle.jdbc.driver.OracleDriver";
+		} else if (StringUtils.contains(url, "jdbc:db2:")) {
+			driver = "com.ibm.db2.jcc.DB2Driver";
+		} else if (StringUtils.contains(url, "jdbc:sqlite:")) {
+			driver = "org.sqlite.JDBC";
+		}
+		return driver;
 	}
 
 	public static String getDatabaseTypeByName(String systemName) {
@@ -458,6 +555,7 @@ public class DBConfiguration {
 			return null;
 		}
 		// logger.debug("->name:" + name);
+		name = name.trim();
 		ConnectionDefinition conn = getConnectionDefinition(name);
 		Properties props = toProperties(conn);
 		return props;
@@ -494,6 +592,7 @@ public class DBConfiguration {
 		dialectMappings.setProperty("sqlite", "com.glaf.core.dialect.SQLiteDialect");
 		dialectMappings.setProperty("db2", "com.glaf.core.dialect.DB2Dialect");
 		dialectMappings.setProperty("voltdb", "com.glaf.core.dialect.VoltdbDialect");
+		dialectMappings.setProperty(DM_DBMS, "com.glaf.core.dialect.OracleDialect");
 		return dialectMappings;
 	}
 
@@ -507,6 +606,7 @@ public class DBConfiguration {
 		dialects.put("postgresql", new PostgreSQLDialect());
 		dialects.put("db2", new DB2Dialect());
 		dialects.put("voltdb", new VoltdbDialect());
+		dialects.put(DM_DBMS, new OracleDialect());
 		return dialects;
 	}
 
@@ -518,6 +618,8 @@ public class DBConfiguration {
 		dialectMappings.setProperty("postgresql", "org.hibernate.dialect.PostgreSQLDialect");
 		dialectMappings.setProperty("sqlserver", "org.hibernate.dialect.SQLServerDialect");
 		dialectMappings.setProperty("db2", "org.hibernate.dialect.DB2Dialect");
+		dialectMappings.setProperty("sap", "org.hibernate.dialect.SAPDBDialect");
+		dialectMappings.setProperty(DM_DBMS, "org.hibernate.dialect.DmDialect");
 		return dialectMappings;
 	}
 
@@ -553,18 +655,19 @@ public class DBConfiguration {
 		dialectMappings.setProperty("postgresql", "org.apache.metamodel.jdbc.dialects.PostgresqlQueryRewriter");
 		dialectMappings.setProperty("sqlserver", "org.apache.metamodel.jdbc.dialects.SQLServerQueryRewriter");
 		dialectMappings.setProperty("db2", "org.apache.metamodel.jdbc.dialects.DB2QueryRewriter");
+		dialectMappings.setProperty(DM_DBMS, "org.apache.metamodel.jdbc.dialects.OracleQueryRewriter");
 		return dialectMappings;
 	}
 
-	public static Properties getTemplateProperties(String name) {
-		if (name == null) {
+	public static Properties getTemplateProperties(String dbType) {
+		if (dbType == null) {
 			return null;
 		}
 		if (jdbcTemplateProperties.isEmpty()) {
 			init();
 		}
-		// logger.debug("name:" + name);
-		Properties props = jdbcTemplateProperties.get(name);
+		logger.debug("dbType:" + dbType);
+		Properties props = jdbcTemplateProperties.get(dbType);
 		Properties p = new Properties();
 		Enumeration<?> e = props.keys();
 		while (e.hasMoreElements()) {
@@ -598,7 +701,7 @@ public class DBConfiguration {
 					}
 				}
 			} catch (Exception ex) {
-
+				//// ex.printStackTrace();
 				logger.error(ex);
 			} finally {
 				loading.set(false);
@@ -662,6 +765,7 @@ public class DBConfiguration {
 											}
 										}
 									} catch (Exception ex) {
+										//// ex.printStackTrace();
 										logger.error(ex);
 									}
 								}
@@ -670,6 +774,7 @@ public class DBConfiguration {
 					}
 				}
 			} catch (Exception ex) {
+				//// ex.printStackTrace();
 				logger.error(ex);
 			} finally {
 				loading.set(false);
@@ -763,7 +868,7 @@ public class DBConfiguration {
 							}
 						}
 					}
-				} 
+				}
 			} else {
 				loadDefaultJdbcProperties();
 			}
@@ -784,6 +889,7 @@ public class DBConfiguration {
 						props.setProperty(JDBC_TYPE, dbType);
 					}
 				} catch (Exception ex) {
+					//// ex.printStackTrace();
 					logger.error(ex);
 				}
 			}
@@ -817,6 +923,10 @@ public class DBConfiguration {
 
 			if (StringUtils.isNotEmpty(props.getProperty(PORT))) {
 				model.setPort(Integer.parseInt(props.getProperty(PORT)));
+			}
+
+			if (StringUtils.isNotEmpty(props.getProperty(MAXACTIVE))) {
+				model.setMaxActive(Integer.parseInt(props.getProperty(MAXACTIVE)));
 			}
 
 			if (StringUtils.equals("true", props.getProperty(JDBC_AUTOCOMMIT))) {
@@ -868,6 +978,9 @@ public class DBConfiguration {
 				props.setProperty(HOST, conn.getHost());
 			}
 			props.setProperty(PORT, String.valueOf(conn.getPort()));
+
+			props.setProperty(MAXACTIVE, String.valueOf(conn.getMaxActive()));
+
 			if (conn.getDatabase() != null) {
 				props.setProperty(DATABASE, conn.getDatabase());
 			}

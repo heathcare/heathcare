@@ -24,7 +24,7 @@
     $('#container').highcharts({
         chart: {
             type: 'column'
-			<#if chart.enable3DFlag == '1' >
+			<#if chart.enable3DFlag == '1'>
 			,margin: 75
 			,options3d: {
                 enabled: true,
@@ -35,6 +35,14 @@
             }
 		    </#if>
         },
+		colors:[ 
+                  '#ff3366', 
+                  '#99ff00', 
+                  '#0099ff',  
+                  '#ff00ff',  
+                  '#ff9933',  
+                  '#00cc33'
+                ],
         title: {
             text: '${chart.chartTitle}'
         },
@@ -92,7 +100,7 @@ $(document).ready(function(){
 	$("button.btn").click(function(){
 		var theme = $(this).attr("theme");
 		if(theme != null) {
-		    window.location.href="${request.contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
+		    window.location.href="${contextPath}/chart/highcharts/showChart?chartId=${chart.id}&charts_theme="+theme+"&chooseThemes=${chooseThemes}";
 		}
     });
 });

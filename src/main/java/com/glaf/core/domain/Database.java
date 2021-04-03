@@ -157,6 +157,8 @@ public class Database implements java.lang.Comparable<Database>, Cloneable, Seri
 	@Column(name = "LEVEL_")
 	protected int level = 0;
 
+	protected int maxActive;
+
 	/**
 	 * 优先级
 	 */
@@ -495,6 +497,10 @@ public class Database implements java.lang.Comparable<Database>, Cloneable, Seri
 		return mapping;
 	}
 
+	public int getMaxActive() {
+		return maxActive;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -710,6 +716,10 @@ public class Database implements java.lang.Comparable<Database>, Cloneable, Seri
 
 	public void setMapping(String mapping) {
 		this.mapping = mapping;
+	}
+
+	public void setMaxActive(int maxActive) {
+		this.maxActive = maxActive;
 	}
 
 	public void setName(String name) {
