@@ -287,18 +287,24 @@ $.jgrid.extend({
 				}
 				return ret;
 			}
-			function buildSummaryTd(i, ik, grp, foffset) {
+			function buildSummaryTd(i, ik, grp, foffset, fstr) {
 				var fdata = findGroupIdx(i, ik, grp),
 				cm = $t.p.colModel,
-				vv, grlen = fdata.cnt, str="", k;
+				vv, grlen = fdata.cnt, str="", k , isput = false, tmpdata, tplfld;
 				for(k=foffset; k<colspans;k++) {
-					var tmpdata = "<td "+$t.formatCol(k,1,'')+">&#160;</td>",
-					tplfld = "{0}";
+					if(cm[k].hidden ) {
+						tmpdata = "<td "+$t.formatCol(k,1,'')+">&#160;</td>";
+					} else if(!isput && fstr) {
+						tmpdata = fstr;
+						isput = true;
+					} else {
+						tmpdata = "<td "+$t.formatCol(k,1,'')+">&#160;</td>";
+					}
 					$.each(fdata.summary,function(){
 						if(this.nm === cm[k].name) {
-							if(cm[k].summaryTpl)  {
-								tplfld = cm[k].summaryTpl;
-							}
+							
+							tplfld = (cm[k].summaryTpl) ? cm[k].summaryTpl :  "{0}";
+							
 							if(typeof this.st === 'string' && this.st.toLowerCase() === 'avg') {
 								if(this.sd && this.vd) { 
 									this.v = (this.v/this.vd);
@@ -354,8 +360,8 @@ $.jgrid.extend({
 					grpTextStr = gv;
 				}
 				if(grp.groupSummaryPos[n.idx] === 'header')  {
-					str += "<tr id=\""+hid+"\"" +(grp.groupCollapse && n.idx>0 ? " style=\"display:none;\" " : " ") + "role=\"row\" class= \"" + common.content + " jqgroup ui-row-"+$t.p.direction+" "+clid+"\"><td style=\"padding-left:"+(n.idx * 12) + "px;"+"\"" + mul +">" + icon+grpTextStr + "</td>";
-					str += buildSummaryTd(i, 0, grp.groups, grp.groupColumnShow[n.idx] === false ? (mul ==="" ? 2 : 3) : ((mul ==="") ? 1 : 2) );
+					str += "<tr id=\""+hid+"\"" +(grp.groupCollapse && n.idx>0 ? " style=\"display:none;\" " : " ") + "role=\"row\" class= \"" + common.content + " jqgroup ui-row-"+$t.p.direction+" "+clid+"\">";
+					str += buildSummaryTd(i, 0, grp.groups, (mul==="" ? 0 : 1), "<td style=\"padding-left:"+(n.idx * 12) + "px;"+"\"" + mul +">" + icon+grpTextStr + "</td>" );
 					str += "</tr>";
 				} else {
 					str += "<tr id=\""+hid+"\"" +(grp.groupCollapse && n.idx>0 ? " style=\"display:none;\" " : " ") + "role=\"row\" class= \"" + common.content + " jqgroup ui-row-"+$t.p.direction+" "+clid+"\"><td style=\"padding-left:"+(n.idx * 12) + "px;"+"\" colspan=\""+(grp.groupColumnShow[n.idx] === false ? colspans-1 : colspans)+"\">" + icon + grpTextStr + "</td></tr>";
@@ -391,7 +397,7 @@ $.jgrid.extend({
 								hhdr = " style=\"display:none;\"";
 							}
 							str += "<tr"+hhdr+" jqfootlevel=\""+(n.idx-ik)+"\" role=\"row\" class=\"" + common.content + " jqfoot ui-row-"+$t.p.direction+"\">";
-							str += buildSummaryTd(i, ik, grp.groups, 0);
+							str += buildSummaryTd(i, ik, grp.groups, 0, false);
 							str += "</tr>";
 						}
 						toEnd = jj;
@@ -530,19 +536,21 @@ $.jgrid.extend({
 			$thead = $htable.children("thead"),
 			$theadInTable,
 			$firstHeaderRow = $htable.find(".jqg-first-row-header"),
+			$firstRow,
+			$focusElem = false,
 			//classes = $.jgrid.styleUI[($t.p.styleUI || 'jQueryUI')]['grouping'],
 			base = $.jgrid.styleUI[(ts.p.styleUI || 'jQueryUI')].base;
 			if(!ts.p.groupHeader) {
 				ts.p.groupHeader = [];
 			}
 			ts.p.groupHeader.push(o);
+			ts.p.groupHeaderOn = true;
 			if($firstHeaderRow[0] === undefined) {
 				$firstHeaderRow = $('<tr>', {role: "row", "aria-hidden": "true"}).addClass("jqg-first-row-header").css("height", "auto");
 			} else {
 				$firstHeaderRow.empty();
 			}
-			var $firstRow,
-			inColumnHeader = function (text, columnHeaders) {
+			var inColumnHeader = function (text, columnHeaders) {
 				var length = columnHeaders.length, i;
 				for (i = 0; i < length; i++) {
 					if (columnHeaders[i].startColumnName === text) {
@@ -551,6 +559,10 @@ $.jgrid.extend({
 				}
 				return -1;
 			};
+			if( $(document.activeElement).is('input') || $(document.activeElement).is('textarea') ) {
+				$focusElem = document.activeElement;
+			}
+			$(ts).prepend($thead);
 
 			$(ts).prepend($thead);
 			$tr = $('<tr>', {role: "row"}).addClass("ui-jqgrid-labels jqg-third-row-header");
@@ -650,6 +662,14 @@ $.jgrid.extend({
 			$(ts).on('jqGridResizeStop.setGroupHeaders', function (e, nw, idx) {
 				$firstRow.find('th').eq(idx)[0].style.width = nw + "px";
 			});
+			if( $focusElem ) {
+				try {
+					$($focusElem).focus();
+				} catch(fe) {}
+			}
+			if( $.trim($("tr.jqg-second-row-header th:eq(0)").text()) === "" ) {
+				$("tr.jqg-second-row-header th:eq(0)").prepend('&nbsp;');
+			}
 		});				
 	},
 	destroyGroupHeader : function(nullHeader) {
@@ -659,16 +679,21 @@ $.jgrid.extend({
 		return this.each(function()
 		{
 			var $t = this, $tr, i, l, headers, $th, $resizing, grid = $t.grid,
-			thead = $("table.ui-jqgrid-htable thead", grid.hDiv), cm = $t.p.colModel, hc;
+			thead = $("table.ui-jqgrid-htable thead", grid.hDiv), cm = $t.p.colModel, hc, frozen = false;
 			if(!grid) { return; }
+			if($t.p.frozenColumns) {
+				$($t).jqGrid("destroyFrozenColumns");
+				frozen = true;
+			}
 
 			$(this).off('.setGroupHeaders');
+			$t.p.groupHeaderOn = false;
 			$tr = $("<tr>", {role: "row"}).addClass("ui-jqgrid-labels");
 			headers = grid.headers;
 			for (i = 0, l = headers.length; i < l; i++) {
 				hc = cm[i].hidden ? "none" : "";
 				$th = $(headers[i].el)
-					.width(headers[i].width)
+					.width( $('tr.jqg-first-row-header th:eq('+i+')', thead).width() )
 					.css('display',hc);
 				try {
 					$th.removeAttr("rowSpan");
@@ -684,12 +709,20 @@ $.jgrid.extend({
 				$th.children("div")[0].style.top = "";
 			}
 			$(thead).children('tr.ui-jqgrid-labels').remove();
+			$(thead).children('tr.jqg-first-row-header').remove();
 			$(thead).prepend($tr);
 
 			if(nullHeader === true) {
 				$($t).jqGrid('setGridParam',{ 'groupHeader': null});
 			}
+			if(frozen) {
+				$($t).jqGrid("setFrozenColumns");
+			}
 		});
+	},
+	isGroupHeaderOn : function () {
+		var $t = this[0];
+		return $t.p.groupHeaderOn === true && $t.p.groupHeader && ($.isArray($t.p.groupHeader) || $.isFunction($t.p.groupHeader) );
 	}
 });
 //module end

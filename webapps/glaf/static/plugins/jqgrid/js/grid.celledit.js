@@ -97,7 +97,7 @@ $.jgrid.extend({
 				if ($.isFunction($t.p.beforeEditCell)) {
 					$t.p.beforeEditCell.call($t, $t.rows[iRow].id,nm,tmp,iRow,iCol);
 				}
-				var opt = $.extend({}, cm.editoptions || {} ,{id:iRow+"_"+nm,name:nm,rowId: $t.rows[iRow].id, oper:'edit'});
+				var opt = $.extend({}, cm.editoptions || {} ,{id:iRow+"_"+nm,name:nm,rowId: $t.rows[iRow].id, oper:'edit', module : 'cell'});
 				var elc = $.jgrid.createEl.call($t,cm.edittype,opt,tmp,true,$.extend({},$.jgrid.ajaxOptions,$t.p.ajaxSelectOptions || {}));
 				if( $.inArray(cm.edittype, ['text','textarea','password','select']) > -1) {
 					$(elc).addClass(inpclass);
@@ -115,6 +115,10 @@ $.jgrid.extend({
 							$($t).jqGrid("restoreCell",iRow,iCol);
 						}
 					} //ESC
+					if (e.keyCode === 13 && e.altKey && this.nodeName === "TEXTAREA") {
+						this.value = this.value + "\r";
+						return true;
+					}
 					if (e.keyCode === 13 && !e.shiftKey) {
 						$($t).jqGrid("saveCell",iRow,iCol);
 						// Prevent default action
@@ -122,8 +126,23 @@ $.jgrid.extend({
 					} //Enter
 					if (e.keyCode === 9)  {
 						if(!$t.grid.hDiv.loading ) {
-							if (e.shiftKey) {$($t).jqGrid("prevCell", iRow, iCol, e);} //Shift TAb
-							else {$($t).jqGrid("nextCell", iRow, iCol, e);} //Tab
+							if (e.shiftKey) { //Shift TAb
+								var succ2 = $($t).jqGrid("prevCell", iRow, iCol, e);
+								if(!succ2 && $t.p.editNextRowCell) {
+									if(iRow-1 > 0 && $t.rows[iRow-1]) {
+										iRow--;
+										$($t).jqGrid("prevCell", iRow, $t.p.colModel.length, e);
+									}
+								}
+							} else {
+								var succ = $($t).jqGrid("nextCell", iRow, iCol, e);
+								if(!succ && $t.p.editNextRowCell) {
+									if($t.rows[iRow+1]) {
+										iRow++;
+										$($t).jqGrid("nextCell", iRow, 0, e);
+									}
+								}
+							} //Tab
 						} else {
 							return false;
 						}
@@ -267,6 +286,7 @@ $.jgrid.extend({
 												}
 												$(cc).empty();
 												$($t).jqGrid("setCell",$t.p.savedRow[fr].rowId, iCol, v2, false, false, true);
+												cc = $('td:eq('+iCol+')', trow);
 												$(cc).addClass("dirty-cell");
 												$(trow).addClass("edited");
 												$($t).triggerHandler("jqGridAfterSaveCell", [$t.p.savedRow[fr].rowId, nm, v, iRow, iCol]);
@@ -331,6 +351,7 @@ $.jgrid.extend({
 						if ($t.p.cellsubmit === 'clientArray') {
 							$(cc).empty();
 							$($t).jqGrid("setCell", $t.p.savedRow[fr].rowId, iCol, v2, false, false, true);
+							cc = $('td:eq('+iCol+')', trow);
 							$(cc).addClass("dirty-cell");
 							$(trow).addClass("edited");
 							$($t).triggerHandler("jqGridAfterSaveCell", [$t.p.savedRow[fr].rowId, nm, v, iRow, iCol]);
@@ -396,7 +417,8 @@ $.jgrid.extend({
 		});
 	},
 	nextCell : function (iRow, iCol, event) {
-		return this.each(function (){
+		var ret;
+		this.each(function (){
 			var $t = this, nCol=false, i;
 			if (!$t.grid || $t.p.cellEdit !== true) {return;}
 			// try to find next editable cell
@@ -406,32 +428,40 @@ $.jgrid.extend({
 				}
 			}
 			if(nCol !== false) {
+				ret = true;
 				$($t).jqGrid("editCell", iRow, nCol, true, event);
 			} else {
+				ret = false;
 				if ($t.p.savedRow.length >0) {
 					$($t).jqGrid("saveCell",iRow,iCol);
 				}
 			}
 		});
+		return ret;
 	},
 	prevCell : function (iRow, iCol, event) {
-		return this.each(function (){
+		var ret;
+		this.each(function (){
 			var $t = this, nCol=false, i;
-			if (!$t.grid || $t.p.cellEdit !== true) {return;}
+			if (!$t.grid || $t.p.cellEdit !== true) {return false;}
 			// try to find next editable cell
 			for (i=iCol-1; i>=0; i--) {
 				if ( $t.p.colModel[i].editable ===true && (!$.isFunction($t.p.isCellEditable) || $t.p.isCellEditable.call($t, $t.p.colModel[i].name, iRow,i))) {
-					nCol = i; break;
+					nCol = i; 
+					break;
 				}
 			}
 			if(nCol !== false) {
+				ret = true;
 				$($t).jqGrid("editCell", iRow, nCol, true, event);
 			} else {
+				ret = false;
 				if ($t.p.savedRow.length >0) {
 					$($t).jqGrid("saveCell",iRow,iCol);
 				}
 			}
 		});
+		return ret;
 	},
 	GridNav : function() {
 		return this.each(function () {

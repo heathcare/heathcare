@@ -73,7 +73,8 @@ $.fn.jqFilter = function( arg ) {
 		addrule : "Add rule",
 		delgroup : "Delete group",
 		delrule : "Delete rule",
-		autoencode : false
+		autoencode : false,
+		unaryOperations : []
 	}, $.jgrid.filter, arg || {});
 	return this.each( function() {
 		if (this.filter) {return;}
@@ -218,7 +219,7 @@ $.fn.jqFilter = function( arg ) {
 
 			if(this.p.ruleButtons === true) {
 			// dropdown for: choosing group operator type
-			var groupOpSelect = $("<select class='opsel " + classes.srSelect + "'></select>");
+			var groupOpSelect = $("<select size='1' class='opsel " + classes.srSelect + "'></select>");
 			th.append(groupOpSelect);
 			// populate dropdown with all posible group operators: or, and
 			var str= "", selected;
@@ -385,7 +386,7 @@ $.fn.jqFilter = function( arg ) {
 
 
 			// dropdown for: choosing field
-			var ruleFieldSelect = $("<select class='" + classes.srSelect + "'></select>"), ina, aoprs = [];
+			var ruleFieldSelect = $("<select size='1' class='" + classes.srSelect + "'></select>"), ina, aoprs = [];
 			ruleFieldTd.append(ruleFieldSelect);
 			ruleFieldSelect.on('change',function() {
 				if( that.p.ruleButtons && that.p.uniqueSearchFields ) {
@@ -464,6 +465,14 @@ $.fn.jqFilter = function( arg ) {
 				});
 				setTimeout(function(){ //IE, Opera, Chrome
 				rule.data = $(elm).val();
+				if(rule.op === 'nu' || rule.op === 'nn' || $.inArray(rule.op, that.p.unaryOperations) >=0 ) {
+					$(elm).attr('readonly','true');
+					$(elm).attr('disabled','true');
+				}
+				
+				if(cm.inputtype === 'select' && cm.searchoptions.multiple && $.isArray(rule.data)) {
+					rule.data = rule.data.join(",");
+				}
 				that.onchange();  // signals that the filter has changed
 				}, 0);
 			});
@@ -503,18 +512,18 @@ $.fn.jqFilter = function( arg ) {
 			cm.searchoptions.name = rule.field;
 			cm.searchoptions.oper = 'filter';
 			var ruleDataInput = $.jgrid.createEl.call($t, cm.inputtype,cm.searchoptions, rule.data, true, that.p.ajaxSelectOptions || {}, true);
-			if(rule.op === 'nu' || rule.op === 'nn') {
+			if(rule.op === 'nu' || rule.op === 'nn' || $.inArray(rule.op, that.p.unaryOperations) >=0 ) {
 				$(ruleDataInput).attr('readonly','true');
 				$(ruleDataInput).attr('disabled','true');
 			} //retain the state of disabled text fields in case of null ops
 			// dropdown for: choosing operator
-			var ruleOperatorSelect = $("<select class='selectopts " + classes.srSelect + "'></select>");
+			var ruleOperatorSelect = $("<select size='1' class='selectopts " + classes.srSelect + "'></select>");
 			ruleOperatorTd.append(ruleOperatorSelect);
 			ruleOperatorSelect.on('change',function() {
 				rule.op = $(ruleOperatorSelect).val();
 				trpar = $(this).parents("tr:first");
 				var rd = $(".input-elm",trpar)[0];
-				if (rule.op === "nu" || rule.op === "nn") { // disable for operator "is null" and "is not null"
+				if (rule.op === "nu" || rule.op === "nn" || $.inArray(rule.op, that.p.unaryOperations) >= 0 ) { // disable for operator "is null" and "is not null"
 					rule.data = "";
 					if(rd.tagName.toUpperCase() !== 'SELECT') { rd.value = ""; }
 					rd.setAttribute("readonly", "true");
@@ -640,8 +649,11 @@ $.fn.jqFilter = function( arg ) {
 			if(opC === 'cn' || opC === 'nc') { val = "%"+val+"%"; }
 			if(opC === 'in' || opC === 'ni') { val = " ("+val+")"; }
 			if(p.errorcheck) { checkData(rule.data, cm); }
-			if($.inArray(cm.searchtype, numtypes) !== -1 || opC === 'nn' || opC === 'nu') { ret = rule.field + " " + opUF + " " + val; }
-			else { ret = rule.field + " " + opUF + " \"" + val + "\""; }
+			if($.inArray(cm.searchtype, numtypes) !== -1 || opC === 'nn' || opC === 'nu' || $.inArray(rule.op, this.p.unaryOperations) >= 0 ) { 
+				ret = rule.field + " " + opUF + " " + val; 
+			} else { 
+				ret = rule.field + " " + opUF + " \"" + val + "\""; 
+			}
 			return ret;
 		};
 		this.resetFilter = function () {
@@ -785,7 +797,7 @@ $.extend($.jgrid,{
 		/*ruleGroup : {}, ssfield:[], splitSelect:",", groupOpSelect:"OR"*/
 		var filters={} /*?*/, rules, k, rule, ssdata, group;
 		try {
-			filters = typeof p.ruleGroudp === "string" ? $.jgrid.parse(p.ruleGroup) : p.ruleGroup;
+			filters = typeof p.ruleGroup === "string" ? $.jgrid.parse(p.ruleGroup) : p.ruleGroup;
 			if(filters.rules && filters.rules.length) {
 				rules = filters.rules;
 				for(k=0; k < rules.length; k++) {
@@ -837,7 +849,7 @@ $.jgrid.extend({
 			operands : { "eq" :"==", "ne":"!","lt":"<","le":"<=","gt":">","ge":">=","bw":"^","bn":"!^","in":"=","ni":"!=","ew":"|","en":"!@","cn":"~","nc":"!~","nu":"#","nn":"!#", "bt":"..."}
 		}, regional , p  || {});
 		return this.each(function(){
-			var $t = this;
+			var $t = this, unaryOpers=[];;
 			if($t.p.filterToolbar) { return; }
 			if(!$($t).data('filterToolbar')) {
 				$($t).data('filterToolbar', p);
@@ -845,19 +857,30 @@ $.jgrid.extend({
 			if($t.p.force_regional) {
 				p = $.extend(p, regional);
 			}
+			if ($t.p.customFilterDef !== undefined) {
+				for(var uskey in $t.p.customFilterDef) {
+					if($t.p.customFilterDef.hasOwnProperty(uskey)  && !p.operands.hasOwnProperty(uskey) ) {
+						p.odata.push({ oper: uskey, text: $t.p.customFilterDef[uskey].text} );
+						p.operands[uskey] = $t.p.customFilterDef[uskey].operand;
+						if($t.p.customFilterDef[uskey].unary === true) {
+							unaryOpers.push(uskey);
+						}
+					}
+				}
+			}
 			var classes = $.jgrid.styleUI[($t.p.styleUI || 'jQueryUI')].filter,
 			common = $.jgrid.styleUI[($t.p.styleUI || 'jQueryUI')].common,
 			base = $.jgrid.styleUI[($t.p.styleUI || 'jQueryUI')].base,
 
 			triggerToolbar = function() {
-				var sdata={}, j=0, v, nm, sopt={},so, ms = false, ssfield = [], 
+				var sdata={}, j=0, v, nm, sopt={},so, ms = false, ssfield = [],
 					bbt =false, sop, ret=[true,"",""], err=false;
 				$.each($t.p.colModel,function(){
 					var $elem = $("#gs_"+ $t.p.idPrefix + $.jgrid.jqID(this.name), (this.frozen===true && $t.p.frozenColumns === true) ?  $t.grid.fhDiv : $t.grid.hDiv);
 					nm = this.index || this.name;
 					sop = this.searchoptions || {};
 					if(p.searchOperators &&  sop.searchOperMenu) {
-						so = $elem.parent().prev().children("a").attr("soper") || p.defaultSearch;
+						so = $elem.parents("table.ui-search-table").find("td.ui-search-oper").children("a").attr("soper") || p.defaultSearch;
 					} else {
 						so  = (sop.sopt) ? sop.sopt[0] : this.stype==='select' ?  'eq' : p.defaultSearch;
 					}
@@ -865,10 +888,14 @@ $.jgrid.extend({
 						sop.custom_value.call($t, $elem, "get") :
 						$elem.val();
 					// detect multiselect
-					if(this.stype === 'select' && sop.multiple && $.isArray(v) && v.length) {
-						ms = true;
-						ssfield.push(nm);
-						v= v.length === 1 ? v[0] : v;
+					if(this.stype === 'select' && sop.multiple && $.isArray(v)) {
+						if(v.length > 0) {
+							ms = true;
+							ssfield.push(nm);
+							v= v.length === 1 ? v[0] : v;
+						} else {
+							v = "";
+						}
 					}
 					if(this.searchrules && p.errorcheck) {
 						if($.isFunction( this.searchrules)) {
@@ -886,7 +913,7 @@ $.jgrid.extend({
 					if(so==="bt") {
 						bbt = true;
 					}
-					if(v || so==="nu" || so==="nn") {
+					if(v || so==="nu" || so==="nn" || $.inArray(so, unaryOpers) >=0) {
 						sdata[nm] = v;
 						sopt[nm] = so;
 						j++;
@@ -922,13 +949,13 @@ $.jgrid.extend({
 					// multiselect
 					var filters, rules, k,str, rule, ssdata, group;
 					if(ms) {
-						$.jgrid.filterRefactor({
+						filters = $.jgrid.filterRefactor({
 							ruleGroup : ruleGroup,
 							ssfield : ssfield,
 							splitSelect : p.splitSelect,
 							groupOpSelect : p.groupOpSelect
 						});
-						//ruleGroup = JSON.stringify( filters );
+						ruleGroup = JSON.stringify( filters );
 					}
 					if(bbt) {
 						if(!$.isPlainObject(filters)) {
@@ -1085,7 +1112,7 @@ $.jgrid.extend({
 				left=parseInt(left,10);
 				top=parseInt(top,10) + 18;
 
-				var fs =  $('.ui-jqgrid-view').css('font-size') || '11px';
+				var fs =  $('.ui-jqgrid').css('font-size') || '11px';
 				var str = '<ul id="sopt_menu" class="ui-search-menu modal-content" role="menu" tabindex="0" style="font-size:'+fs+';left:'+left+'px;top:'+top+'px;">',
 				selected = $(elem).attr("soper"), selclass,
 				aoprs = [], ina;
@@ -1106,7 +1133,7 @@ $.jgrid.extend({
 					ina = $.inArray(options.sopt[i],aoprs);
 					if(ina !== -1) {
 						selclass = selected === p.odata[ina].oper ? common.highlight : "";
-						str += '<li class="ui-menu-item '+selclass+'" role="presentation"><a class="'+ common.cornerall+' g-menu-item" tabindex="0" role="menuitem" value="'+p.odata[ina].oper+'" oper="'+p.operands[p.odata[ina].oper]+'"><table class="ui-common-table"><tr><td width="25px">'+p.operands[p.odata[ina].oper]+'</td><td>'+ p.odata[ina].text+'</td></tr></table></a></li>';
+						str += '<li class="ui-menu-item '+selclass+'" role="presentation"><a class="'+ common.cornerall+' g-menu-item" tabindex="0" role="menuitem" value="'+p.odata[ina].oper+'" oper="'+p.operands[p.odata[ina].oper]+'"><table class="ui-common-table"><tr><td class="opersign">'+p.operands[p.odata[ina].oper]+'</td><td>'+ p.odata[ina].text+'</td></tr></table></a></li>';
 					}
 				}
 				str += "</ul>";
@@ -1123,7 +1150,7 @@ $.jgrid.extend({
 					$(elem).text(oper).attr("soper",v);
 					if(p.autosearch===true){
 						var inpelm = $(elem).parent().next().children()[0];
-						if( $(inpelm).val() || v==="nu" || v ==="nn") {
+						if( $(inpelm).val() || v==="nu" || v ==="nn" || $.inArray(v, unaryOpers) >=0) {
 							triggerToolbar();
 						}
 					}
@@ -1180,9 +1207,9 @@ $.jgrid.extend({
 							}
 						}
 						st = soptions.searchtitle != null ? soptions.searchtitle : p.operandTitle;
-						select = this.searchoptions.searchOperMenu ? "<a title='"+st+"' style='padding-right: 0.5em;' soper='"+so+"' class='soptclass' colname='"+this.name+"'>"+sot+"</a>" : "";
+						select = this.searchoptions.searchOperMenu ? "<a title='"+st+"' soper='"+so+"' class='soptclass' colname='"+this.name+"'>"+sot+"</a>" : "";
 					}
-					$("td:eq(0)",stbl).attr("colindex",ci).append(select);
+					$("td:eq(0)",stbl).attr("columname", cm.name).append(select);
 					if(soptions.clearSearch === undefined) {
 						soptions.clearSearch = true;
 					}
@@ -1289,8 +1316,16 @@ $.jgrid.extend({
 			}
 			$(".clearsearchclass",tr).click(function() {
 				var ptr = $(this).parents("tr:first"),
-				coli = parseInt($("td.ui-search-oper", ptr).attr('colindex'),10),
-				sval  = $.extend({},$t.p.colModel[coli].searchoptions || {}),
+				colname = $("td.ui-search-oper", ptr).attr('columname'), coli=0, len = $t.p.colModel.length,
+				soper = $("td.ui-search-oper a", ptr).attr('soper'), cm,vv;
+				while(coli<len) {
+					if($t.p.colModel[coli].name === colname) {
+						cm = $t.p.colModel[coli];
+						break;
+					}
+					coli++;
+				}
+				var sval  = $.extend({},$t.p.colModel[coli].searchoptions || {}),
 				dval = sval.defaultValue ? sval.defaultValue : "",
 				elem;
 				if($t.p.colModel[coli].stype === "select") {
@@ -1308,11 +1343,33 @@ $.jgrid.extend({
 				if($.isFunction(p.onClearSearchValue)) {
 					p.onClearSearchValue.call($t, elem[0], coli, sval, dval);
 				}
+				if(soper==="nu" || soper==="nn" || $.inArray(soper, unaryOpers) >=0) {
+					vv = sval.sopt ?
+							sval.sopt[0] :
+							cm.stype === "select" ?
+								"eq" : 
+								p.defaultSearch;
+						var operText = $t.p.customFilterDef != null && $t.p.customFilterDef[vv] != null ? 
+						$t.p.customFilterDef[vv].operand :
+						p.operands[vv] || "";
+						if(vv === soper) {
+							$("td.ui-search-oper a", ptr).attr('soper', 'dummy').text(operText);
+						} else {
+							$("td.ui-search-oper a", ptr).attr('soper',vv).text(operText);
+						}
+						
+				}
+				
 				// ToDo custom search type
 				if(p.autosearch===true){
 					triggerToolbar();
+					if(vv === soper) { 
+						$("td.ui-search-oper a", ptr).attr('soper',vv).text(operText);
+					}
 				}
-
+			});
+			$($t.grid.hDiv).on("scroll", function(e){
+				$t.grid.bDiv.scrollLeft = $t.grid.hDiv.scrollLeft;
 			});
 			this.p.filterToolbar = true;
 			this.triggerToolbar = triggerToolbar;
@@ -1339,13 +1396,14 @@ $.jgrid.extend({
 			onSetVal : null
 		}, p || {});
 		return this.each(function () {
-			var $t = this, cm = $t.p.colModel, i, l = $t.p.colModel.length,
+			var $t = this, cm = $t.p.colModel, i, l = $t.p.colModel.length, params,
 			searchitem, filters, rules, rule, ssfield =[], ia;
 			// clear the values on toolbar.
 			// do not call clearToolbar
 			if(!$t.p.filterToolbar) {
 				return;
 			}
+			params = $($t).data('filterToolbar');
 			for (i = 0; i < l; i++) {
 				ssfield.push(cm[i].name);
 				searchitem = $("#gs_" +$t.p.idPrefix+ $.jgrid.jqID(cm[i].name));
@@ -1378,6 +1436,15 @@ $.jgrid.extend({
 								if($.isFunction(p.onSetVal)) {
 									p.onSetVal.call($t, searchitem, cm[ia].name);
 								}
+								if( params && params.searchOperators) {
+									var fsi = searchitem.parent().prev();
+									if( fsi.hasClass("ui-search-oper") ) {
+										$(".soptclass", fsi ).attr("soper", rule.op);
+										if(params.operands.hasOwnProperty(rule.op)) {
+											$(".soptclass", fsi ).html( params.operands[rule.op] );
+										}
+									}
+								}
 							}
 					    }
 					}
@@ -1388,9 +1455,14 @@ $.jgrid.extend({
 					}
 				}
 			}
-			if (typeof (p.filters) === "string" && p.filters.length) {
-				filters = $.jgrid.parse(p.filters);
+			if (typeof (p.filters) === "string") {
+				if(p.filters.length) {
+					filters = p.filters;
 				// flat filters only
+				} else if( $t.p.postData.hasOwnProperty("filters")) {
+					filters = $t.p.postData.filters;
+				}
+				filters = $.jgrid.parse(filters);
 			}
 	        if ($.isPlainObject(filters)) {
 				setrules( filters );
@@ -1457,6 +1529,7 @@ $.jgrid.extend({
 			IDs = {themodal:'searchmod'+fid,modalhead:'searchhd'+fid,modalcontent:'searchcnt'+fid, scrollelm : fid},
 			defaultFilters  = ($.isPlainObject($t.p_savedFilter) && !$.isEmptyObject($t.p_savedFilter ) ) ? $t.p_savedFilter :  $t.p.postData[p.sFilter],
 			fl,
+			unaryOpers = [],
 			classes = $.jgrid.styleUI[($t.p.styleUI || 'jQueryUI')].filter,
 			common = $.jgrid.styleUI[($t.p.styleUI || 'jQueryUI')].common;
 			p.styleUI = $t.p.styleUI;
@@ -1500,7 +1573,41 @@ $.jgrid.extend({
 					bQ ="<a id='"+fid+"_query' class='fm-button " + common.button + " fm-button-icon-left'><span class='" + common.icon_base + " " +classes.icon_query + "'></span>Query</a>";
 				}
 				var user_buttons = $.jgrid.buildButtons( p.buttons, bQ+ bS, common);
+
+				// groupheaders names
+				var groupH = null;
+				if( $($t).jqGrid('isGroupHeaderOn') ) {
+					var htable = $("table.ui-jqgrid-htable", $t.grid.hDiv), 
+					secRow = htable.find(".jqg-second-row-header"),
+					gh_len = $t.p.groupHeader.length;
+					// use the last set one
+					if(secRow[0] !== undefined) {
+						groupH = $t.p.groupHeader[gh_len-1];
+					}
+				}
+
+				var inColumnHeader = function (text, columnHeaders) {
+					var length = columnHeaders.length, i;
+					for (i = 0; i < length; i++) {
+						if (columnHeaders[i].startColumnName === text) {
+							return i;
+						}
+					}
+					return -1;
+				};				
 				if(!p.columns.length) {
+					if(groupH !== null) {
+						for(var ij=0;ij<columns.length; ij++){
+							var iCol = inColumnHeader( columns[ij].name, groupH.groupHeaders);
+							if(iCol>=0) {
+								columns[ij].label = groupH.groupHeaders[iCol].titleText + "::" + $t.p.colNames[ij];
+								for(var jj= 1; jj<= groupH.groupHeaders[iCol].numberOfColumns-1; jj++) {
+									columns[ij+jj].label = groupH.groupHeaders[iCol].titleText + "::"+$t.p.colNames[ij+jj];
+								}
+								ij = ij+groupH.groupHeaders[iCol].numberOfColumns-1;
+							}
+						}
+					}
 					$.each(columns, function(i,n){
 						if(!n.label) {
 							n.label = $t.p.colNames[i];
@@ -1540,14 +1647,24 @@ $.jgrid.extend({
 				if(p.tmplNames && p.tmplNames.length) {
 					found = true;
 					tmpl = "<tr><td class='ui-search-label'>"+ p.tmplLabel +"</td>";
-					tmpl += "<td><select class='ui-template " + classes.srSelect + "'>";
+					tmpl += "<td><select size='1' class='ui-template " + classes.srSelect + "'>";
 					tmpl += "<option value='default'>Default</option>";
 					$.each(p.tmplNames, function(i,n){
 						tmpl += "<option value='"+i+"'>"+n+"</option>";
 					});
 					tmpl += "</select></td></tr>";
 				}
-
+				if ($t.p.customFilterDef !== undefined) {
+					for(var uskey in $t.p.customFilterDef) {
+						if($t.p.customFilterDef.hasOwnProperty(uskey)  && !p.operands.hasOwnProperty(uskey) ) {
+							p.odata.push({ oper: uskey, text: $t.p.customFilterDef[uskey].text} );
+							p.operands[uskey] = $t.p.customFilterDef[uskey].operand;
+							if($t.p.customFilterDef[uskey].unary === true) {
+								unaryOpers.push(uskey);
+						}
+					}
+				}
+				}
 				bt = "<table class='EditTable' style='border:0px none;margin-top:5px' id='"+fid+"_2'><tbody><tr><td colspan='2'><hr class='" + common.content + "' style='margin:1px'/></td></tr>"+tmpl+"<tr><td class='EditButton' style='text-align:"+align+"'>"+bC+"</td><td class='EditButton' "+butleft+">"+ user_buttons +"</td></tr></tbody></table>";
 				fid = $.jgrid.jqID( fid);
 				$("#"+fid).jqFilter({
@@ -1570,6 +1687,7 @@ $.jgrid.extend({
 					delgroup : p.delgroup,
 					delrule : p.delrule,
 					autoencode : $t.p.autoencode,
+					unaryOperations : unaryOpers,
 					onChange : function() {
 						if(this.p.showQuery) {
 							$('.query',this).html(this.toUserFriendlyString());
@@ -1607,10 +1725,11 @@ $.jgrid.extend({
 					p.onInitializeSearch.call($t, $("#"+fid));
 				}
 				p.gbox = "#gbox_"+fid;
+				var fs =  $('.ui-jqgrid').css('font-size') || '11px';
 				if (p.layer) {
-					$.jgrid.createModal(IDs ,fil,p,"#gview_"+$.jgrid.jqID($t.p.id),$("#gbox_"+$.jgrid.jqID($t.p.id))[0], (typeof p.layer ==="string" ? "#"+$.jgrid.jqID(p.layer) : p.layer), (typeof p.layer ==="string" ?  {position: "relative"} :{} ) );
+					$.jgrid.createModal(IDs ,fil,p,"#gview_"+$.jgrid.jqID($t.p.id),$("#gbox_"+$.jgrid.jqID($t.p.id))[0], (typeof p.layer ==="string" ? "#"+$.jgrid.jqID(p.layer) : p.layer), (typeof p.layer ==="string" ?  {position: "relative", "font-size":fs} :{ "font-size":fs} ) );
 				} else {
-					$.jgrid.createModal(IDs ,fil,p,"#gview_"+$.jgrid.jqID($t.p.id),$("#gbox_"+$.jgrid.jqID($t.p.id))[0]);
+					$.jgrid.createModal(IDs ,fil,p,"#gview_"+$.jgrid.jqID($t.p.id),$("#gbox_"+$.jgrid.jqID($t.p.id))[0], null, { "font-size":fs});
 				}
 				if (p.searchOnEnter || p.closeOnEscape) {
 					$("#"+$.jgrid.jqID(IDs.themodal)).keydown(function (e) {
@@ -1774,6 +1893,65 @@ $.jgrid.extend({
 			if(!bsr) { $($t).jqGrid("setGridParam",{search:true}).trigger("reloadGrid",[{page:1}]); }
 			$($t).triggerHandler("jqGridFilterInputAfterSearch");
 			if($.isFunction(p.afterSearch)){p.afterSearch.call($t);}
+		});
+	},
+	autoSelect : function (o) {
+		o = $.extend(true,{
+			field : "",
+			direction : "asc",
+			src_date : "Y-m-d",
+			allValues : "All",
+			count_item : true,
+			create_value : true
+		}, o || {} );
+		return this.each(function() {
+			var $t = this, item, sdata="";
+			if( o.field && $t.p.data && $.isArray( $t.p.data )) {
+				var query, res, s_cnt, tmp = [], cm, len,
+				result, i;
+
+				try {
+					query = $.jgrid.from.call($t, $t.p.data);
+					result = query.groupBy( o.field, o.direction, "text", o.src_date);
+					i = result.length;
+				} catch(e) {
+
+				}
+				if(result && result.length) {
+					res =  $("#gsh_"+$t.p.id+"_"+o.field).find("td.ui-search-input > select");
+					i = result.length;
+					if(o.allValues) {
+						sdata = "<option value=''>"+ o.allValues +"</option>";
+						tmp.push(":" + o.allValues);
+					}
+					while(i--) {
+						item = result[i];
+						s_cnt = o.count_item ? " (" +item.items.length+")" : "";
+						sdata += "<option value='"+item.unique+"'>"+ item.unique + s_cnt+"</option>";
+						tmp.push(item.unique+":"+item.unique + s_cnt);
+					}
+					res.append(sdata);
+					res.on('change',function(){
+						$t.triggerToolbar();
+					});
+					if( o.create_value ) {
+						for(i=0, len = $t.p.colModel.length; i < len; i++ ) {
+							if($t.p.colModel[i].name === o.field) { 
+								cm = $t.p.colModel[i];
+								break;
+							}
+						}
+						if(cm) {
+							if(cm.searchoptions) {
+								$.extend(cm.searchoptions, {value: tmp.join(";")});
+							} else {
+								cm.searchoptions = {};
+								cm.searchoptions.value = tmp.join(";");
+							}
+						}
+					}
+				}
+			}
 		});
 	}
 });

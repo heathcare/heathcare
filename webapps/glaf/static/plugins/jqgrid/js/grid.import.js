@@ -172,6 +172,7 @@ $.extend($.jgrid,{
 				ret._fT = null; delete ret._fT;
 			}
 			var grid = $("#"+jqGridId).jqGrid( ret );
+			grid.jqGrid('delRowData','norecs');
 			if( o.restoreData && $.trim( data ) !== '') {
 				grid.append( data );
 			}
@@ -197,6 +198,15 @@ $.extend($.jgrid,{
 				var ms = ret.multiselect === 1 ? 1 : 0,
 					rn = ret.rownumbers === true ? 1 :0;
 				grid.jqGrid('addSubGrid', ms + rn);
+				// reopen the sugrid in order to maintain the subgrid state.
+				// currently only one level is supported
+				// todo : supposrt for unlimited  levels
+				$.each(grid[0].rows, function(i, srow){
+					if( $(srow).hasClass('ui-sg-expanded') ) {
+						// reopen the subgrid
+						$(grid[0].rows[i-1]).find('td.sgexpanded').click().click();
+					}
+				});
 			}
 			// treegrid
 			if(ret.treeGrid) {

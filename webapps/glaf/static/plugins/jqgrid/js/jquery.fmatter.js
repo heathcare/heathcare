@@ -84,8 +84,10 @@
 				if($.fmatter.isNumber(opts.decimalPlaces)) {
 					// Round to the correct decimal place
 					var nDecimalPlaces = opts.decimalPlaces;
-					var nDecimal = Math.pow(10, nDecimalPlaces);
-					sOutput = String(Math.round(nData*nDecimal)/nDecimal);
+					//var nDecimal = Math.pow(10, nDecimalPlaces);
+					//sOutput = String(Math.round(nData*nDecimal)/nDecimal);
+					// see http://www.jacklmoore.com/notes/rounding-in-javascript/
+					sOutput = String(Number(Math.round(nData+'e'+nDecimalPlaces)+'e-'+nDecimalPlaces));
 					nDotIndex = sOutput.lastIndexOf(".");
 					if(nDecimalPlaces > 0) {
 					// Add the decimal separator
@@ -446,7 +448,10 @@
 					sv = so[i].split(sep);
 					if(sv.length > 2 ) {
 						sv[1] = $.map(sv,function(n,i){if(i>0) {return n;}}).join(sep);
-					}					
+					}
+					if(op.decodeValue && op.decodeValue===true) {
+						sv[1] = $.jgrid.htmlDecode(sv[1]);
+					}
 					if(msl) {
 						if($.inArray($.trim(sv[1]),scell)>-1) {
 							ret[j] = sv[0];

@@ -495,9 +495,19 @@ $.jgrid.extend({
 	},
 	jqPivot : function( data, pivotOpt, gridOpt, ajaxOpt) {
 		return this.each(function(){
-			var $t = this;
+			var $t = this,
+				regional = gridOpt.regional ? gridOpt.regional : "en";
+			if(pivotOpt.loadMsg === undefined) {
+				pivotOpt.loadMsg = true;
+			}
+			if(pivotOpt.loadMsg) {
+				$("<div class='loading_pivot ui-state-default ui-state-active row'>"+$.jgrid.getRegional($t, "regional."+regional+".defaults.loadtext")+"</div>").insertBefore($t).show();
+			}
 
 			function pivot( data) {
+				if( $.isFunction( pivotOpt.onInitPivot ) ) {
+					pivotOpt.onInitPivot.call( $t );
+				}
 				if(!$.isArray(data)) {
 					//throw "data provides is not an array";
 					data = [];
@@ -538,6 +548,7 @@ $.jgrid.extend({
 					userDataOnFooter: footerrow,
 					colModel: pivotGrid.colModel,
 					viewrecords: true,
+					formatFooterData : pivotOpt.colTotals === true ? true : false,
 					sortname: pivotOpt.xDimension[0].dataName // ?????
 				}, pivotGrid.groupOptions, gridOpt || {}));
 				var gHead = pivotGrid.groupHeaders;
@@ -551,8 +562,14 @@ $.jgrid.extend({
 				if(pivotOpt.frozenStaticCols) {
 					jQuery($t).jqGrid("setFrozenColumns");
 				}
+				if( $.isFunction( pivotOpt.onCompletePivot ) ) {
+					pivotOpt.onCompletePivot.call( $t );
+				}
+				if(pivotOpt.loadMsg) {
+					$(".loading_pivot").remove();
+				}
 			}
-
+						
 			if(typeof data === "string") {
 				$.ajax($.extend({
 					url : data,

@@ -294,6 +294,7 @@ $.extend($.jgrid,{
 			}
 			$("#info_dialog").remove();
 		} catch (e){}
+		var fs =  $('.ui-jqgrid').css('font-size') || '11px';
 		$.jgrid.createModal({
 			themodal:'info_dialog',
 			modalhead:'info_head',
@@ -301,7 +302,8 @@ $.extend($.jgrid,{
 			scrollelm: 'infocnt'},
 			cnt,
 			mopt,
-			'','',true
+			'','',true, 
+			{ "font-size":fs}
 		);
 		// attach onclick after inserting into the dom
 		if(buttstr) {
@@ -376,8 +378,8 @@ $.extend($.jgrid,{
 				if(!options.rows) { options.rows = 2; }
 				if(vl==='&nbsp;' || vl==='&#160;' || (vl.length===1 && vl.charCodeAt(0)===160)) {vl="";}
 				elem.value = vl;
-				setAttributes(elem, options);
 				$(elem).attr({"role":"textbox","multiline":"true"});
+				setAttributes(elem, options);
 			break;
 			case "checkbox" : //what code for simple checkbox
 				elem = document.createElement("input");
@@ -401,8 +403,8 @@ $.extend($.jgrid,{
 					elem.value = cbval[0];
 					$(elem).attr("offval",cbval[1]);
 				}
-				setAttributes(elem, options, ['value']);
 				$(elem).attr("role","checkbox");
+				setAttributes(elem, options, ['value']);
 			break;
 			case "select" :
 				elem = document.createElement("select");
@@ -433,7 +435,7 @@ $.extend($.jgrid,{
 							options = $.extend({},this.options),
 							msl = options.multiple===true,
 							cU = options.cacheUrlData === true,
-							oV ='', txt,
+							oV ='', txt, mss =[],
 							a = $.isFunction(options.buildSelect) ? options.buildSelect.call($t,data) : data;
 							if(typeof a === 'string') {
 								a = $( $.trim( a ) ).html();
@@ -462,8 +464,14 @@ $.extend($.jgrid,{
 									$(this).attr("role","option");
 									if($.inArray($.trim(txt),ovm) > -1 || $.inArray($.trim(vl),ovm) > -1 ) {
 										this.selected= "selected";
+										mss.push(vl);
 									}
 								});
+								if( options.hasOwnProperty('checkUpdate') ) {
+									if (options.checkUpdate) {
+										$t.p.savedData[options.name] = mss.join(",");
+									}
+								}
 								if(cU) {
 									if(options.oper === 'edit') {
 										$($t).jqGrid('setColProp',options.name,{ editoptions: {buildSelect: null, dataUrl : null, value : oV} });
@@ -544,6 +552,8 @@ $.extend($.jgrid,{
 						}
 					}
 					setAttributes(elem, options, ['value']);
+				} else {
+					setAttributes(elem, options );
 				}
 			break;
 			case "image" :
@@ -582,13 +592,13 @@ $.extend($.jgrid,{
 				elem = document.createElement("input");
 				elem.type = eltype;
 				elem.value = vl;
-				setAttributes(elem, options);
 				if(eltype !== "button"){
 					if(autowidth) {
 						if(!options.size) { $(elem).css({width:"96%"}); }
 					} else if (!options.size) { options.size = 20; }
 				}
 				$(elem).attr("role",role);
+				setAttributes(elem, options);
 		}
 		return elem;
 	},
@@ -882,7 +892,27 @@ $.extend($.jgrid,{
 			}
 		});
 		return source;
-	}
+	},
+	setSelNavIndex : function ($t,  selelem ) {
+		var cels = $(".ui-pg-button",$t.p.pager);
+		$.each(cels, function(i,n) {
+			if(selelem===n) {
+				$t.p.navIndex = i;
+				return false;
+			}
+		});
+		$(selelem).attr("tabindex","0");		
+	},
+	getFirstVisibleCol : function( $t ) {
+		var ret = -1;
+		for(var i = 0;i<$t.p.colModel.length;i++) {
+			if($t.p.colModel[i].hidden !== true ) {
+				ret = i;
+				break;
+			}
+		}
+		return ret;
+	}	
 });
 //module end
 }));
